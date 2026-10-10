@@ -1,6 +1,6 @@
 ## 레인 상태 (PLANNER, 세션이 끊기면 여기서 이어받는다)
-- dev2-ui · `fix-parent-width` · PR #27 (가) 커밋·main 병합 완료 → 다음: 최종 head check·E2E → push·P2 답글·VERIFIER 멘션
-- dev2-ui · `fix-chat-loading` · `03be12b` wip(회귀 E2E 초안, RED 미확인) → PR #27 다음에 시작(12:48Z 지시 0685a4bf)
+- dev2-ui · `fix-parent-width` · PR #27 (가) push, `1b50d4b`에서 check·E2E 48/48 → VERIFIER 검토 대기. 다음: 보류·승인 보고에 대응
+- dev2-ui · `fix-chat-loading` · `03be12b` wip(회귀 E2E 초안, RED 미확인) → 지금 진행: main merge → RED → 수정(12:48Z 지시 0685a4bf)
 - dev2-9 · `issue-9` · PR #29 head `de31198` VERIFIER 시험 중 → 다음: 리뷰 보고가 오면 대응
 
 ## #6 프로그램 추천·비교 — PLANNER (dev:2)
@@ -103,7 +103,7 @@
 - [ ] PR #27 Codex P2 (가)(13:04Z 결정 78b98fbf): 768 이상 틀 748 가운데, 표 판정 뷰포트 768, experience 132행 "(최대 748px)"
   - [x] 768×1024·1440×900 회귀 E2E(표·7열 격자, 넘침 0, 시각·금액 한 줄) `77959fd`에서 RED(카드·요일 목록, 틀 480)
   - [x] 틀·판정 수정(`aa54544`)·experience 132행(`7607d1e`)·main `02b2096` 병합 → GREEN
-  - [ ] 최종 head check·전체 E2E, push, Codex P2 답글(r4237682509), VERIFIER
+  - [x] 최종 head `1b50d4b` check(api 242·web 47)·gen:api 0·E2E 48/48·links 0, push, Codex P2 답글(r4237682509), VERIFIER
 ## #4 자녀 정보 등록 — BUILDER (10:32 분배 조정으로 dev:2→dev:1)
 - 완료 조건: AC-04.1~04.5 done(TC-23~27), `npm run check`·`npx e2e run` 통과, `Closes #4` PR VERIFIER 승인. TC-24·27은 #7 병합 뒤
 - [x] `POST /api/children`(14세 미만 동의 확인, 실명·연락처 거부) — #6 PUT·`get_own` 공유
