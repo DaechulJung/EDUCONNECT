@@ -28,6 +28,17 @@ def stored(sync_db, child_id: str) -> dict:
         return dict(row.mappings().one())
 
 
+def denials(sync_db, account_id: str, target: str) -> int:
+    with sync_db.connect() as conn:
+        return conn.scalar(
+            text(
+                "SELECT count(*) FROM audit_events"
+                " WHERE kind = 'access_denied_404' AND account_id = :account AND target = :target"
+            ),
+            {"account": account_id, "target": target},
+        )
+
+
 def test_updates_own_child(client, make_account, make_child, sync_db) -> None:  # noqa: F811
     login_id, parent_id, _ = make_account("parent")
     child_id = make_child(parent_id)
@@ -40,13 +51,14 @@ def test_updates_own_child(client, make_account, make_child, sync_db) -> None:  
     assert body["id"] == child_id and body["interests"] == ["과학"] and body["goal"] == "수학 심화"
     assert body["existing_events"] == BODY["existing_events"]
     assert not {"name", "real_name", "phone", "contact"} & set(body)
+    assert client.get(f"/api/children/{child_id}").json()["interests"] == ["과학"]
     assert stored(sync_db, child_id)["existing_events"] == [
         {"dow": 5, "start_min": 600, "end_min": 720, "label": "수영"}
     ]
 
 
 def test_other_parents_child_404(client, make_account, make_child, sync_db) -> None:  # noqa: F811
-    login_id, _, _ = make_account("parent")
+    login_id, parent_id, _ = make_account("parent")
     _, other_id, _ = make_account("parent")
     child_id = make_child(other_id)
     before = stored(sync_db, child_id)
@@ -56,6 +68,19 @@ def test_other_parents_child_404(client, make_account, make_child, sync_db) -> N
 
     assert response.status_code == 404
     assert "하늘" not in response.text
+    assert stored(sync_db, child_id) == before
+    assert denials(sync_db, parent_id, f"/api/children/{child_id}") == 1
+    malformed = client.put("/api/children/not-a-uuid", json=BODY)
+    assert malformed.status_code == 404
+    assert denials(sync_db, parent_id, "/api/children/not-a-uuid") == 1
+
+
+def test_signed_out_is_401(client, make_account, make_child, sync_db) -> None:  # noqa: F811
+    _, parent_id, _ = make_account("parent")
+    child_id = make_child(parent_id)
+    before = stored(sync_db, child_id)
+    client.cookies.clear()  # the module client keeps the previous test's session
+    assert client.put(f"/api/children/{child_id}", json=BODY).status_code == 401
     assert stored(sync_db, child_id) == before
 
 
@@ -68,9 +93,9 @@ def test_consent_and_real_names(client, make_account, make_child, sync_db) -> No
     no_consent = client.put(f"/api/children/{child_id}", json={**BODY, "consent_checked": False})
     assert no_consent.status_code == 422
     assert no_consent.json()["detail"] == "consent_required"
-    assert (
-        client.put(f"/api/children/{child_id}", json={**BODY, "name": "홍길동"}).status_code == 422
-    )
+    for field in ("name", "real_name", "phone"):
+        response = client.put(f"/api/children/{child_id}", json={**BODY, field: "홍길동"})
+        assert response.status_code == 422, field
     assert stored(sync_db, child_id) == before
 
 

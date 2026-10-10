@@ -179,3 +179,22 @@ def test_staff_cannot_use_the_chat(client, make_account) -> None:
     login(client, login_id)
     response = client.post("/api/chat/messages", json={"child_id": "c1", "text": AROUND})
     assert response.status_code == 403
+
+
+def test_budget_beyond_the_integer_column_is_422(client, parent_child) -> None:
+    for field in ("budget_target", "budget_cap"):
+        body = {**SAVED, "budget_target": 0, field: 2_147_483_648}
+        response = client.put(f"/api/children/{parent_child}/conditions", json=body)
+        assert response.status_code == 422, response.text
+    assert client.get(f"/api/children/{parent_child}/conditions").json() is None
+
+
+def test_chat_budget_beyond_the_integer_column_is_not_used(client, parent_child, llm) -> None:
+    llm.configure(TASK, "error")  # rule extraction
+    reply = client.post(
+        "/api/chat/messages", json={"child_id": parent_child, "text": "영어 월 30억원 전후로"}
+    )
+    assert reply.status_code == 200, reply.text
+    conditions = reply.json()["conditions"]
+    assert conditions["budget_target"] <= 2_147_483_647
+    assert conditions["budget_cap"] <= 2_147_483_647

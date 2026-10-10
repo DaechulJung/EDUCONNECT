@@ -1,23 +1,25 @@
 """catalog request and response models (AD-6 API units: "HH:MM", "mon".."sun", won, grade)."""
 
-from typing import Self
+from typing import Annotated, Self
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field, StringConstraints, model_validator
 
 from app.core.units import Hhmm
 from app.core.vocab import AcademyProgramType, Dow, ProgramType
 
 Grade = Field(ge=1, le=9)
+# Trimmed before the length check, so whitespace-only text is a 422 and never reaches the row.
+Name = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=50)]
 
 
 class _ProgramFields(BaseModel):
-    subject: str = Field(min_length=1, max_length=50)
+    subject: Name
     days: list[Dow] = Field(min_length=1)
     start: Hhmm
     end: Hhmm
     monthly_tuition: int | None = Field(ge=0, description="NULL = 미공개, 0 = 무료")
     monthly_other: int = Field(default=0, ge=0)
-    instructor: str = Field(min_length=1, max_length=50)
+    instructor: Name
     grade_min: int = Grade
     grade_max: int = Grade
     capacity: int = Field(ge=1)

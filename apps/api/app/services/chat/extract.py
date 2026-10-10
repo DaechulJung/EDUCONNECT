@@ -13,6 +13,7 @@ from pydantic import BaseModel, ValidationError
 
 from app.ai.port import LlmUnavailable, Message, Provider, complete_json
 from app.core.vocab import DOW_CODES, DOW_LABELS, Density, Dow, ProgramType, normalize_subject
+from app.schemas.chat import WON_MAX
 
 TASK = "extract_conditions"
 _TYPE_CODES = list(get_args(ProgramType))
@@ -153,13 +154,14 @@ def _density(text: str) -> Density | None:
 
 
 def budget_range(extracted: Extracted) -> tuple[int, int] | None:
-    """(target, cap) or None when no amount was said."""
+    """(target, cap) or None when no amount was said or it does not fit the budget columns."""
     if extracted.budget_amount is None:
         return None
     amount = extracted.budget_amount
-    if extracted.budget_mode == "around":
-        return amount, round(amount * AROUND_CAP_RATE)
-    return amount, amount
+    cap = round(amount * AROUND_CAP_RATE) if extracted.budget_mode == "around" else amount
+    if cap > WON_MAX:
+        return None
+    return amount, cap
 
 
 def _unique[T](values) -> list[T]:

@@ -40,6 +40,11 @@ export function childLabel(child: Pick<Child, 'alias' | 'grade'>): string {
   return `${child.alias}(${gradeLabel(child.grade)})`
 }
 
+// The child the chat targets: the one picked in the sheet's 대상 자녀, else the first.
+export function pickChild<T extends Pick<Child, 'id'>>(children: readonly T[] | undefined, id: string | null): T | null {
+  return children?.find((c) => c.id === id) ?? children?.[0] ?? null
+}
+
 // The 8 rows of the condition card (experience 조건 카드). Empty values read "정하지 않음".
 export function conditionRows(c: Conditions, child: string): { label: string; value: string }[] {
   const subjects = c.subjects ?? []
