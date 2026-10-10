@@ -42,6 +42,8 @@ def findings(text: str) -> list[tuple[int, str]]:
     for number, line in enumerate(text.splitlines(), 1):
         for m in ASSIGNMENT.finditer(line):
             value = m.group("value")
+            if line[: m.start()].endswith("${") and value.startswith("-"):
+                value = value[1:]  # ${NAME:-default}: only the default is a value
             if value and not value.startswith("$") and not synthetic(value):
                 found.append((number, "assignment"))
         for m in HOST.finditer(line):
@@ -72,6 +74,7 @@ def test_detector_catches_each_rule() -> None:
         f'"{name}": "abc123"': "assignment",
         f"see https://{host}/openai/v1/": "endpoint host",
         f"api_key = '{key}'": "key-shaped value",
+        f"x: ${{{name}:-abc123}}": "assignment",
     }
     for line, rule in samples.items():
         assert [r for _, r in findings(line)] == [rule], rule
@@ -82,6 +85,7 @@ def test_detector_allows_names_references_and_synthetic_values() -> None:
     for line in (
         f"{name}=",
         f"{name}: ${{{name}:-}}",
+        f"such as ${{{name}:-}} and",
         f"{name}: https://educonnect-synthetic-ci." + "openai.azure.com/",
         f"{name}=https://synthetic-test-endpoint.invalid/",
         f'"{name}": "https://fake-tc76.openai.azure.example"',

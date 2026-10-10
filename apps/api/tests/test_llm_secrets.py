@@ -30,6 +30,12 @@ SYN_KEY = "test-key-not-real-0123456789abcdef"
 SYN_HOST = "synthetic-test-endpoint.invalid"
 SYN_ENDPOINT = f"https://{SYN_HOST}/"
 SYN_BASE = f"https://{SYN_HOST}/openai/v1/"
+ENV_NAMES = (
+    "LLM_PROVIDER",
+    "AZURE_OPENAI_API_KEY",
+    "AZURE_OPENAI_ENDPOINT",
+    "AZURE_OPENAI_BASE_URL",
+)
 SECRETS = (SYN_KEY, SYN_ENDPOINT, SYN_BASE.rstrip("/"), SYN_HOST)
 TEXT = "초5 아이 영어·수학 위주로 월 100만원 전후로 촘촘하게"
 HTTPS_ERROR = "Azure OpenAI 설정 오류: https 필요"
@@ -88,8 +94,10 @@ class AzureDouble:
 def azure_env(monkeypatch: pytest.MonkeyPatch):
     """Put synthetic Azure values in the environment, then build Settings and the app."""
 
-    def build(**env: str) -> TestClient:
-        for name, value in env.items():
+    def build(provider: str, endpoint: str, base_url: str) -> TestClient:
+        # Names zipped with values, so no line here reads as a NAME=value assignment (TC-62).
+        values = (provider, SYN_KEY, endpoint, base_url)
+        for name, value in zip(ENV_NAMES, values, strict=True):
             monkeypatch.setenv(name, value)
         loaded = Settings()  # read from the environment, after the values are there
         # One server = one configuration: the app modules hold the process-wide `settings` object
@@ -140,12 +148,7 @@ def test_azure_failure_leaves_no_value_in_response_or_logs(
 ) -> None:
     double = azure_double(mode)
     with raw_logs() as logs:
-        with azure_env(
-            LLM_PROVIDER="azure",
-            AZURE_OPENAI_API_KEY=SYN_KEY,
-            AZURE_OPENAI_ENDPOINT=SYN_ENDPOINT,
-            AZURE_OPENAI_BASE_URL=SYN_BASE,
-        ) as client:
+        with azure_env("azure", SYN_ENDPOINT, SYN_BASE) as client:
             response = chat(client, make_account, make_child)
 
     assert double.calls == 1, "the request reached the Azure double"
@@ -173,12 +176,7 @@ def test_non_https_setting_never_calls_azure_and_logs_without_values(
 ) -> None:
     double = azure_double("unauthorized")
     with raw_logs() as logs:
-        with azure_env(
-            LLM_PROVIDER=provider,
-            AZURE_OPENAI_API_KEY=SYN_KEY,
-            AZURE_OPENAI_ENDPOINT=endpoint,
-            AZURE_OPENAI_BASE_URL=base_url,
-        ) as client:
+        with azure_env(provider, endpoint, base_url) as client:
             startup = list(logs.messages)
             response = chat(client, make_account, make_child)
 
@@ -195,12 +193,7 @@ def test_https_settings_do_reach_azure(azure_env, azure_double, make_account, ma
     """Control for TC-61: the same setup with https values does call the double."""
     double = azure_double("unauthorized")
     with raw_logs() as logs:
-        with azure_env(
-            LLM_PROVIDER="auto",
-            AZURE_OPENAI_API_KEY=SYN_KEY,
-            AZURE_OPENAI_ENDPOINT=SYN_ENDPOINT,
-            AZURE_OPENAI_BASE_URL=SYN_BASE,
-        ) as client:
+        with azure_env("auto", SYN_ENDPOINT, SYN_BASE) as client:
             chat(client, make_account, make_child)
     assert double.calls == 1
     assert HTTPS_ERROR not in logs.messages
