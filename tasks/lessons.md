@@ -53,7 +53,7 @@
   - E2E 뒤 api 로그의 Traceback 수를 확인한다.
   - `npm run check`는 `COMPOSE_PROJECT_NAME=edu-dev2`로 실행한다.
 
-## 2026-10-10 - #14 기반 작업(계약·세션·AI 경계·레이아웃)
+## 2026-10-10 - #14 기반 작업(계약·세션·AI 경계·레이아웃) [BUILDER]
 - 문제·원인: FastAPI 0.142는 `app.routes`에 `_IncludedRouter`만 남겨 경로 목록 시험이 빈 집합이 됐다. conftest를 `conftest`와 `tests.conftest` 두 이름으로 import해 무작위 시험 비밀번호가 달라져 로그인 시험이 401로 실패했다.
 - 교훈: 경로 계약은 `app.openapi()["paths"]`로 비교한다. 시험 전역 값은 `os.environ.setdefault`처럼 import 경로와 무관하게 하나로 둔다.
 - 다음에 적용할 것: zsh에서는 연관 배열(`declare -A`)을 쓰지 말고 `bash -c` + here-doc으로 반복한다. 워크트리마다 `COMPOSE_PROJECT_NAME`과 `apps/api/.env`(로컬 포트)를 먼저 맞춘다.
