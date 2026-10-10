@@ -1,7 +1,6 @@
 """planner routes: recommendations, plans, adjustment, organization impact counts.
 
-Recommendations are #6, draft create·read #7, plan list·edit·confirm #8; impact and adjustment
-are 501 until #9 (AD-3).
+Recommendations are #6, draft create·read #7, plan list·edit·confirm #8, impact and adjustment #9.
 """
 
 from typing import Annotated
@@ -11,7 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.authz import OrgStaff, Parent, deny_not_found
 from app.core.db import get_session
-from app.core.errors import error_responses, not_implemented
+from app.core.errors import error_responses
 from app.schemas.catalog import OrgImpact
 from app.schemas.planner import (
     Adjustment,
@@ -21,10 +20,9 @@ from app.schemas.planner import (
     RecommendationList,
     RecommendationRequest,
 )
-from app.services.planner import inputs, plans, recommend
+from app.services.planner import inputs, org_impact, plans, recommend
 
 router = APIRouter(tags=["planner"])
-OWNED = error_responses(401, 403, 404, 501)
 Db = Annotated[AsyncSession, Depends(get_session)]
 
 
@@ -78,26 +76,35 @@ async def confirm_plan(plan_id: str, session: Parent, db: Db) -> Plan:
         await deny_not_found(session, f"/api/plans/{plan_id}/confirm")
 
 
-@router.get("/plans/{plan_id}/adjustment", responses=error_responses(401, 403, 404, 422, 501))
-async def get_adjustment(plan_id: str, session: Parent) -> Adjustment:
-    raise not_implemented()
+@router.get("/plans/{plan_id}/adjustment", responses=error_responses(401, 403, 404, 409, 422))
+async def get_adjustment(plan_id: str, session: Parent, db: Db) -> Adjustment:
+    try:
+        return await plans.adjustment(db, session.account_id, plan_id)
+    except plans.PlanNotFound:
+        await deny_not_found(session, f"/api/plans/{plan_id}/adjustment")
 
 
 @router.post(
     "/plans/{plan_id}/adjustment/accept",
-    responses=error_responses(401, 403, 404, 409, 422, 501),
+    responses=error_responses(401, 403, 404, 409, 422),
 )
-async def accept_adjustment(plan_id: str, session: Parent) -> Plan:
-    raise not_implemented()
+async def accept_adjustment(plan_id: str, session: Parent, db: Db) -> Plan:
+    try:
+        return await plans.accept_adjustment(db, session.account_id, plan_id)
+    except plans.PlanNotFound:
+        await deny_not_found(session, f"/api/plans/{plan_id}/adjustment/accept")
 
 
-@router.post("/plans/{plan_id}/adjustment/reject", responses=OWNED)
-async def reject_adjustment(plan_id: str, session: Parent) -> Plan:
-    raise not_implemented()
+@router.post("/plans/{plan_id}/adjustment/reject", responses=error_responses(401, 403, 404, 409))
+async def reject_adjustment(plan_id: str, session: Parent, db: Db) -> Plan:
+    try:
+        return await plans.reject_adjustment(db, session.account_id, plan_id)
+    except plans.PlanNotFound:
+        await deny_not_found(session, f"/api/plans/{plan_id}/adjustment/reject")
 
 
-@router.get("/org/impact", responses=error_responses(401, 403, 501))
+@router.get("/org/impact", responses=error_responses(401, 403))
 async def get_org_impact(
-    session: OrgStaff, program_id: str | None = None, grade: int | None = None
+    session: OrgStaff, db: Db, program_id: str | None = None, grade: int | None = None
 ) -> OrgImpact:
-    raise not_implemented()
+    return await org_impact.counts(db, session.role, session.institution_id, program_id, grade)

@@ -2104,15 +2104,15 @@ export type GetAdjustmentErrors = {
      */
     404: ErrorBody;
     /**
+     * Conflict
+     */
+    409: ErrorBody;
+    /**
      * Response 422 Get Adjustment
      *
      * Unprocessable Content
      */
     422: ErrorBody | FieldErrors;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
 };
 
 export type GetAdjustmentError = GetAdjustmentErrors[keyof GetAdjustmentErrors];
@@ -2161,10 +2161,6 @@ export type AcceptAdjustmentErrors = {
      * Unprocessable Content
      */
     422: ErrorBody | FieldErrors;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
 };
 
 export type AcceptAdjustmentError = AcceptAdjustmentErrors[keyof AcceptAdjustmentErrors];
@@ -2204,13 +2200,13 @@ export type RejectAdjustmentErrors = {
      */
     404: ErrorBody;
     /**
+     * Conflict
+     */
+    409: ErrorBody;
+    /**
      * Validation Error
      */
     422: HttpValidationError;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
 };
 
 export type RejectAdjustmentError = RejectAdjustmentErrors[keyof RejectAdjustmentErrors];
@@ -2253,10 +2249,6 @@ export type GetOrgImpactErrors = {
      * Validation Error
      */
     422: HttpValidationError;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
 };
 
 export type GetOrgImpactError = GetOrgImpactErrors[keyof GetOrgImpactErrors];
