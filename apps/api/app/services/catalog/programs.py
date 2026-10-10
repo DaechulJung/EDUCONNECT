@@ -5,6 +5,7 @@ import uuid
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core import clock
 from app.core.authz import deny_not_found
 from app.core.ids import parse_owned_id
 from app.core.session import SessionInfo
@@ -84,3 +85,35 @@ async def update_program(
     row.lng = body.lng
     await db.commit()
     return to_api(row)
+
+
+async def list_own(db: AsyncSession, session: SessionInfo) -> list[Program]:
+    """The session academy's live programs, oldest first (deleted ones stay for plans, AD-4)."""
+    rows = await db.scalars(
+        select(ProgramRow)
+        .where(
+            ProgramRow.institution_id == own_institution(session),
+            ProgramRow.type != "after_school",
+            ProgramRow.deleted_at.is_(None),
+        )
+        .order_by(ProgramRow.created_at, ProgramRow.id)
+    )
+    return [to_api(row) for row in rows]
+
+
+async def create_program(db: AsyncSession, session: SessionInfo, body: ProgramIn) -> Program:
+    row = ProgramRow(
+        institution_id=own_institution(session), type=body.type, lat=body.lat, lng=body.lng
+    )
+    apply_fields(row, body)
+    db.add(row)
+    await db.commit()
+    await db.refresh(row)
+    return to_api(row)
+
+
+async def delete_program(db: AsyncSession, session: SessionInfo, program_id: str) -> None:
+    """Soft delete: confirmed plans keep reading the row and report it as changed (AD-4)."""
+    row = await owned_program(db, session, program_id, f"/api/academy/programs/{program_id}")
+    row.deleted_at = clock.now()
+    await db.commit()
