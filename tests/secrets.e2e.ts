@@ -4,6 +4,7 @@ import { join } from 'node:path'
 import { beforeEach, expect, test } from 'e2e'
 import { resetSeed, signInParent } from './chat-support'
 import { makePlan, monthlyTotal, saveConditions } from './plan-support'
+import { showRecommendations } from './recommend-support'
 
 // REQ-10 (FLOW-01): TC-57 (AC-10.1). Synthetic AZURE_OPENAI_* values must be in the runner's environment
 // *before* `docker compose up` (compose.yml hands them to the api container) — the run command in
@@ -107,8 +108,7 @@ test('TC-57 가짜 AZURE_OPENAI_* 값을 넣고 빌드한 웹 산출물과 FLOW-
   await signInParent(app, screen)
   await app.open('/chat')
   await saveConditions(app, screen)
-  await screen.getByRole('button', '추천 보기').tap()
-  await expect(screen.getByRole('table', '추천 비교표')).toBeVisible({ timeout: 15_000 })
+  await showRecommendations(screen)
   await makePlan(screen)
   expect(await monthlyTotal(screen)).toBeGreaterThan(0)
   await screen.getByRole('button', '일정 확정').tap()
