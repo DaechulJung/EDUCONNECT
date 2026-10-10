@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 import type { Plan, PlanItem } from './client'
-import { itemMonthly, overBudget, relaxationLabels, weekColumns } from './plan'
+import { canConfirm, itemMonthly, overBudget, relaxationLabels, swapCandidates, swapProgram, weekColumns, withoutProgram } from './plan'
 
 const item = (over: Partial<PlanItem>): PlanItem => ({
   program_id: 'p1',
@@ -52,4 +52,25 @@ test('월 학원비는 교습비+기타경비이고 상한을 넘을 때만 초�
 
 test('완화할 조건은 서버 이름을 보호자 문구로 바꾼다 (AC-07.5)', () => {
   expect(relaxationLabels(['budget', 'days', 'subjects'])).toEqual(['예산 올리기', '요일 늘리기', '과목 줄이기'])
+})
+
+test('위반이 하나라도 있거나 초안이 아니면 확정할 수 없다 (AC-08.2)', () => {
+  expect(canConfirm(plan())).toBe(true)
+  expect(canConfirm(plan({ violations: [{ program_id: 'p2', kind: 'time_overlap' }] }))).toBe(false)
+  expect(canConfirm(plan({ violations: [{ program_id: null, kind: 'over_budget', amount: 1 }] }))).toBe(false)
+  expect(canConfirm(plan({ status: 'confirmed' }))).toBe(false)
+})
+
+test('빼기·바꾸기는 나머지 순서를 지킨 프로그램 목록을 만든다 (AC-08.1·08.2)', () => {
+  expect(withoutProgram(plan(), 'p1')).toEqual(['p2'])
+  expect(swapProgram(plan(), 'p2', 'p9')).toEqual(['p1', 'p9'])
+})
+
+test('바꾸기 후보는 같은 과목이고 초안에 없는 추천만이다', () => {
+  const recs = [
+    { program_id: 'p1', subject: '영어' },
+    { program_id: 'p3', subject: '영어' },
+    { program_id: 'p4', subject: '수학' },
+  ]
+  expect(swapCandidates(plan(), { subject: '영어' }, recs).map((r) => r.program_id)).toEqual(['p3'])
 })
