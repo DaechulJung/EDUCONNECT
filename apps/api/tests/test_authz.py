@@ -134,3 +134,29 @@ def test_timetable_read_is_own_school_only(seeded: TestClient) -> None:
     body = seeded.get("/api/school/timetable").json()
     assert body["school_id"] == str(seed_id("school-mid"))
     assert {e["grade"] for e in body["entries"]} == {7, 8, 9}
+
+
+@pytest.mark.parametrize("field", ["subject", "instructor"])
+def test_blank_text_on_owned_update_is_422_and_row_unchanged(sync_db, seeded, field) -> None:
+    """PR #17 review: whitespace-only text used to pass the length check, be stripped to ''
+    and committed before the response model failed (500)."""
+    assert login(seeded, "academy-a").status_code == 200
+    before = program_row(sync_db, "a-elem-math")
+    response = seeded.put(
+        f"/api/academy/programs/{seed_id('a-elem-math')}", json={**PROGRAM, field: "   "}
+    )
+    assert response.status_code == 422
+    assert isinstance(response.json()["detail"], list)
+    assert program_row(sync_db, "a-elem-math") == before
+
+
+def test_422_schema_allows_field_errors_and_business_codes() -> None:
+    """AD-13: 422 is FastAPI field errors (detail list) or a business code (detail string)."""
+    from app.main import app
+
+    schema = app.openapi()["paths"]["/api/academy/programs/{program_id}"]["put"]["responses"]
+    refs = {
+        item["$ref"].rsplit("/", 1)[1]
+        for item in schema["422"]["content"]["application/json"]["schema"]["anyOf"]
+    }
+    assert refs == {"ErrorBody", "FieldErrors"}

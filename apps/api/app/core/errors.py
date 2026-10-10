@@ -33,9 +33,26 @@ def not_implemented() -> AppError:
     return AppError(501, "not_implemented")
 
 
+class FieldError(BaseModel):
+    loc: list[str | int]
+    msg: str
+    type: str
+
+
+class FieldErrors(BaseModel):
+    """FastAPI's default input-validation 422 (`detail` is a list)."""
+
+    detail: list[FieldError]
+
+
 def error_responses(*codes: int) -> dict[int | str, dict[str, Any]]:
-    """OpenAPI `responses=` entry so generated clients know the error body."""
-    return {code: {"model": ErrorBody} for code in codes}
+    """OpenAPI `responses=` entry so generated clients know the error body.
+
+    422 is either a field-validation list or a business code (AD-13), so it carries both.
+    """
+    return {
+        code: {"model": ErrorBody | FieldErrors if code == 422 else ErrorBody} for code in codes
+    }
 
 
 def install(app: FastAPI) -> None:
