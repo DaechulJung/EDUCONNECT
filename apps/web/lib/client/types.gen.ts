@@ -388,6 +388,36 @@ export type ExistingEvent = {
 };
 
 /**
+ * FieldError
+ */
+export type FieldError = {
+    /**
+     * Loc
+     */
+    loc: Array<string | number>;
+    /**
+     * Msg
+     */
+    msg: string;
+    /**
+     * Type
+     */
+    type: string;
+};
+
+/**
+ * FieldErrors
+ *
+ * FastAPI's default input-validation 422 (`detail` is a list).
+ */
+export type FieldErrors = {
+    /**
+     * Detail
+     */
+    detail: Array<FieldError>;
+};
+
+/**
  * HTTPValidationError
  */
 export type HttpValidationError = {
@@ -1222,9 +1252,11 @@ export type UpdateProgramErrors = {
      */
     404: ErrorBody;
     /**
+     * Response 422 Update Program
+     *
      * Unprocessable Content
      */
-    422: ErrorBody;
+    422: ErrorBody | FieldErrors;
 };
 
 export type UpdateProgramError = UpdateProgramErrors[keyof UpdateProgramErrors];
@@ -1288,9 +1320,11 @@ export type UpdateTimetableErrors = {
      */
     403: ErrorBody;
     /**
+     * Response 422 Update Timetable
+     *
      * Unprocessable Content
      */
-    422: ErrorBody;
+    422: ErrorBody | FieldErrors;
 };
 
 export type UpdateTimetableError = UpdateTimetableErrors[keyof UpdateTimetableErrors];
@@ -1360,9 +1394,11 @@ export type CreateAfterSchoolErrors = {
      */
     403: ErrorBody;
     /**
+     * Response 422 Create After School
+     *
      * Unprocessable Content
      */
-    422: ErrorBody;
+    422: ErrorBody | FieldErrors;
     /**
      * Not Implemented
      */
@@ -1452,9 +1488,11 @@ export type UpdateAfterSchoolErrors = {
      */
     404: ErrorBody;
     /**
+     * Response 422 Update After School
+     *
      * Unprocessable Content
      */
-    422: ErrorBody;
+    422: ErrorBody | FieldErrors;
 };
 
 export type UpdateAfterSchoolError = UpdateAfterSchoolErrors[keyof UpdateAfterSchoolErrors];
@@ -1555,9 +1593,11 @@ export type CreateChildErrors = {
      */
     403: ErrorBody;
     /**
+     * Response 422 Create Child
+     *
      * Unprocessable Content
      */
-    422: ErrorBody;
+    422: ErrorBody | FieldErrors;
     /**
      * Not Implemented
      */
@@ -1643,9 +1683,11 @@ export type UpdateChildErrors = {
      */
     404: ErrorBody;
     /**
+     * Response 422 Update Child
+     *
      * Unprocessable Content
      */
-    422: ErrorBody;
+    422: ErrorBody | FieldErrors;
     /**
      * Not Implemented
      */
@@ -1860,9 +1902,11 @@ export type CreatePlanDraftErrors = {
      */
     404: ErrorBody;
     /**
+     * Response 422 Create Plan Draft
+     *
      * Unprocessable Content
      */
-    422: ErrorBody;
+    422: ErrorBody | FieldErrors;
     /**
      * Not Implemented
      */
@@ -2092,9 +2136,11 @@ export type GetAdjustmentErrors = {
      */
     404: ErrorBody;
     /**
+     * Response 422 Get Adjustment
+     *
      * Unprocessable Content
      */
-    422: ErrorBody;
+    422: ErrorBody | FieldErrors;
     /**
      * Not Implemented
      */
@@ -2142,9 +2188,11 @@ export type AcceptAdjustmentErrors = {
      */
     409: ErrorBody;
     /**
+     * Response 422 Accept Adjustment
+     *
      * Unprocessable Content
      */
-    422: ErrorBody;
+    422: ErrorBody | FieldErrors;
     /**
      * Not Implemented
      */
