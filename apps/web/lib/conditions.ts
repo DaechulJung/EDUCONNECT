@@ -16,6 +16,10 @@ export const DAY_OPTIONS = [
   { value: 'sat', label: '토' },
   { value: 'sun', label: '일' },
 ] as const
+type Day = NonNullable<Conditions['days']>[number]
+// 가능 요일을 비워 두면 월~금(experience 157행 기본값). The server reads an empty list the same way.
+export const DEFAULT_DAYS: readonly Day[] = ['mon', 'tue', 'wed', 'thu', 'fri']
+export const shownDays = (days: readonly Day[]): readonly Day[] => (days.length ? days : DEFAULT_DAYS)
 export const DENSITY_OPTIONS = [
   { value: 'tight', label: '촘촘하게' },
   { value: 'normal', label: '보통' },
@@ -50,8 +54,9 @@ export function pickChild<T extends Pick<Child, 'id'>>(children: readonly T[] | 
 // (169행: the answer "먼저 자녀를 등록해 주세요"), 'ready' when a child is picked.
 export type ChildGate = 'loading' | 'error' | 'none' | 'ready'
 
-export function childGate(list: { status: 'pending' | 'error' | 'success'; fetching: boolean }, hasChild: boolean): ChildGate {
-  if (list.status === 'success') return hasChild ? 'ready' : 'none'
+// loaded: a list already arrived; a failed reload after that keeps it (react-query keeps the data with status error).
+export function childGate(list: { status: 'pending' | 'error' | 'success'; fetching: boolean; loaded?: boolean }, hasChild: boolean): ChildGate {
+  if (list.status === 'success' || list.loaded) return hasChild ? 'ready' : 'none'
   if (list.status === 'error' && !list.fetching) return 'error'
   return 'loading'
 }
@@ -68,7 +73,7 @@ export function conditionRows(c: Conditions, child: string): { label: string; va
     { label: '예산 상한', value: c.budget_cap ? formatWon(c.budget_cap) : UNSET },
     { label: '학원 유형', value: types.length ? types.map((t) => label(TYPE_OPTIONS, t)).join('·') : UNSET },
     { label: '기준 위치', value: '자녀 학교' },
-    { label: '가능 요일', value: days.length ? days.map((d) => label(DAY_OPTIONS, d)).join('·') : UNSET },
+    { label: '가능 요일', value: shownDays(days).map((d) => label(DAY_OPTIONS, d)).join('·') },
     { label: '밀도', value: label(DENSITY_OPTIONS, c.density ?? 'normal') },
   ]
 }

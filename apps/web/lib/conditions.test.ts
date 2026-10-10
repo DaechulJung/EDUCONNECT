@@ -12,7 +12,7 @@ const around: Conditions = {
   density: 'tight',
 }
 
-test('조건 카드는 8개 항목을 보이고 빈 값은 정하지 않음이다 (AC-05.1)', () => {
+test('조건 카드는 8개 항목을 보이고 빈 값은 정하지 않음, 빈 가능 요일은 기본값 월~금이다 (AC-05.1, experience 157행)', () => {
   const rows = Object.fromEntries(conditionRows(around, childLabel({ alias: '하늘', grade: 5 })).map((r) => [r.label, r.value]))
   expect(rows).toEqual({
     '대상 자녀': '하늘(초5)',
@@ -21,7 +21,7 @@ test('조건 카드는 8개 항목을 보이고 빈 값은 정하지 않음이�
     '예산 상한': '1,100,000원',
     '학원 유형': '정하지 않음',
     '기준 위치': '자녀 학교',
-    '가능 요일': '정하지 않음',
+    '가능 요일': '월·화·수·목·금',
     '밀도': '촘촘하게',
   })
 })

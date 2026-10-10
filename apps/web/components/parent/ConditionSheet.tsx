@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { ChipGroup, Sheet } from '@/components/kds/kds'
 import type { Conditions } from '@/lib/client'
-import { budgetError, DAY_OPTIONS, DENSITY_OPTIONS, TYPE_OPTIONS } from '@/lib/conditions'
+import { budgetError, DAY_OPTIONS, DENSITY_OPTIONS, shownDays, TYPE_OPTIONS } from '@/lib/conditions'
 
 type Day = NonNullable<Conditions['days']>[number]
 type ProgramType = NonNullable<Conditions['types']>[number]
@@ -95,7 +95,7 @@ export function ConditionSheet({ open, value, subjects, childId, childOptions, o
           <ChipGroup
             label="가능 요일"
             options={DAY_OPTIONS.map((o) => ({ value: o.value, label: o.label }))}
-            value={draft.days ?? []}
+            value={[...shownDays(draft.days ?? [])]}
             onChange={(next) => setDraft((d) => ({ ...d, days: next as Day[] }))}
           />
         </div>
