@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { HealthData, HealthErrors, HealthResponses } from './types.gen';
+import type { AcceptAdjustmentData, AcceptAdjustmentErrors, AcceptAdjustmentResponses, ConfirmPlanData, ConfirmPlanErrors, ConfirmPlanResponses, CreateAfterSchoolData, CreateAfterSchoolErrors, CreateAfterSchoolResponses, CreateChildData, CreateChildErrors, CreateChildResponses, CreatePlanDraftData, CreatePlanDraftErrors, CreatePlanDraftResponses, CreateProgramData, CreateProgramErrors, CreateProgramResponses, DeleteAfterSchoolData, DeleteAfterSchoolErrors, DeleteAfterSchoolResponses, DeleteProgramData, DeleteProgramErrors, DeleteProgramResponses, GetAdjustmentData, GetAdjustmentErrors, GetAdjustmentResponses, GetChildData, GetChildErrors, GetChildResponses, GetConditionsData, GetConditionsErrors, GetConditionsResponses, GetMetaData, GetMetaErrors, GetMetaResponses, GetOrgImpactData, GetOrgImpactErrors, GetOrgImpactResponses, GetPlanData, GetPlanErrors, GetPlanResponses, GetTimetableData, GetTimetableErrors, GetTimetableResponses, HealthData, HealthErrors, HealthResponses, ListAfterSchoolData, ListAfterSchoolErrors, ListAfterSchoolResponses, ListChildrenData, ListChildrenErrors, ListChildrenResponses, ListPlansData, ListPlansErrors, ListPlansResponses, ListProgramsData, ListProgramsErrors, ListProgramsResponses, ListSubjectsData, ListSubjectsErrors, ListSubjectsResponses, LoginData, LoginErrors, LoginResponses, LogoutData, LogoutErrors, LogoutResponses, MeData, MeErrors, MeResponses, RecommendProgramsData, RecommendProgramsErrors, RecommendProgramsResponses, RejectAdjustmentData, RejectAdjustmentErrors, RejectAdjustmentResponses, SaveConditionsData, SaveConditionsErrors, SaveConditionsResponses, SendChatMessageData, SendChatMessageErrors, SendChatMessageResponses, UpdateAfterSchoolData, UpdateAfterSchoolErrors, UpdateAfterSchoolResponses, UpdateChildData, UpdateChildErrors, UpdateChildResponses, UpdatePlanData, UpdatePlanErrors, UpdatePlanResponses, UpdateProgramData, UpdateProgramErrors, UpdateProgramResponses, UpdateTimetableData, UpdateTimetableErrors, UpdateTimetableResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -22,3 +22,254 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
  * Health
  */
 export const health = <ThrowOnError extends boolean = false>(options?: Options<HealthData, ThrowOnError>): RequestResult<HealthResponses, HealthErrors, ThrowOnError> => (options?.client ?? client).get<HealthResponses, HealthErrors, ThrowOnError>({ url: '/api/health', ...options });
+
+/**
+ * Login
+ */
+export const login = <ThrowOnError extends boolean = false>(options: Options<LoginData, ThrowOnError>): RequestResult<LoginResponses, LoginErrors, ThrowOnError> => (options.client ?? client).post<LoginResponses, LoginErrors, ThrowOnError>({
+    url: '/api/auth/login',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Logout
+ */
+export const logout = <ThrowOnError extends boolean = false>(options?: Options<LogoutData, ThrowOnError>): RequestResult<LogoutResponses, LogoutErrors, ThrowOnError> => (options?.client ?? client).post<LogoutResponses, LogoutErrors, ThrowOnError>({ url: '/api/auth/logout', ...options });
+
+/**
+ * Me
+ */
+export const me = <ThrowOnError extends boolean = false>(options?: Options<MeData, ThrowOnError>): RequestResult<MeResponses, MeErrors, ThrowOnError> => (options?.client ?? client).get<MeResponses, MeErrors, ThrowOnError>({ url: '/api/auth/me', ...options });
+
+/**
+ * List Programs
+ */
+export const listPrograms = <ThrowOnError extends boolean = false>(options?: Options<ListProgramsData, ThrowOnError>): RequestResult<ListProgramsResponses, ListProgramsErrors, ThrowOnError> => (options?.client ?? client).get<ListProgramsResponses, ListProgramsErrors, ThrowOnError>({ url: '/api/academy/programs', ...options });
+
+/**
+ * Create Program
+ */
+export const createProgram = <ThrowOnError extends boolean = false>(options: Options<CreateProgramData, ThrowOnError>): RequestResult<CreateProgramResponses, CreateProgramErrors, ThrowOnError> => (options.client ?? client).post<CreateProgramResponses, CreateProgramErrors, ThrowOnError>({
+    url: '/api/academy/programs',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Delete Program
+ */
+export const deleteProgram = <ThrowOnError extends boolean = false>(options: Options<DeleteProgramData, ThrowOnError>): RequestResult<DeleteProgramResponses, DeleteProgramErrors, ThrowOnError> => (options.client ?? client).delete<DeleteProgramResponses, DeleteProgramErrors, ThrowOnError>({ url: '/api/academy/programs/{program_id}', ...options });
+
+/**
+ * Update Program
+ */
+export const updateProgram = <ThrowOnError extends boolean = false>(options: Options<UpdateProgramData, ThrowOnError>): RequestResult<UpdateProgramResponses, UpdateProgramErrors, ThrowOnError> => (options.client ?? client).put<UpdateProgramResponses, UpdateProgramErrors, ThrowOnError>({
+    url: '/api/academy/programs/{program_id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Get Timetable
+ */
+export const getTimetable = <ThrowOnError extends boolean = false>(options?: Options<GetTimetableData, ThrowOnError>): RequestResult<GetTimetableResponses, GetTimetableErrors, ThrowOnError> => (options?.client ?? client).get<GetTimetableResponses, GetTimetableErrors, ThrowOnError>({ url: '/api/school/timetable', ...options });
+
+/**
+ * Update Timetable
+ */
+export const updateTimetable = <ThrowOnError extends boolean = false>(options: Options<UpdateTimetableData, ThrowOnError>): RequestResult<UpdateTimetableResponses, UpdateTimetableErrors, ThrowOnError> => (options.client ?? client).put<UpdateTimetableResponses, UpdateTimetableErrors, ThrowOnError>({
+    url: '/api/school/timetable',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * List After School
+ */
+export const listAfterSchool = <ThrowOnError extends boolean = false>(options?: Options<ListAfterSchoolData, ThrowOnError>): RequestResult<ListAfterSchoolResponses, ListAfterSchoolErrors, ThrowOnError> => (options?.client ?? client).get<ListAfterSchoolResponses, ListAfterSchoolErrors, ThrowOnError>({ url: '/api/school/after-school', ...options });
+
+/**
+ * Create After School
+ */
+export const createAfterSchool = <ThrowOnError extends boolean = false>(options: Options<CreateAfterSchoolData, ThrowOnError>): RequestResult<CreateAfterSchoolResponses, CreateAfterSchoolErrors, ThrowOnError> => (options.client ?? client).post<CreateAfterSchoolResponses, CreateAfterSchoolErrors, ThrowOnError>({
+    url: '/api/school/after-school',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Delete After School
+ */
+export const deleteAfterSchool = <ThrowOnError extends boolean = false>(options: Options<DeleteAfterSchoolData, ThrowOnError>): RequestResult<DeleteAfterSchoolResponses, DeleteAfterSchoolErrors, ThrowOnError> => (options.client ?? client).delete<DeleteAfterSchoolResponses, DeleteAfterSchoolErrors, ThrowOnError>({ url: '/api/school/after-school/{program_id}', ...options });
+
+/**
+ * Update After School
+ */
+export const updateAfterSchool = <ThrowOnError extends boolean = false>(options: Options<UpdateAfterSchoolData, ThrowOnError>): RequestResult<UpdateAfterSchoolResponses, UpdateAfterSchoolErrors, ThrowOnError> => (options.client ?? client).put<UpdateAfterSchoolResponses, UpdateAfterSchoolErrors, ThrowOnError>({
+    url: '/api/school/after-school/{program_id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * List Subjects
+ */
+export const listSubjects = <ThrowOnError extends boolean = false>(options?: Options<ListSubjectsData, ThrowOnError>): RequestResult<ListSubjectsResponses, ListSubjectsErrors, ThrowOnError> => (options?.client ?? client).get<ListSubjectsResponses, ListSubjectsErrors, ThrowOnError>({ url: '/api/catalog/subjects', ...options });
+
+/**
+ * List Children
+ */
+export const listChildren = <ThrowOnError extends boolean = false>(options?: Options<ListChildrenData, ThrowOnError>): RequestResult<ListChildrenResponses, ListChildrenErrors, ThrowOnError> => (options?.client ?? client).get<ListChildrenResponses, ListChildrenErrors, ThrowOnError>({ url: '/api/children', ...options });
+
+/**
+ * Create Child
+ */
+export const createChild = <ThrowOnError extends boolean = false>(options: Options<CreateChildData, ThrowOnError>): RequestResult<CreateChildResponses, CreateChildErrors, ThrowOnError> => (options.client ?? client).post<CreateChildResponses, CreateChildErrors, ThrowOnError>({
+    url: '/api/children',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Get Child
+ */
+export const getChild = <ThrowOnError extends boolean = false>(options: Options<GetChildData, ThrowOnError>): RequestResult<GetChildResponses, GetChildErrors, ThrowOnError> => (options.client ?? client).get<GetChildResponses, GetChildErrors, ThrowOnError>({ url: '/api/children/{child_id}', ...options });
+
+/**
+ * Update Child
+ */
+export const updateChild = <ThrowOnError extends boolean = false>(options: Options<UpdateChildData, ThrowOnError>): RequestResult<UpdateChildResponses, UpdateChildErrors, ThrowOnError> => (options.client ?? client).put<UpdateChildResponses, UpdateChildErrors, ThrowOnError>({
+    url: '/api/children/{child_id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Send Chat Message
+ */
+export const sendChatMessage = <ThrowOnError extends boolean = false>(options: Options<SendChatMessageData, ThrowOnError>): RequestResult<SendChatMessageResponses, SendChatMessageErrors, ThrowOnError> => (options.client ?? client).post<SendChatMessageResponses, SendChatMessageErrors, ThrowOnError>({
+    url: '/api/chat/messages',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Get Conditions
+ */
+export const getConditions = <ThrowOnError extends boolean = false>(options: Options<GetConditionsData, ThrowOnError>): RequestResult<GetConditionsResponses, GetConditionsErrors, ThrowOnError> => (options.client ?? client).get<GetConditionsResponses, GetConditionsErrors, ThrowOnError>({ url: '/api/children/{child_id}/conditions', ...options });
+
+/**
+ * Save Conditions
+ */
+export const saveConditions = <ThrowOnError extends boolean = false>(options: Options<SaveConditionsData, ThrowOnError>): RequestResult<SaveConditionsResponses, SaveConditionsErrors, ThrowOnError> => (options.client ?? client).put<SaveConditionsResponses, SaveConditionsErrors, ThrowOnError>({
+    url: '/api/children/{child_id}/conditions',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Recommend Programs
+ */
+export const recommendPrograms = <ThrowOnError extends boolean = false>(options: Options<RecommendProgramsData, ThrowOnError>): RequestResult<RecommendProgramsResponses, RecommendProgramsErrors, ThrowOnError> => (options.client ?? client).post<RecommendProgramsResponses, RecommendProgramsErrors, ThrowOnError>({
+    url: '/api/recommendations',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Create Plan Draft
+ */
+export const createPlanDraft = <ThrowOnError extends boolean = false>(options: Options<CreatePlanDraftData, ThrowOnError>): RequestResult<CreatePlanDraftResponses, CreatePlanDraftErrors, ThrowOnError> => (options.client ?? client).post<CreatePlanDraftResponses, CreatePlanDraftErrors, ThrowOnError>({
+    url: '/api/plans/draft',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * List Plans
+ */
+export const listPlans = <ThrowOnError extends boolean = false>(options?: Options<ListPlansData, ThrowOnError>): RequestResult<ListPlansResponses, ListPlansErrors, ThrowOnError> => (options?.client ?? client).get<ListPlansResponses, ListPlansErrors, ThrowOnError>({ url: '/api/plans', ...options });
+
+/**
+ * Get Plan
+ */
+export const getPlan = <ThrowOnError extends boolean = false>(options: Options<GetPlanData, ThrowOnError>): RequestResult<GetPlanResponses, GetPlanErrors, ThrowOnError> => (options.client ?? client).get<GetPlanResponses, GetPlanErrors, ThrowOnError>({ url: '/api/plans/{plan_id}', ...options });
+
+/**
+ * Update Plan
+ */
+export const updatePlan = <ThrowOnError extends boolean = false>(options: Options<UpdatePlanData, ThrowOnError>): RequestResult<UpdatePlanResponses, UpdatePlanErrors, ThrowOnError> => (options.client ?? client).put<UpdatePlanResponses, UpdatePlanErrors, ThrowOnError>({
+    url: '/api/plans/{plan_id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Confirm Plan
+ */
+export const confirmPlan = <ThrowOnError extends boolean = false>(options: Options<ConfirmPlanData, ThrowOnError>): RequestResult<ConfirmPlanResponses, ConfirmPlanErrors, ThrowOnError> => (options.client ?? client).post<ConfirmPlanResponses, ConfirmPlanErrors, ThrowOnError>({ url: '/api/plans/{plan_id}/confirm', ...options });
+
+/**
+ * Get Adjustment
+ */
+export const getAdjustment = <ThrowOnError extends boolean = false>(options: Options<GetAdjustmentData, ThrowOnError>): RequestResult<GetAdjustmentResponses, GetAdjustmentErrors, ThrowOnError> => (options.client ?? client).get<GetAdjustmentResponses, GetAdjustmentErrors, ThrowOnError>({ url: '/api/plans/{plan_id}/adjustment', ...options });
+
+/**
+ * Accept Adjustment
+ */
+export const acceptAdjustment = <ThrowOnError extends boolean = false>(options: Options<AcceptAdjustmentData, ThrowOnError>): RequestResult<AcceptAdjustmentResponses, AcceptAdjustmentErrors, ThrowOnError> => (options.client ?? client).post<AcceptAdjustmentResponses, AcceptAdjustmentErrors, ThrowOnError>({ url: '/api/plans/{plan_id}/adjustment/accept', ...options });
+
+/**
+ * Reject Adjustment
+ */
+export const rejectAdjustment = <ThrowOnError extends boolean = false>(options: Options<RejectAdjustmentData, ThrowOnError>): RequestResult<RejectAdjustmentResponses, RejectAdjustmentErrors, ThrowOnError> => (options.client ?? client).post<RejectAdjustmentResponses, RejectAdjustmentErrors, ThrowOnError>({ url: '/api/plans/{plan_id}/adjustment/reject', ...options });
+
+/**
+ * Get Org Impact
+ */
+export const getOrgImpact = <ThrowOnError extends boolean = false>(options?: Options<GetOrgImpactData, ThrowOnError>): RequestResult<GetOrgImpactResponses, GetOrgImpactErrors, ThrowOnError> => (options?.client ?? client).get<GetOrgImpactResponses, GetOrgImpactErrors, ThrowOnError>({ url: '/api/org/impact', ...options });
+
+/**
+ * Get Meta
+ */
+export const getMeta = <ThrowOnError extends boolean = false>(options?: Options<GetMetaData, ThrowOnError>): RequestResult<GetMetaResponses, GetMetaErrors, ThrowOnError> => (options?.client ?? client).get<GetMetaResponses, GetMetaErrors, ThrowOnError>({ url: '/api/meta', ...options });

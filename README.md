@@ -25,6 +25,8 @@ npm run gen:api             # API를 바꾼 뒤 웹 클라이언트(apps/web/lib
 npx e2e run tests/<파일>    # 화면 시험(앱이 떠 있어야 함). 처음 한 번 npx @e2e-dev/web install chromium
 ```
 
+DB 이름·계정 기본값은 `educonnect`예요. 다른 worktree에서 포트를 바꿀 때는 `DB_PORT`·`REDIS_PORT`(·`WEB_PORT`·`API_PORT`)만 바꾸면 앱·alembic·시험이 같은 포트로 붙어요. `DATABASE_URL`·`REDIS_URL`을 주면 그 값이 우선이에요. 시험 초기화·`/api/test/reset`·시드 초기화는 접속한 DB 이름이 `educonnect`(또는 `educonnect_*`)가 아니면 아무것도 지우지 않고 멈추고, Redis는 `educonnect:` 키만 지워요.
+
 끝내기 전에: `npm run check` — db·redis를 띄우고 마이그레이션한 뒤 웹·API의 lint·format·타입·테스트를 한 번에 돌려요(Docker가 켜져 있어야 해요). main으로 가는 PR에서는 `.github/workflows/ci.yml`이 같은 검사와 빌드를 하고, 앱 전체를 Docker로 띄워 화면 시험(`tests/*.e2e.ts`) 전체를 돌려요. main에 바로 올린 문서 커밋에서는 돌지 않아요.
 
 ## 구조

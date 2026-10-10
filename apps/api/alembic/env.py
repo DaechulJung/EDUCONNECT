@@ -4,11 +4,10 @@ from alembic import context
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import create_async_engine
 
+from app import models  # noqa: F401  every table, so autogenerate and `alembic check` see them
 from app.core.config import settings
 from app.core.db import Base
 
-# Import your model modules here (for example `from app import models`)
-# so that `alembic revision --autogenerate` sees their tables.
 target_metadata = Base.metadata
 
 
