@@ -7,7 +7,7 @@
 - [x] E2E TC-35~39·80 — `30caebc`
 - [x] origin/main `5f12264` 병합(`fe804e1`) 후 `npm run check`(api 191·web 9)·E2E 17/17
 - [x] AC-06.1~06.7 done, development.md #5·#6, lessons, PR
-- [ ] Issue #4 코멘트에 PR 링크
+- [x] Issue #4 코멘트에 PR 링크(PR #19)
 
 ## #7 주간 일정 생성·최적화 — PLANNER (dev:2)
 완료 조건: AD-5·AD-6·AD-7 순수 함수 엔진과 단위 시험(`apps/api/tests/test_engine.py`). #11 병합 뒤 시드 기반 시험으로 바꾸고 AC-07.1~07.8을 done 처리한 뒤 `Closes #7` PR.
