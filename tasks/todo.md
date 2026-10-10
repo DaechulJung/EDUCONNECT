@@ -116,6 +116,7 @@
 - [ ] AC-04.5 done → `Closes #4` PR → CI 3/3 → VERIFIER 승인 → 병합
 - dev1-13 | issue-13 | RED=main 02b2096에서 TC-69 위반 0건·TC-70 앱 결함 없음(시험 정의 보정 2회); 다음: check·e2e 전체·docs 기록·PR Closes #13
 - dev1-13 | issue-13 | AC-13.1·13.2 done, development.md #13 행; 다음: main(898ea4e) merge → check·E2E 재실행 → PR Closes #13 (fix-chat-loading 병합 뒤 재시험 명시)
+- dev1-13 | issue-13 | PR #27·#31 병합 뒤 main(aec2f3f) merge, TC-69·70 셀렉터 보정(e1285c6) → check api 242·web 48, E2E 53/53 skip 0; 다음: PR Closes #13
 
 ## 챗봇 자녀 목록 불러오는 중 결함(`fix-chat-loading`, Refs #5) — PLANNER dev2-ui
 완료 조건: 목록을 받기 전에는 보내기 비활성 + "처리하고 있어요", "먼저 자녀를 등록해 주세요"는 0명일 때만, 오류는 오류 문구. 재현 E2E RED → GREEN, `npm run check`·전체 E2E 통과, development #5 행 1줄, PR → VERIFIER (12:48Z 지시 0685a4bf)
