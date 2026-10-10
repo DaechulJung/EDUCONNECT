@@ -4,6 +4,8 @@ Every test starts from POST /api/test/reset and signs in as the seed parent of �
 Rows are not pinned: the checks are properties (subjects, exclusions, order, conditions).
 """
 
+import re
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -147,3 +149,33 @@ def test_other_parents_child_is_not_found(parent) -> None:  # AD-8
     response = recommend(parent, OTHER_CHILD)
     assert response.status_code == 404
     assert "바다" not in response.text
+
+
+CODE_TOKEN = re.compile(
+    r"(?<![A-Za-z])(tight|normal|mon|tue|wed|thu|fri|sat|sun|academy|arts|other|after_school)"
+    r"(?![A-Za-z])"
+)
+
+
+def test_prompt_sends_labels_not_codes(parent) -> None:  # AC-06.1, preview 결함(코드값 'tight')
+    save(parent, {**BASE, "days": ["mon", "wed", "fri"]})
+    fake.provider.requests.clear()
+    items(parent)
+    sent = [r for r in fake.provider.requests if r["task"] == TASK]
+    assert len(sent) == 1
+    text = "\n".join(m["content"] for m in sent[0]["messages"])
+    assert "밀도 촘촘하게" in text and "요일 월·수·금" in text
+    assert CODE_TOKEN.findall(text) == []
+
+
+def test_code_tokens_in_model_reasons_become_labels(parent) -> None:  # AC-06.1
+    save(parent, BASE)
+    ids = [row["program_id"] for row in items(parent)]
+    reason = "tight 일정, mon요일·wed 수업(academy)"
+    reasons = [{"program_id": pid, "reason": reason} for pid in ids]
+    fake.provider.configure(TASK, "fixed", {"reasons": reasons})
+
+    rows = items(parent)
+    assert [row["reason_source"] for row in rows] == ["llm"] * len(rows)
+    for row in rows:
+        assert row["reason"] == "촘촘하게 일정, 월요일·수 수업(교과 학원)"
