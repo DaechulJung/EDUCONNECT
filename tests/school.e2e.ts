@@ -1,9 +1,9 @@
-import { beforeEach, expect, test, type App, type Screen } from 'e2e'
+import { beforeEach, expect, test, type App, type Locator, type Screen } from 'e2e'
+import { api, send, signInParent, TASK } from './chat-support'
+import { AROUND_REPLY, makePlan, minutes, saveConditions, week } from './plan-support'
 
-// REQ-03 in the browser (FLOW-03): TC-19 (AC-03.1), TC-22 (AC-03.4).
-// TC-20 needs schedule generation (#7) and TC-21 the parent recommendation table (#6); the school-side
-// halves of AC-03.3 (saving the robot program) run here until then.
-// The app must run with ENABLE_TEST_ROUTES=1 and the seed password in SEED_PASSWORD.
+// REQ-03 in the browser (FLOW-03): TC-19 (AC-03.1), TC-20 (AC-03.2), TC-21 (AC-03.3), TC-22 (AC-03.4).
+// The app must run with ENABLE_TEST_ROUTES=1, LLM_PROVIDER=fake and the seed password in SEED_PASSWORD.
 
 const OVERLAP = '시간이 겹칩니다'
 
@@ -73,7 +73,7 @@ test('TC-22 같은 학년·요일 14:00~15:00이 있으면 14:30~15:30은 화면
   const table = screen.getByRole('table', '방과후 프로그램 목록')
   const seeded = await table.getByRole('row').count()
 
-  // GIVEN: the AC-03.3 robot program, 금 14:00~15:00 (school-side half of TC-21).
+  // GIVEN: the AC-03.3 robot program, 금 14:00~15:00.
   await screen.getByRole('button', '방과후 프로그램 추가').tap()
   await fillAfterSchool(screen, '14:00', '15:00')
   await screen.getByRole('button', '방과후 프로그램 저장').tap()
@@ -120,4 +120,82 @@ test('TC-22 같은 학년·요일 14:00~15:00이 있으면 14:30~15:30은 화면
 
   await app.restart()
   await expect(screen.getByRole('table', '방과후 프로그램 목록').getByRole('row')).toHaveCount(seeded + 1, { timeout: 10_000 })
+})
+
+test('TC-20 초5 수요일 하교 13:40을 저장한 뒤 그 학교 초5 자녀로 일정을 만들면 수요일 수업 시작이 모두 13:40 + 이동 근사 시간 이후다', async ({ app, screen, browser }) => {
+  // GIVEN AC-03.1: a real write (the seed already has 13:40, so move it away and back).
+  await signInSchool(app, screen)
+  await saveWednesday(screen, '14:10')
+  await saveWednesday(screen, '13:40')
+
+  await app.clearState()
+  await browser.setViewport({ width: 1280, height: 900 }) // weekly table (768px 이상)
+  await signInParent(app, screen)
+  await app.open('/chat')
+  // 수학만·가능 요일 월·수·금·보통: the default plan has no Wednesday class (the check below would pass empty),
+  // and 영어 on 월·수 is full in the seed, so 영어·수학 on 월·수·금 has no feasible plan.
+  await saveConditions(app, screen, async (sheet) => {
+    await sheet.getByRole('group', '선호 과목').getByRole('button', '영어').tap()
+    const days = sheet.getByRole('group', '가능 요일')
+    for (const day of ['월', '수', '금']) await days.getByRole('button', day).tap()
+    await sheet.getByRole('radio', '보통').tap()
+  })
+  await makePlan(screen)
+  const days = await week(screen)
+  const wed = days.find((d) => d.day === '수')!
+  expect(wed.school, '수요일 학교 블록이 저장한 하교 시각').toBe('13:40')
+  expect(wed.classes.length, '수요일 수업이 1개 이상').toBeGreaterThan(0)
+
+  // 이동 근사 시간 per program, from the same child's recommendations (travel from the school, AD-7).
+  const travel = await browser.evaluate(async () => {
+    const children = (await (await fetch('/api/children')).json()) as { id: string; grade: number }[]
+    const child = children.find((c) => c.grade === 5)!
+    const response = await fetch('/api/recommendations', {
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ child_id: child.id }),
+    })
+    return ((await response.json()) as { items: { institution_name: string; days: string[]; start: string; end: string; travel_min: number }[] }).items
+  })
+  for (const c of wed.classes) {
+    const match = travel.filter((r) => r.days.includes('wed') && c.text.includes(r.institution_name) && r.start === c.start && r.end === c.end)
+    expect(match, `이동 시간을 찾을 수업: ${c.text}`).toHaveLength(1)
+    expect(minutes(c.start) >= minutes('13:40') + match[0].travel_min, `${c.text} (이동 ${match[0].travel_min}분)`).toBe(true)
+  }
+})
+
+// Column values of every body row, by header name.
+async function rows(table: Locator): Promise<Record<string, string>[]> {
+  const header = await table.getByRole('columnheader').allTextContents()
+  const out: Record<string, string>[] = []
+  for (const r of await table.getByRole('row').all()) {
+    const cells = await r.getByRole('cell').allTextContents()
+    if (cells.length) out.push(Object.fromEntries(header.map((h, i) => [h.trim(), cells[i].trim()])))
+  }
+  return out
+}
+
+test('TC-21 학교가 로봇 방과후(금 14:00~15:00)를 저장하면 로봇을 선호 과목에 넣은 그 학교 초5 보호자의 비교표에 유형 "방과후"로 나온다', async ({ app, screen, browser }) => {
+  await signInSchool(app, screen)
+  await screen.getByRole('button', '방과후 프로그램 추가').tap()
+  await fillAfterSchool(screen, '14:00', '15:00')
+  await screen.getByRole('button', '방과후 프로그램 저장').tap()
+  const robot = screen.getByRole('table', '방과후 프로그램 목록').getByRole('row').filter({ hasText: '로봇 강사' })
+  await expect(robot).toHaveCount(1, { timeout: 10_000 })
+
+  await app.clearState()
+  await browser.setViewport({ width: 1280, height: 900 }) // comparison table (768px 이상)
+  await signInParent(app, screen)
+  await app.open('/chat')
+  await api(app, '/api/test/llm', { task: TASK, mode: 'fixed', response: { ...AROUND_REPLY, subjects: ['로봇'] } })
+  await send(screen, '초5 아이 로봇 배우게 월 100만원 전후로')
+  await expect(screen.getByRole('article', '조건 카드')).toBeVisible({ timeout: 15_000 })
+  await screen.getByRole('button', '조건 저장').tap()
+  await expect(screen.getByText('조건을 저장했어요').first()).toBeVisible({ timeout: 10_000 })
+  await screen.getByRole('button', '추천 보기').tap()
+  const table = screen.getByRole('table', '추천 비교표')
+  await expect(table).toBeVisible({ timeout: 15_000 })
+  const body = await rows(table)
+  const hit = body.filter((r) => r['과목'] === '로봇' && r['요일'] === '금' && r['시간'] === '14:00~15:00')
+  expect(hit, JSON.stringify(body)).toHaveLength(1)
+  expect(hit[0]['유형']).toBe('방과후')
+  expect(hit[0]['학원명']).toBe('한빛초등학교')
 })
