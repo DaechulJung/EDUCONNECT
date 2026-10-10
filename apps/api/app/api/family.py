@@ -1,5 +1,5 @@
-"""family routes: the parent's own children. The list serves the chat screen (#5); the other
-bodies are 501 until #4 implements them (AD-3)."""
+"""family routes: the parent's own children. The list serves the chat screen (#5) and reading one
+checks ownership (#1); create and update are 501 until #4 implements them (AD-3)."""
 
 from typing import Annotated
 
@@ -29,9 +29,11 @@ async def create_child(body: ChildIn, session: Parent) -> Child:
     raise not_implemented()
 
 
-@router.get("/children/{child_id}", responses=error_responses(401, 403, 404, 501))
-async def get_child(child_id: str, session: Parent) -> Child:
-    raise not_implemented()
+@router.get("/children/{child_id}", responses=error_responses(401, 403, 404))
+async def get_child(
+    child_id: str, session: Parent, db: Annotated[AsyncSession, Depends(get_session)]
+) -> Child:
+    return await children.get_own(db, session, child_id)
 
 
 @router.put("/children/{child_id}", responses=error_responses(401, 403, 404, 422, 501))
