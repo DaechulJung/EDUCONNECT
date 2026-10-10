@@ -55,8 +55,8 @@
 - [x] origin/main(#1 병합 678efad) merge 후 재시험 — `npm run check` api 140·web 7
 - [x] origin/main(#6 병합 e60a712) merge, TC-16·17(목록·비교표)·18 E2E — academy 5/5, 전체 E2E 23/23(ai 태그 제외), `npm run check` api 197
 - [x] PR #17 이월 3건: lessons #14 `[BUILDER]`, TC-07 근거에 session.test.ts, TC-76 가짜 Azure 값을 앱 생성 전에 주입
-- [ ] TC-17 일정 확인: 로컬 시험 브랜치(issue-2 + origin/issue-7, push 안 함)에서 먼저 작성·실행
-- [ ] #7 병합 → origin/main merge → TC-17 전체 재실행 → AC-02.5 done → `Closes #2` PR (#2 blocked-by #7 등록)
+- [x] TC-17 일정 확인: 로컬 시험 브랜치(issue-2 + origin/issue-7, push 안 함)에서 먼저 작성·실행
+- [x] #7 병합 → origin/main merge → TC-17 전체 재실행 → AC-02.5 done → `Closes #2` PR (#2 blocked-by #7 등록) — main `0994677` merge, E2E 29/29
 ## #12 모두의 AI 교육 에이전트 표현과 연동 경계 — BUILDER (10:32 분배 조정으로 dev:2→dev:1)
 - 완료 조건: AC-12.1·12.2 done(TC-67·68), `npm run check`·`npx e2e run` 통과, `Closes #12` PR VERIFIER 승인
 - [x] 라벨 #12·#4 dev:2→dev:1
