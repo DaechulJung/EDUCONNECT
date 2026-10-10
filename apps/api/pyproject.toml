@@ -33,3 +33,6 @@ known-third-party = ["alembic"]  # the alembic/ folder here is migrations, not t
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
+# compose_runtime starts the whole app (TC-77): run it with `-m compose_runtime` (CI e2e job).
+addopts = "-m 'not compose_runtime'"
+markers = ["compose_runtime: needs docker and runs `docker compose up --wait` (TC-77)"]

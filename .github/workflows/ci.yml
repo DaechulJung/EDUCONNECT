@@ -62,6 +62,11 @@ jobs:
       LLM_PROVIDER: fake # CI never calls Azure OpenAI (AC-10.3)
       SEED_PASSWORD: ci-synthetic-seed # synthetic; /api/test/reset loads the seed with it
       AZURE_OPENAI_ENDPOINT: https://educonnect-synthetic-ci.openai.azure.com/ # synthetic; TC-68 checks the app never shows its host
+      # synthetic; TC-57 builds the web app with all five and searches the build output and every response
+      AZURE_OPENAI_LOCATION: synthetic-ci-region
+      AZURE_OPENAI_BASE_URL: https://educonnect-synthetic-ci.openai.azure.com/openai/v1/
+      AZURE_OPENAI_API_KEY: synthetic-ci-key
+      AZURE_OPENAI_DEPLOYMENT: synthetic-ci-deployment
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -70,7 +75,9 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx @e2e-dev/web install chromium --with-deps
+      - uses: astral-sh/setup-uv@v10.2.0
       - run: docker compose up --build --wait
+      - run: uv run --directory apps/api pytest -m compose_runtime tests/test_compose_ports.py # TC-77 running state: every published port is 127.0.0.1
       - run: npx e2e run --exclude-tag ai # tests tagged ai need a model key: run them locally before submitting
       - if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v7

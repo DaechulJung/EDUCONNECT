@@ -166,6 +166,51 @@ def test_masking_filter_hides_key_and_addresses() -> None:
     assert mask("nothing secret", config) == "nothing secret"
 
 
+class _Raw(logging.Handler):
+    """Root handler that refuses filters: only masking done at record creation counts."""
+
+    def __init__(self) -> None:
+        super().__init__(logging.DEBUG)
+        self.lines: list[str] = []
+
+    def addFilter(self, filter) -> None:  # noqa: N802, A002 - logging API name
+        pass
+
+    def emit(self, record: logging.LogRecord) -> None:
+        self.lines.append(f"{record.getMessage()} {record.exc_text or ''}")
+
+
+def test_install_masks_records_of_child_and_unlisted_loggers(monkeypatch) -> None:
+    """Logger filters do not run for records propagated from child loggers (openai._base_client)
+    or loggers outside the list (httpx2, which openai 3.x logs requests on). install() masks
+    every record when it is created, so even a handler without the filter sees no value."""
+    from app.core import logging as masking
+
+    monkeypatch.setattr(logging, "_logRecordFactory", logging.getLogRecordFactory())
+    root, raw = logging.getLogger(), _Raw()
+    previous = root.level
+    # setLevel (not a plain attribute set) also clears each logger's is-enabled cache, which
+    # earlier TestClient requests filled with "httpx2 INFO is off".
+    root.setLevel(logging.DEBUG)
+    root.addHandler(raw)
+    try:
+        masking.install(azure_settings())
+        logging.getLogger("httpx2").info('HTTP Request: POST %s "401"', FAKE_BASE + "responses")
+        logging.getLogger("openai._base_client").warning(f"call {FAKE_ENDPOINT} key {FAKE_KEY}")
+        try:
+            raise RuntimeError(f"denied {FAKE_KEY}")
+        except RuntimeError:
+            logging.getLogger("somewhere.else").exception("failed")
+    finally:
+        root.removeHandler(raw)
+        root.setLevel(previous)
+    text = "\n".join(raw.lines)
+    assert len(raw.lines) == 3
+    for value in (FAKE_KEY, FAKE_BASE, FAKE_ENDPOINT, "unit-test-resource.example.test"):
+        assert value not in text
+    assert text.count(MASK) >= 4
+
+
 def test_masking_filter_keeps_uvicorn_access_args() -> None:
     """uvicorn's access formatter unpacks record.args, so the filter must keep the 5-tuple."""
     from uvicorn.logging import AccessFormatter

@@ -9,9 +9,13 @@ with Pydantic).
 """
 
 import json
+import logging
 from typing import Any, Literal, Protocol
 
 from app.core.config import Settings, settings
+from app.core.logging import MASK
+
+logger = logging.getLogger("app.ai")
 
 Message = dict[str, str]  # {"role": "system" | "user", "content": "..."}
 
@@ -73,7 +77,8 @@ async def complete_json(
         text = await provider.complete(task, schema, messages)
     except LlmUnavailable:
         raise
-    except Exception:  # provider errors may carry URLs or keys: drop the message and cause
+    except Exception as error:  # provider errors may carry URLs or keys: drop message and cause
+        log_provider_failure(provider, error)
         raise LlmUnavailable("provider_error") from None
     try:
         value = json.loads(text)
@@ -83,6 +88,22 @@ async def complete_json(
     if problem is not None:
         raise LlmUnavailable("schema_mismatch")
     return value
+
+
+def log_provider_failure(provider: Provider, error: Exception) -> None:
+    """One masked line per failed Azure call (AC-10.2): the error kind and HTTP status only.
+
+    The provider's message is never logged (a 401 body can echo the key and URL), and the
+    endpoint and key appear only as the mask, so the line holds no value even if a log handler
+    misses the masking filter.
+    """
+    if provider.name != "azure":
+        return
+    kind = type(error).__name__
+    status = getattr(error, "status_code", None)
+    if isinstance(status, int):
+        kind = f"{kind} {status}"
+    logger.warning("Azure OpenAI 호출 실패: %s (엔드포인트 %s, 키 %s)", kind, MASK, MASK)
 
 
 _JSON_TYPES: dict[str, tuple[type, ...]] = {

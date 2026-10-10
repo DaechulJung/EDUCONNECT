@@ -114,6 +114,8 @@
 - [x] main `de8e2e8` merge(evidence.json 합집합) 뒤 check api 230·web 33, E2E children 5/5
 - [x] 문서: arch 233·237행, experience 85·169행, development.md #4 행·한계 1줄
 - [ ] AC-04.5 done → `Closes #4` PR → CI 3/3 → VERIFIER 승인 → 병합
+- dev1-10 | issue-10 | origin/main merge 완료(c308059); 다음: run-10d.sh(gen·check·E2E) → AC done·development.md #10 행 → PR Closes #10
+- dev1-10 | issue-10 | f7c21af check 256/E2E 47 통과, AC-10.1~10.7 done, development.md #10 행; 다음: push·PR Closes #10·VERIFIER 인계
 
 ## preview 결함 1 subjects 501 (Refs #5) — BUILDER (dev:1)
 완료 조건: AD-15 `GET /api/catalog/subjects` 구현(로그인 사용자 200, 삭제 안 된 프로그램 과목 중복 없이 이름순), 501 제거·계약 시험 갱신·gen:api, RED 확인한 pytest 3종·E2E `#5 회귀 새 과목 칩` 통과 뒤 PR.
