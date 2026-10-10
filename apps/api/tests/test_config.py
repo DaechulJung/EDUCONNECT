@@ -78,3 +78,10 @@ def test_seed_password_from_the_root_env_file(
     assert s.db_port == 25433
     (api_dir / ".env").write_text("SEED_PASSWORD=from-api\n")
     assert Settings().seed_password == "from-api"
+
+
+def test_azure_base_url_without_trailing_slash_gets_one(clean_env: pytest.MonkeyPatch) -> None:
+    # Azure portal copies the v1 address without the last "/"; the SDK path needs it (AD-10)
+    clean_env.setenv("AZURE_OPENAI_BASE_URL", "https://unit-test-resource.example.test/openai/v1")
+    s = Settings(_env_file=None)
+    assert s.azure_openai_base_url == "https://unit-test-resource.example.test/openai/v1/"
