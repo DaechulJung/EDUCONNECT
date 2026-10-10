@@ -1688,10 +1688,6 @@ export type UpdateChildErrors = {
      * Unprocessable Content
      */
     422: ErrorBody | FieldErrors;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
 };
 
 export type UpdateChildError = UpdateChildErrors[keyof UpdateChildErrors];
@@ -1855,13 +1851,11 @@ export type RecommendProgramsErrors = {
      */
     404: ErrorBody;
     /**
-     * Validation Error
+     * Response 422 Recommend Programs
+     *
+     * Unprocessable Content
      */
-    422: HttpValidationError;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
+    422: ErrorBody | FieldErrors;
 };
 
 export type RecommendProgramsError = RecommendProgramsErrors[keyof RecommendProgramsErrors];
