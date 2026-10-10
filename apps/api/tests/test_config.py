@@ -50,3 +50,13 @@ def test_explicit_urls_win_over_ports(clean_env: pytest.MonkeyPatch) -> None:
     s = Settings(_env_file=None)
     assert s.database_url == "postgresql+psycopg://educonnect:educonnect@db:5432/educonnect"
     assert s.redis_url == "redis://redis:6379/0"
+
+
+def test_empty_strings_from_compose_fall_back_to_defaults(clean_env: pytest.MonkeyPatch) -> None:
+    # compose.yml passes `${NAME:-}`, so an unset variable arrives as "" (#14 follow-up)
+    for name in ["LLM_PROVIDER", "ENABLE_TEST_ROUTES", "AZURE_OPENAI_DEPLOYMENT"]:
+        clean_env.setenv(name, "")
+    s = Settings(_env_file=None)
+    assert s.llm_provider == "auto"
+    assert s.enable_test_routes is False
+    assert s.azure_openai_deployment == "gpt-5.4-mini"

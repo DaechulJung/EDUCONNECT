@@ -12,7 +12,8 @@ class Settings(BaseSettings):
     Azure OpenAI values are never logged, returned or sent to the web app.
     """
 
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    # compose.yml passes unset variables as "" (`${NAME:-}`); treat them as unset (#14 follow-up)
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore", env_ignore_empty=True)
 
     db_port: int = 15432
     redis_port: int = 16379
