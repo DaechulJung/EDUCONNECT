@@ -216,7 +216,7 @@ sequenceDiagram
 | 추천 | 학년·과목·유형·요일·정원·미공개 필터, 점수 정렬, 이유는 LLM 또는 템플릿 | `app/services/planner/recommend.py`, `app/services/planner/engine.py` |
 | 일정 생성 | 학교 하교 시각·기존 일정·이동 근사로 배치, 중복·이동·예산·밀도 판정 | `app/services/planner/engine.py`, `app/services/planner/travel.py` |
 | 확정 | 엔진 재검증 위반 0건일 때 스냅숏 저장, 같은 자녀의 이전 확정 계획은 superseded | `app/services/planner/plans.py` |
-| 영향 | 조회 시 스냅숏과 현재 기관 데이터 비교, 조정안은 엔진으로 재배치 | `app/services/planner/impact.py` |
+| 영향 | 조회 시 스냅숏과 현재 기관 데이터 비교, 조정안은 엔진으로 재배치 | `app/services/planner/impact.py`(판정), `app/services/planner/org_impact.py`(기관 영향 수) |
 
 ## API·데이터·권한 경계
 
@@ -230,7 +230,7 @@ sequenceDiagram
 | `GET /api/catalog/subjects` | 삭제되지 않은 프로그램 과목 목록(AD-15) | 로그인 사용자 | 401 | `app/api/catalog.py` |
 | `POST /api/recommendations` | 자녀 조건 기준 비교표 | 보호자(자기 자녀) | 401, 403, 404 | `app/api/planner.py` |
 | `POST /api/plans/draft`, `GET /api/plans`, `GET·PUT /api/plans/:id`, `POST /api/plans/:id/confirm` | 초안 생성·수정(빼기·바꾸기), 확정, 목록(영향 표시 포함) | 보호자(자기 계획) | 401, 403, 404, 409 `violations`, 422 `no_feasible_plan` | `app/api/planner.py` |
-| `GET /api/plans/:id/adjustment`, `POST /api/plans/:id/adjustment/accept`, `POST /api/plans/:id/adjustment/reject` | 영향 사유, 조정안, 수락·거절 | 보호자(자기 계획) | 401, 403, 404, 422 `no_feasible_plan` | `app/api/planner.py` |
+| `GET /api/plans/:id/adjustment`, `POST /api/plans/:id/adjustment/accept`, `POST /api/plans/:id/adjustment/reject` | 영향 사유, 조정안, 수락·거절 | 보호자(자기 계획) | 401, 403, 404, 409 `plan_not_confirmed`(확정 계획이 아님), 422 `no_feasible_plan` | `app/api/planner.py` |
 | `GET /api/org/impact?program_id=·?grade=` | 이 기관 변경으로 영향받는 확정 계획 수(전체·항목별, AD-4 모양). 자녀·보호자·계획 ID 없음 | 학원·학교 담당자(자기 기관) | 401, 403 | `app/api/planner.py` |
 | `GET /api/meta`, `GET /api/health` | 서비스 이름·부제, 모두의 AI 상태 `mock`, AI 공급자 표기 "Azure OpenAI(국내 리전)", 상태 점검 | 모두 | - | `app/api/meta.py`, `app/api/health.py` |
 | `/api/test/*` | 시드 초기화, 시계 이동, LLM 대역 모드·요청 기록 | `ENABLE_TEST_ROUTES=1`일 때만 존재 | 404(꺼져 있음) | `app/api/testing.py` |
