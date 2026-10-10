@@ -1,13 +1,20 @@
 'use client'
 
-import { useSyncExternalStore } from 'react'
 import { Icon } from '@/components/kds/kds'
 import type { Recommendation } from '@/lib/client'
 import { FALLBACK_NOTE, recommendationCells, usesFallback } from '@/lib/recommend'
+import { useWideViewport } from '@/lib/use-wide-viewport'
 
-// 추천 비교표 (experience): kds-table from 768px, a card list below. Rows keep the server's order.
+// 추천 비교표 (experience): kds-table from a 768px viewport (inside the 748px parent frame), a card list below.
+// Rows keep the server's order.
+// Nine columns share the 748px frame (708px of table): cells take half the kit's side padding, and time ranges and
+// amounts never wrap ("16:30~17:50" on one line); names and 추천 이유 wrap instead.
+const CELL = { paddingInline: 'var(--space-8)' }
+const ONE_LINE = { ...CELL, whiteSpace: 'nowrap' } as const
+const oneLine = (label: string) => label === '시간' || label.startsWith('월')
+
 export function RecommendTable({ items }: { items: Recommendation[] }) {
-  const wide = useWide()
+  const wide = useWideViewport()
   const fallback = usesFallback(items)
   if (items.length === 0) {
     return (
@@ -24,13 +31,13 @@ export function RecommendTable({ items }: { items: Recommendation[] }) {
       <div className="kds-table-wrap">
         <table className="kds-table" aria-label="추천 비교표">
           <thead>
-            <tr>{header.map((h) => <th key={h} scope="col" className={h.startsWith('월') ? 'is-num' : undefined}>{h}</th>)}</tr>
+            <tr>{header.map((h) => <th key={h} scope="col" className={h.startsWith('월') ? 'is-num' : undefined} style={CELL}>{h}</th>)}</tr>
           </thead>
           <tbody>
             {items.map((r) => (
               <tr key={r.program_id}>
                 {recommendationCells(r).map((c) => (
-                  <td key={c.label} className={c.label.startsWith('월') ? 'is-num' : undefined}>
+                  <td key={c.label} className={c.label.startsWith('월') ? 'is-num' : undefined} style={oneLine(c.label) ? ONE_LINE : CELL}>
                     {c.value}
                     {c.label === '추천 이유' && note}
                   </td>
@@ -55,19 +62,5 @@ export function RecommendTable({ items }: { items: Recommendation[] }) {
         </li>
       ))}
     </ul>
-  )
-}
-
-const WIDE = '(min-width: 768px)'
-
-function useWide(): boolean {
-  return useSyncExternalStore(
-    (onChange) => {
-      const query = window.matchMedia(WIDE)
-      query.addEventListener('change', onChange)
-      return () => query.removeEventListener('change', onChange)
-    },
-    () => window.matchMedia(WIDE).matches,
-    () => false,
   )
 }

@@ -57,7 +57,8 @@ export default function Page() {
           <h3 className="body-large-bold" style={{ margin: 0, display: 'flex', gap: 'var(--space-8)', alignItems: 'center' }}>
             {name(p.child_id)} <span className="kds-tag kds-tag--positive">확정 계획</span>
           </h3>
-          <PlanDraft plan={p} label={`${name(p.child_id)} 확정 계획`} />
+          {/* Until the children load the name is empty; '자녀' keeps this name apart from the outer '확정 계획' (TC-49). */}
+          <PlanDraft plan={p} label={`${name(p.child_id) || '자녀'} 확정 계획`} />
         </section>
       ))}
 
