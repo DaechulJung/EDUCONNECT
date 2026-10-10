@@ -281,7 +281,7 @@ EDUCONNECT/
 | REQ-01 | `app/api/auth.py`, `app/services/auth/`, `app/core/authz.py`, `app/core/audit.py`, `apps/web/app/login/` | AD-8, AD-9, AD-11, AD-13 |
 | REQ-02 | `app/api/catalog.py`, `app/services/catalog/programs.py`, `apps/web/app/(org)/academy/` | AD-2, AD-4, AD-6 |
 | REQ-03 | `app/api/catalog.py`, `app/services/catalog/school.py`, `apps/web/app/(org)/school/` | AD-2, AD-4, AD-6 |
-| REQ-04 | `app/api/family.py`, `app/services/family/`, `apps/web/app/(parent)/children/` | AD-2, AD-6, AD-8 |
+| REQ-04 | `app/api/family.py`, `app/services/family/`, `app/api/catalog.py`(`list_schools`), `apps/web/app/(parent)/children/` | AD-2, AD-6, AD-8 |
 | REQ-05 | `app/api/chat.py`, `app/services/chat/`, `apps/web/app/(parent)/chat/` | AD-5, AD-10, AD-13 |
 | REQ-06 | `app/services/planner/recommend.py`, `app/services/planner/engine.py`, `app/services/planner/travel.py` | AD-5, AD-6, AD-7, AD-10 |
 | REQ-07 | `app/services/planner/engine.py`, `app/services/planner/plans.py`, `apps/web/app/(parent)/schedule/` | AD-5, AD-6, AD-7 |
