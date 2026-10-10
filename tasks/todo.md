@@ -1,3 +1,14 @@
+## #6 프로그램 추천·비교 — PLANNER (dev:2)
+완료 조건: AC-06.1~06.7을 시험 자료와 함께 done 처리하고 `npm run check`·E2E 통과 뒤 `Closes #6` PR. AC-06.4 전제로 #4의 `PUT /api/children/{id}`만 먼저 구현(10:13 결정, AC-04.x는 #4).
+- [x] 추천 API `POST /api/recommendations`(엔진 후보 필터·정렬 위) — `0ad1b81`
+- [x] 자녀 수정 PUT(소유권 `_own_row` 공유·404 감사·401·동의 422·모르는 필드 422·응답에 실명 없음) — `223013b`
+- [x] 시드 기반 API 시험(AC-06.1·06.3·06.4·06.5·06.6·06.7) — `bfb0e4d`
+- [x] '추천 보기'·비교표 화면(768px 이상 표, 미만 카드) — `3e83883`
+- [x] E2E TC-35~39·80 — `30caebc`
+- [x] origin/main `5f12264` 병합(`fe804e1`) 후 `npm run check`(api 191·web 9)·E2E 17/17
+- [x] AC-06.1~06.7 done, development.md #5·#6, lessons, PR
+- [ ] Issue #4 코멘트에 PR 링크
+
 ## #7 주간 일정 생성·최적화 — PLANNER (dev:2)
 완료 조건: AD-5·AD-6·AD-7 순수 함수 엔진과 단위 시험(`apps/api/tests/test_engine.py`). #11 병합 뒤 시드 기반 시험으로 바꾸고 AC-07.1~07.8을 done 처리한 뒤 `Closes #7` PR.
 - [x] travel.py (하버사인·보정 1.4·15km/h·최소 5분·같은 위치 0분) — issue-7 `8ed4441`
