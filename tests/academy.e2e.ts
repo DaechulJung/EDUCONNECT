@@ -23,7 +23,7 @@ async function signInAcademy(app: App, screen: Screen, loginId = 'academy-a') {
 
 async function fillAc021(screen: Screen) {
   await screen.getByLabel('과목').fill('코딩')
-  await screen.getByLabel('유형').selectOption('academy')
+  await screen.getByLabel('유형').selectOption('교과 학원')
   await screen.getByLabel('화').check()
   await screen.getByLabel('목').check()
   await screen.getByLabel('시작 시각').fill('16:00')
@@ -31,8 +31,8 @@ async function fillAc021(screen: Screen) {
   await screen.getByLabel('월 교습비(원)').fill('200000')
   await screen.getByLabel('월 기타경비(원)').fill('20000')
   await screen.getByLabel('강사').fill('코딩 강사')
-  await screen.getByLabel('대상 학년(시작)').selectOption('4')
-  await screen.getByLabel('대상 학년(끝)').selectOption('6')
+  await screen.getByLabel('대상 학년(시작)').selectOption('초4')
+  await screen.getByLabel('대상 학년(끝)').selectOption('초6')
   await screen.getByLabel('정원(명)').fill('10')
   await screen.getByLabel('현재 인원(명)').fill('3')
   await screen.getByLabel('위도').fill('37.5012')

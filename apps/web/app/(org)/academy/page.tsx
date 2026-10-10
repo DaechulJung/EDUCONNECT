@@ -200,17 +200,17 @@ function ProgramFormSection({ onCancel, onSaved }: { onCancel: () => void; onSav
       <h2 id="program-form-title" className="title-medium-bold" style={{ margin: 0 }}>프로그램 등록</h2>
       <form onSubmit={submit} noValidate style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-24)' }}>
         <div style={grid}>
-          <label className={wrap('subject')}>
-            <span className="kds-field__label">과목</span>
-            <input className="kds-field__input" name="subject" value={form.subject} onChange={(e) => set('subject', e.target.value)} placeholder="예: 코딩" {...field('subject')} />
+          <div className={wrap('subject')}>
+            <label className="kds-field__label" htmlFor="program-subject">과목</label>
+            <input className="kds-field__input" id="program-subject" name="subject" value={form.subject} onChange={(e) => set('subject', e.target.value)} placeholder="예: 코딩" {...field('subject')} />
             {helper('subject')}
-          </label>
-          <label className="kds-field">
-            <span className="kds-field__label">유형</span>
-            <select className="kds-field__input kds-select" name="type" value={form.type} onChange={(e) => set('type', e.target.value as ProgramForm['type'])}>
+          </div>
+          <div className="kds-field">
+            <label className="kds-field__label" htmlFor="program-type">유형</label>
+            <select className="kds-field__input kds-select" id="program-type" name="type" value={form.type} onChange={(e) => set('type', e.target.value as ProgramForm['type'])}>
               {ACADEMY_TYPES.map((t) => <option key={t.value} value={t.value}>{t.label}</option>)}
             </select>
-          </label>
+          </div>
         </div>
 
         <fieldset className={wrap('days')} style={{ border: 0, padding: 0, margin: 0 }} aria-describedby={errors.days ? 'program-days-error' : undefined}>
@@ -226,66 +226,66 @@ function ProgramFormSection({ onCancel, onSaved }: { onCancel: () => void; onSav
         </fieldset>
 
         <div style={grid}>
-          <label className={wrap('start')}>
-            <span className="kds-field__label">시작 시각</span>
-            <input className="kds-field__input" type="time" name="start" value={form.start} onChange={(e) => set('start', e.target.value)} {...field('start')} />
+          <div className={wrap('start')}>
+            <label className="kds-field__label" htmlFor="program-start">시작 시각</label>
+            <input className="kds-field__input" type="time" id="program-start" name="start" value={form.start} onChange={(e) => set('start', e.target.value)} {...field('start')} />
             {helper('start')}
-          </label>
-          <label className={wrap('end')}>
-            <span className="kds-field__label">종료 시각</span>
-            <input className="kds-field__input" type="time" name="end" value={form.end} onChange={(e) => set('end', e.target.value)} {...field('end')} />
+          </div>
+          <div className={wrap('end')}>
+            <label className="kds-field__label" htmlFor="program-end">종료 시각</label>
+            <input className="kds-field__input" type="time" id="program-end" name="end" value={form.end} onChange={(e) => set('end', e.target.value)} {...field('end')} />
             {helper('end')}
-          </label>
-          <label className={wrap('monthly_tuition')}>
-            <span className="kds-field__label">월 교습비(원)</span>
-            <input className="kds-field__input" inputMode="numeric" name="monthly_tuition" value={form.monthly_tuition} onChange={(e) => set('monthly_tuition', e.target.value)} {...field('monthly_tuition')} />
+          </div>
+          <div className={wrap('monthly_tuition')}>
+            <label className="kds-field__label" htmlFor="program-monthly_tuition">월 교습비(원)</label>
+            <input className="kds-field__input" inputMode="numeric" id="program-monthly_tuition" name="monthly_tuition" value={form.monthly_tuition} onChange={(e) => set('monthly_tuition', e.target.value)} {...field('monthly_tuition')} />
             {helper('monthly_tuition') || <span className="kds-field__helper">비워 두면 &quot;미공개&quot;로 보이고 보호자 추천에서 빠져요</span>}
-          </label>
-          <label className={wrap('monthly_other')}>
-            <span className="kds-field__label">월 기타경비(원)</span>
-            <input className="kds-field__input" inputMode="numeric" name="monthly_other" value={form.monthly_other} onChange={(e) => set('monthly_other', e.target.value)} {...field('monthly_other')} />
+          </div>
+          <div className={wrap('monthly_other')}>
+            <label className="kds-field__label" htmlFor="program-monthly_other">월 기타경비(원)</label>
+            <input className="kds-field__input" inputMode="numeric" id="program-monthly_other" name="monthly_other" value={form.monthly_other} onChange={(e) => set('monthly_other', e.target.value)} {...field('monthly_other')} />
             {helper('monthly_other')}
-          </label>
-          <label className={wrap('instructor')}>
-            <span className="kds-field__label">강사</span>
-            <input className="kds-field__input" name="instructor" value={form.instructor} onChange={(e) => set('instructor', e.target.value)} {...field('instructor')} />
+          </div>
+          <div className={wrap('instructor')}>
+            <label className="kds-field__label" htmlFor="program-instructor">강사</label>
+            <input className="kds-field__input" id="program-instructor" name="instructor" value={form.instructor} onChange={(e) => set('instructor', e.target.value)} {...field('instructor')} />
             {helper('instructor')}
-          </label>
+          </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 'var(--space-16)' }}>
-            <label className="kds-field">
-              <span className="kds-field__label">대상 학년(시작)</span>
-              <select className="kds-field__input kds-select" name="grade_min" value={form.grade_min} onChange={(e) => set('grade_min', e.target.value)}>
+            <div className="kds-field">
+              <label className="kds-field__label" htmlFor="program-grade_min">대상 학년(시작)</label>
+              <select className="kds-field__input kds-select" id="program-grade_min" name="grade_min" value={form.grade_min} onChange={(e) => set('grade_min', e.target.value)}>
                 {GRADES.map((g) => <option key={g.value} value={g.value}>{g.label}</option>)}
               </select>
-            </label>
-            <label className={wrap('grade_max')}>
-              <span className="kds-field__label">대상 학년(끝)</span>
-              <select className="kds-field__input kds-select" name="grade_max" value={form.grade_max} onChange={(e) => set('grade_max', e.target.value)} {...field('grade_max')}>
+            </div>
+            <div className={wrap('grade_max')}>
+              <label className="kds-field__label" htmlFor="program-grade_max">대상 학년(끝)</label>
+              <select className="kds-field__input kds-select" id="program-grade_max" name="grade_max" value={form.grade_max} onChange={(e) => set('grade_max', e.target.value)} {...field('grade_max')}>
                 {GRADES.map((g) => <option key={g.value} value={g.value}>{g.label}</option>)}
               </select>
               {helper('grade_max')}
-            </label>
+            </div>
           </div>
-          <label className={wrap('capacity')}>
-            <span className="kds-field__label">정원(명)</span>
-            <input className="kds-field__input" inputMode="numeric" name="capacity" value={form.capacity} onChange={(e) => set('capacity', e.target.value)} {...field('capacity')} />
+          <div className={wrap('capacity')}>
+            <label className="kds-field__label" htmlFor="program-capacity">정원(명)</label>
+            <input className="kds-field__input" inputMode="numeric" id="program-capacity" name="capacity" value={form.capacity} onChange={(e) => set('capacity', e.target.value)} {...field('capacity')} />
             {helper('capacity')}
-          </label>
-          <label className={wrap('enrolled')}>
-            <span className="kds-field__label">현재 인원(명)</span>
-            <input className="kds-field__input" inputMode="numeric" name="enrolled" value={form.enrolled} onChange={(e) => set('enrolled', e.target.value)} {...field('enrolled')} />
+          </div>
+          <div className={wrap('enrolled')}>
+            <label className="kds-field__label" htmlFor="program-enrolled">현재 인원(명)</label>
+            <input className="kds-field__input" inputMode="numeric" id="program-enrolled" name="enrolled" value={form.enrolled} onChange={(e) => set('enrolled', e.target.value)} {...field('enrolled')} />
             {helper('enrolled')}
-          </label>
-          <label className={wrap('lat')}>
-            <span className="kds-field__label">위도</span>
-            <input className="kds-field__input" inputMode="decimal" name="lat" value={form.lat} onChange={(e) => set('lat', e.target.value)} placeholder="예: 37.5012" {...field('lat')} />
+          </div>
+          <div className={wrap('lat')}>
+            <label className="kds-field__label" htmlFor="program-lat">위도</label>
+            <input className="kds-field__input" inputMode="decimal" id="program-lat" name="lat" value={form.lat} onChange={(e) => set('lat', e.target.value)} placeholder="예: 37.5012" {...field('lat')} />
             {helper('lat')}
-          </label>
-          <label className={wrap('lng')}>
-            <span className="kds-field__label">경도</span>
-            <input className="kds-field__input" inputMode="decimal" name="lng" value={form.lng} onChange={(e) => set('lng', e.target.value)} placeholder="예: 127.0396" {...field('lng')} />
+          </div>
+          <div className={wrap('lng')}>
+            <label className="kds-field__label" htmlFor="program-lng">경도</label>
+            <input className="kds-field__input" inputMode="decimal" id="program-lng" name="lng" value={form.lng} onChange={(e) => set('lng', e.target.value)} placeholder="예: 127.0396" {...field('lng')} />
             {helper('lng')}
-          </label>
+          </div>
         </div>
 
         {saveError && (
