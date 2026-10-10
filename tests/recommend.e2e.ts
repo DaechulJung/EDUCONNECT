@@ -3,7 +3,7 @@ import { beforeEach, test, type Browser } from '@e2e-dev/web'
 import { AROUND, TASK, api, resetSeed, send, signInParent } from './chat-support'
 
 // REQ-06 with the LLM double: TC-35 (AC-06.1), TC-36 (AC-06.2), TC-37 (AC-06.3), TC-38 (AC-06.4),
-// TC-39 (AC-06.5) and TC-80 (AC-06.7). Rows are never pinned: each TC checks properties of every row.
+// TC-39 (AC-06.5), TC-80 (AC-06.7) and TC-60 (AC-10.4). Rows are never pinned: each TC checks properties of every row.
 // The app runs with ENABLE_TEST_ROUTES=1 and LLM_PROVIDER=fake; reset (AC-11.4) clears the double too.
 const REASONS = 'recommend_reasons'
 const AROUND_REPLY = { subjects: ['영어', '수학'], budget_amount: 1_000_000, budget_mode: 'around', types: [], days: [], density: 'tight' }
@@ -152,6 +152,49 @@ test('TC-80 유형 교과 학원·요일 월·수·금으로 저장하고 추천
   for (const r of body) {
     expect(r['유형']).toBe('교과 학원')
     for (const d of r['요일'].split('·')) expect(['월', '수', '금']).toContain(d)
+  }
+})
+
+// AC-10.4: the double records every Azure request body. Each one may describe the child only by
+// the "자녀: 별칭 …, 학년 …, 관심사 …" line; account, password, other child fields and settings never go.
+const CHILD_LINE = /^자녀: 별칭 (.+), 학년 (.+), 관심사 (.+)$/m
+const CONTACT = [/01[016789][-. ]?\d{3,4}[-. ]?\d{4}/, /[\w.+-]+@[\w-]+\.[\w.]+/]
+
+test('TC-60 조건 추출과 추천을 실행한 뒤 대역 요청 본문에는 자녀 별칭·학년·관심사·조건만 있다', async ({ app, screen, browser }) => {
+  await saveAroundConditions(app, screen) // AC-05.1
+  await showRecommendations(screen) // AC-06.4 path: recommend_reasons is asked for every table
+  const id = await childId(browser)
+  const child = (await pageFetch(browser, `/api/children/${id}`)).json as { alias: string; interests: string[]; goal: string; school_id: string | null; existing_events: { label: string }[] }
+  const me = (await pageFetch(browser, '/api/auth/me')).json as { account_id: string; login_id: string }
+
+  const requests = (await api(app, '/api/test/llm/requests')) as { task: string; messages: { role: string; content: string }[] }[]
+  const tasks = requests.map((q) => q.task)
+  expect(tasks).toContain(TASK)
+  expect(tasks).toContain(REASONS)
+
+  const azure = Object.entries(process.env).filter(([k, v]) => k.startsWith('AZURE_OPENAI_') && k !== 'AZURE_OPENAI_DEPLOYMENT' && v).map(([, v]) => v!)
+  const forbidden: [string, string][] = [
+    ['login id', me.login_id],
+    ['account id', me.account_id],
+    ['password', process.env.SEED_PASSWORD ?? ''],
+    ['child id', id],
+    ['goal', child.goal],
+    ['school id', child.school_id ?? ''],
+    ...child.existing_events.map((e): [string, string] => ['existing event', e.label]),
+    ...azure.map((v): [string, string] => ['AZURE_OPENAI_* value', v]),
+  ]
+  for (const q of requests) {
+    const body = JSON.stringify(q.messages)
+    const sent = q.messages.map((m) => m.content).join('\n')
+    const who = sent.match(CHILD_LINE)
+    expect(who, `${q.task}: child line`).toBeTruthy()
+    expect(who![1]).toBe(child.alias)
+    expect(who![2]).toMatch(/^[초중][1-6]$/)
+    expect(who![3]).toBe(child.interests.join(', ') || '없음')
+    expect(sent.match(new RegExp(CHILD_LINE.source, 'gm'))!.length, `${q.task}: one child line`).toBe(1)
+    for (const [what, value] of forbidden) if (value) expect(body.includes(value), `${q.task}: ${what}`).toBe(false)
+    for (const pattern of CONTACT) expect(pattern.test(sent), `${q.task}: contact ${pattern}`).toBe(false)
+    expect(/AZURE_OPENAI|https?:\/\/|api[-_ ]?key/i.test(sent), `${q.task}: setting`).toBe(false)
   }
 })
 
