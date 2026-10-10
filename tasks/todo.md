@@ -1,7 +1,7 @@
 ## 레인 상태 (PLANNER, 세션이 끊기면 여기서 이어받는다)
 - dev2-ui · `fix-parent-width` · PR #27 VERIFIER 승인 → 병합 `898ea4e`(13:3xZ). 남은 일 없음(병합 후 검증·TC-40은 VERIFIER)
-- dev2-ui · `fix-chat-loading` · RED·수정·GREEN 끝, main `898ea4e` merge → 최종 check·E2E → PR → VERIFIER
-- dev2-9 · `issue-9` · PR #29 VERIFIER 보류(결함 5건, issuecomment-6098000258) → 다음: `fix-chat-loading` PR 뒤 처리(지적마다 RED 먼저)
+- dev2-ui · `fix-chat-loading` · PR #31 VERIFIER 승인 → 병합 `aec2f3f`. 남은 일 없음([관찰] 성공 뒤 재조회 실패 시 보내기 막힘 — 후속 판단 대기)
+- dev2-9 · `issue-9` · PR #29 결함 5건 RED→GREEN, main `aec2f3f` merge → 다음: 최종 check·E2E → push·답글 4곳·VERIFIER
 
 ## #6 프로그램 추천·비교 — PLANNER (dev:2)
 완료 조건: AC-06.1~06.7을 시험 자료와 함께 done 처리하고 `npm run check`·E2E 통과 뒤 `Closes #6` PR. AC-06.4 전제로 #4의 `PUT /api/children/{id}`만 먼저 구현(10:13 결정, AC-04.x는 #4).
@@ -121,3 +121,12 @@
 - [x] `childGate`(불러오는 중·오류·0명·자녀 있음) + 보내기·추천 질문 비활성, 오류는 experience 100행 문구 — `55fd75a`, GREEN 5/5 ×2
 - [x] development #5 행·lessons(`403ba02`, check api 240·web 45·E2E 46/46)
 - [ ] main `898ea4e` merge 뒤 check·전체 E2E, PR, VERIFIER
+
+## PR #29 VERIFIER 보류 결함 5건(#9) — PLANNER dev2-9
+완료 조건: 지적마다 `de31198`에서 RED → GREEN, check·전체 E2E, 처리 답글(Codex 3 + 보류 코멘트 a·b), VERIFIER
+- [x] RED: pytest 8·vitest 2·E2E 5(`.scratch/red-pr29/`) — 시험 커밋 `7ee4ef3`
+- [x] api: 내용 변경도 영향, 기관 수 원인 판정, 확정 계획 school 지금 하교 시각
+- [x] web: 내용 변경 라벨, 바뀐 칸 굵게, 학교 저장 결과 줄 — impact E2E 12/12
+- [x] arch AD-4 문서 커밋, main `aec2f3f` merge
+- [ ] check·전체 E2E, push, 답글, VERIFIER
+
