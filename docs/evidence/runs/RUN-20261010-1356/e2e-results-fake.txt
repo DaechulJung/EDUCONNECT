@@ -1,0 +1,51 @@
+run passed exit 0 commit aec2f3f2e86d7075f2418349dd10b02347c59752 dirty False {'discovered': 50, 'selected': 49, 'executed': 49, 'passed': 49, 'failed': 0, 'interrupted': 0, 'flaky': 0, 'skipped': 0}
+passed tests/academy.e2e.ts TC-13 코딩 프로그램을 등록하면 교습비·기타경비가 나뉜 채 목록에 남는다
+passed tests/academy.e2e.ts TC-14 잘못된 값 4종은 칸 옆 오류를 보이고 목록에 추가되지 않는다
+passed tests/academy.e2e.ts TC-16 학원이 피아노(예체능 학원)를 등록하면 피아노를 선호 과목에 넣은 초5 보호자의 비교표에 나온다
+passed tests/academy.e2e.ts TC-17 시드 미공개 프로그램이 학원 목록에 "미공개"로 보이고 AC-06.1 조건의 비교표와 일정에 없다
+passed tests/academy.e2e.ts TC-18 확정 계획에 쓰이지 않은 프로그램을 삭제하면 학원 목록과 보호자 비교표에서 사라진다
+passed tests/auth.e2e.ts TC-01 시드 계정 3종이 각자 첫 화면으로 들어간다
+passed tests/auth.e2e.ts TC-02 틀린 비밀번호는 문구를 보이고 세션 쿠키를 주지 않는다
+passed tests/auth.e2e.ts TC-10 새로 고침하거나 다른 탭에 다녀와도 로그인 화면이 다시 나오지 않는다
+passed tests/branding.e2e.ts TC-67 시드 보호자 화면 머리에 "EDUCONNECT · 모두의 AI 교육 에이전트"와 연동 상태 "모의"가 보인다
+passed tests/branding.e2e.ts TC-68 챗봇 화면의 AI 공급자 표기가 "Azure OpenAI(국내 리전)"이고 화면과 /api/meta에 엔드포인트 호스트가 0건이다
+passed tests/chat-fallback.e2e.ts TC-32 키가 없으면 규칙 추출로 같은 조건 카드가 보이고 응답이 이어진다
+passed tests/chat-fallback.e2e.ts TC-33 대역이 스키마에 맞지 않는 JSON을 주면 대체 경로로 같은 카드가 보이고 오류 원문은 없다
+skipped tests/chat.ai.e2e.ts TC-34 실제 Azure OpenAI 응답이 스키마 검증을 통과하고 조건 카드에 영어·수학, 목표 1,000,000원이 보인다
+passed tests/chat.e2e.ts TC-28 전후 문장을 보내면 조건 카드에 목표 1,000,000원·상한 1,100,000원이 보인다
+passed tests/chat.e2e.ts TC-29 안에서 문장을 보내면 목표와 상한이 모두 1,000,000원이다
+passed tests/chat.e2e.ts TC-30 예산 상한을 1,000,000원으로 고쳐 저장하면 새 대화의 조건 카드에 1,000,000원이 남는다
+passed tests/chat.e2e.ts TC-31 유형 교과 학원·요일 월·수·금으로 저장하면 새 대화의 조건 카드에 그 값이 남는다
+passed tests/chat.e2e.ts #5 회귀 자녀 목록 불러오는 중에는 보내기가 비활성이고 "먼저 자녀를 등록해 주세요"가 나오지 않으며, 목록이 오면 보내서 조건 카드가 보인다
+passed tests/children.e2e.ts TC-23 자녀 탭에서 AC-04.1 값으로 저장하면 자녀 목록에 별칭과 학년이 보이고 새로 고쳐도 같다
+passed tests/children.e2e.ts TC-25 만 나이 13이면 동의 확인 전 저장 버튼이 비활성이고 안내가 보이며, 체크하면 저장된다
+passed tests/children.e2e.ts TC-26 자녀 등록 화면에 실명·연락처 칸이 없고 저장 API 응답에도 실명·연락처 항목이 없다
+passed tests/children.e2e.ts TC-24 토 10:00~12:00 기존 일정이 있는 자녀로 일정을 만들면 그 시간에 다른 수업이 없다
+passed tests/children.e2e.ts TC-27 시간표 없는 학년 자녀로 일정 만들기를 누르면 안내와 요일별 하교 시각 칸이 보이고, 입력 후 그 시각 이후로 배치된다
+passed tests/children.e2e.ts #4 회귀 학교 목록을 받지 못하면 오류와 다시 불러오기가 보이고 저장할 수 없으며, 다시 불러오면 학교를 고를 수 있다
+passed tests/parent-width.e2e.ts 보호자 화면을 태블릿 폭(768×1024)으로 열면 748px 틀 안에 추천 비교표·주간 7열 격자가 넘치지 않고 시각·금액이 한 줄로 보인다
+passed tests/parent-width.e2e.ts 보호자 화면을 PC 폭(1440×900)으로 열면 가운데 748px 틀 안에 추천 비교표·주간 7열 격자가 넘치지 않고 시각·금액이 한 줄로 보인다
+passed tests/parent-width.e2e.ts 보호자 화면 390×844에서 상단 제목이 화면 위로 잘리지 않고 연동 상태 줄과 겹치지 않는다
+passed tests/plan.e2e.ts TC-47 일정에서 영어 프로그램 하나를 빼면 그 수업이 사라지고 월 학원비가 그 프로그램 금액만큼 준다
+passed tests/plan.e2e.ts TC-48 일정의 영어 수업을 학교 시간과 겹치는 프로그램으로 바꾸면 그 칸에 시간 중복이 보이고 확정 버튼이 비활성이다
+passed tests/plan.e2e.ts TC-49 위반이 없는 일정을 확정하면 일정 탭에 확정 계획으로 보이고 다시 로그인해도 같다
+passed tests/plan.e2e.ts #8 회귀 확정 409: 초안을 만든 뒤 교습비가 올라 예산을 넘으면 예산 초과 금액이 보이고 확정이 막힌다
+passed tests/plan.e2e.ts #8 회귀 확정 422: 초안을 만든 뒤 프로그램이 삭제되면 그 칸에 신청 불가가 보이고 확정이 막힌다
+passed tests/recommend.e2e.ts TC-35 기준 시나리오 조건으로 추천하면 9개 열이 보이고 모든 행 과목이 영어 또는 수학이다
+passed tests/recommend.e2e.ts TC-36 비교표의 모든 이동 값 옆에 근사가 보인다
+passed tests/recommend.e2e.ts TC-37 중1 전용 수학과 마감 영어는 비교표에 없다
+passed tests/recommend.e2e.ts TC-38 관심사를 과학으로 저장하고 추천하면 대역 요청의 관심사가 과학이고 추천 이유가 채워진다
+passed tests/recommend.e2e.ts TC-39 대역이 오류를 내면 템플릿 설명이 보이고 행 수는 같다
+passed tests/recommend.e2e.ts TC-80 유형 교과 학원·요일 월·수·금으로 저장하고 추천하면 1행 이상, 모든 행이 그 조건 안이다
+passed tests/recommend.e2e.ts 추천을 본 뒤 새 대화로 조건 카드가 바뀌면 이전 비교표가 사라진다
+passed tests/schedule.e2e.ts TC-45 목표·상한 100,000원으로 저장하고 일정을 만들면 해 없음 안내와 완화할 조건이 보인다
+passed tests/schedule.e2e.ts TC-79 상한을 1,000,000원으로 고쳐 저장하고 일정을 만들면 일정이 보이고 월 학원비가 상한 이하다
+passed tests/schedule.e2e.ts 기준 시나리오 일정은 월~일 표에 학교와 수업이 함께 있고 겹침이 없다
+passed tests/schedule.e2e.ts 기준 시나리오 일정의 월 학원비는 프로그램별 내역의 합이고 상한 이하다
+passed tests/school.e2e.ts TC-19 5학년 수요일 하교 시각 13:40을 저장하면 새로 고친 뒤에도 13:40이다
+passed tests/school.e2e.ts TC-22 같은 학년·요일 14:00~15:00이 있으면 14:30~15:30은 화면에서 "시간이 겹칩니다", API는 422로 저장되지 않는다
+passed tests/school.e2e.ts TC-20 초5 수요일 하교 13:40을 저장한 뒤 그 학교 초5 자녀로 일정을 만들면 수요일 수업 시작이 모두 13:40 + 이동 근사 시간 이후다
+passed tests/school.e2e.ts TC-21 학교가 로봇 방과후(금 14:00~15:00)를 저장하면 로봇을 선호 과목에 넣은 그 학교 초5 보호자의 비교표에 유형 "방과후"로 나온다
+passed tests/school.e2e.ts #3 회귀 방과후 수정 저장한 프로그램을 수정하면 같은 행이 새 시간으로 바뀐다
+passed tests/smoke.e2e.ts 세션 없이 첫 화면을 열면 로그인 화면이 보인다
+passed tests/smoke.e2e.ts 세션 없이 보호자·기관 화면 주소로 가면 로그인 화면으로 돌아간다
