@@ -77,3 +77,32 @@ test('TC-31 유형 교과 학원·요일 월·수·금으로 저장하면 새 �
   await expect(row(screen, '학원 유형')).toHaveText(/교과 학원$/)
   await expect(row(screen, '가능 요일')).toHaveText(/월·수·금$/)
 })
+
+// AD-15: the sheet's subject chips come from GET /api/catalog/subjects, so a subject an academy adds shows up
+// without a code change. Before the fix the API answered 501 and the sheet showed BASE_SUBJECTS only.
+test('#5 회귀 새 과목 칩: 학원이 등록한 과목 로봇이 조건 시트 칩에 보인다', async ({ app, screen }) => {
+  const login = await fetch(new URL('/api/auth/login', app.baseUrl), {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ login_id: 'academy-a', password: process.env.SEED_PASSWORD }),
+  })
+  expect(login.status).toBe(200)
+  const cookie = (login.headers.get('set-cookie') ?? '').split(';')[0]
+  const created = await fetch(new URL('/api/academy/programs', app.baseUrl), {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', cookie },
+    body: JSON.stringify({
+      subject: '로봇', type: 'academy', days: ['tue'], start: '16:00', end: '17:00', monthly_tuition: 200000,
+      monthly_other: 0, instructor: '시험 강사', grade_min: 4, grade_max: 6, capacity: 10, enrolled: 0, lat: 37.5, lng: 127.03,
+    }),
+  })
+  expect(created.status).toBe(201)
+
+  await app.open('/chat')
+  await api(app, '/api/test/llm', { task: TASK, mode: 'fixed', response: AROUND_REPLY })
+  await send(screen, AROUND)
+  await expect(row(screen, '선호 과목')).toBeVisible({ timeout: 15_000 })
+  await screen.getByRole('article', '조건 카드').getByRole('button', '고치기').tap()
+  const chips = screen.getByRole('dialog', '조건을 고쳐 주세요').getByRole('group', '선호 과목')
+  await expect(chips.getByRole('button', '로봇')).toBeVisible()
+})
