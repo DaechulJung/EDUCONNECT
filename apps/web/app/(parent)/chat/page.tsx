@@ -12,7 +12,7 @@ import { NoPlan, PlanDraft } from '@/components/parent/PlanDraft'
 import { RecommendTable } from '@/components/parent/RecommendTable'
 import { SwapSheet } from '@/components/parent/SwapSheet'
 import { confirmPlan, createPlanDraft, getConditions, listChildren, listSubjects, recommendPrograms, saveConditions, sendChatMessage, updatePlan, type Conditions, type Plan, type PlanItem, type Recommendation } from '@/lib/client'
-import { swapCandidates, swapProgram, withoutProgram } from '@/lib/plan'
+import { confirmFailure, swapCandidates, type ErrorBody, swapProgram, withoutProgram } from '@/lib/plan'
 import { BASE_SUBJECTS, childLabel, pickChild, sameConditions, subjectOptions } from '@/lib/conditions'
 
 type Message = { id: number; role: 'user' | 'ai'; text: string; error?: boolean }
@@ -48,6 +48,7 @@ function Chat() {
   const [planning, setPlanning] = useState(false)
   const [planError, setPlanError] = useState<string | null>(null)
   const [planBusy, setPlanBusy] = useState(false)
+  const [unavailable, setUnavailable] = useState<string[]>([])
   const [swapItem, setSwapItem] = useState<PlanItem | null>(null)
   const [swapLoading, setSwapLoading] = useState(false)
   const [swapRecs, setSwapRecs] = useState<Recommendation[] | null>(null)
@@ -97,6 +98,7 @@ function Chat() {
     setPlanError(null)
     setPlanning(false)
     setPlanBusy(false)
+    setUnavailable([])
     setSwapItem(null)
     setSwapRecs(null)
     setSwapLoading(false)
@@ -170,6 +172,7 @@ function Chat() {
     setPlanError(null)
     setPlan(null)
     setNoPlan(null)
+    setUnavailable([])
     const { data, error, response } = await createPlanDraft({ body: { child_id: child.id } })
     if (context !== planContext.current) return
     setPlanning(false)
@@ -191,10 +194,17 @@ function Chat() {
     const context = planContext.current
     setPlanBusy(true)
     setPlanError(null)
-    const { data } = await updatePlan({ path: { plan_id: plan.id }, body: { program_ids: programIds } })
+    const { data, error, response } = await updatePlan({ path: { plan_id: plan.id }, body: { program_ids: programIds } })
     if (context !== planContext.current) return
     setPlanBusy(false)
-    if (data) setPlan(data)
+    if (data) {
+      setPlan(data)
+      setUnavailable([])
+      return
+    }
+    // Keeping a program that became unavailable fails the same way as confirm; mark it instead of a plain error.
+    const failure = confirmFailure(plan, response?.status, error as ErrorBody)
+    if (failure?.unavailable.length) setUnavailable(failure.unavailable)
     else setPlanError('일정을 고치지 못했어요. 다시 시도해 주세요.')
   }
 
@@ -221,12 +231,18 @@ function Chat() {
     if (!plan) return
     const context = planContext.current
     setPlanBusy(true)
-    const { data } = await confirmPlan({ path: { plan_id: plan.id } })
+    setPlanError(null)
+    const { data, error, response } = await confirmPlan({ path: { plan_id: plan.id } })
     if (context !== planContext.current) return
     setPlanBusy(false)
     setConfirming(false)
     if (!data) {
-      setPlanError('일정을 확정하지 못했어요. 겹치는 수업이 없는지 확인해 주세요.')
+      // 409 violations / 422 unknown_program: redraw the draft so 확정 stays disabled until it changes.
+      const failure = confirmFailure(plan, response?.status, error as ErrorBody)
+      if (failure) {
+        setPlan(failure.plan)
+        setUnavailable(failure.unavailable)
+      } else setPlanError('일정을 확정하지 못했어요. 겹치는 수업이 없는지 확인해 주세요.')
       return
     }
     await queryClient.invalidateQueries({ queryKey: ['plans'] })
@@ -291,6 +307,7 @@ function Chat() {
                 onRemove: (item) => editPlan(withoutProgram(plan, item.program_id)),
                 onSwap: openSwap,
                 onConfirm: () => setConfirming(true),
+                unavailable,
               }}
             />
           )}
