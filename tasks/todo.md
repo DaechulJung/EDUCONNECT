@@ -47,13 +47,30 @@
 - [x] #14 후속: Settings `env_ignore_empty`
 - [x] PR #16 리뷰 반영(루트 .env, reset 순서, CI SEED_PASSWORD)
 
+## #2 학원 프로그램 등록·관리 — BUILDER
+- 완료 조건: AC-02.1~02.6 done(TC-13~18), `npm run check`·`npx e2e run` 통과, `Closes #2` PR VERIFIER 승인. AC-02.4·02.5·02.6의 추천·일정 쪽 확인은 #6·#7 병합 뒤
+- [x] 프로그램 목록·등록·삭제(soft delete) API와 시험(AC-02.3)
+- [x] 학원 화면: 목록(미공개 표시)·등록 폼(칸 옆 오류)·삭제 확인
+- [x] 화면 단위 시험(program-form)·E2E(TC-13·14·17·18 학원 쪽) — academy.e2e 3/3 (`8bdb38e`)
+- [x] origin/main(#1 병합 678efad) merge 후 재시험 — `npm run check` api 140·web 7
+- [x] origin/main(#6 병합 e60a712) merge, TC-16·17(목록·비교표)·18 E2E — academy 5/5, 전체 E2E 23/23(ai 태그 제외), `npm run check` api 197
+- [x] PR #17 이월 3건: lessons #14 `[BUILDER]`, TC-07 근거에 session.test.ts, TC-76 가짜 Azure 값을 앱 생성 전에 주입
+- [x] TC-17 일정 확인: 로컬 시험 브랜치(issue-2 + origin/issue-7, push 안 함)에서 먼저 작성·실행
+- [x] #7 병합 → origin/main merge → TC-17 전체 재실행 → AC-02.5 done → `Closes #2` PR (#2 blocked-by #7 등록) — main `0994677` merge, E2E 29/29
 ## #8 추천 결과 선택·수정과 확정 — PLANNER (dev:2)
 완료 조건: AC-08.1~08.3을 시험 자료와 함께 done 처리하고 `npm run check` 통과 뒤, #7 병합 후 origin/main을 merge해 `Closes #8` PR.
 - [x] 일정 목록·수정·확정 API와 pytest(`407507f`·`02139fe`): 위반 있는 초안 저장, 위반 시 확정 409, 이전 확정 superseded
 - [x] 초안 빼기·바꾸기·확정 화면, 일정 탭 확정 계획(`169595e`)
 - [x] E2E TC-47~49(`tests/plan.e2e.ts`, edu-dev2b): 11:2xZ 3회 연속 3/3, `schedule.e2e.ts` 4/4
 - [x] #7 병합(`f5e3edd`) 뒤 origin/main merge, `npm run check` exit 0(api 209·web 19), AC-08.1~08.3 done, lessons
-- [ ] PR(`Closes #8`) → CI 3/3 → VERIFIER 승인 → 병합
+- [x] PR #23 병합(`fca1e24`) — 관문 누락(VERIFIER PR 코멘트·Codex 처리 코멘트 없음)으로 다시 열기(결정 `b9c2c418`)
+- [x] Codex P1: `update_draft` 자녀 행 잠금 + 결정형 경합 시험 — `9084ff1`
+- [x] Codex P2: 확정 409 위반 갱신·422 신청 불가, web 시험 2 — `063ba5a`, experience State Patterns 1행 — `0c93870`
+- [x] Codex P2(plans.py 230) 부분 반영, 한계 development.md 기록. check api 210·web 21, gen:api 0, E2E 27/27
+- [x] PR #24 Codex P1: E2E `#8 회귀 확정 409`·`#8 회귀 확정 422`(`tests/plan.e2e.ts`) — main 판 web으로 RED 2 실패 확인
+- [x] PR #24 Codex P1: lessons `#8 다시 열기(PR #23 Codex 후속)`
+- [x] PR #24 Codex P2: 409 뒤 예산 초과 금액은 응답 `amount`, 안내는 위반 종류별(`confirmNotice`) + web 시험 2
+- [ ] PR #24 처리 코멘트 → VERIFIER PR 승인 코멘트 → CI 3/3 → `--match-head-commit` 병합
 ## #12 모두의 AI 교육 에이전트 표현과 연동 경계 — BUILDER (10:32 분배 조정으로 dev:2→dev:1)
 - 완료 조건: AC-12.1·12.2 done(TC-67·68), `npm run check`·`npx e2e run` 통과, `Closes #12` PR VERIFIER 승인
 - [x] 라벨 #12·#4 dev:2→dev:1

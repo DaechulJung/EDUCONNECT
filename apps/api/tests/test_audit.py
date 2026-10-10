@@ -7,7 +7,9 @@ No API reads audit_events (AD-9), so the test SELECTs the table.
 from fastapi.testclient import TestClient
 from sqlalchemy import text
 
+from app.core.config import Settings
 from app.core.session import COOKIE_NAME
+from app.main import create_app
 from app.seed.load import seed_id
 from tests.conftest import TEST_PASSWORD, login
 
@@ -30,9 +32,19 @@ PROGRAM = {
 }  # fmt: skip
 
 
-def test_tc76_audit_rows_without_secrets(monkeypatch, sync_db, seeded: TestClient) -> None:
+def test_tc76_audit_rows_without_secrets(monkeypatch, sync_db) -> None:
+    # The fake Azure values go in before the app is built, so the app (and its log masking)
+    # really holds them; injecting after create_app would check values the app never saw.
     for name, value in FAKE_AZURE.items():
         monkeypatch.setenv(name, value)
+    config = Settings(enable_test_routes=True)
+    assert config.azure_openai_api_key == FAKE_AZURE["AZURE_OPENAI_API_KEY"]
+    assert config.azure_openai_endpoint == FAKE_AZURE["AZURE_OPENAI_ENDPOINT"]
+    with TestClient(create_app(config)) as seeded:
+        _run_tc76(sync_db, seeded)
+
+
+def _run_tc76(sync_db, seeded: TestClient) -> None:
     assert seeded.post("/api/test/reset").json() == {"reset": True}
     with sync_db.connect() as conn:
         assert conn.scalar(text("SELECT count(*) FROM audit_events")) == 0

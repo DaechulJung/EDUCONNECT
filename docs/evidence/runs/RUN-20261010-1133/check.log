@@ -1,0 +1,97 @@
+
+> check
+> npm run infra && npm run migrate && npm run lint && npm run typecheck && npm test
+
+
+> infra
+> docker compose up --wait db redis
+
+ Network edu-main_default Creating 
+ Network edu-main_default Created 
+ Container edu-main-db-1 Creating 
+ Container edu-main-redis-1 Creating 
+ Container edu-main-redis-1 Created 
+ Container edu-main-db-1 Created 
+ Container edu-main-redis-1 Starting 
+ Container edu-main-db-1 Starting 
+ Container edu-main-redis-1 Started 
+ Container edu-main-db-1 Started 
+ Container edu-main-redis-1 Waiting 
+ Container edu-main-db-1 Waiting 
+ Container edu-main-db-1 Healthy 
+ Container edu-main-redis-1 Healthy 
+
+> migrate
+> uv run --directory apps/api alembic upgrade head
+
+
+> lint
+> npm run lint -w web && uv run --directory apps/api ruff check && uv run --directory apps/api ruff format --check
+
+
+> web@0.1.0 lint
+> eslint
+
+All checks passed!
+95 files already formatted
+
+> typecheck
+> npm run typecheck -w web
+
+
+> web@0.1.0 typecheck
+> next typegen && tsc --noEmit
+
+Generating route types...
+✓ Types generated successfully
+
+> test
+> npm run test -w web && uv run --directory apps/api pytest
+
+
+> web@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.3 /Users/agentneo/Desktop/71_Hackerthon/01_Pre_Project/AIDX_PRE_TRAINING_2/.worktrees/verify/apps/web
+
+
+ Test Files  4 passed (4)
+      Tests  19 passed (19)
+   Start at  20:34:23
+   Duration  127ms (transform 55%, import 22%, tests 18%, worker 5%)
+
+============================= test session starts ==============================
+platform darwin -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0
+rootdir: /Users/agentneo/Desktop/71_Hackerthon/01_Pre_Project/AIDX_PRE_TRAINING_2/.worktrees/verify/apps/api
+configfile: pyproject.toml
+testpaths: tests
+plugins: anyio-4.15.1
+collected 209 items
+
+tests/test_ai_port.py ..................                                 [  8%]
+tests/test_audit.py .                                                    [  9%]
+tests/test_auth.py ......                                                [ 11%]
+tests/test_auth_session.py .....                                         [ 14%]
+tests/test_authz.py .........                                            [ 18%]
+tests/test_chat_api.py ............                                      [ 24%]
+tests/test_chat_extract.py .....................                         [ 34%]
+tests/test_compose_config.py ...                                         [ 35%]
+tests/test_config.py ......                                              [ 38%]
+tests/test_core.py .......                                               [ 42%]
+tests/test_engine.py .......................                             [ 53%]
+tests/test_family_list.py ..                                             [ 54%]
+tests/test_family_update.py .....                                        [ 56%]
+tests/test_foundation_models.py ...                                      [ 57%]
+tests/test_health.py .                                                   [ 58%]
+tests/test_meta.py .                                                     [ 58%]
+tests/test_openapi_snapshot.py .                                         [ 59%]
+tests/test_plans.py ............                                         [ 65%]
+tests/test_recommend.py .......                                          [ 68%]
+tests/test_routes_contract.py .......................................... [ 88%]
+........                                                                 [ 92%]
+tests/test_safety.py ...                                                 [ 93%]
+tests/test_seed.py ........                                              [ 97%]
+tests/test_test_routes.py .....                                          [100%]
+
+============================= 209 passed in 23.97s =============================

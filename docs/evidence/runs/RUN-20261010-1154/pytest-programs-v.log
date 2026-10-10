@@ -1,0 +1,19 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- /Users/agentneo/Desktop/71_Hackerthon/01_Pre_Project/AIDX_PRE_TRAINING_2/.worktrees/verify/apps/api/.venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/agentneo/Desktop/71_Hackerthon/01_Pre_Project/AIDX_PRE_TRAINING_2/.worktrees/verify/apps/api
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 9 items
+
+tests/test_programs.py::test_list_shows_own_live_programs_only PASSED    [ 11%]
+tests/test_programs.py::test_create_keeps_tuition_and_other_apart PASSED [ 22%]
+tests/test_programs.py::test_tc15_invalid_values_are_422_and_add_no_row[end_before_start] PASSED [ 33%]
+tests/test_programs.py::test_tc15_invalid_values_are_422_and_add_no_row[negative_tuition] PASSED [ 44%]
+tests/test_programs.py::test_tc15_invalid_values_are_422_and_add_no_row[zero_capacity] PASSED [ 55%]
+tests/test_programs.py::test_tc15_invalid_values_are_422_and_add_no_row[missing_location] PASSED [ 66%]
+tests/test_programs.py::test_delete_hides_the_program_and_keeps_the_row PASSED [ 77%]
+tests/test_programs.py::test_delete_someone_elses_program_is_404_and_changes_nothing PASSED [ 88%]
+tests/test_programs.py::test_parent_gets_403_on_every_program_route PASSED [100%]
+
+============================== 9 passed in 3.02s ===============================
