@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 import type { Conditions } from './client'
-import { budgetError, childLabel, conditionRows, pickChild, sameConditions, subjectOptions } from './conditions'
+import { budgetError, childGate, childLabel, conditionRows, pickChild, sameConditions, subjectOptions } from './conditions'
 
 const around: Conditions = {
   child_id: 'c1',
@@ -54,4 +54,13 @@ test('대상 자녀는 고른 자녀이고, 고르기 전이나 목록에 없으
   expect(pickChild(kids, 'gone')?.id).toBe('a')
   expect(pickChild([], null)).toBeNull()
   expect(pickChild(undefined, 'b')).toBeNull()
+})
+
+// #5 회귀 (TC-16): the chat must not answer "먼저 자녀를 등록해 주세요" before the children list has answered.
+test('childGate: loading until the list answers, error only when it failed, none for no child, ready for a child', () => {
+  expect(childGate({ status: 'pending', fetching: true }, false)).toBe('loading')
+  expect(childGate({ status: 'error', fetching: false }, false)).toBe('error')
+  expect(childGate({ status: 'error', fetching: true }, false)).toBe('loading')
+  expect(childGate({ status: 'success', fetching: false }, false)).toBe('none')
+  expect(childGate({ status: 'success', fetching: true }, true)).toBe('ready')
 })
