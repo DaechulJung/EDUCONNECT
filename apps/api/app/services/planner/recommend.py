@@ -1,6 +1,7 @@
 """추천 비교표 (REQ-06). DB에서 엔진 입력을 읽고(AD-2 SELECT만), 필터·점수·정렬은 엔진이,
 추천 이유 문장은 LLM이 만든다(AD-5). LLM이 실패하면 템플릿 설명으로 같은 표를 돌려준다."""
 
+import re
 from typing import Any, Literal
 
 from pydantic import BaseModel, ValidationError
@@ -8,6 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.ai.port import LlmUnavailable, Message, Provider, complete_json
 from app.core.units import grade_label, ints_to_dows, min_to_hhmm
+from app.core.vocab import DENSITY_LABELS, DOW_LABELS, PROGRAM_TYPE_LABELS
 from app.models.family import Child
 from app.schemas.planner import Recommendation, RecommendationList
 from app.services.planner import engine, inputs
@@ -41,6 +43,22 @@ JSON만 답한다. 후보마다 program_id와 reason을 준다. 순서·후보�
 조건: {conditions}"""
 
 
+# 모델이 코드값을 그대로 쓰면 화면에 'tight'가 보인다. 앞뒤가 영문자가 아닐 때만 라벨로 바꾼다
+# (한글 단어 경계로 잡으면 "mon요일"을 놓친다).
+CODE_LABELS: dict[str, str] = DENSITY_LABELS | DOW_LABELS | PROGRAM_TYPE_LABELS
+CODE_TOKEN = re.compile(
+    r"(?<![A-Za-z])(" + "|".join(sorted(CODE_LABELS, key=len, reverse=True)) + r")(?![A-Za-z])"
+)
+
+
+def labels_for_codes(text: str) -> str:
+    return CODE_TOKEN.sub(lambda m: CODE_LABELS[m.group(1)], text)
+
+
+def _days(values: tuple[int, ...] | list[int]) -> str:
+    return "·".join(DOW_LABELS[d] for d in ints_to_dows(list(values)))
+
+
 class _Reasons(BaseModel):
     reasons: list[dict[str, str]]
 
@@ -72,10 +90,9 @@ def template_reason(row: engine.Recommendation) -> str:
 def conditions_text(cond: engine.Conditions) -> str:
     subjects = "·".join(cond.subjects) or "정하지 않음"
     cap = "없음" if cond.budget_cap >= engine.UNLIMITED_BUDGET else f"{cond.budget_cap}원"
-    days = "·".join(ints_to_dows(list(cond.days)))
     return (
         f"과목 {subjects}, 목표 월 예산 {cond.budget_target}원, 상한 {cap}, "
-        f"요일 {days}, 밀도 {cond.density}"
+        f"요일 {_days(cond.days)}, 밀도 {DENSITY_LABELS.get(cond.density, cond.density)}"
     )
 
 
@@ -88,7 +105,7 @@ def build_messages(
     system = SYSTEM_PROMPT.format(child=who, conditions=conditions_text(cond))
     lines = [
         f"{r.program.id} | {r.program.institution_name} | {r.program.subject} | "
-        f"{'·'.join(ints_to_dows(list(r.program.days)))} "
+        f"{_days(r.program.days)} "
         f"{min_to_hhmm(r.program.start_min)}-{min_to_hhmm(r.program.end_min)} | "
         f"월 {r.program.monthly_cost}원 | 이동 약 {r.travel_min}분"
         for r in rows
@@ -110,7 +127,7 @@ async def _reasons(
             TASK, SCHEMA, build_messages(child, cond, rows), provider=provider
         )
         found = {
-            item["program_id"]: item["reason"].strip()
+            item["program_id"]: labels_for_codes(item["reason"].strip())
             for item in _Reasons.model_validate(value).reasons
             if item.get("reason", "").strip()
         }
