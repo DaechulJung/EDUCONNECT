@@ -16,7 +16,7 @@
 ## #2 학원 프로그램 등록·관리 — BUILDER
 - 완료 조건: AC-02.1~02.6 done(TC-13~18), `npm run check`·`npx e2e run` 통과, `Closes #2` PR VERIFIER 승인. AC-02.4·02.5·02.6의 추천·일정 쪽 확인은 #6·#7 병합 뒤
 - [x] 프로그램 목록·등록·삭제(soft delete) API와 시험(AC-02.3)
-- [ ] 학원 화면: 목록(미공개 표시)·등록 폼(칸 옆 오류)·삭제 확인
-- [ ] 화면 단위 시험(program-form)·E2E(TC-13·14·17·18 학원 쪽)
-- [ ] origin/main(#1 병합 678efad) merge 후 재시험
+- [x] 학원 화면: 목록(미공개 표시)·등록 폼(칸 옆 오류)·삭제 확인
+- [x] 화면 단위 시험(program-form)·E2E(TC-13·14·17·18 학원 쪽) — academy.e2e 3/3 (`8bdb38e`)
+- [x] origin/main(#1 병합 678efad) merge 후 재시험 — `npm run check` api 140·web 7
 - [ ] AC-02.4·02.5·02.6 추천·일정 쪽 시험은 #6·#7 병합 뒤 추가
