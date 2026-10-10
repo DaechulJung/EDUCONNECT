@@ -17,9 +17,9 @@
 - [x] engine.py 일정 생성(결정형 탐색, 촘촘 공백 ≤30, 완화 조건) — `8ed4441`
 - [x] engine.py 추천 정렬(점수, 학원명, 시작 시각, ID) — `8ed4441`
 - [x] 단위 시험 TC-41·42·43·44·46 고정 입력 초안(14개) — `8ed4441`
-- [ ] 고정 입력을 #11 시드(`apps/api/app/seed/data/`)로 교체
-- [ ] AC-07.7 재생성 시험 TC-78(CHG-004), AC-07.8 E2E TC-79(CHG-005)
-- [ ] 일정 API·화면, AC done 처리, PR
+- [x] 고정 입력을 #11 시드(`apps/api/app/seed/data/`)로 교체 — `41d4254`
+- [x] AC-07.7 재생성 시험 TC-78(CHG-004) `41d4254`, AC-07.8 E2E TC-79(CHG-005) `f1863b9`
+- [x] 일정 API(`c2a0394`)·화면(`f1863b9`), `npm run check` api 197·web 16, E2E 22/22, AC-07.1~07.8 done, PR
 
 ## #5 챗봇 대화로 조건 설정과 화면 확인·수정 — PLANNER (dev:2)
 완료 조건: AC-05.1~05.7을 시험 자료와 함께 done 처리하고 `npm run check` 통과 뒤 `Closes #5` PR. AC-05.3·05.4는 CHG-005 문장(새 대화에 값 유지)대로 시험.
