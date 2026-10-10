@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 import type { Plan, PlanItem } from './client'
-import { canConfirm, itemMonthly, overBudget, relaxationLabels, swapCandidates, swapProgram, weekColumns, withoutProgram } from './plan'
+import { UNAVAILABLE_TAG, canConfirm, confirmFailure, itemMonthly, overBudget, relaxationLabels, swapCandidates, swapProgram, weekColumns, withoutProgram } from './plan'
 
 const item = (over: Partial<PlanItem>): PlanItem => ({
   program_id: 'p1',
@@ -73,4 +73,26 @@ test('바꾸기 후보는 같은 과목이고 초안에 없는 추천만이다',
     { program_id: 'p4', subject: '수학' },
   ]
   expect(swapCandidates(plan(), { subject: '영어' }, recs).map((r) => r.program_id)).toEqual(['p3'])
+})
+
+test('확정 409 violations는 응답의 위반으로 초안을 갱신해 칸 태그를 붙이고 확정을 막는다 (PR #23 P2)', () => {
+  const body = { detail: 'violations', data: { violations: [{ program_id: 'p2', kind: 'travel_short' as const }] } }
+  const failure = confirmFailure(plan(), 409, body)
+  expect(failure).not.toBeNull()
+  expect(failure!.unavailable).toEqual([])
+  expect(failure!.plan.violations).toEqual(body.data.violations)
+  expect(canConfirm(failure!.plan, failure!.unavailable)).toBe(false)
+  const mon = weekColumns(failure!.plan, failure!.unavailable)[0].entries.filter((e) => e.kind === 'class')
+  expect(mon.map((e) => (e.kind === 'class' ? e.violations : []))).toEqual([['이동 부족'], []])
+})
+
+test('확정 422 unknown_program은 그 칸에 신청 불가를 붙이고 초안을 바꿀 때까지 확정을 막는다 (PR #23 P2)', () => {
+  const failure = confirmFailure(plan(), 422, { detail: 'unknown_program', data: { program_ids: ['p1'] } })
+  expect(failure).toEqual({ plan: plan(), unavailable: ['p1'] })
+  expect(canConfirm(failure!.plan, failure!.unavailable)).toBe(false)
+  expect(canConfirm(failure!.plan, [])).toBe(true)
+  const mon = weekColumns(failure!.plan, failure!.unavailable)[0].entries.filter((e) => e.kind === 'class')
+  expect(mon.map((e) => (e.kind === 'class' ? e.violations : []))).toEqual([[], [UNAVAILABLE_TAG]])
+  expect(confirmFailure(plan(), 500, undefined)).toBeNull()
+  expect(confirmFailure(plan(), 422, { detail: 'empty_plan' })).toBeNull()
 })
