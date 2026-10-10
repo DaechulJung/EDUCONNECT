@@ -1,0 +1,9 @@
+{ "request": "REQ-01에 세션 쿠키 속성·로그인 전 401 확인 조건 2개, REQ-10에 저장소 비밀값 검사 확인 조건 1개 추가(W4 6절)",
+  "changed": { "docs/prd.md": "AC-01.11·AC-01.12·AC-10.6 추가, REQ-01·REQ-10 확인 조건 목록·품질 요구, SEC-02·SEC-08 요약, 변경 이력 갱신. Issue #1·#10 본문은 register로 갱신" },
+  "unchanged": {
+    "docs/intent.md": "확정 장(12 제약 D-12·D-14 세션 무효화·비밀값 규칙)과 어긋나지 않는 세부 확인 조건 추가라 고치지 않음",
+    "docs/project-brief.md": "범위·사용자·해결 방향·성공 기준 변화 없음",
+    "docs/experience.md": "FLOW-04·FLOW-01 흐름과 화면 동작 변화 없음(세션 만료·권한 없음 상태는 State Patterns에 이미 있음)",
+    "docs/arch.md": "아직 양식 상태. 이어지는 bmad-architecture 작성에서 쿠키 속성·401·저장소 검사를 반영",
+    "docs/e2e-test.md": "시험 계획 전(VERIFIER e2e-doc 계획 단계에서 새 AC의 TC를 함께 작성)"
+  } }
