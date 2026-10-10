@@ -2,6 +2,7 @@ import type { Plan, PlanItem, Violation } from './client'
 import { DAY_OPTIONS, formatWon } from './conditions'
 
 export const NO_PLAN = '조건을 만족하는 일정이 없습니다'
+export const BLOCKED = '겹치는 수업이 있어요. 바꾸거나 빼 주세요'
 
 // Server relaxation names (engine RELAX_*) → what the parent can change (experience 조건 불만족).
 const RELAXATIONS: Record<string, string> = {
@@ -50,4 +51,24 @@ export function itemMonthly(i: Pick<PlanItem, 'monthly_tuition' | 'monthly_other
 export function overBudget(plan: Pick<Plan, 'monthly_total' | 'budget_cap'>): string | null {
   const over = plan.monthly_total - plan.budget_cap
   return over > 0 ? `예산 초과 ${formatWon(over)}` : null
+}
+
+// '일정 확정' only for a draft the server judged clean (time overlap, travel shortage and over-budget all block).
+export function canConfirm(plan: Pick<Plan, 'status' | 'violations'>): boolean {
+  return plan.status === 'draft' && plan.violations.length === 0
+}
+
+// Program ids after removing or swapping one item; order is kept so the server sees the same list shape.
+export function withoutProgram(plan: Pick<Plan, 'items'>, programId: string): string[] {
+  return plan.items.map((i) => i.program_id).filter((id) => id !== programId)
+}
+
+export function swapProgram(plan: Pick<Plan, 'items'>, from: string, to: string): string[] {
+  return plan.items.map((i) => (i.program_id === from ? to : i.program_id))
+}
+
+// '바꾸기' candidates: recommended programs of the same subject that the draft does not hold yet.
+export function swapCandidates<T extends { program_id: string; subject: string }>(plan: Pick<Plan, 'items'>, item: Pick<PlanItem, 'subject'>, recs: readonly T[]): T[] {
+  const held = new Set(plan.items.map((i) => i.program_id))
+  return recs.filter((r) => r.subject === item.subject && !held.has(r.program_id))
 }
