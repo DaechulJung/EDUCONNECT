@@ -1,0 +1,59 @@
+{
+  "_note": "합성 목업. 항목은 학원 정보공개(교습과목·교습비·기타경비·강사)와 NEIS 학원교습소정보(학원명·분야)를 참고했다. 금액은 모두 월 단위 원. monthly_tuition null은 미공개, capacity=enrolled는 마감.",
+  "academies": [
+    {
+      "key": "academy-a",
+      "name": "새봄영어수학학원",
+      "lat": 37.5015,
+      "lng": 127.032,
+      "programs": [
+        {"key": "a-elem-english", "type": "academy", "subject": "영어", "days": ["mon", "thu"], "start": "15:00", "end": "16:20", "monthly_tuition": 450000, "monthly_other": 30000, "instructor": "김하늘", "grade_min": 4, "grade_max": 6, "capacity": 12, "enrolled": 8},
+        {"key": "a-elem-math", "type": "academy", "subject": "수학", "days": ["tue", "fri"], "start": "15:00", "end": "16:30", "monthly_tuition": 470000, "monthly_other": 40000, "instructor": "박도윤", "grade_min": 5, "grade_max": 6, "capacity": 10, "enrolled": 6},
+        {"key": "a-mid1-math", "type": "academy", "subject": "수학", "days": ["mon", "wed"], "start": "16:00", "end": "17:40", "monthly_tuition": 480000, "monthly_other": 30000, "instructor": "박도윤", "grade_min": 7, "grade_max": 7, "capacity": 12, "enrolled": 9},
+        {"key": "a-mid-english", "type": "academy", "subject": "영어", "days": ["tue", "thu"], "start": "17:00", "end": "18:30", "monthly_tuition": 400000, "monthly_other": 30000, "instructor": "김하늘", "grade_min": 7, "grade_max": 9, "capacity": 15, "enrolled": 10}
+      ]
+    },
+    {
+      "key": "academy-b",
+      "name": "다온수학학원",
+      "lat": 37.5025,
+      "lng": 127.0285,
+      "programs": [
+        {"key": "b-elem-math", "type": "academy", "subject": "수학", "days": ["mon", "wed"], "start": "16:30", "end": "17:50", "monthly_tuition": 380000, "monthly_other": 20000, "instructor": "최윤서", "grade_min": 3, "grade_max": 6, "capacity": 12, "enrolled": 7},
+        {"key": "b-elem-math-undisclosed", "type": "academy", "subject": "수학", "days": ["tue", "thu"], "start": "16:40", "end": "18:00", "monthly_tuition": null, "monthly_other": 20000, "instructor": "최윤서", "grade_min": 4, "grade_max": 6, "capacity": 10, "enrolled": 5},
+        {"key": "b-mid-math", "type": "academy", "subject": "수학", "days": ["tue", "fri"], "start": "18:00", "end": "19:30", "monthly_tuition": 460000, "monthly_other": 30000, "instructor": "오지훈", "grade_min": 7, "grade_max": 9, "capacity": 14, "enrolled": 12}
+      ]
+    },
+    {
+      "key": "academy-c",
+      "name": "푸른숲영어학원",
+      "lat": 37.499,
+      "lng": 127.0335,
+      "programs": [
+        {"key": "c-elem-english", "type": "academy", "subject": "영어", "days": ["tue", "thu"], "start": "16:40", "end": "18:00", "monthly_tuition": 350000, "monthly_other": 20000, "instructor": "Emma Lee", "grade_min": 4, "grade_max": 6, "capacity": 12, "enrolled": 9},
+        {"key": "c-elem-english-full", "type": "academy", "subject": "영어", "days": ["mon", "wed"], "start": "15:00", "end": "16:20", "monthly_tuition": 380000, "monthly_other": 20000, "instructor": "Emma Lee", "grade_min": 4, "grade_max": 6, "capacity": 10, "enrolled": 10},
+        {"key": "c-mid-english", "type": "academy", "subject": "영어", "days": ["mon", "wed"], "start": "16:00", "end": "17:30", "monthly_tuition": 420000, "monthly_other": 30000, "instructor": "윤재민", "grade_min": 7, "grade_max": 9, "capacity": 15, "enrolled": 11}
+      ]
+    },
+    {
+      "key": "academy-d",
+      "name": "리듬피아노미술학원",
+      "lat": 37.5008,
+      "lng": 127.027,
+      "programs": [
+        {"key": "d-piano", "type": "arts", "subject": "피아노", "days": ["wed", "fri"], "start": "17:00", "end": "17:50", "monthly_tuition": 160000, "monthly_other": 10000, "instructor": "서유진", "grade_min": 1, "grade_max": 6, "capacity": 8, "enrolled": 5},
+        {"key": "d-art", "type": "arts", "subject": "미술", "days": ["sat"], "start": "10:00", "end": "12:00", "monthly_tuition": 140000, "monthly_other": 20000, "instructor": "서유진", "grade_min": 1, "grade_max": 9, "capacity": 10, "enrolled": 6}
+      ]
+    },
+    {
+      "key": "academy-e",
+      "name": "코딩랩교습소",
+      "lat": 37.505,
+      "lng": 127.031,
+      "programs": [
+        {"key": "e-coding", "type": "other", "subject": "코딩", "days": ["sat"], "start": "13:00", "end": "14:30", "monthly_tuition": 200000, "monthly_other": 20000, "instructor": "강태오", "grade_min": 3, "grade_max": 9, "capacity": 8, "enrolled": 4},
+        {"key": "e-essay", "type": "other", "subject": "논술", "days": ["wed"], "start": "15:00", "end": "16:30", "monthly_tuition": 180000, "monthly_other": 10000, "instructor": "강태오", "grade_min": 4, "grade_max": 9, "capacity": 8, "enrolled": 3}
+      ]
+    }
+  ]
+}
