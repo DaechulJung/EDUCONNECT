@@ -95,3 +95,4 @@
 - [x] main `de8e2e8` merge(evidence.json 합집합) 뒤 check api 230·web 33, E2E children 5/5
 - [x] 문서: arch 233·237행, experience 85·169행, development.md #4 행·한계 1줄
 - [ ] AC-04.5 done → `Closes #4` PR → CI 3/3 → VERIFIER 승인 → 병합
+- dev1-13 | issue-13 | RED=main 02b2096에서 TC-69 위반 0건·TC-70 앱 결함 없음(시험 정의 보정 2회); 다음: check·e2e 전체·docs 기록·PR Closes #13
