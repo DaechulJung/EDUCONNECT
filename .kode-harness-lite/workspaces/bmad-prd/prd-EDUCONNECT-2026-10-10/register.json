@@ -1,0 +1,1608 @@
+{
+ "schemaVersion": 2,
+ "document": {
+  "id": "educonnect-prd",
+  "title": "EDUCONNECT 제품 요구사항",
+  "path": "docs/prd.md",
+  "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7"
+ },
+ "requirements": [
+  {
+   "body": "## 목적\n\n보호자·학원 담당자·학교 담당자는 시드 계정으로 로그인한다. 서버는 모든 요청에서 역할과 소유권을 검사한다. 학원 담당자는 자기 학원만, 학교 담당자는 자기 학교만, 보호자는 자기 자녀·계획만 다룬다. 남의 자원은 존재를 드러내지 않도록 404, 역할에 맞지 않는 기능은 403으로 거부한다. 로그인은 유지하고, 로그아웃하면 세션을 무효로 한다. 관련 여정 UJ-1~UJ-3. (docs/prd.md REQ-01)\n\n## 완료 조건\n\n- [ ] AC-01.1 [SEC-02] 시드 상태에서 보호자·학원 담당자·학교 담당자 시드 계정에 올바른 비밀번호를 넣으면 각각 보호자 챗봇 홈·학원 프로그램 관리·학교 시간표 관리 화면이 열린다\n- [ ] AC-01.2 [SEC-02] 시드 보호자 계정에 틀린 비밀번호를 넣으면 \"아이디 또는 비밀번호가 올바르지 않습니다\"가 보이고 응답에 세션 쿠키가 없다\n- [ ] AC-01.3 [SEC-03] 학원 A 담당자 세션으로 학원 B 프로그램 수정 API를 호출하면 404가 반환되고 학원 B 프로그램 값은 그대로이며, 같은 세션으로 학원 A 프로그램을 수정하면 200과 바뀐 값이 반환된다\n- [ ] AC-01.4 [SEC-03] 보호자 1 세션으로 보호자 2의 자녀 조회 API를 호출하면 404가 반환되고 응답 본문에 보호자 2 자녀 별칭이 없으며, 자기 자녀 조회는 200이다\n- [ ] AC-01.5 [SEC-03] 학교 1 담당자 세션으로 학교 2 시간표 수정 API를, 보호자 세션으로 학원 프로그램 수정 API를 호출하면 각각 404·403이 반환되고 데이터는 바뀌지 않는다\n- [ ] AC-01.6 [SEC-05] 시드 계정의 DB 비밀번호 저장값은 시드 비밀번호 문자열과 다르고 arch가 정한 해시 알고리즘 형식(접두어)으로 시작한다\n- [ ] AC-01.7 [SEC-09] 같은 계정에 틀린 비밀번호를 5회 연속 넣은 뒤 6회째에 올바른 비밀번호를 넣으면 \"로그인 시도가 많아 15분 동안 잠겼습니다\"가 보이고 로그인되지 않는다\n- [ ] AC-01.8 [SEC-09] AC-01.7로 잠긴 계정에서 시험용 시계를 15분 뒤로 옮긴 뒤 올바른 비밀번호를 넣으면 로그인된다\n- [ ] AC-01.9 [SEC-08] 로그인 상태에서 로그아웃한 뒤 이전 세션 쿠키로 자녀 조회 API를 호출하면 401이 반환된다\n- [ ] AC-01.10 로그인한 보호자가 브라우저를 새로 고치거나 다른 화면으로 이동했다 돌아와도 로그인 화면이 다시 나오지 않는다\n\n## 담당\n\n- 담당: 미배정(bmad-architecture 분배 후 지정)\n- 리뷰어: 미배정\n\n## 완료 증거\n\n| 항목 | 내용 |\n| --- | --- |\n| 커밋 URL | 미기록 |\n| 시험 명령 | 미기록 |\n| 결과 | 미기록 |\n| 화면·로그 경로 | 미기록 |\n",
+   "originalId": "REQ-01",
+   "title": "REQ-01 시드 계정 로그인과 역할·소유권 검사",
+   "text": "보호자·학원 담당자·학교 담당자는 시드 계정으로 로그인한다. 서버는 모든 요청에서 역할과 소유권을 검사한다. 학원 담당자는 자기 학원만, 학교 담당자는 자기 학교만, 보호자는 자기 자녀·계획만 다룬다. 남의 자원은 존재를 드러내지 않도록 404, 역할에 맞지 않는 기능은 403으로 거부한다. 로그인은 유지하고, 로그아웃하면 세션을 무효로 한다. 관련 여정 UJ-1~UJ-3.",
+   "classification": "quality",
+   "role": "requirement",
+   "sourceRefs": [
+    {
+     "documentId": "prd",
+     "pathOrUrl": "docs/prd.md",
+     "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+     "location": {
+      "line_start": 88,
+      "line_end": 88
+     }
+    },
+    {
+     "documentId": "prd",
+     "pathOrUrl": "docs/prd.md",
+     "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+     "location": {
+      "line_start": 178,
+      "line_end": 184
+     }
+    }
+   ],
+   "conditions": [
+    {
+     "originalId": "AC-01.1",
+     "text": "AC-01.1 [SEC-02] 시드 상태에서 보호자·학원 담당자·학교 담당자 시드 계정에 올바른 비밀번호를 넣으면 각각 보호자 챗봇 홈·학원 프로그램 관리·학교 시간표 관리 화면이 열린다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 108,
+        "line_end": 108
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-01.2",
+     "text": "AC-01.2 [SEC-02] 시드 보호자 계정에 틀린 비밀번호를 넣으면 \"아이디 또는 비밀번호가 올바르지 않습니다\"가 보이고 응답에 세션 쿠키가 없다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 109,
+        "line_end": 109
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-01.3",
+     "text": "AC-01.3 [SEC-03] 학원 A 담당자 세션으로 학원 B 프로그램 수정 API를 호출하면 404가 반환되고 학원 B 프로그램 값은 그대로이며, 같은 세션으로 학원 A 프로그램을 수정하면 200과 바뀐 값이 반환된다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 110,
+        "line_end": 110
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-01.4",
+     "text": "AC-01.4 [SEC-03] 보호자 1 세션으로 보호자 2의 자녀 조회 API를 호출하면 404가 반환되고 응답 본문에 보호자 2 자녀 별칭이 없으며, 자기 자녀 조회는 200이다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 111,
+        "line_end": 111
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-01.5",
+     "text": "AC-01.5 [SEC-03] 학교 1 담당자 세션으로 학교 2 시간표 수정 API를, 보호자 세션으로 학원 프로그램 수정 API를 호출하면 각각 404·403이 반환되고 데이터는 바뀌지 않는다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 112,
+        "line_end": 112
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-01.6",
+     "text": "AC-01.6 [SEC-05] 시드 계정의 DB 비밀번호 저장값은 시드 비밀번호 문자열과 다르고 arch가 정한 해시 알고리즘 형식(접두어)으로 시작한다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 113,
+        "line_end": 113
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-01.7",
+     "text": "AC-01.7 [SEC-09] 같은 계정에 틀린 비밀번호를 5회 연속 넣은 뒤 6회째에 올바른 비밀번호를 넣으면 \"로그인 시도가 많아 15분 동안 잠겼습니다\"가 보이고 로그인되지 않는다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 114,
+        "line_end": 114
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-01.8",
+     "text": "AC-01.8 [SEC-09] AC-01.7로 잠긴 계정에서 시험용 시계를 15분 뒤로 옮긴 뒤 올바른 비밀번호를 넣으면 로그인된다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 115,
+        "line_end": 115
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-01.9",
+     "text": "AC-01.9 [SEC-08] 로그인 상태에서 로그아웃한 뒤 이전 세션 쿠키로 자녀 조회 API를 호출하면 401이 반환된다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 116,
+        "line_end": 116
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-01.10",
+     "text": "AC-01.10 로그인한 보호자가 브라우저를 새로 고치거나 다른 화면으로 이동했다 돌아와도 로그인 화면이 다시 나오지 않는다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 117,
+        "line_end": 117
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "body": "## 목적\n\n학원 담당자는 웹에서 자기 학원 프로그램을 등록·수정·삭제한다. 프로그램은 과목(교과·예체능·기타), 유형, 요일·시작·종료 시각, 월 교습비, 월 기타경비(분리), 강사, 대상 학년, 정원, 현재 인원, 위치(위도·경도 직접 입력)를 가진다. 확정 계획에 쓰인 프로그램을 바꾸거나 지우면 REQ-09 영향 처리가 일어난다. 관련 여정 UJ-2. (docs/prd.md REQ-02)\n\n## 완료 조건\n\n- [ ] AC-02.1 시드 학원 A 담당자가 프로그램 등록 화면에서 과목=코딩, 유형=교과 학원, 요일=화·목, 16:00~17:00, 월 교습비 200,000, 월 기타경비 20,000, 강사, 대상 학년=초4~초6, 정원 10, 현재 인원 3, 위도·경도를 넣어 저장하면 목록에 그 프로그램이 월 교습비와 월 기타경비가 나뉜 채 보인다\n- [ ] AC-02.2 [SEC-04] 프로그램 등록 화면에서 종료 시각이 시작 시각보다 이르거나, 월 교습비가 음수이거나, 정원이 0 이하이거나, 위도·경도가 비어 있는 값을 저장하면 해당 칸 옆에 오류가 보이고 목록에 추가되지 않는다\n- [ ] AC-02.3 [SEC-04] AC-02.2의 잘못된 값을 프로그램 등록 API에 직접 보내면 422가 반환되고 DB에 행이 생기지 않는다\n- [ ] AC-02.4 학원 담당자가 과목을 피아노(유형=예체능 학원)로 등록한 뒤, 시드 보호자가 초5 자녀의 선호 과목에 피아노를 넣고 추천을 요청하면 비교표에 그 프로그램이 나온다\n- [ ] AC-02.5 시드 상태에서 학원 담당자가 프로그램 목록을 열면 월 교습비를 비워 둔 시드 미공개 프로그램이 \"미공개\"로 보이고, 시드 보호자가 AC-06.1 조건으로 추천·일정 생성을 요청하면 그 프로그램이 비교표와 일정에 없다\n- [ ] AC-02.6 학원 담당자가 확정 계획에 쓰이지 않은 프로그램을 삭제하면 목록에서 사라지고, 이후 보호자 추천 비교표에도 나오지 않는다\n\n## 담당\n\n- 담당: 미배정(bmad-architecture 분배 후 지정)\n- 리뷰어: 미배정\n\n## 완료 증거\n\n| 항목 | 내용 |\n| --- | --- |\n| 커밋 URL | 미기록 |\n| 시험 명령 | 미기록 |\n| 결과 | 미기록 |\n| 화면·로그 경로 | 미기록 |\n",
+   "originalId": "REQ-02",
+   "title": "REQ-02 학원 프로그램 등록·관리",
+   "text": "학원 담당자는 웹에서 자기 학원 프로그램을 등록·수정·삭제한다. 프로그램은 과목(교과·예체능·기타), 유형, 요일·시작·종료 시각, 월 교습비, 월 기타경비(분리), 강사, 대상 학년, 정원, 현재 인원, 위치(위도·경도 직접 입력)를 가진다. 확정 계획에 쓰인 프로그램을 바꾸거나 지우면 REQ-09 영향 처리가 일어난다. 관련 여정 UJ-2.",
+   "classification": "functional",
+   "role": "requirement",
+   "sourceRefs": [
+    {
+     "documentId": "prd",
+     "pathOrUrl": "docs/prd.md",
+     "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+     "location": {
+      "line_start": 89,
+      "line_end": 89
+     }
+    },
+    {
+     "documentId": "prd",
+     "pathOrUrl": "docs/prd.md",
+     "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+     "location": {
+      "line_start": 186,
+      "line_end": 192
+     }
+    }
+   ],
+   "conditions": [
+    {
+     "originalId": "AC-02.1",
+     "text": "AC-02.1 시드 학원 A 담당자가 프로그램 등록 화면에서 과목=코딩, 유형=교과 학원, 요일=화·목, 16:00~17:00, 월 교습비 200,000, 월 기타경비 20,000, 강사, 대상 학년=초4~초6, 정원 10, 현재 인원 3, 위도·경도를 넣어 저장하면 목록에 그 프로그램이 월 교습비와 월 기타경비가 나뉜 채 보인다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 118,
+        "line_end": 118
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-02.2",
+     "text": "AC-02.2 [SEC-04] 프로그램 등록 화면에서 종료 시각이 시작 시각보다 이르거나, 월 교습비가 음수이거나, 정원이 0 이하이거나, 위도·경도가 비어 있는 값을 저장하면 해당 칸 옆에 오류가 보이고 목록에 추가되지 않는다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 119,
+        "line_end": 119
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-02.3",
+     "text": "AC-02.3 [SEC-04] AC-02.2의 잘못된 값을 프로그램 등록 API에 직접 보내면 422가 반환되고 DB에 행이 생기지 않는다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 120,
+        "line_end": 120
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-02.4",
+     "text": "AC-02.4 학원 담당자가 과목을 피아노(유형=예체능 학원)로 등록한 뒤, 시드 보호자가 초5 자녀의 선호 과목에 피아노를 넣고 추천을 요청하면 비교표에 그 프로그램이 나온다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 121,
+        "line_end": 121
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-02.5",
+     "text": "AC-02.5 시드 상태에서 학원 담당자가 프로그램 목록을 열면 월 교습비를 비워 둔 시드 미공개 프로그램이 \"미공개\"로 보이고, 시드 보호자가 AC-06.1 조건으로 추천·일정 생성을 요청하면 그 프로그램이 비교표와 일정에 없다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 122,
+        "line_end": 122
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-02.6",
+     "text": "AC-02.6 학원 담당자가 확정 계획에 쓰이지 않은 프로그램을 삭제하면 목록에서 사라지고, 이후 보호자 추천 비교표에도 나오지 않는다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 123,
+        "line_end": 123
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "body": "## 목적\n\n학교 담당자는 학년별 정규 시간표(요일·하교 시각)와 방과후 프로그램(과목·요일·시간·월 교습비·강사·정원·현재 인원)을 웹에서 입력·수정한다. 입력한 시간표는 그 학교 자녀의 일정 생성에서 고정 일정으로 쓰인다. 관련 여정 UJ-3. (docs/prd.md REQ-03)\n\n## 완료 조건\n\n- [ ] AC-03.1 시드 초등학교 담당자가 5학년 수요일 하교 시각을 13:40으로 저장하면 시간표 화면에 13:40이 보인다\n- [ ] AC-03.2 AC-03.1 뒤 그 학교 초5 시드 자녀로 일정을 생성하면 수요일 학원 수업 시작 시각이 모두 13:40 + 이동 근사 시간 이후다\n- [ ] AC-03.3 학교 담당자가 방과후 프로그램(과목=로봇, 요일=금, 14:00~15:00, 월 교습비 30,000, 강사, 정원 15, 현재 인원 5)을 저장한 뒤, 그 학교 시드 자녀의 선호 과목에 로봇을 넣고 추천을 요청하면 비교표에 유형 \"방과후\"로 나온다\n- [ ] AC-03.4 [SEC-04] 같은 학년·요일에 이미 있는 14:00~15:00과 겹치는 14:30~15:30 항목을 저장하면 \"시간이 겹칩니다\"가 보이고 저장되지 않으며, 같은 값을 API로 보내면 422가 반환된다\n\n## 담당\n\n- 담당: 미배정(bmad-architecture 분배 후 지정)\n- 리뷰어: 미배정\n\n## 완료 증거\n\n| 항목 | 내용 |\n| --- | --- |\n| 커밋 URL | 미기록 |\n| 시험 명령 | 미기록 |\n| 결과 | 미기록 |\n| 화면·로그 경로 | 미기록 |\n",
+   "originalId": "REQ-03",
+   "title": "REQ-03 학교 정규·방과후 시간표 등록·관리",
+   "text": "학교 담당자는 학년별 정규 시간표(요일·하교 시각)와 방과후 프로그램(과목·요일·시간·월 교습비·강사·정원·현재 인원)을 웹에서 입력·수정한다. 입력한 시간표는 그 학교 자녀의 일정 생성에서 고정 일정으로 쓰인다. 관련 여정 UJ-3.",
+   "classification": "functional",
+   "role": "requirement",
+   "sourceRefs": [
+    {
+     "documentId": "prd",
+     "pathOrUrl": "docs/prd.md",
+     "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+     "location": {
+      "line_start": 90,
+      "line_end": 90
+     }
+    },
+    {
+     "documentId": "prd",
+     "pathOrUrl": "docs/prd.md",
+     "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+     "location": {
+      "line_start": 194,
+      "line_end": 200
+     }
+    }
+   ],
+   "conditions": [
+    {
+     "originalId": "AC-03.1",
+     "text": "AC-03.1 시드 초등학교 담당자가 5학년 수요일 하교 시각을 13:40으로 저장하면 시간표 화면에 13:40이 보인다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 124,
+        "line_end": 124
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-03.2",
+     "text": "AC-03.2 AC-03.1 뒤 그 학교 초5 시드 자녀로 일정을 생성하면 수요일 학원 수업 시작 시각이 모두 13:40 + 이동 근사 시간 이후다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 125,
+        "line_end": 125
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-03.3",
+     "text": "AC-03.3 학교 담당자가 방과후 프로그램(과목=로봇, 요일=금, 14:00~15:00, 월 교습비 30,000, 강사, 정원 15, 현재 인원 5)을 저장한 뒤, 그 학교 시드 자녀의 선호 과목에 로봇을 넣고 추천을 요청하면 비교표에 유형 \"방과후\"로 나온다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 126,
+        "line_end": 126
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-03.4",
+     "text": "AC-03.4 [SEC-04] 같은 학년·요일에 이미 있는 14:00~15:00과 겹치는 14:30~15:30 항목을 저장하면 \"시간이 겹칩니다\"가 보이고 저장되지 않으며, 같은 값을 API로 보내면 422가 반환된다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 127,
+        "line_end": 127
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "body": "## 목적\n\n보호자는 자녀 탭에서 자녀의 별칭·만 나이·학년·학교·관심사·교육 목표·기존 일정을 등록·수정한다. 만 나이 14 미만 자녀는 법정대리인 동의 확인(모의 체크)을 거쳐야 저장된다. 관심사·조건은 서비스 안에 저장해 다음 대화에서 다시 쓴다(동의 기반 기억). 학교 시간표가 없으면 하교 시각을 직접 받는다. 관련 여정 UJ-1. (docs/prd.md REQ-04)\n\n## 완료 조건\n\n- [ ] AC-04.1 시드 보호자가 자녀 탭에서 별칭·만 나이 11·학년 초5·학교·관심사=과학·교육 목표=수학 심화·기존 일정(토 10:00~12:00 수영)을 저장하면 자녀 목록에 별칭과 학년이 보인다\n- [ ] AC-04.2 AC-04.1의 자녀로 일정을 생성하면 토요일 10:00~12:00에 다른 수업이 배치되지 않는다\n- [ ] AC-04.3 [SEC-07] 만 나이 14 미만 자녀 등록 화면에서 법정대리인 동의 확인(모의)을 체크하지 않으면 저장 버튼이 비활성화되고 \"법정대리인 동의 확인이 필요합니다\"가 보이며, 체크하면 저장된다\n- [ ] AC-04.4 [SEC-07] 시드 보호자가 자녀 등록 화면을 열면 실명·연락처 입력 칸이 없고, AC-04.1 값으로 저장한 자녀 저장 API 응답에도 실명·연락처 항목이 없다\n- [ ] AC-04.5 학교 시간표가 없는 학년의 자녀를 고르고 일정 생성을 누르면 \"학교 시간표가 없습니다. 하교 시각을 직접 입력해 주세요\"와 요일별 하교 시각 입력 칸이 보이고, 입력 후 생성하면 그 시각 이후로 배치된다\n\n## 담당\n\n- 담당: 미배정(bmad-architecture 분배 후 지정)\n- 리뷰어: 미배정\n\n## 완료 증거\n\n| 항목 | 내용 |\n| --- | --- |\n| 커밋 URL | 미기록 |\n| 시험 명령 | 미기록 |\n| 결과 | 미기록 |\n| 화면·로그 경로 | 미기록 |\n",
+   "originalId": "REQ-04",
+   "title": "REQ-04 자녀 정보 관리",
+   "text": "보호자는 자녀 탭에서 자녀의 별칭·만 나이·학년·학교·관심사·교육 목표·기존 일정을 등록·수정한다. 만 나이 14 미만 자녀는 법정대리인 동의 확인(모의 체크)을 거쳐야 저장된다. 관심사·조건은 서비스 안에 저장해 다음 대화에서 다시 쓴다(동의 기반 기억). 학교 시간표가 없으면 하교 시각을 직접 받는다. 관련 여정 UJ-1.",
+   "classification": "functional",
+   "role": "requirement",
+   "sourceRefs": [
+    {
+     "documentId": "prd",
+     "pathOrUrl": "docs/prd.md",
+     "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+     "location": {
+      "line_start": 91,
+      "line_end": 91
+     }
+    },
+    {
+     "documentId": "prd",
+     "pathOrUrl": "docs/prd.md",
+     "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+     "location": {
+      "line_start": 202,
+      "line_end": 208
+     }
+    }
+   ],
+   "conditions": [
+    {
+     "originalId": "AC-04.1",
+     "text": "AC-04.1 시드 보호자가 자녀 탭에서 별칭·만 나이 11·학년 초5·학교·관심사=과학·교육 목표=수학 심화·기존 일정(토 10:00~12:00 수영)을 저장하면 자녀 목록에 별칭과 학년이 보인다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 128,
+        "line_end": 128
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-04.2",
+     "text": "AC-04.2 AC-04.1의 자녀로 일정을 생성하면 토요일 10:00~12:00에 다른 수업이 배치되지 않는다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 129,
+        "line_end": 129
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-04.3",
+     "text": "AC-04.3 [SEC-07] 만 나이 14 미만 자녀 등록 화면에서 법정대리인 동의 확인(모의)을 체크하지 않으면 저장 버튼이 비활성화되고 \"법정대리인 동의 확인이 필요합니다\"가 보이며, 체크하면 저장된다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 130,
+        "line_end": 130
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-04.4",
+     "text": "AC-04.4 [SEC-07] 시드 보호자가 자녀 등록 화면을 열면 실명·연락처 입력 칸이 없고, AC-04.1 값으로 저장한 자녀 저장 API 응답에도 실명·연락처 항목이 없다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 131,
+        "line_end": 131
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-04.5",
+     "text": "AC-04.5 학교 시간표가 없는 학년의 자녀를 고르고 일정 생성을 누르면 \"학교 시간표가 없습니다. 하교 시각을 직접 입력해 주세요\"와 요일별 하교 시각 입력 칸이 보이고, 입력 후 생성하면 그 시각 이후로 배치된다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 132,
+        "line_end": 132
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "body": "## 목적\n\n보호자 홈은 챗봇이다. 보호자가 자연어로 말하면 LLM이 조건(대상 자녀, 선호 과목, 목표 월 예산·예산 상한, 학원 유형, 기준 위치, 가능 요일, 밀도)을 구조화 출력으로 추출해 조건 카드로 보여 준다. 보호자는 카드에서 값을 고치고, 저장한 조건은 자녀별로 남는다. 예산 해석(위임 결정): \"N원 전후\"는 목표 N·상한 N×1.1, \"N원 안에서·이하\"는 목표=상한=N. 키가 없거나 응답이 스키마에 맞지 않으면 규칙 추출로 대체한다. 관련 여정 UJ-1. (docs/prd.md REQ-05)\n\n## 완료 조건\n\n- [ ] AC-05.1 시드 보호자(초5 자녀 1명)가 LLM 대역(고정 구조화 응답) 환경에서 챗봇에 \"초5 아이 영어·수학 위주로 월 100만원 전후로 촘촘하게\"를 보내면 조건 카드에 대상 자녀=초5 자녀, 선호 과목=영어·수학, 목표 월 예산=1,000,000원, 예산 상한=1,100,000원, 밀도=촘촘하게가 보인다\n- [ ] AC-05.2 같은 조건에서 \"초5 아이 영어·수학 위주로 월 100만원 안에서 촘촘하게\"를 보내면 조건 카드에 목표 월 예산=1,000,000원, 예산 상한=1,000,000원이 보인다\n- [ ] AC-05.3 조건 카드의 예산 상한을 1,000,000원으로 고쳐 저장한 뒤 일정을 생성하면 화면의 월 학원비가 1,000,000원 이하이고, 같은 자녀로 새 대화를 열어도 조건 카드에 1,000,000원이 남아 있다\n- [ ] AC-05.4 조건 카드에서 학원 유형=교과 학원, 가능 요일=월·수·금으로 저장하고 추천을 요청하면 비교표의 모든 행이 유형 교과 학원이고 요일이 월·수·금 안에 있다\n- [ ] AC-05.5 Azure OpenAI 키가 없는 환경에서 AC-05.1 문장을 보내면 대체 경로(규칙 추출)로 AC-05.1과 같은 조건 카드 값이 보이고 챗봇 응답이 이어진다\n- [ ] AC-05.6 [SEC-04] LLM 대역이 스키마에 맞지 않는 JSON을 돌려주도록 설정하고 AC-05.1 문장을 보내면 대체 경로로 AC-05.1과 같은 조건 카드 값이 보이고 화면에 오류 원문이 보이지 않는다\n- [ ] AC-05.7 `ai` 태그 시험에서 실제 Azure OpenAI로 AC-05.1 문장을 보내면 응답이 스키마 검증을 통과하고 조건 카드에 선호 과목=영어·수학, 목표 월 예산=1,000,000원이 보인다\n\n## 담당\n\n- 담당: 미배정(bmad-architecture 분배 후 지정)\n- 리뷰어: 미배정\n\n## 완료 증거\n\n| 항목 | 내용 |\n| --- | --- |\n| 커밋 URL | 미기록 |\n| 시험 명령 | 미기록 |\n| 결과 | 미기록 |\n| 화면·로그 경로 | 미기록 |\n",
+   "originalId": "REQ-05",
+   "title": "REQ-05 챗봇 대화로 조건 설정과 화면 확인·수정",
+   "text": "보호자 홈은 챗봇이다. 보호자가 자연어로 말하면 LLM이 조건(대상 자녀, 선호 과목, 목표 월 예산·예산 상한, 학원 유형, 기준 위치, 가능 요일, 밀도)을 구조화 출력으로 추출해 조건 카드로 보여 준다. 보호자는 카드에서 값을 고치고, 저장한 조건은 자녀별로 남는다. 예산 해석(위임 결정): \"N원 전후\"는 목표 N·상한 N×1.1, \"N원 안에서·이하\"는 목표=상한=N. 키가 없거나 응답이 스키마에 맞지 않으면 규칙 추출로 대체한다. 관련 여정 UJ-1.",
+   "classification": "functional",
+   "role": "requirement",
+   "sourceRefs": [
+    {
+     "documentId": "prd",
+     "pathOrUrl": "docs/prd.md",
+     "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+     "location": {
+      "line_start": 92,
+      "line_end": 92
+     }
+    },
+    {
+     "documentId": "prd",
+     "pathOrUrl": "docs/prd.md",
+     "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+     "location": {
+      "line_start": 210,
+      "line_end": 216
+     }
+    }
+   ],
+   "conditions": [
+    {
+     "originalId": "AC-05.1",
+     "text": "AC-05.1 시드 보호자(초5 자녀 1명)가 LLM 대역(고정 구조화 응답) 환경에서 챗봇에 \"초5 아이 영어·수학 위주로 월 100만원 전후로 촘촘하게\"를 보내면 조건 카드에 대상 자녀=초5 자녀, 선호 과목=영어·수학, 목표 월 예산=1,000,000원, 예산 상한=1,100,000원, 밀도=촘촘하게가 보인다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 133,
+        "line_end": 133
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-05.2",
+     "text": "AC-05.2 같은 조건에서 \"초5 아이 영어·수학 위주로 월 100만원 안에서 촘촘하게\"를 보내면 조건 카드에 목표 월 예산=1,000,000원, 예산 상한=1,000,000원이 보인다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 134,
+        "line_end": 134
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-05.3",
+     "text": "AC-05.3 조건 카드의 예산 상한을 1,000,000원으로 고쳐 저장한 뒤 일정을 생성하면 화면의 월 학원비가 1,000,000원 이하이고, 같은 자녀로 새 대화를 열어도 조건 카드에 1,000,000원이 남아 있다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 135,
+        "line_end": 135
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-05.4",
+     "text": "AC-05.4 조건 카드에서 학원 유형=교과 학원, 가능 요일=월·수·금으로 저장하고 추천을 요청하면 비교표의 모든 행이 유형 교과 학원이고 요일이 월·수·금 안에 있다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 136,
+        "line_end": 136
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-05.5",
+     "text": "AC-05.5 Azure OpenAI 키가 없는 환경에서 AC-05.1 문장을 보내면 대체 경로(규칙 추출)로 AC-05.1과 같은 조건 카드 값이 보이고 챗봇 응답이 이어진다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 137,
+        "line_end": 137
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-05.6",
+     "text": "AC-05.6 [SEC-04] LLM 대역이 스키마에 맞지 않는 JSON을 돌려주도록 설정하고 AC-05.1 문장을 보내면 대체 경로로 AC-05.1과 같은 조건 카드 값이 보이고 화면에 오류 원문이 보이지 않는다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 138,
+        "line_end": 138
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-05.7",
+     "text": "AC-05.7 `ai` 태그 시험에서 실제 Azure OpenAI로 AC-05.1 문장을 보내면 응답이 스키마 검증을 통과하고 조건 카드에 선호 과목=영어·수학, 목표 월 예산=1,000,000원이 보인다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 139,
+        "line_end": 139
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "body": "## 목적\n\n조건과 자녀 정보(학년·관심사·교육 목표)로 학원·방과후 프로그램 후보를 고르고, 학원명·과목·유형·요일·시간·월 교습비·월 기타경비·이동 근사·추천 이유를 비교표로 보여 준다. 대상 학년이 맞지 않거나 마감이거나 월 교습비가 미공개인 프로그램은 뺀다. 후보 선별과 순서는 결정형 엔진이 정하고, 추천 이유 문장은 LLM이 쓴다(대체 경로는 템플릿). 관련 여정 UJ-1. (docs/prd.md REQ-06)\n\n## 완료 조건\n\n- [ ] AC-06.1 시드 기준 시나리오 조건(초5, 영어·수학, 목표 1,000,000·상한 1,100,000)으로 추천을 요청하면 비교표 각 행에 학원명·과목·유형·요일·시간·월 교습비·월 기타경비·이동 근사·추천 이유가 보이고, 모든 행의 과목이 영어 또는 수학이다\n- [ ] AC-06.2 AC-06.1 비교표의 이동 거리·시간 값 옆에 \"근사\"가 보인다\n- [ ] AC-06.3 시드에 있는 대상 학년 중1 전용 수학 프로그램과 마감(정원=현재 인원) 영어 프로그램은 AC-06.1 비교표에 나오지 않는다\n- [ ] AC-06.4 자녀 관심사=과학으로 저장된 상태에서 LLM 대역으로 추천을 요청하면, 대역이 받은 요청 본문의 관심사 값이 \"과학\"이고 추천 이유 칸이 비어 있지 않다\n- [ ] AC-06.5 LLM 대역이 오류를 내도록 설정하고 AC-06.1을 요청하면 추천 이유 칸에 대체 경로의 템플릿 설명(과목·주 횟수·이동 근사 시간(분) 포함)이 보이고 비교표 행 수는 AC-06.1과 같다\n- [ ] AC-06.6 같은 조건으로 추천을 두 번 요청하면 두 비교표의 프로그램 순서가 같다\n\n## 담당\n\n- 담당: 미배정(bmad-architecture 분배 후 지정)\n- 리뷰어: 미배정\n\n## 완료 증거\n\n| 항목 | 내용 |\n| --- | --- |\n| 커밋 URL | 미기록 |\n| 시험 명령 | 미기록 |\n| 결과 | 미기록 |\n| 화면·로그 경로 | 미기록 |\n",
+   "originalId": "REQ-06",
+   "title": "REQ-06 프로그램 추천·비교",
+   "text": "조건과 자녀 정보(학년·관심사·교육 목표)로 학원·방과후 프로그램 후보를 고르고, 학원명·과목·유형·요일·시간·월 교습비·월 기타경비·이동 근사·추천 이유를 비교표로 보여 준다. 대상 학년이 맞지 않거나 마감이거나 월 교습비가 미공개인 프로그램은 뺀다. 후보 선별과 순서는 결정형 엔진이 정하고, 추천 이유 문장은 LLM이 쓴다(대체 경로는 템플릿). 관련 여정 UJ-1.",
+   "classification": "functional",
+   "role": "requirement",
+   "sourceRefs": [
+    {
+     "documentId": "prd",
+     "pathOrUrl": "docs/prd.md",
+     "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+     "location": {
+      "line_start": 93,
+      "line_end": 93
+     }
+    },
+    {
+     "documentId": "prd",
+     "pathOrUrl": "docs/prd.md",
+     "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+     "location": {
+      "line_start": 218,
+      "line_end": 224
+     }
+    }
+   ],
+   "conditions": [
+    {
+     "originalId": "AC-06.1",
+     "text": "AC-06.1 시드 기준 시나리오 조건(초5, 영어·수학, 목표 1,000,000·상한 1,100,000)으로 추천을 요청하면 비교표 각 행에 학원명·과목·유형·요일·시간·월 교습비·월 기타경비·이동 근사·추천 이유가 보이고, 모든 행의 과목이 영어 또는 수학이다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 140,
+        "line_end": 140
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-06.2",
+     "text": "AC-06.2 AC-06.1 비교표의 이동 거리·시간 값 옆에 \"근사\"가 보인다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 141,
+        "line_end": 141
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-06.3",
+     "text": "AC-06.3 시드에 있는 대상 학년 중1 전용 수학 프로그램과 마감(정원=현재 인원) 영어 프로그램은 AC-06.1 비교표에 나오지 않는다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 142,
+        "line_end": 142
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-06.4",
+     "text": "AC-06.4 자녀 관심사=과학으로 저장된 상태에서 LLM 대역으로 추천을 요청하면, 대역이 받은 요청 본문의 관심사 값이 \"과학\"이고 추천 이유 칸이 비어 있지 않다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 143,
+        "line_end": 143
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-06.5",
+     "text": "AC-06.5 LLM 대역이 오류를 내도록 설정하고 AC-06.1을 요청하면 추천 이유 칸에 대체 경로의 템플릿 설명(과목·주 횟수·이동 근사 시간(분) 포함)이 보이고 비교표 행 수는 AC-06.1과 같다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 144,
+        "line_end": 144
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-06.6",
+     "text": "AC-06.6 같은 조건으로 추천을 두 번 요청하면 두 비교표의 프로그램 순서가 같다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 145,
+        "line_end": 145
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "body": "## 목적\n\n결정형 엔진이 학교 시간표, 자녀 기존 일정, 후보 프로그램으로 월~일 주간 일정을 만든다. 하드 제약: 시간 중복 0건, 공백 ≥ 0(이동 부족 0건), 월 학원비 ≤ 예산 상한. 목표: 선호 과목 주 횟수 충족, 목표 월 예산에 가까움, 공백 최소(밀도 '촘촘하게'면 공백 30분 이하). 해가 없으면 완화할 조건을 알려 준다. 관련 여정 UJ-1. (docs/prd.md REQ-07)\n\n## 완료 조건\n\n- [ ] AC-07.1 시드 기준 시나리오 조건으로 일정 생성을 누르면 월~일 주간 일정에 학교 시간과 학원 수업이 함께 보이고, 그 일정 안에 시간이 겹치는 두 항목이 0쌍이다\n- [ ] AC-07.2 AC-07.1 일정에서 공백이 0보다 작은(이동 부족) 경우가 0건이다\n- [ ] AC-07.3 AC-07.1 화면에 월 학원비 합계가 보이고, 그 값이 프로그램별 (월 교습비 + 월 기타경비)의 합과 같으며 예산 상한 1,100,000원 이하다\n- [ ] AC-07.4 AC-07.1 일정의 월 학원비가 900,000~1,100,000원이고, 영어·수학이 각각 주 2회 이상이며, 수업이 있는 각 요일의 공백이 모두 30분 이하다\n- [ ] AC-07.5 목표 월 예산 100,000원·예산 상한 100,000원으로 저장하고 일정을 생성하면 일정 대신 \"조건을 만족하는 일정이 없습니다\"와 완화할 조건(예산·요일·과목 중 하나 이상)이 보인다\n- [ ] AC-07.6 같은 조건으로 일정 생성을 두 번 하면 두 결과의 프로그램·요일·시각이 같다\n\n## 담당\n\n- 담당: 미배정(bmad-architecture 분배 후 지정)\n- 리뷰어: 미배정\n\n## 완료 증거\n\n| 항목 | 내용 |\n| --- | --- |\n| 커밋 URL | 미기록 |\n| 시험 명령 | 미기록 |\n| 결과 | 미기록 |\n| 화면·로그 경로 | 미기록 |\n",
+   "originalId": "REQ-07",
+   "title": "REQ-07 주간 일정 생성·최적화",
+   "text": "결정형 엔진이 학교 시간표, 자녀 기존 일정, 후보 프로그램으로 월~일 주간 일정을 만든다. 하드 제약: 시간 중복 0건, 공백 ≥ 0(이동 부족 0건), 월 학원비 ≤ 예산 상한. 목표: 선호 과목 주 횟수 충족, 목표 월 예산에 가까움, 공백 최소(밀도 '촘촘하게'면 공백 30분 이하). 해가 없으면 완화할 조건을 알려 준다. 관련 여정 UJ-1.",
+   "classification": "functional",
+   "role": "requirement",
+   "sourceRefs": [
+    {
+     "documentId": "prd",
+     "pathOrUrl": "docs/prd.md",
+     "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+     "location": {
+      "line_start": 94,
+      "line_end": 94
+     }
+    },
+    {
+     "documentId": "prd",
+     "pathOrUrl": "docs/prd.md",
+     "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+     "location": {
+      "line_start": 226,
+      "line_end": 232
+     }
+    }
+   ],
+   "conditions": [
+    {
+     "originalId": "AC-07.1",
+     "text": "AC-07.1 시드 기준 시나리오 조건으로 일정 생성을 누르면 월~일 주간 일정에 학교 시간과 학원 수업이 함께 보이고, 그 일정 안에 시간이 겹치는 두 항목이 0쌍이다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 146,
+        "line_end": 146
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-07.2",
+     "text": "AC-07.2 AC-07.1 일정에서 공백이 0보다 작은(이동 부족) 경우가 0건이다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 147,
+        "line_end": 147
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-07.3",
+     "text": "AC-07.3 AC-07.1 화면에 월 학원비 합계가 보이고, 그 값이 프로그램별 (월 교습비 + 월 기타경비)의 합과 같으며 예산 상한 1,100,000원 이하다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 148,
+        "line_end": 148
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-07.4",
+     "text": "AC-07.4 AC-07.1 일정의 월 학원비가 900,000~1,100,000원이고, 영어·수학이 각각 주 2회 이상이며, 수업이 있는 각 요일의 공백이 모두 30분 이하다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 149,
+        "line_end": 149
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-07.5",
+     "text": "AC-07.5 목표 월 예산 100,000원·예산 상한 100,000원으로 저장하고 일정을 생성하면 일정 대신 \"조건을 만족하는 일정이 없습니다\"와 완화할 조건(예산·요일·과목 중 하나 이상)이 보인다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 150,
+        "line_end": 150
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-07.6",
+     "text": "AC-07.6 같은 조건으로 일정 생성을 두 번 하면 두 결과의 프로그램·요일·시각이 같다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 151,
+        "line_end": 151
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "body": "## 목적\n\n보호자는 일정 초안에서 프로그램을 빼거나 다른 후보로 바꾸고, 그때마다 규칙 검증과 월 학원비를 다시 본다. 위반이 없으면 확정 계획으로 저장한다. 관련 여정 UJ-1. (docs/prd.md REQ-08)\n\n## 완료 조건\n\n- [ ] AC-08.1 AC-07.1 일정에서 영어 프로그램 하나를 빼면 그 수업이 일정에서 사라지고 월 학원비가 그 프로그램의 (월 교습비 + 월 기타경비)만큼 줄어든 값으로 보인다\n- [ ] AC-08.2 AC-07.1 일정에서 학교 시간과 겹치는 시간대의 프로그램으로 바꾸면 그 칸에 \"시간 중복\"이 보이고 확정 버튼이 비활성화된다\n- [ ] AC-08.3 위반이 없는 일정을 확정하면 일정 탭에 확정 계획으로 보이고, 로그아웃 후 다시 로그인해도 같은 확정 계획이 보인다\n\n## 담당\n\n- 담당: 미배정(bmad-architecture 분배 후 지정)\n- 리뷰어: 미배정\n\n## 완료 증거\n\n| 항목 | 내용 |\n| --- | --- |\n| 커밋 URL | 미기록 |\n| 시험 명령 | 미기록 |\n| 결과 | 미기록 |\n| 화면·로그 경로 | 미기록 |\n",
+   "originalId": "REQ-08",
+   "title": "REQ-08 추천 결과 선택·수정과 확정",
+   "text": "보호자는 일정 초안에서 프로그램을 빼거나 다른 후보로 바꾸고, 그때마다 규칙 검증과 월 학원비를 다시 본다. 위반이 없으면 확정 계획으로 저장한다. 관련 여정 UJ-1.",
+   "classification": "functional",
+   "role": "requirement",
+   "sourceRefs": [
+    {
+     "documentId": "prd",
+     "pathOrUrl": "docs/prd.md",
+     "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+     "location": {
+      "line_start": 95,
+      "line_end": 95
+     }
+    },
+    {
+     "documentId": "prd",
+     "pathOrUrl": "docs/prd.md",
+     "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+     "location": {
+      "line_start": 234,
+      "line_end": 240
+     }
+    }
+   ],
+   "conditions": [
+    {
+     "originalId": "AC-08.1",
+     "text": "AC-08.1 AC-07.1 일정에서 영어 프로그램 하나를 빼면 그 수업이 일정에서 사라지고 월 학원비가 그 프로그램의 (월 교습비 + 월 기타경비)만큼 줄어든 값으로 보인다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 152,
+        "line_end": 152
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-08.2",
+     "text": "AC-08.2 AC-07.1 일정에서 학교 시간과 겹치는 시간대의 프로그램으로 바꾸면 그 칸에 \"시간 중복\"이 보이고 확정 버튼이 비활성화된다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 153,
+        "line_end": 153
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-08.3",
+     "text": "AC-08.3 위반이 없는 일정을 확정하면 일정 탭에 확정 계획으로 보이고, 로그아웃 후 다시 로그인해도 같은 확정 계획이 보인다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 154,
+        "line_end": 154
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "body": "## 목적\n\n학원 프로그램(시간·금액·삭제)이나 학교 시간표가 바뀌면 그 대상을 쓰는 확정 계획을 다시 검증해 영향(시간 중복·이동 부족·예산 초과·내용 변경)을 기록한다. 기관 담당자에게는 영향받는 계획 수만, 보호자에게는 사유·초과 금액과 조정안을 보여 준다. 보호자는 수락·거절한다. 대안이 없으면 완화할 조건을 보여 준다. 관련 여정 UJ-2·UJ-3. (docs/prd.md REQ-09)\n\n## 완료 조건\n\n- [ ] AC-09.1 시드 보호자가 학원 A 수학 프로그램을 넣은 계획을 확정한 상태에서 학원 A 담당자가 그 프로그램 요일·시간을 학교 수업과 겹치게 바꿔 저장하면 담당자 화면에 \"영향받는 계획 1건\"이 보인다\n- [ ] AC-09.2 AC-09.1 뒤 그 보호자의 일정 탭에서 해당 계획에 \"영향 있음 · 시간 중복\"이 보인다\n- [ ] AC-09.3 확정 계획의 월 학원비가 1,050,000원(상한 1,100,000원)인 상태에서 학원 담당자가 그 계획의 프로그램 월 교습비를 100,000원 올리면 보호자 일정 탭에 \"영향 있음 · 예산 초과 50,000원\"이 보인다\n- [ ] AC-09.4 영향 있는 계획에서 보호자가 조정안을 열면 규칙 위반 0건인 대안 일정이 보이고, 수락하면 확정 계획이 대안으로 바뀌고 영향 표시가 사라진다\n- [ ] AC-09.5 영향 있는 계획에서 보호자가 조정안을 거절하면 기존 확정 계획이 유지되고 \"영향 있음\" 표시가 남는다\n- [ ] AC-09.6 학교 담당자가 초5 수요일 하교 시각을 확정 계획의 수요일 학원 수업과 겹치게 늦추면 그 보호자의 계획에 \"영향 있음 · 시간 중복\"이 보이고, 대안이 없으면 조정안 화면에 \"조건을 만족하는 대안이 없습니다\"와 완화할 조건이 보인다\n- [ ] AC-09.7 [SEC-03] [SEC-07] AC-09.1 뒤 학원 A 담당자가 영향 조회 화면을 열고 영향 조회 API를 호출하면, 화면과 응답에는 영향받는 계획 수만 있고 자녀 별칭·학년·보호자 계정 정보가 없다\n\n## 담당\n\n- 담당: 미배정(bmad-architecture 분배 후 지정)\n- 리뷰어: 미배정\n\n## 완료 증거\n\n| 항목 | 내용 |\n| --- | --- |\n| 커밋 URL | 미기록 |\n| 시험 명령 | 미기록 |\n| 결과 | 미기록 |\n| 화면·로그 경로 | 미기록 |\n",
+   "originalId": "REQ-09",
+   "title": "REQ-09 기관 변경의 영향 표시·조정",
+   "text": "학원 프로그램(시간·금액·삭제)이나 학교 시간표가 바뀌면 그 대상을 쓰는 확정 계획을 다시 검증해 영향(시간 중복·이동 부족·예산 초과·내용 변경)을 기록한다. 기관 담당자에게는 영향받는 계획 수만, 보호자에게는 사유·초과 금액과 조정안을 보여 준다. 보호자는 수락·거절한다. 대안이 없으면 완화할 조건을 보여 준다. 관련 여정 UJ-2·UJ-3.",
+   "classification": "functional",
+   "role": "requirement",
+   "sourceRefs": [
+    {
+     "documentId": "prd",
+     "pathOrUrl": "docs/prd.md",
+     "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+     "location": {
+      "line_start": 96,
+      "line_end": 96
+     }
+    },
+    {
+     "documentId": "prd",
+     "pathOrUrl": "docs/prd.md",
+     "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+     "location": {
+      "line_start": 242,
+      "line_end": 248
+     }
+    }
+   ],
+   "conditions": [
+    {
+     "originalId": "AC-09.1",
+     "text": "AC-09.1 시드 보호자가 학원 A 수학 프로그램을 넣은 계획을 확정한 상태에서 학원 A 담당자가 그 프로그램 요일·시간을 학교 수업과 겹치게 바꿔 저장하면 담당자 화면에 \"영향받는 계획 1건\"이 보인다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 155,
+        "line_end": 155
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-09.2",
+     "text": "AC-09.2 AC-09.1 뒤 그 보호자의 일정 탭에서 해당 계획에 \"영향 있음 · 시간 중복\"이 보인다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 156,
+        "line_end": 156
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-09.3",
+     "text": "AC-09.3 확정 계획의 월 학원비가 1,050,000원(상한 1,100,000원)인 상태에서 학원 담당자가 그 계획의 프로그램 월 교습비를 100,000원 올리면 보호자 일정 탭에 \"영향 있음 · 예산 초과 50,000원\"이 보인다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 157,
+        "line_end": 157
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-09.4",
+     "text": "AC-09.4 영향 있는 계획에서 보호자가 조정안을 열면 규칙 위반 0건인 대안 일정이 보이고, 수락하면 확정 계획이 대안으로 바뀌고 영향 표시가 사라진다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 158,
+        "line_end": 158
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-09.5",
+     "text": "AC-09.5 영향 있는 계획에서 보호자가 조정안을 거절하면 기존 확정 계획이 유지되고 \"영향 있음\" 표시가 남는다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 159,
+        "line_end": 159
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-09.6",
+     "text": "AC-09.6 학교 담당자가 초5 수요일 하교 시각을 확정 계획의 수요일 학원 수업과 겹치게 늦추면 그 보호자의 계획에 \"영향 있음 · 시간 중복\"이 보이고, 대안이 없으면 조정안 화면에 \"조건을 만족하는 대안이 없습니다\"와 완화할 조건이 보인다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 160,
+        "line_end": 160
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-09.7",
+     "text": "AC-09.7 [SEC-03] [SEC-07] AC-09.1 뒤 학원 A 담당자가 영향 조회 화면을 열고 영향 조회 API를 호출하면, 화면과 응답에는 영향받는 계획 수만 있고 자녀 별칭·학년·보호자 계정 정보가 없다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 161,
+        "line_end": 161
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "body": "## 목적\n\n서버만 환경변수 `AZURE_OPENAI_LOCATION`, `AZURE_OPENAI_ENDPOINT`, `AZURE_OPENAI_BASE_URL`, `AZURE_OPENAI_API_KEY`, `AZURE_OPENAI_DEPLOYMENT`(기본 배포 `gpt-5.4-mini`)에서 설정을 읽는다. 클라이언트·로그·오류 응답·AI 호출 내용에 값을 노출하지 않는다. 키가 없으면 대체 경로를, 시험·CI면 LLM 대역을 쓴다. Azure로는 별칭·학년·관심사·조건만 보내고, https 주소로만 호출한다. (docs/prd.md REQ-10)\n\n## 완료 조건\n\n- [ ] AC-10.1 [SEC-01] 시험용 `AZURE_OPENAI_*` 값을 넣고 웹을 빌드한 뒤 FLOW-01 E2E를 실행하면, 웹 빌드 산출물과 브라우저가 받은 모든 응답에서 `AZURE_OPENAI_*` 환경변수 값 문자열이 0건 검색된다\n- [ ] AC-10.2 [SEC-01] LLM 대역으로 Azure OpenAI 호출 실패(401·타임아웃)를 일으키면 API 오류 응답과 서버 로그에서 키·엔드포인트 값 문자열이 0건이고 마스킹 표시만 있다\n- [ ] AC-10.3 [SEC-11] 저장소 `.env.example`에는 `AZURE_OPENAI_LOCATION`·`AZURE_OPENAI_ENDPOINT`·`AZURE_OPENAI_BASE_URL`·`AZURE_OPENAI_API_KEY`·`AZURE_OPENAI_DEPLOYMENT` 이름만 있고 값이 비어 있으며, CI 시험은 Azure OpenAI 호출 없이 LLM 대역으로 통과한다\n- [ ] AC-10.4 [SEC-07] AC-05.1·AC-06.4를 실행한 뒤 LLM 대역이 기록한 Azure OpenAI 요청 본문에는 자녀 별칭·학년·관심사·조건만 있고 계정 아이디·비밀번호·실명·연락처·`AZURE_OPENAI_*` 값이 없다\n- [ ] AC-10.5 [SEC-06] `AZURE_OPENAI_ENDPOINT` 또는 `AZURE_OPENAI_BASE_URL`이 https가 아닌 값이면 서버가 Azure OpenAI를 호출하지 않고 대체 경로로 전환하며 시작 로그에 \"Azure OpenAI 설정 오류: https 필요\"(값 없이)가 남는다\n\n## 담당\n\n- 담당: 미배정(bmad-architecture 분배 후 지정)\n- 리뷰어: 미배정\n\n## 완료 증거\n\n| 항목 | 내용 |\n| --- | --- |\n| 커밋 URL | 미기록 |\n| 시험 명령 | 미기록 |\n| 결과 | 미기록 |\n| 화면·로그 경로 | 미기록 |\n",
+   "originalId": "REQ-10",
+   "title": "REQ-10 Azure OpenAI 설정 보호와 대체 경로 전환",
+   "text": "서버만 환경변수 `AZURE_OPENAI_LOCATION`, `AZURE_OPENAI_ENDPOINT`, `AZURE_OPENAI_BASE_URL`, `AZURE_OPENAI_API_KEY`, `AZURE_OPENAI_DEPLOYMENT`(기본 배포 `gpt-5.4-mini`)에서 설정을 읽는다. 클라이언트·로그·오류 응답·AI 호출 내용에 값을 노출하지 않는다. 키가 없으면 대체 경로를, 시험·CI면 LLM 대역을 쓴다. Azure로는 별칭·학년·관심사·조건만 보내고, https 주소로만 호출한다.",
+   "classification": "quality",
+   "role": "requirement",
+   "sourceRefs": [
+    {
+     "documentId": "prd",
+     "pathOrUrl": "docs/prd.md",
+     "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+     "location": {
+      "line_start": 97,
+      "line_end": 97
+     }
+    },
+    {
+     "documentId": "prd",
+     "pathOrUrl": "docs/prd.md",
+     "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+     "location": {
+      "line_start": 250,
+      "line_end": 256
+     }
+    }
+   ],
+   "conditions": [
+    {
+     "originalId": "AC-10.1",
+     "text": "AC-10.1 [SEC-01] 시험용 `AZURE_OPENAI_*` 값을 넣고 웹을 빌드한 뒤 FLOW-01 E2E를 실행하면, 웹 빌드 산출물과 브라우저가 받은 모든 응답에서 `AZURE_OPENAI_*` 환경변수 값 문자열이 0건 검색된다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 162,
+        "line_end": 162
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-10.2",
+     "text": "AC-10.2 [SEC-01] LLM 대역으로 Azure OpenAI 호출 실패(401·타임아웃)를 일으키면 API 오류 응답과 서버 로그에서 키·엔드포인트 값 문자열이 0건이고 마스킹 표시만 있다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 163,
+        "line_end": 163
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-10.3",
+     "text": "AC-10.3 [SEC-11] 저장소 `.env.example`에는 `AZURE_OPENAI_LOCATION`·`AZURE_OPENAI_ENDPOINT`·`AZURE_OPENAI_BASE_URL`·`AZURE_OPENAI_API_KEY`·`AZURE_OPENAI_DEPLOYMENT` 이름만 있고 값이 비어 있으며, CI 시험은 Azure OpenAI 호출 없이 LLM 대역으로 통과한다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 164,
+        "line_end": 164
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-10.4",
+     "text": "AC-10.4 [SEC-07] AC-05.1·AC-06.4를 실행한 뒤 LLM 대역이 기록한 Azure OpenAI 요청 본문에는 자녀 별칭·학년·관심사·조건만 있고 계정 아이디·비밀번호·실명·연락처·`AZURE_OPENAI_*` 값이 없다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 165,
+        "line_end": 165
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-10.5",
+     "text": "AC-10.5 [SEC-06] `AZURE_OPENAI_ENDPOINT` 또는 `AZURE_OPENAI_BASE_URL`이 https가 아닌 값이면 서버가 Azure OpenAI를 호출하지 않고 대체 경로로 전환하며 시작 로그에 \"Azure OpenAI 설정 오류: https 필요\"(값 없이)가 남는다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 166,
+        "line_end": 166
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "body": "## 목적\n\n학교 2곳(초등 1·중학교 1), 학원 5곳(영어·수학 중심 + 예체능·기타 하나 이상), 데모 계정(보호자 2, 학원 담당자 2 이상, 학교 담당자 2), 데모 자녀 2명(초5·중1)을 시드로 적재한다. 시험용으로 미공개 프로그램 1개·마감 프로그램 1개·중1 전용 수학 프로그램 1개를 둔다. 기준 시나리오에 월 100만원 전후의 해가 존재하도록 프로그램 시간·금액을 구성하되 답을 코드에 고정하지 않는다. 스키마는 학원 정보공개 항목과 나이스 데이터셋 항목을 참고한다. (docs/prd.md REQ-11)\n\n## 완료 조건\n\n- [ ] AC-11.1 시드를 적재하면 학교 2곳(초등 1·중학교 1, 학년별 정규 시간표와 방과후 프로그램 포함)과 학원 5곳이 생기고, 학원 프로그램 과목에 영어·수학과 예체능·기타 과목이 하나 이상 있다\n- [ ] AC-11.2 시드 프로그램마다 과목·유형·요일·시각·월 교습비·월 기타경비·강사·대상 학년·정원·현재 인원·위도·경도가 있고, 예외는 월 교습비만 빈 미공개 프로그램 1개와 마감 프로그램 1개다\n- [ ] AC-11.3 시드 데모 자녀는 학교별 1명(초5·중1)이고, 시드 학원 수업 시각 하나를 바꿔 기준 시나리오 일정을 다시 생성하면 결과 일정이 달라진다(결과를 코드에 고정하지 않음)\n- [ ] AC-11.4 시험 시작 전 시드 초기화 명령을 실행하면 이전 시험이 만든 프로그램·계획이 사라지고 AC-11.1과 같은 개수로 돌아간다\n\n## 담당\n\n- 담당: 미배정(bmad-architecture 분배 후 지정)\n- 리뷰어: 미배정\n\n## 완료 증거\n\n| 항목 | 내용 |\n| --- | --- |\n| 커밋 URL | 미기록 |\n| 시험 명령 | 미기록 |\n| 결과 | 미기록 |\n| 화면·로그 경로 | 미기록 |\n",
+   "originalId": "REQ-11",
+   "title": "REQ-11 목업 시드 데이터와 기준 시나리오",
+   "text": "학교 2곳(초등 1·중학교 1), 학원 5곳(영어·수학 중심 + 예체능·기타 하나 이상), 데모 계정(보호자 2, 학원 담당자 2 이상, 학교 담당자 2), 데모 자녀 2명(초5·중1)을 시드로 적재한다. 시험용으로 미공개 프로그램 1개·마감 프로그램 1개·중1 전용 수학 프로그램 1개를 둔다. 기준 시나리오에 월 100만원 전후의 해가 존재하도록 프로그램 시간·금액을 구성하되 답을 코드에 고정하지 않는다. 스키마는 학원 정보공개 항목과 나이스 데이터셋 항목을 참고한다.",
+   "classification": "functional",
+   "role": "requirement",
+   "sourceRefs": [
+    {
+     "documentId": "prd",
+     "pathOrUrl": "docs/prd.md",
+     "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+     "location": {
+      "line_start": 98,
+      "line_end": 98
+     }
+    },
+    {
+     "documentId": "prd",
+     "pathOrUrl": "docs/prd.md",
+     "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+     "location": {
+      "line_start": 258,
+      "line_end": 264
+     }
+    }
+   ],
+   "conditions": [
+    {
+     "originalId": "AC-11.1",
+     "text": "AC-11.1 시드를 적재하면 학교 2곳(초등 1·중학교 1, 학년별 정규 시간표와 방과후 프로그램 포함)과 학원 5곳이 생기고, 학원 프로그램 과목에 영어·수학과 예체능·기타 과목이 하나 이상 있다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 167,
+        "line_end": 167
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-11.2",
+     "text": "AC-11.2 시드 프로그램마다 과목·유형·요일·시각·월 교습비·월 기타경비·강사·대상 학년·정원·현재 인원·위도·경도가 있고, 예외는 월 교습비만 빈 미공개 프로그램 1개와 마감 프로그램 1개다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 168,
+        "line_end": 168
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-11.3",
+     "text": "AC-11.3 시드 데모 자녀는 학교별 1명(초5·중1)이고, 시드 학원 수업 시각 하나를 바꿔 기준 시나리오 일정을 다시 생성하면 결과 일정이 달라진다(결과를 코드에 고정하지 않음)",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 169,
+        "line_end": 169
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-11.4",
+     "text": "AC-11.4 시험 시작 전 시드 초기화 명령을 실행하면 이전 시험이 만든 프로그램·계획이 사라지고 AC-11.1과 같은 개수로 돌아간다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 170,
+        "line_end": 170
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "body": "## 목적\n\nEDUCONNECT 챗봇을 '모두의 AI 교육 에이전트'로 표현한다. 모두의 AI 플랫폼 연동은 공개 API를 확인하지 못했으므로 어댑터 경계만 두고 화면에 \"모의\"로 표시한다. 연동 경로가 확인되면 어댑터만 바꾼다. 화면의 AI 공급자 표기는 \"Azure OpenAI(국내 리전)\"로 하고(AC-12.2), 발표 자료도 같은 표기를 쓴다. (docs/prd.md REQ-12)\n\n## 완료 조건\n\n- [ ] AC-12.1 시드 보호자로 로그인하면 화면 머리에 \"EDUCONNECT · 모두의 AI 교육 에이전트\"가 보이고, 모두의 AI 연동 상태 표시에 \"모의\"가 보인다\n- [ ] AC-12.2 시드 보호자로 로그인해 챗봇 화면을 열면 AI 공급자 표기가 \"Azure OpenAI(국내 리전)\"이고 화면 텍스트에 엔드포인트 호스트명이 0건이다\n\n## 담당\n\n- 담당: 미배정(bmad-architecture 분배 후 지정)\n- 리뷰어: 미배정\n\n## 완료 증거\n\n| 항목 | 내용 |\n| --- | --- |\n| 커밋 URL | 미기록 |\n| 시험 명령 | 미기록 |\n| 결과 | 미기록 |\n| 화면·로그 경로 | 미기록 |\n",
+   "originalId": "REQ-12",
+   "title": "REQ-12 모두의 AI 교육 에이전트 표현과 연동 경계",
+   "text": "EDUCONNECT 챗봇을 '모두의 AI 교육 에이전트'로 표현한다. 모두의 AI 플랫폼 연동은 공개 API를 확인하지 못했으므로 어댑터 경계만 두고 화면에 \"모의\"로 표시한다. 연동 경로가 확인되면 어댑터만 바꾼다. 화면의 AI 공급자 표기는 \"Azure OpenAI(국내 리전)\"로 하고(AC-12.2), 발표 자료도 같은 표기를 쓴다.",
+   "classification": "functional",
+   "role": "requirement",
+   "sourceRefs": [
+    {
+     "documentId": "prd",
+     "pathOrUrl": "docs/prd.md",
+     "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+     "location": {
+      "line_start": 99,
+      "line_end": 99
+     }
+    },
+    {
+     "documentId": "prd",
+     "pathOrUrl": "docs/prd.md",
+     "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+     "location": {
+      "line_start": 266,
+      "line_end": 272
+     }
+    }
+   ],
+   "conditions": [
+    {
+     "originalId": "AC-12.1",
+     "text": "AC-12.1 시드 보호자로 로그인하면 화면 머리에 \"EDUCONNECT · 모두의 AI 교육 에이전트\"가 보이고, 모두의 AI 연동 상태 표시에 \"모의\"가 보인다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 171,
+        "line_end": 171
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-12.2",
+     "text": "AC-12.2 시드 보호자로 로그인해 챗봇 화면을 열면 AI 공급자 표기가 \"Azure OpenAI(국내 리전)\"이고 화면 텍스트에 엔드포인트 호스트명이 0건이다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 172,
+        "line_end": 172
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "body": "## 목적\n\n보호자·기관 화면은 WCAG 2.2 AA를 목표로 한다. 주요 화면은 자동 접근성 검사 위반 0건이고, 보호자 핵심 흐름은 키보드만으로 끝낼 수 있다. 디자인은 KDS 2.0으로 심플하고 세련되게 한다. 관련 여정 UJ-1~UJ-3. (docs/prd.md REQ-13)\n\n## 완료 조건\n\n- [ ] AC-13.1 보호자 챗봇·일정·자녀 화면과 학원 프로그램 관리·학교 시간표 관리 화면에서 자동 접근성 검사(axe, WCAG 2.2 AA 규칙) 위반이 0건이다\n- [ ] AC-13.2 키보드만으로 로그인→챗봇 조건 입력→일정 생성→확정까지 마칠 수 있고, 각 단계에서 포커스 표시가 보인다\n\n## 담당\n\n- 담당: 미배정(bmad-architecture 분배 후 지정)\n- 리뷰어: 미배정\n\n## 완료 증거\n\n| 항목 | 내용 |\n| --- | --- |\n| 커밋 URL | 미기록 |\n| 시험 명령 | 미기록 |\n| 결과 | 미기록 |\n| 화면·로그 경로 | 미기록 |\n",
+   "originalId": "REQ-13",
+   "title": "REQ-13 화면 접근성",
+   "text": "보호자·기관 화면은 WCAG 2.2 AA를 목표로 한다. 주요 화면은 자동 접근성 검사 위반 0건이고, 보호자 핵심 흐름은 키보드만으로 끝낼 수 있다. 디자인은 KDS 2.0으로 심플하고 세련되게 한다. 관련 여정 UJ-1~UJ-3.",
+   "classification": "quality",
+   "role": "requirement",
+   "sourceRefs": [
+    {
+     "documentId": "prd",
+     "pathOrUrl": "docs/prd.md",
+     "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+     "location": {
+      "line_start": 100,
+      "line_end": 100
+     }
+    },
+    {
+     "documentId": "prd",
+     "pathOrUrl": "docs/prd.md",
+     "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+     "location": {
+      "line_start": 274,
+      "line_end": 280
+     }
+    }
+   ],
+   "conditions": [
+    {
+     "originalId": "AC-13.1",
+     "text": "AC-13.1 보호자 챗봇·일정·자녀 화면과 학원 프로그램 관리·학교 시간표 관리 화면에서 자동 접근성 검사(axe, WCAG 2.2 AA 규칙) 위반이 0건이다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 173,
+        "line_end": 173
+       }
+      }
+     ]
+    },
+    {
+     "originalId": "AC-13.2",
+     "text": "AC-13.2 키보드만으로 로그인→챗봇 조건 입력→일정 생성→확정까지 마칠 수 있고, 각 단계에서 포커스 표시가 보인다",
+     "verificationScope": "functional-condition",
+     "verify": "test",
+     "verify_by": "prd",
+     "sourceRefs": [
+      {
+       "documentId": "prd",
+       "pathOrUrl": "docs/prd.md",
+       "version": "23667309336ee15ebb2bb6a2b27daca4dc078e7740907453206b4e2e6017f1a7",
+       "location": {
+        "line_start": 174,
+        "line_end": 174
+       }
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "unresolved": []
+}
