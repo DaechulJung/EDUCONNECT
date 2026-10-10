@@ -1309,22 +1309,12 @@
               }
             }
           },
-          "501": {
-            "description": "Not Implemented",
+          "422": {
+            "description": "Unprocessable Content",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorBody"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
             }
@@ -1399,7 +1389,7 @@
             },
             "description": "Not Found"
           },
-          "501": {
+          "422": {
             "content": {
               "application/json": {
                 "schema": {
@@ -1407,17 +1397,7 @@
                 }
               }
             },
-            "description": "Not Implemented"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
+            "description": "Unprocessable Content"
           }
         }
       },
@@ -1489,7 +1469,7 @@
             },
             "description": "Not Found"
           },
-          "501": {
+          "422": {
             "content": {
               "application/json": {
                 "schema": {
@@ -1497,17 +1477,7 @@
                 }
               }
             },
-            "description": "Not Implemented"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
+            "description": "Unprocessable Content"
           }
         }
       }

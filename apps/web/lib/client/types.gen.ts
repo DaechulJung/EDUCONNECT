@@ -1708,13 +1708,9 @@ export type SendChatMessageErrors = {
      */
     404: ErrorBody;
     /**
-     * Validation Error
+     * Unprocessable Content
      */
-    422: HttpValidationError;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
+    422: ErrorBody;
 };
 
 export type SendChatMessageError = SendChatMessageErrors[keyof SendChatMessageErrors];
@@ -1754,13 +1750,9 @@ export type GetConditionsErrors = {
      */
     404: ErrorBody;
     /**
-     * Validation Error
+     * Unprocessable Content
      */
-    422: HttpValidationError;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
+    422: ErrorBody;
 };
 
 export type GetConditionsError = GetConditionsErrors[keyof GetConditionsErrors];
@@ -1802,13 +1794,9 @@ export type SaveConditionsErrors = {
      */
     404: ErrorBody;
     /**
-     * Validation Error
+     * Unprocessable Content
      */
-    422: HttpValidationError;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
+    422: ErrorBody;
 };
 
 export type SaveConditionsError = SaveConditionsErrors[keyof SaveConditionsErrors];
