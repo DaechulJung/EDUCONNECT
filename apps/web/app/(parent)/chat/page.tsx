@@ -7,7 +7,8 @@ import { Icon, ToastProvider } from '@/components/kds/kds'
 import { useToast } from '@/components/kds/kds-hooks'
 import { ConditionCard } from '@/components/parent/ConditionCard'
 import { ConditionSheet } from '@/components/parent/ConditionSheet'
-import { getConditions, listChildren, listSubjects, saveConditions, sendChatMessage, type Conditions } from '@/lib/client'
+import { RecommendTable } from '@/components/parent/RecommendTable'
+import { getConditions, listChildren, listSubjects, recommendPrograms, saveConditions, sendChatMessage, type Conditions, type Recommendation } from '@/lib/client'
 import { BASE_SUBJECTS, childLabel, pickChild, sameConditions, subjectOptions } from '@/lib/conditions'
 
 type Message = { id: number; role: 'user' | 'ai'; text: string; error?: boolean }
@@ -34,7 +35,12 @@ function Chat() {
   const [saving, setSaving] = useState(false)
   const [saveError, setSaveError] = useState<string | null>(null)
   const [childId, setChildId] = useState<string | null>(null)
+  const [recs, setRecs] = useState<Recommendation[] | null>(null)
+  const [recommending, setRecommending] = useState(false)
+  const [recError, setRecError] = useState<string | null>(null)
   const nextId = useRef(1)
+  // Bumped whenever the child or the card changes; a recommendation answer for an older value is dropped.
+  const recContext = useRef(0)
   const endRef = useRef<HTMLDivElement>(null)
 
   const children = useQuery({
@@ -65,6 +71,13 @@ function Chat() {
     endRef.current?.scrollIntoView?.({ block: 'end' })
   }, [messages, thinking])
 
+  function clearRecs() {
+    recContext.current++
+    setRecs(null)
+    setRecError(null)
+    setRecommending(false)
+  }
+
   const add = (role: Message['role'], text: string, error = false) =>
     setMessages((m) => [...m, { id: nextId.current++, role, text, error }])
 
@@ -89,6 +102,7 @@ function Chat() {
     add('ai', data.reply)
     setCard(data.conditions)
     setSaveError(null)
+    clearRecs()
   }
 
   async function save() {
@@ -105,7 +119,23 @@ function Chat() {
     }
     queryClient.setQueryData(['conditions', child.id], data)
     setCard(data)
+    clearRecs()
     toast('조건을 저장했어요')
+  }
+
+  async function recommend() {
+    if (!child) return
+    const context = ++recContext.current
+    setRecommending(true)
+    setRecError(null)
+    const { data } = await recommendPrograms({ body: { child_id: child.id } })
+    if (context !== recContext.current) return
+    setRecommending(false)
+    if (!data) {
+      setRecError('추천을 불러오지 못했어요. 다시 시도해 주세요.')
+      return
+    }
+    setRecs(data.items)
   }
 
   const lastAi = [...messages].reverse().find((m) => m.role === 'ai' && !m.error)?.id
@@ -146,14 +176,17 @@ function Chat() {
                   <Link className="kds-button kds-button--secondary kds-button--small" style={{ alignSelf: 'flex-start' }} href="/children">자녀 등록</Link>
                 )}
                 {m.id === lastAi && shown && child && (
-                  <ConditionCard value={shown} childName={childName} dirty={dirty} saving={saving} error={saveError} onEdit={() => setEditing(true)} onSave={save} />
+                  <ConditionCard value={shown} childName={childName} dirty={dirty} saving={saving} error={saveError} onEdit={() => setEditing(true)} onSave={save} canRecommend={!!saved.data} recommending={recommending} onRecommend={recommend} />
                 )}
               </div>
             ),
           )}
           {lastAi === undefined && saved.data && child && (
-            <ConditionCard value={shown!} childName={childName} dirty={dirty} saving={saving} error={saveError} onEdit={() => setEditing(true)} onSave={save} />
+            <ConditionCard value={shown!} childName={childName} dirty={dirty} saving={saving} error={saveError} onEdit={() => setEditing(true)} onSave={save} canRecommend={!!saved.data} recommending={recommending} onRecommend={recommend} />
           )}
+
+          {recError && <p className="kds-info-line kds-info-line--error" role="alert"><Icon name="ic-line-warning" size={16} />{recError}</p>}
+          {recs && <RecommendTable items={recs} />}
 
           {thinking && <div className="kds-chat__thinking" role="status">조건을 정리하는 중</div>}
           {!thinking && messages.length === 0 && (
@@ -189,7 +222,7 @@ function Chat() {
           childId={child.id}
           childOptions={(children.data ?? []).map((c) => ({ id: c.id, label: childLabel(c) }))}
           subjects={subjectOptions(subjects.data, shown.subjects, BASE_SUBJECTS)}
-          onApply={(next, nextChildId) => { setCard(next); setChildId(nextChildId); setSaveError(null); setEditing(false) }}
+          onApply={(next, nextChildId) => { setCard(next); setChildId(nextChildId); setSaveError(null); clearRecs(); setEditing(false) }}
           onClose={() => setEditing(false)}
         />
       )}
