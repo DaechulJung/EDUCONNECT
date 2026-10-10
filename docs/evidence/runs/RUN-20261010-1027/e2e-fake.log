@@ -1,0 +1,15 @@
+
+ RUN  e2e v0.18.0 /Users/agentneo/Desktop/Sync/DS_Projects/30_Projects/PRJ-017_KT_Hackerthon2026/AIDX_PRE_TRAINING_2/EDUCONNECT
+      run 01a1255b-152e-7501-a52d-74058ad641e7 · targets: web
+
+ ✓ |web| tests/auth.e2e.ts (3 tests) 10.25s
+ ✓ |web| tests/chat-fallback.e2e.ts (2 tests) 9.08s
+ ✓ |web| tests/chat.e2e.ts (4 tests) 9.81s
+ ✓ |web| tests/smoke.e2e.ts (2 tests) 546ms
+
+ Test Files  4 passed (4)
+      Tests  11 passed (11)
+   Start at  19:28:09
+   Duration  30.04s
+     Report  .e2e/report.json
+
