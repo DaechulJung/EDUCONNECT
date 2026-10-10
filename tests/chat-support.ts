@@ -32,8 +32,6 @@ export async function signInParent(app: App, screen: Screen) {
 }
 
 export async function send(screen: Screen, text: string) {
-  // The page answers "먼저 자녀를 등록해 주세요" if the text goes out before the child list arrives (TC-16 flake, PR #26 run).
-  await expect(screen.getByText(/의 과목·예산·요일을 말씀해 주세요/)).toBeVisible({ timeout: 10_000 })
   await screen.getByLabel('챗봇에 보낼 말').fill(text)
   await screen.getByRole('button', '보내기').tap()
 }
