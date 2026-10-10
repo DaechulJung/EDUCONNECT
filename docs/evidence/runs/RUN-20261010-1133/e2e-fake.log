@@ -1,0 +1,19 @@
+
+ RUN  e2e v0.18.0 /Users/agentneo/Desktop/71_Hackerthon/01_Pre_Project/AIDX_PRE_TRAINING_2/.worktrees/verify
+      run 01a12598-b0c6-7193-8297-42d8c0471f1a · targets: web
+
+ ✓ |web| tests/auth.e2e.ts (3 tests) 10.94s
+ ✓ |web| tests/branding.e2e.ts (2 tests) 3.68s
+ ✓ |web| tests/chat-fallback.e2e.ts (2 tests) 9.18s
+ ✓ |web| tests/chat.e2e.ts (4 tests) 10.14s
+ ✓ |web| tests/plan.e2e.ts (3 tests) 9.62s
+ ✓ |web| tests/recommend.e2e.ts (7 tests) 18.22s
+ ✓ |web| tests/schedule.e2e.ts (4 tests) 12.38s
+ ✓ |web| tests/smoke.e2e.ts (2 tests) 523ms
+
+ Test Files  8 passed (8)
+      Tests  27 passed (27)
+   Start at  20:35:26
+   Duration  75.14s (1m 15s)
+     Report  .e2e/report.json
+
