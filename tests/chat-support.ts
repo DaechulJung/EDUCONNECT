@@ -1,4 +1,4 @@
-import { expect, type App, type Screen } from 'e2e'
+import { expect, type App, type Locator, type Screen } from 'e2e'
 
 // Shared steps for the chat TCs (docs/e2e-test.md TC-28~33). The app must run with
 // ENABLE_TEST_ROUTES=1 and the seed password in SEED_PASSWORD (same value the app seeded with).
@@ -48,3 +48,15 @@ export async function expectAroundCard(screen: Screen) {
   await expect(row(screen, '예산 상한')).toContainText('1,100,000원')
   await expect(row(screen, '밀도')).toContainText('촘촘하게')
 }
+
+// The 가능 요일 chips in the condition sheet start at 월~금 when no day is saved (experience 157행 기본값), so set
+// exactly `wanted` from whatever the chips show instead of tapping each wanted day.
+export async function pickDays(sheet: Locator, wanted: readonly string[]) {
+  const group = sheet.getByRole('group', '가능 요일')
+  for (const day of ['월', '화', '수', '목', '금', '토', '일']) {
+    const chip = group.getByRole('button', day)
+    const on = (await chip.getAttribute('aria-pressed')) === 'true'
+    if (on !== wanted.includes(day)) await chip.tap()
+  }
+}
+

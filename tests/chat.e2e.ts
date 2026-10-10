@@ -1,6 +1,6 @@
 import { expect, type App, type Locator, type Screen } from 'e2e'
 import { beforeEach, test } from '@e2e-dev/web'
-import { AROUND, TASK, WITHIN, api, expectAroundCard, resetSeed, row, send, signInParent } from './chat-support'
+import { AROUND, TASK, WITHIN, api, expectAroundCard, resetSeed, row, send, pickDays, signInParent } from './chat-support'
 
 // REQ-05 with the LLM double (LLM_PROVIDER=fake): TC-28 (AC-05.1), TC-29 (AC-05.2),
 // TC-30 (AC-05.3) and TC-31 (AC-05.4). A new conversation is a fresh /chat: no messages, saved card only.
@@ -71,8 +71,7 @@ test('TC-31 유형 교과 학원·요일 월·수·금으로 저장하면 새 �
 
   await editAndSave(screen, async (sheet) => {
     await sheet.getByRole('group', '학원 유형').getByRole('button', '교과 학원').tap()
-    const days = sheet.getByRole('group', '가능 요일')
-    for (const day of ['월', '수', '금']) await days.getByRole('button', day).tap()
+    await pickDays(sheet, ['월', '수', '금'])
   })
   await openNewConversation(app, screen)
   await expect(row(screen, '학원 유형')).toHaveText(/교과 학원$/)

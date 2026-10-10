@@ -1,6 +1,6 @@
 import { expect, type App, type Screen } from 'e2e'
 import { beforeEach, test, type Browser } from '@e2e-dev/web'
-import { AROUND, TASK, api, resetSeed, send, signInParent } from './chat-support'
+import { AROUND, TASK, api, resetSeed, send, pickDays, signInParent } from './chat-support'
 import { COLUMNS, comparison, readComparison, rows, showRecommendations } from './recommend-support'
 
 // REQ-06 with the LLM double: TC-35 (AC-06.1), TC-36 (AC-06.2), TC-37 (AC-06.3), TC-38 (AC-06.4),
@@ -129,8 +129,7 @@ test('TC-80 유형 교과 학원·요일 월·수·금으로 저장하고 추천
   await screen.getByRole('article', '조건 카드').getByRole('button', '고치기').tap()
   const sheet = screen.getByRole('dialog', '조건을 고쳐 주세요')
   await sheet.getByRole('group', '학원 유형').getByRole('button', '교과 학원').tap()
-  const days = sheet.getByRole('group', '가능 요일')
-  for (const day of ['월', '수', '금']) await days.getByRole('button', day).tap()
+  await pickDays(sheet, ['월', '수', '금'])
   await sheet.getByRole('button', '적용').tap()
   await screen.getByRole('button', '조건 저장').tap()
   await expect(screen.getByText('조건을 저장했어요').first()).toBeVisible({ timeout: 10_000 })

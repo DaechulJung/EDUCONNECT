@@ -182,7 +182,8 @@ def test_code_tokens_in_model_reasons_become_labels(parent) -> None:  # AC-06.1
 
 
 def test_empty_days_mean_monday_to_friday(parent) -> None:  # #5 회귀 05-2
-    # experience 157행: 가능 요일의 기본값은 월~금. 시드의 미술(리듬피아노미술학원)은 토요일 반뿐이다.
+    # experience 157행: 가능 요일의 기본값은 월~금.
+    # 시드의 미술(리듬피아노미술학원)은 토요일 반뿐이다.
     save(parent, {**BASE, "subjects": ["미술"], "budget_cap": 1_100_000, "days": []})
     assert items(parent) == []
     save(parent, {**BASE, "subjects": ["미술"], "days": ["sat"]})
