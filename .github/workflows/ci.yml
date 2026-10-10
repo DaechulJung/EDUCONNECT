@@ -58,6 +58,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       E2E_TELEMETRY_DISABLED: 1
+      ENABLE_TEST_ROUTES: 1 # /api/test/* for seed reset, clock and the LLM double (arch AD-11)
+      LLM_PROVIDER: fake # CI never calls Azure OpenAI (AC-10.3)
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7

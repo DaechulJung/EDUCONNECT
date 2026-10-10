@@ -3,8 +3,8 @@ import "./globals.css";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
-  title: "App",
-  description: "해커톤 공통 뼈대",
+  title: "EDUCONNECT",
+  description: "모두의 AI 교육 에이전트 — 자녀 맞춤형 교육·일정 관리",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
