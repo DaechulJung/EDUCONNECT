@@ -188,7 +188,10 @@ def test_install_masks_records_of_child_and_unlisted_loggers(monkeypatch) -> Non
 
     monkeypatch.setattr(logging, "_logRecordFactory", logging.getLogRecordFactory())
     root, raw = logging.getLogger(), _Raw()
-    monkeypatch.setattr(root, "level", logging.DEBUG)
+    previous = root.level
+    # setLevel (not a plain attribute set) also clears each logger's is-enabled cache, which
+    # earlier TestClient requests filled with "httpx2 INFO is off".
+    root.setLevel(logging.DEBUG)
     root.addHandler(raw)
     try:
         masking.install(azure_settings())
@@ -200,6 +203,7 @@ def test_install_masks_records_of_child_and_unlisted_loggers(monkeypatch) -> Non
             logging.getLogger("somewhere.else").exception("failed")
     finally:
         root.removeHandler(raw)
+        root.setLevel(previous)
     text = "\n".join(raw.lines)
     assert len(raw.lines) == 3
     for value in (FAKE_KEY, FAKE_BASE, FAKE_ENDPOINT, "unit-test-resource.example.test"):
