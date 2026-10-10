@@ -5,6 +5,399 @@ export type ClientOptions = {
 };
 
 /**
+ * Adjustment
+ */
+export type Adjustment = {
+    /**
+     * Plan Id
+     */
+    plan_id: string;
+    /**
+     * Reasons
+     */
+    reasons: Array<ImpactReasonItem>;
+    /**
+     * Proposal
+     */
+    proposal: Array<PlanItem>;
+    /**
+     * Monthly Total
+     */
+    monthly_total: number;
+    /**
+     * Violations
+     */
+    violations: Array<Violation>;
+};
+
+/**
+ * AfterSchoolIn
+ *
+ * School after-school program: type is after_school and the location is the school's.
+ */
+export type AfterSchoolIn = {
+    /**
+     * Subject
+     */
+    subject: string;
+    /**
+     * Days
+     */
+    days: Array<'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun'>;
+    /**
+     * Start
+     */
+    start: string;
+    /**
+     * End
+     */
+    end: string;
+    /**
+     * Monthly Tuition
+     *
+     * NULL = 미공개, 0 = 무료
+     */
+    monthly_tuition: number | null;
+    /**
+     * Monthly Other
+     */
+    monthly_other?: number;
+    /**
+     * Instructor
+     */
+    instructor: string;
+    /**
+     * Grade Min
+     */
+    grade_min: number;
+    /**
+     * Grade Max
+     */
+    grade_max: number;
+    /**
+     * Capacity
+     */
+    capacity: number;
+    /**
+     * Enrolled
+     */
+    enrolled: number;
+};
+
+/**
+ * AfterSchoolProgram
+ */
+export type AfterSchoolProgram = {
+    /**
+     * Subject
+     */
+    subject: string;
+    /**
+     * Days
+     */
+    days: Array<'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun'>;
+    /**
+     * Start
+     */
+    start: string;
+    /**
+     * End
+     */
+    end: string;
+    /**
+     * Monthly Tuition
+     *
+     * NULL = 미공개, 0 = 무료
+     */
+    monthly_tuition: number | null;
+    /**
+     * Monthly Other
+     */
+    monthly_other?: number;
+    /**
+     * Instructor
+     */
+    instructor: string;
+    /**
+     * Grade Min
+     */
+    grade_min: number;
+    /**
+     * Grade Max
+     */
+    grade_max: number;
+    /**
+     * Capacity
+     */
+    capacity: number;
+    /**
+     * Enrolled
+     */
+    enrolled: number;
+    /**
+     * Id
+     */
+    id: string;
+    /**
+     * Institution Id
+     */
+    institution_id: string;
+    /**
+     * Type
+     */
+    type?: 'academy' | 'arts' | 'other' | 'after_school';
+    /**
+     * Lat
+     */
+    lat: number;
+    /**
+     * Lng
+     */
+    lng: number;
+};
+
+/**
+ * ChatMessageIn
+ */
+export type ChatMessageIn = {
+    /**
+     * Child Id
+     */
+    child_id: string;
+    /**
+     * Text
+     */
+    text: string;
+};
+
+/**
+ * ChatReply
+ */
+export type ChatReply = {
+    /**
+     * Reply
+     */
+    reply: string;
+    conditions: Conditions;
+    /**
+     * Source
+     */
+    source: 'llm' | 'fallback';
+};
+
+/**
+ * Child
+ */
+export type Child = {
+    /**
+     * Alias
+     */
+    alias: string;
+    /**
+     * Age
+     */
+    age: number;
+    /**
+     * Grade
+     */
+    grade: number;
+    /**
+     * School Id
+     */
+    school_id?: string | null;
+    /**
+     * Interests
+     */
+    interests?: Array<string>;
+    /**
+     * Goal
+     */
+    goal?: string;
+    /**
+     * Existing Events
+     */
+    existing_events?: Array<ExistingEvent>;
+    /**
+     * Manual Dismissal
+     */
+    manual_dismissal?: {
+        [key: string]: string;
+    };
+    /**
+     * Consent Checked
+     */
+    consent_checked?: boolean;
+    /**
+     * Id
+     */
+    id: string;
+};
+
+/**
+ * ChildIn
+ */
+export type ChildIn = {
+    /**
+     * Alias
+     */
+    alias: string;
+    /**
+     * Age
+     */
+    age: number;
+    /**
+     * Grade
+     */
+    grade: number;
+    /**
+     * School Id
+     */
+    school_id?: string | null;
+    /**
+     * Interests
+     */
+    interests?: Array<string>;
+    /**
+     * Goal
+     */
+    goal?: string;
+    /**
+     * Existing Events
+     */
+    existing_events?: Array<ExistingEvent>;
+    /**
+     * Manual Dismissal
+     */
+    manual_dismissal?: {
+        [key: string]: string;
+    };
+    /**
+     * Consent Checked
+     */
+    consent_checked?: boolean;
+};
+
+/**
+ * Conditions
+ */
+export type Conditions = {
+    /**
+     * Subjects
+     */
+    subjects?: Array<string>;
+    /**
+     * Budget Target
+     */
+    budget_target: number;
+    /**
+     * Budget Cap
+     */
+    budget_cap: number;
+    /**
+     * Types
+     *
+     * 비어 있으면 모든 유형
+     */
+    types?: Array<'academy' | 'arts' | 'other' | 'after_school'>;
+    /**
+     * Days
+     *
+     * 비어 있으면 모든 요일
+     */
+    days?: Array<'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun'>;
+    /**
+     * Density
+     */
+    density?: 'tight' | 'normal';
+    /**
+     * Child Id
+     */
+    child_id: string;
+};
+
+/**
+ * ConditionsIn
+ */
+export type ConditionsIn = {
+    /**
+     * Subjects
+     */
+    subjects?: Array<string>;
+    /**
+     * Budget Target
+     */
+    budget_target: number;
+    /**
+     * Budget Cap
+     */
+    budget_cap: number;
+    /**
+     * Types
+     *
+     * 비어 있으면 모든 유형
+     */
+    types?: Array<'academy' | 'arts' | 'other' | 'after_school'>;
+    /**
+     * Days
+     *
+     * 비어 있으면 모든 요일
+     */
+    days?: Array<'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun'>;
+    /**
+     * Density
+     */
+    density?: 'tight' | 'normal';
+};
+
+/**
+ * ErrorBody
+ */
+export type ErrorBody = {
+    /**
+     * Detail
+     */
+    detail: string;
+    /**
+     * Data
+     */
+    data?: {
+        [key: string]: unknown;
+    } | null;
+};
+
+/**
+ * ExistingEvent
+ */
+export type ExistingEvent = {
+    /**
+     * Dow
+     */
+    dow: 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun';
+    /**
+     * Start
+     */
+    start: string;
+    /**
+     * End
+     */
+    end: string;
+    /**
+     * Label
+     */
+    label: string;
+};
+
+/**
+ * HTTPValidationError
+ */
+export type HttpValidationError = {
+    /**
+     * Detail
+     */
+    detail?: Array<ValidationError>;
+};
+
+/**
  * Health
  */
 export type Health = {
@@ -24,6 +417,549 @@ export type Health = {
      * Vector
      */
     vector: string | null;
+};
+
+/**
+ * ImpactCount
+ */
+export type ImpactCount = {
+    /**
+     * Program Id
+     */
+    program_id?: string | null;
+    /**
+     * Grade
+     */
+    grade?: number | null;
+    /**
+     * Affected Plans
+     */
+    affected_plans: number;
+};
+
+/**
+ * ImpactReasonItem
+ */
+export type ImpactReasonItem = {
+    /**
+     * Kind
+     */
+    kind: 'time_overlap' | 'travel_short' | 'over_budget' | 'content_changed';
+    /**
+     * Program Id
+     */
+    program_id?: string | null;
+    /**
+     * Amount
+     */
+    amount?: number | null;
+};
+
+/**
+ * LoginRequest
+ */
+export type LoginRequest = {
+    /**
+     * Login Id
+     */
+    login_id: string;
+    /**
+     * Password
+     */
+    password: string;
+};
+
+/**
+ * Me
+ */
+export type Me = {
+    /**
+     * Account Id
+     */
+    account_id: string;
+    /**
+     * Login Id
+     */
+    login_id: string;
+    /**
+     * Role
+     */
+    role: 'parent' | 'academy' | 'school';
+    /**
+     * Institution Id
+     */
+    institution_id: string | null;
+};
+
+/**
+ * Meta
+ */
+export type Meta = {
+    /**
+     * Service Name
+     */
+    service_name: string;
+    /**
+     * Subtitle
+     */
+    subtitle: string;
+    /**
+     * Modu Ai Status
+     */
+    modu_ai_status: 'mock';
+    /**
+     * Ai Provider Label
+     */
+    ai_provider_label: string;
+};
+
+/**
+ * OrgImpact
+ *
+ * Counts only: no child, parent or plan ids (AD-4, AC-09.7).
+ */
+export type OrgImpact = {
+    /**
+     * Affected Plans
+     */
+    affected_plans: number;
+    /**
+     * Items
+     */
+    items: Array<ImpactCount>;
+};
+
+/**
+ * Plan
+ */
+export type Plan = {
+    /**
+     * Id
+     */
+    id: string;
+    /**
+     * Child Id
+     */
+    child_id: string;
+    /**
+     * Status
+     */
+    status: 'draft' | 'confirmed' | 'superseded';
+    /**
+     * Items
+     */
+    items: Array<PlanItem>;
+    /**
+     * School
+     */
+    school: {
+        [key: string]: string;
+    };
+    /**
+     * Budget Cap
+     */
+    budget_cap: number;
+    /**
+     * Monthly Total
+     */
+    monthly_total: number;
+    /**
+     * Violations
+     */
+    violations: Array<Violation>;
+    impact?: PlanImpact | null;
+    /**
+     * Created At
+     */
+    created_at: string;
+};
+
+/**
+ * PlanDraftRequest
+ */
+export type PlanDraftRequest = {
+    /**
+     * Child Id
+     */
+    child_id: string;
+};
+
+/**
+ * PlanImpact
+ */
+export type PlanImpact = {
+    /**
+     * Affected
+     */
+    affected: boolean;
+    /**
+     * Reasons
+     */
+    reasons: Array<ImpactReasonItem>;
+};
+
+/**
+ * PlanItem
+ */
+export type PlanItem = {
+    /**
+     * Program Id
+     */
+    program_id: string;
+    /**
+     * Institution Name
+     */
+    institution_name: string;
+    /**
+     * Subject
+     */
+    subject: string;
+    /**
+     * Type
+     */
+    type: 'academy' | 'arts' | 'other' | 'after_school';
+    /**
+     * Days
+     */
+    days: Array<'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun'>;
+    /**
+     * Start
+     */
+    start: string;
+    /**
+     * End
+     */
+    end: string;
+    /**
+     * Monthly Tuition
+     */
+    monthly_tuition: number;
+    /**
+     * Monthly Other
+     */
+    monthly_other: number;
+};
+
+/**
+ * PlanUpdate
+ *
+ * Remove or swap programs: the full list of program ids the draft should keep.
+ */
+export type PlanUpdate = {
+    /**
+     * Program Ids
+     */
+    program_ids: Array<string>;
+};
+
+/**
+ * Program
+ */
+export type Program = {
+    /**
+     * Subject
+     */
+    subject: string;
+    /**
+     * Days
+     */
+    days: Array<'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun'>;
+    /**
+     * Start
+     */
+    start: string;
+    /**
+     * End
+     */
+    end: string;
+    /**
+     * Monthly Tuition
+     *
+     * NULL = 미공개, 0 = 무료
+     */
+    monthly_tuition: number | null;
+    /**
+     * Monthly Other
+     */
+    monthly_other?: number;
+    /**
+     * Instructor
+     */
+    instructor: string;
+    /**
+     * Grade Min
+     */
+    grade_min: number;
+    /**
+     * Grade Max
+     */
+    grade_max: number;
+    /**
+     * Capacity
+     */
+    capacity: number;
+    /**
+     * Enrolled
+     */
+    enrolled: number;
+    /**
+     * Type
+     */
+    type: 'academy' | 'arts' | 'other';
+    /**
+     * Lat
+     */
+    lat: number;
+    /**
+     * Lng
+     */
+    lng: number;
+    /**
+     * Id
+     */
+    id: string;
+    /**
+     * Institution Id
+     */
+    institution_id: string;
+};
+
+/**
+ * ProgramIn
+ *
+ * Academy program. Location is required (REQ-02).
+ */
+export type ProgramIn = {
+    /**
+     * Subject
+     */
+    subject: string;
+    /**
+     * Days
+     */
+    days: Array<'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun'>;
+    /**
+     * Start
+     */
+    start: string;
+    /**
+     * End
+     */
+    end: string;
+    /**
+     * Monthly Tuition
+     *
+     * NULL = 미공개, 0 = 무료
+     */
+    monthly_tuition: number | null;
+    /**
+     * Monthly Other
+     */
+    monthly_other?: number;
+    /**
+     * Instructor
+     */
+    instructor: string;
+    /**
+     * Grade Min
+     */
+    grade_min: number;
+    /**
+     * Grade Max
+     */
+    grade_max: number;
+    /**
+     * Capacity
+     */
+    capacity: number;
+    /**
+     * Enrolled
+     */
+    enrolled: number;
+    /**
+     * Type
+     */
+    type: 'academy' | 'arts' | 'other';
+    /**
+     * Lat
+     */
+    lat: number;
+    /**
+     * Lng
+     */
+    lng: number;
+};
+
+/**
+ * Recommendation
+ */
+export type Recommendation = {
+    /**
+     * Program Id
+     */
+    program_id: string;
+    /**
+     * Institution Name
+     */
+    institution_name: string;
+    /**
+     * Subject
+     */
+    subject: string;
+    /**
+     * Type
+     */
+    type: 'academy' | 'arts' | 'other' | 'after_school';
+    /**
+     * Days
+     */
+    days: Array<'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun'>;
+    /**
+     * Start
+     */
+    start: string;
+    /**
+     * End
+     */
+    end: string;
+    /**
+     * Monthly Tuition
+     */
+    monthly_tuition: number;
+    /**
+     * Monthly Other
+     */
+    monthly_other: number;
+    /**
+     * Travel Km
+     */
+    travel_km: number;
+    /**
+     * Travel Min
+     */
+    travel_min: number;
+    /**
+     * Reason
+     */
+    reason: string;
+    /**
+     * Reason Source
+     */
+    reason_source: 'llm' | 'template';
+};
+
+/**
+ * RecommendationList
+ */
+export type RecommendationList = {
+    /**
+     * Child Id
+     */
+    child_id: string;
+    /**
+     * Items
+     */
+    items: Array<Recommendation>;
+};
+
+/**
+ * RecommendationRequest
+ */
+export type RecommendationRequest = {
+    /**
+     * Child Id
+     */
+    child_id: string;
+};
+
+/**
+ * SchoolTimetable
+ */
+export type SchoolTimetable = {
+    /**
+     * School Id
+     */
+    school_id: string;
+    /**
+     * Entries
+     */
+    entries: Array<TimetableEntry>;
+};
+
+/**
+ * TimetableEntry
+ */
+export type TimetableEntry = {
+    /**
+     * Grade
+     */
+    grade: number;
+    /**
+     * Dow
+     */
+    dow: 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun';
+    /**
+     * Dismissal
+     */
+    dismissal: string;
+};
+
+/**
+ * TimetableUpdate
+ *
+ * Upsert by (grade, dow); rows not listed stay as they are.
+ */
+export type TimetableUpdate = {
+    /**
+     * Entries
+     */
+    entries: Array<TimetableEntry>;
+};
+
+/**
+ * ValidationError
+ */
+export type ValidationError = {
+    /**
+     * Location
+     */
+    loc: Array<string | number>;
+    /**
+     * Message
+     */
+    msg: string;
+    /**
+     * Error Type
+     */
+    type: string;
+    /**
+     * Input
+     */
+    input?: unknown;
+    /**
+     * Context
+     */
+    ctx?: {
+        [key: string]: unknown;
+    };
+};
+
+/**
+ * Violation
+ */
+export type Violation = {
+    /**
+     * Program Id
+     */
+    program_id: string | null;
+    /**
+     * Kind
+     */
+    kind: 'time_overlap' | 'travel_short' | 'over_budget';
+    /**
+     * Amount
+     */
+    amount?: number | null;
 };
 
 export type HealthData = {
@@ -50,3 +986,1319 @@ export type HealthResponses = {
 };
 
 export type HealthResponse = HealthResponses[keyof HealthResponses];
+
+export type LoginData = {
+    body: LoginRequest;
+    path?: never;
+    query?: never;
+    url: '/api/auth/login';
+};
+
+export type LoginErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type LoginError = LoginErrors[keyof LoginErrors];
+
+export type LoginResponses = {
+    /**
+     * Successful Response
+     */
+    200: Me;
+};
+
+export type LoginResponse = LoginResponses[keyof LoginResponses];
+
+export type LogoutData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/auth/logout';
+};
+
+export type LogoutErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type LogoutError = LogoutErrors[keyof LogoutErrors];
+
+export type LogoutResponses = {
+    /**
+     * Successful Response
+     */
+    204: void;
+};
+
+export type LogoutResponse = LogoutResponses[keyof LogoutResponses];
+
+export type MeData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/auth/me';
+};
+
+export type MeErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type MeError = MeErrors[keyof MeErrors];
+
+export type MeResponses = {
+    /**
+     * Successful Response
+     */
+    200: Me;
+};
+
+export type MeResponse = MeResponses[keyof MeResponses];
+
+export type ListProgramsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/academy/programs';
+};
+
+export type ListProgramsErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Forbidden
+     */
+    403: ErrorBody;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type ListProgramsError = ListProgramsErrors[keyof ListProgramsErrors];
+
+export type ListProgramsResponses = {
+    /**
+     * Response List Programs
+     *
+     * Successful Response
+     */
+    200: Array<Program>;
+};
+
+export type ListProgramsResponse = ListProgramsResponses[keyof ListProgramsResponses];
+
+export type CreateProgramData = {
+    body: ProgramIn;
+    path?: never;
+    query?: never;
+    url: '/api/academy/programs';
+};
+
+export type CreateProgramErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Forbidden
+     */
+    403: ErrorBody;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type CreateProgramError = CreateProgramErrors[keyof CreateProgramErrors];
+
+export type CreateProgramResponses = {
+    /**
+     * Successful Response
+     */
+    201: Program;
+};
+
+export type CreateProgramResponse = CreateProgramResponses[keyof CreateProgramResponses];
+
+export type DeleteProgramData = {
+    body?: never;
+    path: {
+        /**
+         * Program Id
+         */
+        program_id: string;
+    };
+    query?: never;
+    url: '/api/academy/programs/{program_id}';
+};
+
+export type DeleteProgramErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Forbidden
+     */
+    403: ErrorBody;
+    /**
+     * Not Found
+     */
+    404: ErrorBody;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type DeleteProgramError = DeleteProgramErrors[keyof DeleteProgramErrors];
+
+export type DeleteProgramResponses = {
+    /**
+     * Successful Response
+     */
+    204: void;
+};
+
+export type DeleteProgramResponse = DeleteProgramResponses[keyof DeleteProgramResponses];
+
+export type UpdateProgramData = {
+    body: ProgramIn;
+    path: {
+        /**
+         * Program Id
+         */
+        program_id: string;
+    };
+    query?: never;
+    url: '/api/academy/programs/{program_id}';
+};
+
+export type UpdateProgramErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Forbidden
+     */
+    403: ErrorBody;
+    /**
+     * Not Found
+     */
+    404: ErrorBody;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type UpdateProgramError = UpdateProgramErrors[keyof UpdateProgramErrors];
+
+export type UpdateProgramResponses = {
+    /**
+     * Successful Response
+     */
+    200: Program;
+};
+
+export type UpdateProgramResponse = UpdateProgramResponses[keyof UpdateProgramResponses];
+
+export type GetTimetableData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/school/timetable';
+};
+
+export type GetTimetableErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Forbidden
+     */
+    403: ErrorBody;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type GetTimetableError = GetTimetableErrors[keyof GetTimetableErrors];
+
+export type GetTimetableResponses = {
+    /**
+     * Successful Response
+     */
+    200: SchoolTimetable;
+};
+
+export type GetTimetableResponse = GetTimetableResponses[keyof GetTimetableResponses];
+
+export type UpdateTimetableData = {
+    body: TimetableUpdate;
+    path?: never;
+    query?: never;
+    url: '/api/school/timetable';
+};
+
+export type UpdateTimetableErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Forbidden
+     */
+    403: ErrorBody;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type UpdateTimetableError = UpdateTimetableErrors[keyof UpdateTimetableErrors];
+
+export type UpdateTimetableResponses = {
+    /**
+     * Successful Response
+     */
+    200: SchoolTimetable;
+};
+
+export type UpdateTimetableResponse = UpdateTimetableResponses[keyof UpdateTimetableResponses];
+
+export type ListAfterSchoolData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/school/after-school';
+};
+
+export type ListAfterSchoolErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Forbidden
+     */
+    403: ErrorBody;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type ListAfterSchoolError = ListAfterSchoolErrors[keyof ListAfterSchoolErrors];
+
+export type ListAfterSchoolResponses = {
+    /**
+     * Response List After School
+     *
+     * Successful Response
+     */
+    200: Array<AfterSchoolProgram>;
+};
+
+export type ListAfterSchoolResponse = ListAfterSchoolResponses[keyof ListAfterSchoolResponses];
+
+export type CreateAfterSchoolData = {
+    body: AfterSchoolIn;
+    path?: never;
+    query?: never;
+    url: '/api/school/after-school';
+};
+
+export type CreateAfterSchoolErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Forbidden
+     */
+    403: ErrorBody;
+    /**
+     * Unprocessable Content
+     */
+    422: ErrorBody;
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type CreateAfterSchoolError = CreateAfterSchoolErrors[keyof CreateAfterSchoolErrors];
+
+export type CreateAfterSchoolResponses = {
+    /**
+     * Successful Response
+     */
+    201: AfterSchoolProgram;
+};
+
+export type CreateAfterSchoolResponse = CreateAfterSchoolResponses[keyof CreateAfterSchoolResponses];
+
+export type DeleteAfterSchoolData = {
+    body?: never;
+    path: {
+        /**
+         * Program Id
+         */
+        program_id: string;
+    };
+    query?: never;
+    url: '/api/school/after-school/{program_id}';
+};
+
+export type DeleteAfterSchoolErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Forbidden
+     */
+    403: ErrorBody;
+    /**
+     * Not Found
+     */
+    404: ErrorBody;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type DeleteAfterSchoolError = DeleteAfterSchoolErrors[keyof DeleteAfterSchoolErrors];
+
+export type DeleteAfterSchoolResponses = {
+    /**
+     * Successful Response
+     */
+    204: void;
+};
+
+export type DeleteAfterSchoolResponse = DeleteAfterSchoolResponses[keyof DeleteAfterSchoolResponses];
+
+export type UpdateAfterSchoolData = {
+    body: AfterSchoolIn;
+    path: {
+        /**
+         * Program Id
+         */
+        program_id: string;
+    };
+    query?: never;
+    url: '/api/school/after-school/{program_id}';
+};
+
+export type UpdateAfterSchoolErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Forbidden
+     */
+    403: ErrorBody;
+    /**
+     * Not Found
+     */
+    404: ErrorBody;
+    /**
+     * Unprocessable Content
+     */
+    422: ErrorBody;
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type UpdateAfterSchoolError = UpdateAfterSchoolErrors[keyof UpdateAfterSchoolErrors];
+
+export type UpdateAfterSchoolResponses = {
+    /**
+     * Successful Response
+     */
+    200: AfterSchoolProgram;
+};
+
+export type UpdateAfterSchoolResponse = UpdateAfterSchoolResponses[keyof UpdateAfterSchoolResponses];
+
+export type ListSubjectsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/catalog/subjects';
+};
+
+export type ListSubjectsErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type ListSubjectsError = ListSubjectsErrors[keyof ListSubjectsErrors];
+
+export type ListSubjectsResponses = {
+    /**
+     * Response List Subjects
+     *
+     * Successful Response
+     */
+    200: Array<string>;
+};
+
+export type ListSubjectsResponse = ListSubjectsResponses[keyof ListSubjectsResponses];
+
+export type ListChildrenData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/children';
+};
+
+export type ListChildrenErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Forbidden
+     */
+    403: ErrorBody;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type ListChildrenError = ListChildrenErrors[keyof ListChildrenErrors];
+
+export type ListChildrenResponses = {
+    /**
+     * Response List Children
+     *
+     * Successful Response
+     */
+    200: Array<Child>;
+};
+
+export type ListChildrenResponse = ListChildrenResponses[keyof ListChildrenResponses];
+
+export type CreateChildData = {
+    body: ChildIn;
+    path?: never;
+    query?: never;
+    url: '/api/children';
+};
+
+export type CreateChildErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Forbidden
+     */
+    403: ErrorBody;
+    /**
+     * Unprocessable Content
+     */
+    422: ErrorBody;
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type CreateChildError = CreateChildErrors[keyof CreateChildErrors];
+
+export type CreateChildResponses = {
+    /**
+     * Successful Response
+     */
+    201: Child;
+};
+
+export type CreateChildResponse = CreateChildResponses[keyof CreateChildResponses];
+
+export type GetChildData = {
+    body?: never;
+    path: {
+        /**
+         * Child Id
+         */
+        child_id: string;
+    };
+    query?: never;
+    url: '/api/children/{child_id}';
+};
+
+export type GetChildErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Forbidden
+     */
+    403: ErrorBody;
+    /**
+     * Not Found
+     */
+    404: ErrorBody;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type GetChildError = GetChildErrors[keyof GetChildErrors];
+
+export type GetChildResponses = {
+    /**
+     * Successful Response
+     */
+    200: Child;
+};
+
+export type GetChildResponse = GetChildResponses[keyof GetChildResponses];
+
+export type UpdateChildData = {
+    body: ChildIn;
+    path: {
+        /**
+         * Child Id
+         */
+        child_id: string;
+    };
+    query?: never;
+    url: '/api/children/{child_id}';
+};
+
+export type UpdateChildErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Forbidden
+     */
+    403: ErrorBody;
+    /**
+     * Not Found
+     */
+    404: ErrorBody;
+    /**
+     * Unprocessable Content
+     */
+    422: ErrorBody;
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type UpdateChildError = UpdateChildErrors[keyof UpdateChildErrors];
+
+export type UpdateChildResponses = {
+    /**
+     * Successful Response
+     */
+    200: Child;
+};
+
+export type UpdateChildResponse = UpdateChildResponses[keyof UpdateChildResponses];
+
+export type SendChatMessageData = {
+    body: ChatMessageIn;
+    path?: never;
+    query?: never;
+    url: '/api/chat/messages';
+};
+
+export type SendChatMessageErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Forbidden
+     */
+    403: ErrorBody;
+    /**
+     * Not Found
+     */
+    404: ErrorBody;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type SendChatMessageError = SendChatMessageErrors[keyof SendChatMessageErrors];
+
+export type SendChatMessageResponses = {
+    /**
+     * Successful Response
+     */
+    200: ChatReply;
+};
+
+export type SendChatMessageResponse = SendChatMessageResponses[keyof SendChatMessageResponses];
+
+export type GetConditionsData = {
+    body?: never;
+    path: {
+        /**
+         * Child Id
+         */
+        child_id: string;
+    };
+    query?: never;
+    url: '/api/children/{child_id}/conditions';
+};
+
+export type GetConditionsErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Forbidden
+     */
+    403: ErrorBody;
+    /**
+     * Not Found
+     */
+    404: ErrorBody;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type GetConditionsError = GetConditionsErrors[keyof GetConditionsErrors];
+
+export type GetConditionsResponses = {
+    /**
+     * Response Get Conditions
+     *
+     * Successful Response
+     */
+    200: Conditions | null;
+};
+
+export type GetConditionsResponse = GetConditionsResponses[keyof GetConditionsResponses];
+
+export type SaveConditionsData = {
+    body: ConditionsIn;
+    path: {
+        /**
+         * Child Id
+         */
+        child_id: string;
+    };
+    query?: never;
+    url: '/api/children/{child_id}/conditions';
+};
+
+export type SaveConditionsErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Forbidden
+     */
+    403: ErrorBody;
+    /**
+     * Not Found
+     */
+    404: ErrorBody;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type SaveConditionsError = SaveConditionsErrors[keyof SaveConditionsErrors];
+
+export type SaveConditionsResponses = {
+    /**
+     * Successful Response
+     */
+    200: Conditions;
+};
+
+export type SaveConditionsResponse = SaveConditionsResponses[keyof SaveConditionsResponses];
+
+export type RecommendProgramsData = {
+    body: RecommendationRequest;
+    path?: never;
+    query?: never;
+    url: '/api/recommendations';
+};
+
+export type RecommendProgramsErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Forbidden
+     */
+    403: ErrorBody;
+    /**
+     * Not Found
+     */
+    404: ErrorBody;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type RecommendProgramsError = RecommendProgramsErrors[keyof RecommendProgramsErrors];
+
+export type RecommendProgramsResponses = {
+    /**
+     * Successful Response
+     */
+    200: RecommendationList;
+};
+
+export type RecommendProgramsResponse = RecommendProgramsResponses[keyof RecommendProgramsResponses];
+
+export type CreatePlanDraftData = {
+    body: PlanDraftRequest;
+    path?: never;
+    query?: never;
+    url: '/api/plans/draft';
+};
+
+export type CreatePlanDraftErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Forbidden
+     */
+    403: ErrorBody;
+    /**
+     * Not Found
+     */
+    404: ErrorBody;
+    /**
+     * Unprocessable Content
+     */
+    422: ErrorBody;
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type CreatePlanDraftError = CreatePlanDraftErrors[keyof CreatePlanDraftErrors];
+
+export type CreatePlanDraftResponses = {
+    /**
+     * Successful Response
+     */
+    200: Plan;
+};
+
+export type CreatePlanDraftResponse = CreatePlanDraftResponses[keyof CreatePlanDraftResponses];
+
+export type ListPlansData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Child Id
+         */
+        child_id?: string | null;
+    };
+    url: '/api/plans';
+};
+
+export type ListPlansErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Forbidden
+     */
+    403: ErrorBody;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type ListPlansError = ListPlansErrors[keyof ListPlansErrors];
+
+export type ListPlansResponses = {
+    /**
+     * Response List Plans
+     *
+     * Successful Response
+     */
+    200: Array<Plan>;
+};
+
+export type ListPlansResponse = ListPlansResponses[keyof ListPlansResponses];
+
+export type GetPlanData = {
+    body?: never;
+    path: {
+        /**
+         * Plan Id
+         */
+        plan_id: string;
+    };
+    query?: never;
+    url: '/api/plans/{plan_id}';
+};
+
+export type GetPlanErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Forbidden
+     */
+    403: ErrorBody;
+    /**
+     * Not Found
+     */
+    404: ErrorBody;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type GetPlanError = GetPlanErrors[keyof GetPlanErrors];
+
+export type GetPlanResponses = {
+    /**
+     * Successful Response
+     */
+    200: Plan;
+};
+
+export type GetPlanResponse = GetPlanResponses[keyof GetPlanResponses];
+
+export type UpdatePlanData = {
+    body: PlanUpdate;
+    path: {
+        /**
+         * Plan Id
+         */
+        plan_id: string;
+    };
+    query?: never;
+    url: '/api/plans/{plan_id}';
+};
+
+export type UpdatePlanErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Forbidden
+     */
+    403: ErrorBody;
+    /**
+     * Not Found
+     */
+    404: ErrorBody;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type UpdatePlanError = UpdatePlanErrors[keyof UpdatePlanErrors];
+
+export type UpdatePlanResponses = {
+    /**
+     * Successful Response
+     */
+    200: Plan;
+};
+
+export type UpdatePlanResponse = UpdatePlanResponses[keyof UpdatePlanResponses];
+
+export type ConfirmPlanData = {
+    body?: never;
+    path: {
+        /**
+         * Plan Id
+         */
+        plan_id: string;
+    };
+    query?: never;
+    url: '/api/plans/{plan_id}/confirm';
+};
+
+export type ConfirmPlanErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Forbidden
+     */
+    403: ErrorBody;
+    /**
+     * Not Found
+     */
+    404: ErrorBody;
+    /**
+     * Conflict
+     */
+    409: ErrorBody;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type ConfirmPlanError = ConfirmPlanErrors[keyof ConfirmPlanErrors];
+
+export type ConfirmPlanResponses = {
+    /**
+     * Successful Response
+     */
+    200: Plan;
+};
+
+export type ConfirmPlanResponse = ConfirmPlanResponses[keyof ConfirmPlanResponses];
+
+export type GetAdjustmentData = {
+    body?: never;
+    path: {
+        /**
+         * Plan Id
+         */
+        plan_id: string;
+    };
+    query?: never;
+    url: '/api/plans/{plan_id}/adjustment';
+};
+
+export type GetAdjustmentErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Forbidden
+     */
+    403: ErrorBody;
+    /**
+     * Not Found
+     */
+    404: ErrorBody;
+    /**
+     * Unprocessable Content
+     */
+    422: ErrorBody;
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type GetAdjustmentError = GetAdjustmentErrors[keyof GetAdjustmentErrors];
+
+export type GetAdjustmentResponses = {
+    /**
+     * Successful Response
+     */
+    200: Adjustment;
+};
+
+export type GetAdjustmentResponse = GetAdjustmentResponses[keyof GetAdjustmentResponses];
+
+export type AcceptAdjustmentData = {
+    body?: never;
+    path: {
+        /**
+         * Plan Id
+         */
+        plan_id: string;
+    };
+    query?: never;
+    url: '/api/plans/{plan_id}/adjustment/accept';
+};
+
+export type AcceptAdjustmentErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Forbidden
+     */
+    403: ErrorBody;
+    /**
+     * Not Found
+     */
+    404: ErrorBody;
+    /**
+     * Conflict
+     */
+    409: ErrorBody;
+    /**
+     * Unprocessable Content
+     */
+    422: ErrorBody;
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type AcceptAdjustmentError = AcceptAdjustmentErrors[keyof AcceptAdjustmentErrors];
+
+export type AcceptAdjustmentResponses = {
+    /**
+     * Successful Response
+     */
+    200: Plan;
+};
+
+export type AcceptAdjustmentResponse = AcceptAdjustmentResponses[keyof AcceptAdjustmentResponses];
+
+export type RejectAdjustmentData = {
+    body?: never;
+    path: {
+        /**
+         * Plan Id
+         */
+        plan_id: string;
+    };
+    query?: never;
+    url: '/api/plans/{plan_id}/adjustment/reject';
+};
+
+export type RejectAdjustmentErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Forbidden
+     */
+    403: ErrorBody;
+    /**
+     * Not Found
+     */
+    404: ErrorBody;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type RejectAdjustmentError = RejectAdjustmentErrors[keyof RejectAdjustmentErrors];
+
+export type RejectAdjustmentResponses = {
+    /**
+     * Successful Response
+     */
+    200: Plan;
+};
+
+export type RejectAdjustmentResponse = RejectAdjustmentResponses[keyof RejectAdjustmentResponses];
+
+export type GetOrgImpactData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Program Id
+         */
+        program_id?: string | null;
+        /**
+         * Grade
+         */
+        grade?: number | null;
+    };
+    url: '/api/org/impact';
+};
+
+export type GetOrgImpactErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Forbidden
+     */
+    403: ErrorBody;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type GetOrgImpactError = GetOrgImpactErrors[keyof GetOrgImpactErrors];
+
+export type GetOrgImpactResponses = {
+    /**
+     * Successful Response
+     */
+    200: OrgImpact;
+};
+
+export type GetOrgImpactResponse = GetOrgImpactResponses[keyof GetOrgImpactResponses];
+
+export type GetMetaData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/meta';
+};
+
+export type GetMetaErrors = {
+    /**
+     * Not Implemented
+     */
+    501: ErrorBody;
+};
+
+export type GetMetaError = GetMetaErrors[keyof GetMetaErrors];
+
+export type GetMetaResponses = {
+    /**
+     * Successful Response
+     */
+    200: Meta;
+};
+
+export type GetMetaResponse = GetMetaResponses[keyof GetMetaResponses];

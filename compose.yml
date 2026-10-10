@@ -1,13 +1,16 @@
 # `docker compose up --build --wait` brings the whole app up: http://localhost:3000 (API docs: http://localhost:8000/docs).
+# Every published port binds to 127.0.0.1 only (arch AD-12); move them with WEB_PORT, API_PORT, DB_PORT, REDIS_PORT.
+# Azure OpenAI values: pass the file by path, never print it:
+#   docker compose --env-file .env --env-file "$HOME/.config/educonnect/azure-openai.env" up --build --wait
 # For hot reload, run only db and redis here (`npm run infra`) and the apps on the host (`npm run dev:api`, `npm run dev:web`).
 services:
   db:
     image: pgvector/pgvector:0.8.7-pg18-trixie
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-app}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-app}
-      POSTGRES_DB: ${POSTGRES_DB:-app}
-    ports: ["${DB_PORT:-15432}:5432"] # 15432 so a local PostgreSQL on 5432 does not clash
+      POSTGRES_USER: ${POSTGRES_USER:-educonnect}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-educonnect}
+      POSTGRES_DB: ${POSTGRES_DB:-educonnect}
+    ports: ["127.0.0.1:${DB_PORT:-15432}:5432"] # 15432 so a local PostgreSQL on 5432 does not clash
     volumes:
       - db-data:/var/lib/postgresql # PostgreSQL 18 images keep data under this directory
     healthcheck:
@@ -18,7 +21,7 @@ services:
 
   redis:
     image: redis:8.10-alpine
-    ports: ["${REDIS_PORT:-16379}:6379"]
+    ports: ["127.0.0.1:${REDIS_PORT:-16379}:6379"]
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 2s
@@ -28,9 +31,17 @@ services:
   api:
     build: apps/api
     environment:
-      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-app}@db:5432/${POSTGRES_DB:-app}
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-educonnect}:${POSTGRES_PASSWORD:-educonnect}@db:5432/${POSTGRES_DB:-educonnect}
       REDIS_URL: redis://redis:6379/0
-    ports: ["8000:8000"]
+      LLM_PROVIDER: ${LLM_PROVIDER:-}
+      ENABLE_TEST_ROUTES: ${ENABLE_TEST_ROUTES:-}
+      SEED_PASSWORD: ${SEED_PASSWORD:-}
+      AZURE_OPENAI_LOCATION: ${AZURE_OPENAI_LOCATION:-}
+      AZURE_OPENAI_ENDPOINT: ${AZURE_OPENAI_ENDPOINT:-}
+      AZURE_OPENAI_BASE_URL: ${AZURE_OPENAI_BASE_URL:-}
+      AZURE_OPENAI_API_KEY: ${AZURE_OPENAI_API_KEY:-}
+      AZURE_OPENAI_DEPLOYMENT: ${AZURE_OPENAI_DEPLOYMENT:-}
+    ports: ["127.0.0.1:${API_PORT:-8000}:8000"]
     depends_on:
       db: { condition: service_healthy }
       redis: { condition: service_healthy }
@@ -46,7 +57,7 @@ services:
       dockerfile: apps/web/Dockerfile
       args:
         API_URL: http://api:8000 # Next.js rewrites /api/* here (fixed at build time)
-    ports: ["3000:3000"]
+    ports: ["127.0.0.1:${WEB_PORT:-3000}:3000"]
     depends_on:
       api: { condition: service_healthy }
     healthcheck:

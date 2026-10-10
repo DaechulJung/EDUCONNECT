@@ -32,11 +32,11 @@ jobs:
       db:
         image: pgvector/pgvector:0.8.7-pg18-trixie
         env:
-          POSTGRES_USER: app
-          POSTGRES_PASSWORD: app
-          POSTGRES_DB: app
+          POSTGRES_USER: educonnect
+          POSTGRES_PASSWORD: educonnect
+          POSTGRES_DB: educonnect
         ports: ["15432:5432"] # same host ports as compose.yml, so the app defaults work
-        options: --health-cmd "pg_isready -U app" --health-interval 2s --health-retries 30
+        options: --health-cmd "pg_isready -U educonnect" --health-interval 2s --health-retries 30
       redis:
         image: redis:8.10-alpine
         ports: ["16379:6379"]
@@ -58,6 +58,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       E2E_TELEMETRY_DISABLED: 1
+      ENABLE_TEST_ROUTES: 1 # /api/test/* for seed reset, clock and the LLM double (arch AD-11)
+      LLM_PROVIDER: fake # CI never calls Azure OpenAI (AC-10.3)
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
