@@ -3,6 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState, type FormEvent } from 'react'
 import { Icon, Popup, Tabs } from '@/components/kds/kds'
+import { ImpactSummary, impactKey } from '@/components/impact/ImpactSummary'
 import { useToast } from '@/components/kds/kds-hooks'
 import {
   createAfterSchool, deleteAfterSchool, getTimetable, listAfterSchool, updateAfterSchool, updateTimetable,
@@ -105,6 +106,8 @@ function GradeTimetable({ grade, entries }: { grade: number; entries: TimetableE
   const toast = useToast()
   const [draft, setDraft] = useState<DismissalDraft>(() => dismissalDraft(entries, grade))
   const [errors, setErrors] = useState<DismissalErrors>({})
+  // After a save the result line shows how many confirmed plans of this grade it affects (experience 90행, FLOW-02).
+  const [saved, setSaved] = useState(false)
 
   const save = useMutation({
     mutationFn: async (next: DismissalDraft) => {
@@ -115,6 +118,8 @@ function GradeTimetable({ grade, entries }: { grade: number; entries: TimetableE
     onSuccess: (data) => {
       queryClient.setQueryData(TIMETABLE_KEY, data)
       setDraft(dismissalDraft(data.entries, grade))
+      setSaved(true)
+      void queryClient.invalidateQueries({ queryKey: impactKey(undefined, grade) })
       toast('시간표를 저장했어요')
     },
   })
@@ -167,6 +172,7 @@ function GradeTimetable({ grade, entries }: { grade: number; entries: TimetableE
       {save.isError && (
         <p className="kds-info-line kds-info-line--error" role="alert"><Icon name="ic-line-warning" size={16} />저장하지 못했어요. 다시 저장해 주세요</p>
       )}
+      {saved && !save.isPending && <ImpactSummary grade={grade} />}
       <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <button className="kds-button" type="submit" disabled={save.isPending}>{save.isPending ? '저장하고 있어요' : '시간표 저장'}</button>
       </div>

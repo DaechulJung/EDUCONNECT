@@ -8,7 +8,7 @@ import { Icon } from '@/components/kds/kds'
 import { useToast } from '@/components/kds/kds-hooks'
 import { PlanDraft } from '@/components/parent/PlanDraft'
 import { acceptAdjustment, getAdjustment, getPlan, rejectAdjustment } from '@/lib/client'
-import { NO_ALTERNATIVE, impactLabel, proposalPlan } from '@/lib/impact'
+import { NO_ALTERNATIVE, changedItems, impactLabel, proposalPlan } from '@/lib/impact'
 import { relaxationLabels } from '@/lib/plan'
 
 type NoAlternative = { relaxations: string[] }
@@ -102,7 +102,7 @@ function Adjustment() {
         <section aria-label="대안 일정" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
           <h3 className="body-large-bold" style={{ margin: 0 }}>대안 일정</h3>
           <p className="body-small-medium" style={{ margin: 0, color: 'var(--text-secondary-01)' }}>규칙 위반 {adjustment.data.adjustment.violations.length}건</p>
-          <PlanDraft plan={proposalPlan(plan.data, adjustment.data.adjustment)} label="대안 일정표" />
+          <PlanDraft plan={proposalPlan(plan.data, adjustment.data.adjustment)} label="대안 일정표" changed={changedItems(plan.data.items, adjustment.data.adjustment.proposal)} />
           <div style={{ display: 'flex', gap: 'var(--space-8)' }}>
             <button type="button" className="kds-button" disabled={busy} onClick={() => accept.mutate()}>조정안 수락</button>
             {keep}

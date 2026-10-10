@@ -42,9 +42,9 @@ test('조정안은 기존 계획의 학교 시간·상한에 대안 항목과 �
 
 test('조정안에서 기존 계획과 다른 칸은 새 프로그램이거나 요일·시각이 바뀐 항목이다 (experience 83행)', () => {
   const base: PlanItem = { program_id: 'p1', institution_name: '새봄영어수학학원', subject: '수학', type: 'academy', days: ['tue', 'fri'], start: '15:00', end: '16:30', monthly_tuition: 470_000, monthly_other: 40_000 }
-  const kept = { ...base, program_id: 'p2', subject: '영어', days: ['mon', 'thu'] }
+  const kept: PlanItem = { ...base, program_id: 'p2', subject: '영어', days: ['mon', 'thu'] }
   const moved = { ...kept, start: '16:00', end: '17:20' }
-  const added = { ...base, program_id: 'p9', institution_name: '다온수학학원', days: ['mon', 'wed'], start: '16:30', end: '17:50' }
+  const added: PlanItem = { ...base, program_id: 'p9', institution_name: '다온수학학원', days: ['mon', 'wed'], start: '16:30', end: '17:50' }
   expect(changedItems([base, kept], [kept, added])).toEqual(['p9'])
   expect(changedItems([base, kept], [base, moved])).toEqual(['p2'])
   expect(changedItems([base], [base])).toEqual([])
