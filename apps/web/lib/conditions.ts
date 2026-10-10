@@ -45,6 +45,17 @@ export function pickChild<T extends Pick<Child, 'id'>>(children: readonly T[] | 
   return children?.find((c) => c.id === id) ?? children?.[0] ?? null
 }
 
+// What the chat can do with the children list. 'loading' until the list answers (experience 98행: send disabled,
+// "처리하고 있어요"), 'error' when it failed (error line, send disabled), 'none' when the parent has no child
+// (169행: the answer "먼저 자녀를 등록해 주세요"), 'ready' when a child is picked.
+export type ChildGate = 'loading' | 'error' | 'none' | 'ready'
+
+export function childGate(list: { status: 'pending' | 'error' | 'success'; fetching: boolean }, hasChild: boolean): ChildGate {
+  if (list.status === 'success') return hasChild ? 'ready' : 'none'
+  if (list.status === 'error' && !list.fetching) return 'error'
+  return 'loading'
+}
+
 // The 8 rows of the condition card (experience 조건 카드). Empty values read "정하지 않음".
 export function conditionRows(c: Conditions, child: string): { label: string; value: string }[] {
   const subjects = c.subjects ?? []
