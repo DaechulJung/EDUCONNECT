@@ -1156,9 +1156,11 @@ export type CreateProgramErrors = {
      */
     403: ErrorBody;
     /**
+     * Response 422 Create Program
+     *
      * Unprocessable Content
      */
-    422: ErrorBody;
+    422: ErrorBody | FieldErrors;
 };
 
 export type CreateProgramError = CreateProgramErrors[keyof CreateProgramErrors];

@@ -268,7 +268,15 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorBody"
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorBody"
+                    },
+                    {
+                      "$ref": "#/components/schemas/FieldErrors"
+                    }
+                  ],
+                  "title": "Response 422 Create Program"
                 }
               }
             }
