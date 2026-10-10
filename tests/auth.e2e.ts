@@ -1,4 +1,6 @@
-import { beforeEach, expect, test, type App, type Screen } from 'e2e'
+import { expect, type App, type Screen } from 'e2e'
+import { beforeEach, test } from '@e2e-dev/web'
+import { asOrg } from './viewport'
 
 // REQ-01 in the browser: TC-01 (AC-01.1), TC-02 (AC-01.2), TC-10 (AC-01.10).
 // The app must run with ENABLE_TEST_ROUTES=1 and the seed password in SEED_PASSWORD.
@@ -33,10 +35,12 @@ beforeEach(async ({ app }) => {
   await app.clearState()
 })
 
-test('TC-01 시드 계정 3종이 각자 첫 화면으로 들어간다', async ({ app, screen }) => {
+test('TC-01 시드 계정 3종이 각자 첫 화면으로 들어간다', async ({ app, screen, browser }) => {
   await signIn(app, screen, 'parent1', seedPassword())
   await expectParentHome(screen)
 
+  // Academy and school screens at the desktop width (prd 4.2).
+  await asOrg(browser)
   await app.clearState()
   await signIn(app, screen, 'academy-a', seedPassword())
   await expect(screen.getByRole('heading', '학원 프로그램 관리')).toBeVisible({ timeout: 10_000 })

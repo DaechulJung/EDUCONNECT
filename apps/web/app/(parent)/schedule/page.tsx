@@ -66,7 +66,8 @@ export default function Page() {
                 <Link className="kds-button kds-button--secondary kds-button--small" href={`/schedule/adjustment?plan=${p.id}`}>조정안 보기</Link>
               </div>
             )}
-            <PlanDraft plan={p} label={`${name(p.child_id)} 확정 계획`} />
+            {/* Until the children load the name is empty; '자녀' keeps this name apart from the outer '확정 계획' (TC-49). */}
+            <PlanDraft plan={p} label={`${name(p.child_id) || '자녀'} 확정 계획`} />
           </section>
         )
       })}
