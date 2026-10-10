@@ -8,12 +8,14 @@ import { Icon, Popup, ToastProvider } from '@/components/kds/kds'
 import { useToast } from '@/components/kds/kds-hooks'
 import { ConditionCard } from '@/components/parent/ConditionCard'
 import { ConditionSheet } from '@/components/parent/ConditionSheet'
+import { DismissalForm } from '@/components/parent/DismissalForm'
 import { NoPlan, PlanDraft } from '@/components/parent/PlanDraft'
 import { RecommendTable } from '@/components/parent/RecommendTable'
 import { SwapSheet } from '@/components/parent/SwapSheet'
-import { confirmPlan, createPlanDraft, getConditions, listChildren, listSubjects, recommendPrograms, saveConditions, sendChatMessage, updatePlan, type Conditions, type Plan, type PlanItem, type Recommendation } from '@/lib/client'
+import { confirmPlan, createPlanDraft, getConditions, listChildren, listSubjects, recommendPrograms, saveConditions, sendChatMessage, updateChild, updatePlan, type Conditions, type Plan, type PlanItem, type Recommendation } from '@/lib/client'
 import { confirmFailure, swapCandidates, type ErrorBody, swapProgram, withoutProgram } from '@/lib/plan'
 import { BASE_SUBJECTS, childLabel, pickChild, sameConditions, subjectOptions } from '@/lib/conditions'
+import { isTimetableMissing, saveDismissalAndReplan, type Dismissal } from '@/lib/dismissal'
 
 type Message = { id: number; role: 'user' | 'ai'; text: string; error?: boolean }
 
@@ -45,6 +47,9 @@ function Chat() {
   const [recError, setRecError] = useState<string | null>(null)
   const [plan, setPlan] = useState<Plan | null>(null)
   const [noPlan, setNoPlan] = useState<string[] | null>(null)
+  const [needDismissal, setNeedDismissal] = useState(false)
+  const [dismissalBusy, setDismissalBusy] = useState(false)
+  const [dismissalError, setDismissalError] = useState<string | null>(null)
   const [planning, setPlanning] = useState(false)
   const [planError, setPlanError] = useState<string | null>(null)
   const [planBusy, setPlanBusy] = useState(false)
@@ -95,6 +100,8 @@ function Chat() {
     planContext.current++
     setPlan(null)
     setNoPlan(null)
+    setNeedDismissal(false)
+    setDismissalError(null)
     setPlanError(null)
     setPlanning(false)
     setPlanBusy(false)
@@ -172,6 +179,7 @@ function Chat() {
     setPlanError(null)
     setPlan(null)
     setNoPlan(null)
+    setNeedDismissal(false)
     setUnavailable([])
     const { data, error, response } = await createPlanDraft({ body: { child_id: child.id } })
     if (context !== planContext.current) return
@@ -185,7 +193,29 @@ function Chat() {
       setNoPlan(body.data?.relaxations ?? [])
       return
     }
+    if (isTimetableMissing(response?.status, body)) {
+      setNeedDismissal(true)
+      return
+    }
     setPlanError(response?.status === 404 ? '찾을 수 없어요' : '일정을 만들지 못했어요. 다시 시도해 주세요.')
+  }
+
+  // AC-04.5: store the typed 하교 시각 on the child (manual_dismissal), then make the plan again.
+  async function saveDismissal(value: Dismissal) {
+    if (!child) return
+    setDismissalBusy(true)
+    setDismissalError(null)
+    const saved = await saveDismissalAndReplan(child, value, {
+      save: async (childId, body) => {
+        const { data } = await updateChild({ path: { child_id: childId }, body })
+        setDismissalBusy(false)
+        if (data) await queryClient.invalidateQueries({ queryKey: ['children'] })
+        return !!data
+      },
+      replan: makePlan,
+    })
+    setDismissalBusy(false)
+    if (!saved) setDismissalError('하교 시각을 저장하지 못했어요. 다시 시도해 주세요.')
   }
 
   // 빼기·바꾸기 (#8): send the whole program list; the server re-judges and returns violations and the total.
@@ -311,6 +341,7 @@ function Chat() {
               }}
             />
           )}
+          {needDismissal && <DismissalForm busy={dismissalBusy} error={dismissalError} onSubmit={saveDismissal} />}
           {noPlan && <NoPlan relaxations={noPlan} onEdit={() => setEditing(true)} />}
 
           {thinking && <div className="kds-chat__thinking" role="status">조건을 정리하는 중</div>}

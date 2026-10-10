@@ -1,6 +1,5 @@
 """family routes: the parent's own children. The list serves the chat screen (#5), reading one
-checks ownership (#1) and the update saves interests for recommendations (#6); create is 501
-until #4 implements it (AD-3)."""
+checks ownership (#1) and the update saves interests for recommendations (#6); create is #4."""
 
 from typing import Annotated
 
@@ -9,7 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.authz import Parent
 from app.core.db import get_session
-from app.core.errors import error_responses, not_implemented
+from app.core.errors import error_responses
 from app.schemas.family import Child, ChildIn
 from app.services.family import children
 
@@ -24,10 +23,12 @@ async def list_children(
 
 
 @router.post(
-    "/children", status_code=status.HTTP_201_CREATED, responses=error_responses(401, 403, 422, 501)
+    "/children", status_code=status.HTTP_201_CREATED, responses=error_responses(401, 403, 422)
 )
-async def create_child(body: ChildIn, session: Parent) -> Child:
-    raise not_implemented()
+async def create_child(
+    body: ChildIn, session: Parent, db: Annotated[AsyncSession, Depends(get_session)]
+) -> Child:
+    return await children.create_own(db, session, body)
 
 
 @router.get("/children/{child_id}", responses=error_responses(401, 403, 404))

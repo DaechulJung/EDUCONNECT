@@ -91,3 +91,10 @@ class OrgImpact(BaseModel):
 
     affected_plans: int
     items: list[ImpactCount]
+
+
+class School(BaseModel):
+    """A school choice for the children form (#4): id and name only."""
+
+    id: str
+    name: str

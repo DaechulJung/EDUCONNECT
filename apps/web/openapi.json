@@ -597,16 +597,6 @@
               }
             }
           },
-          "501": {
-            "description": "Not Implemented",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorBody"
-                }
-              }
-            }
-          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -680,16 +670,6 @@
                     }
                   ],
                   "title": "Response 422 Create After School"
-                }
-              }
-            }
-          },
-          "501": {
-            "description": "Not Implemented",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorBody"
                 }
               }
             }
@@ -837,16 +817,6 @@
             },
             "description": "Not Found"
           },
-          "501": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorBody"
-                }
-              }
-            },
-            "description": "Not Implemented"
-          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -894,6 +864,61 @@
           },
           "501": {
             "description": "Not Implemented",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/catalog/schools": {
+      "get": {
+        "tags": [
+          "catalog"
+        ],
+        "summary": "List Schools",
+        "operationId": "list_schools",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/School"
+                  },
+                  "type": "array",
+                  "title": "Response List Schools"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -1030,16 +1055,6 @@
                     }
                   ],
                   "title": "Response 422 Create Child"
-                }
-              }
-            }
-          },
-          "501": {
-            "description": "Not Implemented",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorBody"
                 }
               }
             }
@@ -3915,6 +3930,25 @@
           "child_id"
         ],
         "title": "RecommendationRequest"
+      },
+      "School": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "School",
+        "description": "A school choice for the children form (#4): id and name only."
       },
       "SchoolTimetable": {
         "properties": {

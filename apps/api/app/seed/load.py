@@ -10,6 +10,7 @@ Row ids are uuid5 of the JSON key, so the same seed always has the same ids.
 
 import json
 import uuid
+from collections.abc import Iterable
 from functools import cache
 from pathlib import Path
 from typing import Any
@@ -90,8 +91,15 @@ def _program(
     )
 
 
-def rows(password: str) -> list[Any]:
-    """Every seed row, parents before children, validated by the owners' schemas."""
+def school_keys() -> set[str]:
+    return {school["key"] for school in read("schools")["schools"]}
+
+
+def rows(password: str, omit_timetable: frozenset[tuple[str, int]] = frozenset()) -> list[Any]:
+    """Every seed row, parents before children, validated by the owners' schemas.
+
+    `omit_timetable`: (school key, grade) pairs whose timetable rows are left out (test route).
+    """
     out: list[Any] = []
     for school in read("schools")["schools"]:
         school_id = seed_id(school["key"])
@@ -106,6 +114,8 @@ def rows(password: str) -> list[Any]:
             )
         )
         for grade, dismissal in school["timetable"].items():
+            if (school["key"], int(grade)) in omit_timetable:
+                continue
             for dow, minutes in dismissal_to_db(dismissal).items():
                 out.append(
                     SchoolTimetable(
@@ -201,19 +211,27 @@ def _password(password: str | None) -> str:
     return password
 
 
-async def load(db: AsyncSession, password: str | None = None) -> None:
+async def load(
+    db: AsyncSession,
+    password: str | None = None,
+    omit_timetable: frozenset[tuple[str, int]] = frozenset(),
+) -> None:
     """Insert the seed into an empty database (call `clear` first, or use `reset`)."""
     password = _password(password)
     await assert_own_database(db)
     if (await db.execute(select(func.count()).select_from(Institution))).scalar_one():
         raise AlreadySeeded("database already has institutions: use `npm run seed -- --reset`")
-    for row in rows(password):
+    for row in rows(password, omit_timetable):
         db.add(row)
         await db.flush()  # one table's rows before the next table's foreign keys
 
 
-async def reset(db: AsyncSession, password: str | None = None) -> None:
+async def reset(
+    db: AsyncSession,
+    password: str | None = None,
+    omit_timetable: Iterable[tuple[str, int]] = (),
+) -> None:
     password = _password(password)  # before clear: Redis deletes are not rolled back
     await clear(db)
-    await load(db, password)
+    await load(db, password, frozenset(omit_timetable))
     await db.commit()
