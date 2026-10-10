@@ -1,0 +1,14 @@
+{
+  "_note": "합성 데모 계정. 비밀번호는 저장소에 두지 않고 모든 계정이 SEED_PASSWORD 환경변수 값을 쓴다. institution은 schools.json·academies.json의 key.",
+  "accounts": [
+    {"key": "parent-1", "login_id": "parent1", "role": "parent", "institution": null},
+    {"key": "parent-2", "login_id": "parent2", "role": "parent", "institution": null},
+    {"key": "staff-academy-a", "login_id": "academy-a", "role": "academy", "institution": "academy-a"},
+    {"key": "staff-academy-b", "login_id": "academy-b", "role": "academy", "institution": "academy-b"},
+    {"key": "staff-academy-c", "login_id": "academy-c", "role": "academy", "institution": "academy-c"},
+    {"key": "staff-academy-d", "login_id": "academy-d", "role": "academy", "institution": "academy-d"},
+    {"key": "staff-academy-e", "login_id": "academy-e", "role": "academy", "institution": "academy-e"},
+    {"key": "staff-school-elem", "login_id": "school-elem", "role": "school", "institution": "school-elem"},
+    {"key": "staff-school-mid", "login_id": "school-mid", "role": "school", "institution": "school-mid"}
+  ]
+}

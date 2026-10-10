@@ -19,6 +19,8 @@ from app.services.auth.passwords import hash_password
 
 # Per run, never a seed value; the same in `conftest` and `tests.conftest` imports.
 TEST_PASSWORD = os.environ.setdefault("EDU_TEST_PASSWORD", "test-only-" + uuid.uuid4().hex[:8])
+# Seed accounts in tests use the same per-run value, never the SEED_PASSWORD from .env.
+settings.seed_password = TEST_PASSWORD
 
 
 @pytest.fixture(scope="session")
