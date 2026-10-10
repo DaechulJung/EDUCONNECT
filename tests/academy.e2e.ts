@@ -204,7 +204,7 @@ test('TC-18 확정 계획에 쓰이지 않은 프로그램을 삭제하면 학�
   const count = await table.getByRole('row').count()
   const target = table.getByRole('row').filter({ hasText: DELETED.시간 })
   await expect(target).toHaveCount(1)
-  await target.getByRole('button').tap()
+  await target.getByRole('button').filter({ hasText: '삭제' }).tap()
   await expect(screen.getByRole('dialog', '이 프로그램을 삭제할까요?')).toBeVisible()
   await screen.getByRole('button', '삭제하기').tap()
   await expect(table.getByRole('row')).toHaveCount(count - 1, { timeout: 10_000 })
