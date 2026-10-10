@@ -10,7 +10,7 @@
       "template": "_bmad/custom/templates/project-brief_template.md",
       "templateKey": "brief_template",
       "documentKey": "brief_file",
-      "fingerprint": "b1ee5946908c3ca4be5fd877b1e489f075681fac5d2b1ee93510d5910ace3d73"
+      "fingerprint": "25452e656bb80436dbe734d3d76a6250822b28ced9cbde174ff2418aee725458"
     },
     {
       "role": "prd",
@@ -19,7 +19,7 @@
       "template": "_bmad/custom/templates/prd_template.md",
       "templateKey": "prd_template",
       "documentKey": "prd_file",
-      "fingerprint": "228849d7237c5971aff4bfaa2ea124ad53894f6b0352c9bd9f25ef4bfab2caa1"
+      "fingerprint": "b47cca804b996697fae04e6ef012a0478ecdc44e99c58579798f0b908db82839"
     },
     {
       "role": "experience",
@@ -28,7 +28,7 @@
       "template": "_bmad/custom/templates/experience_template.md",
       "templateKey": "experience_md_examples",
       "documentKey": "experience_file",
-      "fingerprint": "5ad8ef670f3e59cbc886b56efa11473b0249c86aa8aeb53443b6d2fc585f8a38"
+      "fingerprint": "0d5cb4226d5754deafe7a3b8156cd1d731979bb992d25e29601090f4f942f598"
     },
     {
       "role": "arch",
@@ -37,14 +37,14 @@
       "template": "_bmad/custom/templates/arch_template.md",
       "templateKey": "spine_template",
       "documentKey": "spine_file",
-      "fingerprint": "5b4b57a925f1975e557770936940eaf40e69c806771b478b4da2f6bf9273beeb"
+      "fingerprint": "adf3bbe7306c9f14e0acc9bae3fb6e50e9584da280046f3dcdeeed2d8c1bc9be"
     },
     {
       "role": "test",
       "path": "docs/e2e-test.md",
       "skill": "e2e-doc",
       "template": "_bmad/custom/templates/e2e-test_template.md",
-      "fingerprint": "9a74ddef72bc9c8cf3e83bb9560e5b2a6ebf67f1092d1b93ad7b117406c4f3ce"
+      "fingerprint": "dff446c063da520bd504889e69146086cd4fc11cada48c63891bf5139a015294"
     }
   ],
   "identifiers": [
