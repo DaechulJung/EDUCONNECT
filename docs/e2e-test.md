@@ -70,6 +70,7 @@ status: draft
 | TC-10 | AC-01.10 | FLOW-04 | E2E | 시드 초기화 후 시드 보호자 계정 | GIVEN 보호자 로그인 상태 WHEN 새로 고침, 일정 탭 이동 후 챗봇 탭 복귀 THEN 화면 확인 | 로그인 화면이 다시 나오지 않고 보호자 화면 유지 | - | `APP_URL=http://localhost:13000 npx e2e run tests/auth.e2e.ts` | tests/auth.e2e.ts | - | - | 미실행 | - |
 | TC-11 | AC-01.11 | FLOW-04 | API | 시드 초기화 후 시드 보호자 계정 | GIVEN 로그인 전 WHEN 시드 보호자로 로그인 THEN 응답 Set-Cookie 속성 확인 | 세션 쿠키에 HttpOnly, SameSite=Lax 또는 Strict, Max-Age 또는 Expires 존재 | - | `uv run --directory apps/api pytest tests/test_auth.py` | apps/api/tests/test_auth.py | - | - | 미실행 | - |
 | TC-12 | AC-01.12 | FLOW-04 | API | 시드 초기화 후 | GIVEN 세션 쿠키 없음 WHEN 자녀 조회·자녀 등록·학원 프로그램 수정·학교 시간표 수정 API 호출 THEN 상태 코드, 본문, 호출 전후 DB 값 비교 | 4건 모두 401, 본문에 시드 데이터 값 없음, DB 값 동일 | - | `uv run --directory apps/api pytest tests/test_auth.py` | apps/api/tests/test_auth.py | - | - | 미실행 | - |
+| TC-76 | AC-01.13 | FLOW-04 | API | 시드 초기화 후 시드 보호자 2명·학원 A 담당자, 감사 기록 비어 있음 | GIVEN 시드 상태 WHEN 보호자 로그인 성공, 틀린 비밀번호 로그인, 다른 계정 5회 실패로 잠금, 로그아웃, 보호자 1이 보호자 2 자녀 조회(404), 보호자가 학원 프로그램 수정(403) THEN 감사 기록 조회와 전체 문자열 검사 | 사건 6종(로그인 성공·실패·잠금·로그아웃·거부 404·거부 403)마다 1건 이상, 각 건에 시각·종류·계정 ID·대상이 있음. 감사 기록 전체에서 시드 비밀번호·이번 시험의 세션 쿠키 값·시험용 가짜 `AZURE_OPENAI_*` 값 0건 | - | `uv run --directory apps/api pytest tests/test_audit.py` | apps/api/tests/test_audit.py | - | - | 미실행 | - |
 | TC-13 | AC-02.1 | FLOW-05 | E2E | 시드 초기화 후 학원 A 담당자 | GIVEN 프로그램 등록 화면(데스크톱 폭) WHEN 코딩·교과 학원·화목 16:00~17:00·교습비 200,000·기타경비 20,000·강사·초4~초6·정원 10·현재 3·위경도 입력 후 저장 THEN 목록과 새로 고침 후 목록 확인 | 목록에 해당 프로그램, 월 교습비 200,000·월 기타경비 20,000 분리 표시, 재조회 후 동일 | - | `APP_URL=http://localhost:13000 npx e2e run tests/academy.e2e.ts` | tests/academy.e2e.ts | - | - | 미실행 | - |
 | TC-14 | AC-02.2 | FLOW-05 | E2E | 시드 초기화 후 학원 A 담당자 | GIVEN 프로그램 등록 화면 WHEN 종료가 시작보다 이름, 교습비 음수, 정원 0, 위경도 빈 값을 각각 넣고 저장 THEN 칸 오류와 목록 확인 | 해당 칸 옆 오류 표시, 목록 행 수 변화 없음 | - | `APP_URL=http://localhost:13000 npx e2e run tests/academy.e2e.ts` | tests/academy.e2e.ts | - | - | 미실행 | - |
 | TC-15 | AC-02.3 | FLOW-05 | API | 시드 초기화 후 학원 A 담당자 세션 | GIVEN AC-02.2의 잘못된 값 4종 WHEN 프로그램 등록 API 직접 호출 THEN 상태 코드와 DB 행 수 확인 | 모두 422, DB 프로그램 행 수 불변 | - | `uv run --directory apps/api pytest tests/test_programs.py` | apps/api/tests/test_programs.py | - | - | 미실행 | - |
@@ -120,6 +121,7 @@ status: draft
 | TC-60 | AC-10.4 | FLOW-01 | E2E | 시드 초기화 후 LLM 대역 요청 기록 | GIVEN AC-05.1·AC-06.4 실행 WHEN 대역 요청 본문 검사 THEN 키 목록과 값 | 별칭·학년·관심사·조건만, 계정·비밀번호·실명·연락처·설정 값 없음 | - | `APP_URL=http://localhost:13000 npx e2e run tests/recommend.e2e.ts` | tests/recommend.e2e.ts | - | - | 미실행 | - |
 | TC-61 | AC-10.5 | FLOW-01 | API | https 아닌 엔드포인트 설정 주입 | GIVEN 서버 기동 WHEN 챗봇 API 호출과 시작 로그 확인 THEN Azure 호출 여부·로그 | Azure 호출 없음, 대체 경로, 로그 "Azure OpenAI 설정 오류: https 필요"(값 없음) | - | `uv run --directory apps/api pytest tests/test_llm_secrets.py` | apps/api/tests/test_llm_secrets.py | - | - | 미실행 | - |
 | TC-62 | AC-10.6 | FLOW-01 | 검사 | 저장소 추적 파일(git ls-files) | GIVEN main SHA WHEN 시험 스크립트로 패턴 검사 THEN 일치 건수 | 비밀값 대입 줄 0건, 엔드포인트 호스트명 0건(패턴은 스크립트에만) | - | `uv run --directory apps/api pytest tests/test_repo_secrets.py` | apps/api/tests/test_repo_secrets.py | - | - | 미실행 | - |
+| TC-77 | AC-10.7 | FLOW-01 | 검사 | 저장소 `compose.yml`, docker 실행 가능, 대상 포트 비어 있음 | GIVEN main SHA WHEN ① compose.yml의 web·api·db·redis `ports` 항목을 읽고 ② `docker compose up --wait` 뒤 `docker compose ps --format json`의 Publishers를 읽음 THEN 항목 접두어와 게시 주소 | ① 네 서비스의 모든 ports 항목이 `127.0.0.1:`로 시작 ② 게시 주소가 모두 `127.0.0.1`(0.0.0.0·:: 0건). `docker compose config`·`docker inspect`는 쓰지 않음 | - | `uv run --directory apps/api pytest tests/test_compose_ports.py` | apps/api/tests/test_compose_ports.py | - | - | 미실행 | - |
 | TC-63 | AC-11.1 | FLOW-01 | 단위 | 빈 DB에 시드 적재 | GIVEN 시드 적재 WHEN 기관·프로그램 조회 THEN 개수·과목 | 학교 2(초1·중1, 정규·방과후 포함), 학원 5, 영어·수학과 예체능·기타 과목 1개 이상 | - | `uv run --directory apps/api pytest tests/test_seed.py` | apps/api/tests/test_seed.py | - | - | 미실행 | - |
 | TC-64 | AC-11.2 | FLOW-01 | 단위 | 시드 적재 | GIVEN 시드 프로그램 전체 WHEN 필드 검사 THEN 빈 필드 목록 | 모든 필드 존재, 예외는 교습비 빈 미공개 1개와 마감 1개뿐 | - | `uv run --directory apps/api pytest tests/test_seed.py` | apps/api/tests/test_seed.py | - | - | 미실행 | - |
 | TC-65 | AC-11.3 | FLOW-01 | 단위 | 시드 적재 | GIVEN 기준 시나리오 WHEN 학원 수업 시각 하나 변경 후 일정 재생성 THEN 결과 비교 | 데모 자녀 초5·중1 각 1명, 변경 전후 일정 다름 | - | `uv run --directory apps/api pytest tests/test_seed.py` | apps/api/tests/test_seed.py | - | - | 미실행 | - |
@@ -140,16 +142,15 @@ status: draft
 
 | 실행 ID | 소스 SHA | 시각(UTC) | 명령 | 결과 요약 | 원자료 경로 |
 | --- | --- | --- | --- | --- | --- |
-| - | - | - | - | 실행 없음(계획 단계): PASS 0 · FAIL 0 · SKIP 0 · 미실행 75 | - |
+| - | - | - | - | 실행 없음(계획 단계): PASS 0 · FAIL 0 · SKIP 0 · 미실행 77 | - |
 
 ## 6. 미검증·제외
 
 | 대상 | 판정 | 이유 | 후속 조치 |
 | --- | --- | --- | --- |
-| TC-01~75 전체 | 미실행 | 제품 코드 없음(계획 단계) | Issue PR 병합 뒤 main SHA로 실행해 기록 모드로 갱신 |
+| TC-01~77 전체 | 미실행 | 제품 코드 없음(계획 단계) | Issue PR 병합 뒤 main SHA로 실행해 기록 모드로 갱신 |
 | 시험 코드 경로·실행 명령 | 미검증 | arch(작성 중)와 기반 Issue가 정하기 전의 계획 경로다. 저장소 뼈대(`tests/*.e2e.ts`, `apps/api/tests/`) 기준 | arch final 뒤 경로가 다르면 이 표의 해당 칸만 갱신 |
 | TC-06(해시 접두어) | 미검증 | 해시 알고리즘이 arch에서 정해짐(PRD 9절 4) | arch 확정 뒤 기대 접두어 기입 |
 | TC-34(`ai` 태그) | 미실행 | 실제 Azure 호출은 로컬에서만 실행(D-15). CI에서는 실행하지 않음 | 로컬 실행 결과를 근거로 기록 |
 | TC-59(CI 대역 통과) | 미검증 | CI 워크플로가 아직 없음 | CI 구성 뒤 실행 기록으로 확인 |
 | 저장소·CI 시크릿 미등록(SEC-11) | 미검증 | 자동 시험 불가, 사람 확인 항목 | 제출 전 저장소 설정 확인 요청 |
-| SEC-10 보안 감사 기록 | 비해당(현재) | 확인 조건 없음. 범위는 arch에서 정함 | arch 결정 뒤 AC가 생기면 TC 추가 |
