@@ -1,0 +1,13 @@
+
+ RUN  e2e v0.18.0 /Users/agentneo/Desktop/Sync/DS_Projects/30_Projects/PRJ-017_KT_Hackerthon2026/AIDX_PRE_TRAINING_2/EDUCONNECT
+      run 01a1255b-bcbe-7f0d-91d9-b8d8c432a8f1 · targets: web
+
+ ✓ |web| tests/chat-fallback.e2e.ts (1 test) 3.60s
+   ✓ TC-32 키가 없으면 규칙 추출로 같은 조건 카드가 보이고 응답이 이어진다 3.60s
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  19:28:51
+   Duration  3.89s
+     Report  .e2e/report.json
+
