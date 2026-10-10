@@ -1,0 +1,10 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0
+rootdir: /Users/agentneo/Desktop/Sync/DS_Projects/30_Projects/PRJ-017_KT_Hackerthon2026/AIDX_PRE_TRAINING_2/.worktrees/verify/apps/api
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collected 1 item
+
+tests/test_audit.py .                                                    [100%]
+
+============================== 1 passed in 0.93s ===============================
