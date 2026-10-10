@@ -152,7 +152,7 @@ function GradeTimetable({ grade, entries }: { grade: number; entries: TimetableE
                 <th scope="row">{d.label}</th>
                 <td>
                   <div className={`kds-field${errors[d.value] ? ' kds-field--error' : ''}`}>
-                    <label className="sr-only" htmlFor={`dismissal-${grade}-${d.value}`}>{d.label}요일 하교 시각</label>
+                    <label className="sr-only" htmlFor={`dismissal-${grade}-${d.value}`}>{gradeTab(grade)} {d.label}요일 하교 시각</label>
                     <input className="kds-field__input" type="time" id={`dismissal-${grade}-${d.value}`} name={d.value} value={draft[d.value]}
                       onChange={(e) => set(d.value, e.target.value)} aria-invalid={errors[d.value] ? true : undefined}
                       aria-describedby={errors[d.value] ? `dismissal-${grade}-${d.value}-error` : undefined} />
