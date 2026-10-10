@@ -57,9 +57,27 @@ class MaskingFilter(logging.Filter):
         return arg
 
 
+def _mask_on_creation(masking: MaskingFilter) -> None:
+    """Logger filters skip records propagated from child loggers (openai._base_client) and
+    loggers outside the list (httpx2), so mask every record when it is created as well."""
+    factory = logging.getLogRecordFactory()
+    if getattr(factory, "_masking", None) is not None:
+        factory._masking.config = masking.config
+        return
+
+    def create(*args: object, **kwargs: object) -> logging.LogRecord:
+        record = factory(*args, **kwargs)
+        masking.filter(record)
+        return record
+
+    create._masking = masking  # type: ignore[attr-defined]
+    logging.setLogRecordFactory(create)
+
+
 def install(config: Settings = settings) -> MaskingFilter:
-    """Attach the filter to the loggers and to every handler already configured."""
+    """Mask every record at creation and attach the filter to the loggers and their handlers."""
     masking = MaskingFilter(config)
+    _mask_on_creation(masking)
     for name in _LOGGERS:
         target = logging.getLogger(name)
         if not any(isinstance(f, MaskingFilter) for f in target.filters):
