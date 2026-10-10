@@ -39,6 +39,8 @@ function Chat() {
   const [recommending, setRecommending] = useState(false)
   const [recError, setRecError] = useState<string | null>(null)
   const nextId = useRef(1)
+  // Bumped whenever the child or the card changes; a recommendation answer for an older value is dropped.
+  const recContext = useRef(0)
   const endRef = useRef<HTMLDivElement>(null)
 
   const children = useQuery({
@@ -69,6 +71,13 @@ function Chat() {
     endRef.current?.scrollIntoView?.({ block: 'end' })
   }, [messages, thinking])
 
+  function clearRecs() {
+    recContext.current++
+    setRecs(null)
+    setRecError(null)
+    setRecommending(false)
+  }
+
   const add = (role: Message['role'], text: string, error = false) =>
     setMessages((m) => [...m, { id: nextId.current++, role, text, error }])
 
@@ -93,6 +102,7 @@ function Chat() {
     add('ai', data.reply)
     setCard(data.conditions)
     setSaveError(null)
+    clearRecs()
   }
 
   async function save() {
@@ -109,15 +119,17 @@ function Chat() {
     }
     queryClient.setQueryData(['conditions', child.id], data)
     setCard(data)
-    setRecs(null)
+    clearRecs()
     toast('조건을 저장했어요')
   }
 
   async function recommend() {
     if (!child) return
+    const context = ++recContext.current
     setRecommending(true)
     setRecError(null)
     const { data } = await recommendPrograms({ body: { child_id: child.id } })
+    if (context !== recContext.current) return
     setRecommending(false)
     if (!data) {
       setRecError('추천을 불러오지 못했어요. 다시 시도해 주세요.')
@@ -210,7 +222,7 @@ function Chat() {
           childId={child.id}
           childOptions={(children.data ?? []).map((c) => ({ id: c.id, label: childLabel(c) }))}
           subjects={subjectOptions(subjects.data, shown.subjects, BASE_SUBJECTS)}
-          onApply={(next, nextChildId) => { setCard(next); setChildId(nextChildId); setSaveError(null); setRecs(null); setEditing(false) }}
+          onApply={(next, nextChildId) => { setCard(next); setChildId(nextChildId); setSaveError(null); clearRecs(); setEditing(false) }}
           onClose={() => setEditing(false)}
         />
       )}

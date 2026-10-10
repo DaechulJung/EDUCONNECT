@@ -155,6 +155,16 @@ test('TC-80 유형 교과 학원·요일 월·수·금으로 저장하고 추천
   }
 })
 
+// Support check (PR #19 review), not a TC result: a new chat answer replaces the card, so the old table must go.
+test('추천을 본 뒤 새 대화로 조건 카드가 바뀌면 이전 비교표가 사라진다', async ({ app, screen }) => {
+  await saveAroundConditions(app, screen)
+  await showRecommendations(screen)
+  await api(app, '/api/test/llm', { task: TASK, mode: 'fixed', response: { ...AROUND_REPLY, budget_amount: 800_000 } })
+  await send(screen, '월 80만원 전후로 바꿔 주세요')
+  await expect(screen.getByRole('article', '조건 카드').getByRole('group', '목표 월 예산')).toContainText('800,000원', { timeout: 15_000 })
+  await expect(screen.getByRole('table', '추천 비교표')).not.toBeVisible()
+})
+
 // PUT /api/children/{id} takes the editable fields only (unknown keys are 422).
 function pickEditable(child: { [key: string]: Json }): { [key: string]: Json } {
   const { id: _id, ...rest } = child
