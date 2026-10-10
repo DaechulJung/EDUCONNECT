@@ -44,8 +44,10 @@ def job(name: str) -> str:
 
 def test_ci_uses_the_llm_double_and_never_gets_an_azure_key() -> None:
     assert re.search(r"^\s+LLM_PROVIDER: fake\b", job("e2e"), re.MULTILINE)
-    assert "AZURE_OPENAI_API_KEY" not in CI
-    assert "AZURE_OPENAI_BASE_URL" not in CI
+    # TC-57 gives the e2e job synthetic Azure values to search for; none may look like a real one.
+    values = re.findall(r"^\s+(AZURE_OPENAI_\w+):\s*(\S+)", CI, re.MULTILINE)
+    assert values, "TC-57 synthetic values"
+    assert all("synthetic" in value for _, value in values), values
     assert not re.search(r"secrets\.\w*AZURE", CI, re.IGNORECASE)
     assert "AZURE_OPENAI" not in job("api")
 
