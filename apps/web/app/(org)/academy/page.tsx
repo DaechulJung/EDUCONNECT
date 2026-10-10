@@ -4,19 +4,21 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState, type FormEvent } from 'react'
 import { Icon, Popup } from '@/components/kds/kds'
 import { useToast } from '@/components/kds/kds-hooks'
-import { createProgram, deleteProgram, listPrograms, type Program } from '@/lib/client'
+import { createProgram, deleteProgram, listPrograms, updateProgram, type Program } from '@/lib/client'
 import {
-  ACADEMY_TYPES, DAYS, EMPTY_FORM, GRADES, daysLabel, firstError, gradeLabel, toProgramIn, tuitionLabel,
+  ACADEMY_TYPES, DAYS, EMPTY_FORM, GRADES, daysLabel, firstError, fromProgram, gradeLabel, serverErrors, toProgramIn, tuitionLabel,
   typeLabel, validateProgram, won, type FormErrors, type FormField, type ProgramForm,
 } from '@/lib/program-form'
 
 const PROGRAMS_KEY = ['academy', 'programs'] as const
 
-// FLOW-05: the academy's own program list, the register form (AC-02.1·02.2) and delete (AC-02.6).
+// FLOW-05: the academy's own program list, the register form (AC-02.1·02.2), edit and delete (AC-02.6).
 export default function AcademyProgramsPage() {
   const queryClient = useQueryClient()
   const toast = useToast()
   const [formOpen, setFormOpen] = useState(false)
+  // null = register; a program = edit it in place (same id, so plans that use it keep pointing at it).
+  const [editing, setEditing] = useState<Program | null>(null)
   const [removing, setRemoving] = useState<Program | null>(null)
 
   const programs = useQuery({
@@ -48,15 +50,18 @@ export default function AcademyProgramsPage() {
           <h1 className="title-large-bold" style={{ margin: 0 }}>학원 프로그램 관리</h1>
         </div>
         {!formOpen && (
-          <button className="kds-button" type="button" onClick={() => setFormOpen(true)}>프로그램 등록</button>
+          <button className="kds-button" type="button" onClick={() => { setEditing(null); setFormOpen(true) }}>프로그램 등록</button>
         )}
       </div>
 
       {formOpen && (
         <ProgramFormSection
+          key={editing?.id ?? 'new'}
+          program={editing}
           onCancel={() => setFormOpen(false)}
           onSaved={() => {
             setFormOpen(false)
+            setEditing(null)
             toast('프로그램을 저장했어요')
             return queryClient.invalidateQueries({ queryKey: PROGRAMS_KEY })
           }}
@@ -111,7 +116,11 @@ export default function AcademyProgramsPage() {
                       <td>{program.instructor}</td>
                       <td>{gradeLabel(program.grade_min)}~{gradeLabel(program.grade_max)}</td>
                       <td className="is-num">{program.capacity}({program.enrolled})</td>
-                      <td>
+                      <td style={{ whiteSpace: 'nowrap' }}>
+                        <button className="kds-button kds-button--tertiary kds-button--small" type="button" onClick={() => { setEditing(program); setFormOpen(true) }}
+                          aria-label={`${program.subject} ${daysLabel(program.days)} ${program.start} 수정`}>
+                          수정
+                        </button>
                         <button className="kds-button kds-button--tertiary kds-button--small" type="button" onClick={() => setRemoving(program)}
                           aria-label={`${program.subject} ${daysLabel(program.days)} ${program.start} 삭제`}>
                           삭제
@@ -149,8 +158,8 @@ export default function AcademyProgramsPage() {
   )
 }
 
-function ProgramFormSection({ onCancel, onSaved }: { onCancel: () => void; onSaved: () => unknown }) {
-  const [form, setForm] = useState<ProgramForm>(EMPTY_FORM)
+function ProgramFormSection({ program, onCancel, onSaved }: { program: Program | null; onCancel: () => void; onSaved: () => unknown }) {
+  const [form, setForm] = useState<ProgramForm>(() => (program ? fromProgram(program) : EMPTY_FORM))
   const [errors, setErrors] = useState<FormErrors>({})
   const [saveError, setSaveError] = useState<string | null>(null)
   const [pending, setPending] = useState(false)
@@ -177,9 +186,20 @@ function ProgramFormSection({ onCancel, onSaved }: { onCancel: () => void; onSav
       return
     }
     setPending(true)
-    const { data } = await createProgram({ body: toProgramIn(form) })
+    const body = toProgramIn(form)
+    const { data, error } = program
+      ? await updateProgram({ path: { program_id: program.id }, body })
+      : await createProgram({ body })
     setPending(false)
     if (!data) {
+      // A 422 field-error array is mapped back onto the fields the client check let through.
+      const fromServer = serverErrors(error)
+      const firstServer = firstError(fromServer)
+      if (firstServer) {
+        setErrors(fromServer)
+        formEl.querySelector<HTMLElement>(`[name="${firstServer}"]`)?.focus()
+        return
+      }
       setSaveError('저장하지 못했어요. 입력값을 확인하고 다시 저장해 주세요')
       return
     }
@@ -197,7 +217,7 @@ function ProgramFormSection({ onCancel, onSaved }: { onCancel: () => void; onSav
 
   return (
     <section aria-labelledby="program-form-title" style={{ maxWidth: 932, display: 'flex', flexDirection: 'column', gap: 'var(--space-24)' }}>
-      <h2 id="program-form-title" className="title-medium-bold" style={{ margin: 0 }}>프로그램 등록</h2>
+      <h2 id="program-form-title" className="title-medium-bold" style={{ margin: 0 }}>{program ? '프로그램 수정' : '프로그램 등록'}</h2>
       <form onSubmit={submit} noValidate style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-24)' }}>
         <div style={grid}>
           <div className={wrap('subject')}>
