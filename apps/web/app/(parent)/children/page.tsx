@@ -98,7 +98,11 @@ function ChildFormSheet({ open, onClose }: { open: boolean; onClose: () => void 
   const [saveError, setSaveError] = useState<string | null>(null)
   const schools = useQuery({
     queryKey: ['catalog', 'schools'],
-    queryFn: async () => (await listSchools()).data ?? [],
+    queryFn: async () => {
+      const { data, error } = await listSchools()
+      if (error || !data) throw new Error('schools_failed')
+      return data
+    },
     enabled: open,
     staleTime: 60_000,
   })
@@ -122,7 +126,7 @@ function ChildFormSheet({ open, onClose }: { open: boolean; onClose: () => void 
   const setEvent = (i: number, patch: Partial<EventRow>) =>
     setForm((f) => ({ ...f, events: f.events.map((e, j) => (j === i ? { ...e, ...patch } : e)) }))
   const consentNeeded = needsConsent(form)
-  const blocked = !canSave(form) || save.isPending
+  const blocked = !canSave(form) || save.isPending || !schools.isSuccess
 
   const onSubmit = (e?: FormEvent) => {
     e?.preventDefault()
@@ -183,6 +187,12 @@ function ChildFormSheet({ open, onClose }: { open: boolean; onClose: () => void 
             <option value="">학교 선택 안 함</option>
             {(schools.data ?? []).map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
           </select>
+          {schools.isError && (
+            <div role="alert">
+              <p className="kds-info-line kds-info-line--error">학교 목록을 불러오지 못했어요</p>
+              <button type="button" className="kds-button kds-button--secondary" onClick={() => schools.refetch()}>다시 불러오기</button>
+            </div>
+          )}
         </label>
         <label className="kds-field">
           <span className="kds-field__label">관심사</span>

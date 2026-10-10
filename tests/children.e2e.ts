@@ -175,3 +175,22 @@ test('TC-27 시간표 없는 학년 자녀로 일정 만들기를 누르면 안�
   expect(stored).toBeTruthy()
   expect(stored!.manual_dismissal).toEqual(Object.fromEntries(Object.entries(MANUAL).map(([day, time]) => [DOW[day as keyof typeof DOW], time])))
 })
+
+// #4 회귀 (PR #25 Codex P2): a failed school list must not look like an empty one, or the form saves a school-less child.
+test('#4 회귀 학교 목록을 받지 못하면 오류와 다시 불러오기가 보이고 저장할 수 없으며, 다시 불러오면 학교를 고를 수 있다', async ({ app, screen, browser }) => {
+  await browser.route('**/api/catalog/schools', (route) => route.fulfill({ status: 500, json: { detail: 'synthetic failure' } }))
+  await openForm(app, screen)
+  await screen.getByLabel('별칭').fill(`목${Date.now() % 100000}`)
+  await screen.getByLabel('만 나이').fill('11')
+  await screen.getByLabel('학년').selectOption('초5')
+  await screen.getByLabel('법정대리인 동의 확인(모의)').check()
+
+  await expect(screen.getByText('학교 목록을 불러오지 못했어요')).toBeVisible({ timeout: 10_000 })
+  await expect(screen.getByRole('button', '자녀 저장')).toBeDisabled()
+
+  await browser.unroute('**/api/catalog/schools')
+  await screen.getByRole('button', '다시 불러오기').tap()
+  await screen.getByLabel('학교').selectOption('한빛초등학교')
+  await expect(screen.getByText('학교 목록을 불러오지 못했어요')).not.toBeVisible()
+  await expect(screen.getByRole('button', '자녀 저장')).toBeEnabled()
+})
