@@ -1,0 +1,111 @@
+
+> check
+> npm run infra && npm run migrate && npm run lint && npm run typecheck && npm test
+
+
+> infra
+> docker compose up --wait db redis
+
+ Network edu-main_default Creating 
+ Network edu-main_default Created 
+ Container edu-main-db-1 Creating 
+ Container edu-main-redis-1 Creating 
+ Container edu-main-redis-1 Created 
+ Container edu-main-db-1 Created 
+ Container edu-main-redis-1 Starting 
+ Container edu-main-db-1 Starting 
+ Container edu-main-db-1 Started 
+ Container edu-main-redis-1 Started 
+ Container edu-main-db-1 Waiting 
+ Container edu-main-redis-1 Waiting 
+ Container edu-main-db-1 Healthy 
+ Container edu-main-redis-1 Healthy 
+
+> migrate
+> uv run --directory apps/api alembic upgrade head
+
+
+> lint
+> npm run lint -w web && uv run --directory apps/api ruff check && uv run --directory apps/api ruff format --check
+
+
+> web@0.1.0 lint
+> eslint
+
+
+/Users/agentneo/Desktop/71_Hackerthon/01_Pre_Project/AIDX_PRE_TRAINING_2/.worktrees/verify/apps/web/lib/dismissal.test.ts
+  28:31  warning  '_id' is defined but never used    @typescript-eslint/no-unused-vars
+  28:44  warning  '_body' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/agentneo/Desktop/71_Hackerthon/01_Pre_Project/AIDX_PRE_TRAINING_2/.worktrees/verify/apps/web/lib/dismissal.ts
+  29:15  warning  '_id' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+✖ 3 problems (0 errors, 3 warnings)
+
+All checks passed!
+100 files already formatted
+
+> typecheck
+> npm run typecheck -w web
+
+
+> web@0.1.0 typecheck
+> next typegen && tsc --noEmit
+
+Generating route types...
+✓ Types generated successfully
+
+> test
+> npm run test -w web && uv run --directory apps/api pytest
+
+
+> web@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.3 /Users/agentneo/Desktop/71_Hackerthon/01_Pre_Project/AIDX_PRE_TRAINING_2/.worktrees/verify/apps/web
+
+
+ Test Files  7 passed (7)
+      Tests  37 passed (37)
+   Start at  21:33:36
+   Duration  210ms (transform 54%, tests 25%, import 18%, worker 4%)
+
+============================= test session starts ==============================
+platform darwin -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0
+rootdir: /Users/agentneo/Desktop/71_Hackerthon/01_Pre_Project/AIDX_PRE_TRAINING_2/.worktrees/verify/apps/api
+configfile: pyproject.toml
+testpaths: tests
+plugins: anyio-4.15.1
+collected 231 items
+
+tests/test_ai_port.py ..................                                 [  7%]
+tests/test_audit.py .                                                    [  8%]
+tests/test_auth.py ......                                                [ 10%]
+tests/test_auth_session.py .....                                         [ 12%]
+tests/test_authz.py .........                                            [ 16%]
+tests/test_catalog_schools.py ...                                        [ 18%]
+tests/test_chat_api.py ............                                      [ 23%]
+tests/test_chat_extract.py .....................                         [ 32%]
+tests/test_compose_config.py ...                                         [ 33%]
+tests/test_config.py ......                                              [ 36%]
+tests/test_core.py .......                                               [ 39%]
+tests/test_engine.py .......................                             [ 49%]
+tests/test_family_create.py .....                                        [ 51%]
+tests/test_family_list.py ..                                             [ 52%]
+tests/test_family_update.py .....                                        [ 54%]
+tests/test_foundation_models.py ...                                      [ 55%]
+tests/test_health.py .                                                   [ 56%]
+tests/test_meta.py .                                                     [ 56%]
+tests/test_openapi_snapshot.py .                                         [ 57%]
+tests/test_plans.py .............                                        [ 62%]
+tests/test_plans_dismissal.py .......                                    [ 65%]
+tests/test_programs.py .........                                         [ 69%]
+tests/test_recommend.py .......                                          [ 72%]
+tests/test_routes_contract.py .......................................... [ 90%]
+.....                                                                    [ 93%]
+tests/test_safety.py ...                                                 [ 94%]
+tests/test_seed.py ........                                              [ 97%]
+tests/test_test_routes.py .....                                          [100%]
+
+============================= 231 passed in 33.24s =============================
