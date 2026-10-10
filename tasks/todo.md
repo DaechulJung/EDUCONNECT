@@ -67,7 +67,10 @@
 - [x] Codex P1: `update_draft` 자녀 행 잠금 + 결정형 경합 시험 — `9084ff1`
 - [x] Codex P2: 확정 409 위반 갱신·422 신청 불가, web 시험 2 — `063ba5a`, experience State Patterns 1행 — `0c93870`
 - [x] Codex P2(plans.py 230) 부분 반영, 한계 development.md 기록. check api 210·web 21, gen:api 0, E2E 27/27
-- [ ] PR(`Closes #8`) → Codex 처리 코멘트 → VERIFIER PR 승인 코멘트 → CI 3/3 → `--match-head-commit` 병합
+- [x] PR #24 Codex P1: E2E `#8 회귀 확정 409`·`#8 회귀 확정 422`(`tests/plan.e2e.ts`) — main 판 web으로 RED 2 실패 확인
+- [x] PR #24 Codex P1: lessons `#8 다시 열기(PR #23 Codex 후속)`
+- [x] PR #24 Codex P2: 409 뒤 예산 초과 금액은 응답 `amount`, 안내는 위반 종류별(`confirmNotice`) + web 시험 2
+- [ ] PR #24 처리 코멘트 → VERIFIER PR 승인 코멘트 → CI 3/3 → `--match-head-commit` 병합
 ## #12 모두의 AI 교육 에이전트 표현과 연동 경계 — BUILDER (10:32 분배 조정으로 dev:2→dev:1)
 - 완료 조건: AC-12.1·12.2 done(TC-67·68), `npm run check`·`npx e2e run` 통과, `Closes #12` PR VERIFIER 승인
 - [x] 라벨 #12·#4 dev:2→dev:1
