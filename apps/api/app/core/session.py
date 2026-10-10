@@ -1,13 +1,16 @@
-"""Session store in Redis (AD-8): `session:<token>` -> account, TTL 8 hours, cookie `ec_session`."""
+"""Session store in Redis (AD-8): `educonnect:session:<token>` -> account, TTL 8 hours, cookie
+`ec_session`. Every key this app writes starts with REDIS_PREFIX (core/safety.py)."""
 
 import json
 import secrets
 from dataclasses import asdict, dataclass
 
 from app.core.redis import redis
+from app.core.safety import REDIS_PREFIX
 
 COOKIE_NAME = "ec_session"
 SESSION_TTL_SECONDS = 8 * 60 * 60
+SESSION_PREFIX = f"{REDIS_PREFIX}session:"
 
 
 @dataclass(frozen=True)
@@ -19,7 +22,7 @@ class SessionInfo:
 
 
 def _key(token: str) -> str:
-    return f"session:{token}"
+    return f"{SESSION_PREFIX}{token}"
 
 
 async def create(account_id: str, role: str, institution_id: str | None) -> SessionInfo:

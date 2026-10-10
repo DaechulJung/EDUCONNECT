@@ -13,6 +13,7 @@ from sqlalchemy import create_engine, text
 
 from app.core import clock
 from app.core.config import Settings, settings
+from app.core.safety import assert_own_database_sync
 from app.main import create_app
 from app.services.auth.passwords import hash_password
 
@@ -23,6 +24,8 @@ TEST_PASSWORD = os.environ.setdefault("EDU_TEST_PASSWORD", "test-only-" + uuid.u
 @pytest.fixture(scope="session")
 def sync_db():
     engine = create_engine(settings.database_url)
+    with engine.connect() as conn:
+        assert_own_database_sync(conn)  # tests INSERT/DELETE: never in another project's database
     yield engine
     engine.dispose()
 

@@ -7,9 +7,9 @@ services:
   db:
     image: pgvector/pgvector:0.8.7-pg18-trixie
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-app}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-app}
-      POSTGRES_DB: ${POSTGRES_DB:-app}
+      POSTGRES_USER: ${POSTGRES_USER:-educonnect}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-educonnect}
+      POSTGRES_DB: ${POSTGRES_DB:-educonnect}
     ports: ["127.0.0.1:${DB_PORT:-15432}:5432"] # 15432 so a local PostgreSQL on 5432 does not clash
     volumes:
       - db-data:/var/lib/postgresql # PostgreSQL 18 images keep data under this directory
@@ -31,7 +31,7 @@ services:
   api:
     build: apps/api
     environment:
-      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-app}@db:5432/${POSTGRES_DB:-app}
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-educonnect}:${POSTGRES_PASSWORD:-educonnect}@db:5432/${POSTGRES_DB:-educonnect}
       REDIS_URL: redis://redis:6379/0
       LLM_PROVIDER: ${LLM_PROVIDER:-}
       ENABLE_TEST_ROUTES: ${ENABLE_TEST_ROUTES:-}
