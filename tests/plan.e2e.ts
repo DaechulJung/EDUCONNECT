@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs'
 import { expect, type App, type Screen } from 'e2e'
 import { beforeEach, test } from '@e2e-dev/web'
 import { resetSeed, signInParent } from './chat-support'
@@ -42,36 +43,58 @@ test('TC-47 일정에서 영어 프로그램 하나를 빼면 그 수업이 사�
   expect(await classesOf(screen, english.institution, '영어')).toEqual([])
 })
 
-// An academy staff member moves one of their English classes into school hours through the product API
+// An academy staff member moves an English class of another academy into school hours through the product API
 // (PUT /api/academy/programs/{id}); the seed has no such candidate. reset in beforeEach puts it back.
-async function moveEnglishIntoSchoolHours(app: App): Promise<string> {
-  const password = process.env.SEED_PASSWORD!
-  const login = await fetch(new URL('/api/auth/login', app.baseUrl), {
+// The class is picked from the seed JSON (초5 대상·공개·마감 아님, not the draft's academy) and its id from the
+// parent's recommendations, because the program list API arrives with #2.
+async function signIn(app: App, loginId: string): Promise<string> {
+  const response = await fetch(new URL('/api/auth/login', app.baseUrl), {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ login_id: 'academy-c', password }),
+    body: JSON.stringify({ login_id: loginId, password: process.env.SEED_PASSWORD }),
   })
-  expect(login.status).toBe(200)
-  const cookie = (login.headers.get('set-cookie') ?? '').split(';')[0]
-  const list = await fetch(new URL('/api/academy/programs', app.baseUrl), { headers: { cookie } })
-  expect(list.status).toBe(200)
-  const programs = (await list.json()) as Record<string, unknown>[]
-  // 초5 대상, 마감 아님, 교습비 공개인 영어 반 (푸른숲 c-elem-english).
-  const target = programs.find((p) => p.subject === '영어' && (p.grade_min as number) <= 5 && 5 <= (p.grade_max as number) && (p.enrolled as number) < (p.capacity as number) && p.monthly_tuition !== null)
-  expect(target, '초5 영어 반').toBeTruthy()
-  const { id, institution_id: _institution, ...fields } = target!
-  const moved = await fetch(new URL(`/api/academy/programs/${id}`, app.baseUrl), {
-    method: 'PUT',
+  expect(response.status).toBe(200)
+  return (response.headers.get('set-cookie') ?? '').split(';')[0]
+}
+
+async function call(app: App, cookie: string, method: string, path: string, body?: unknown) {
+  const response = await fetch(new URL(path, app.baseUrl), {
+    method,
     headers: { 'content-type': 'application/json', cookie },
-    body: JSON.stringify({ ...fields, days: ['tue', 'thu'], start: '14:00', end: '15:00' }),
+    body: body === undefined ? undefined : JSON.stringify(body),
   })
-  expect(moved.status).toBe(200)
+  expect(response.status, `${method} ${path}`).toBe(200)
+  return response.json()
+}
+
+type SeedProgram = { key: string; subject: string; grade_min: number; grade_max: number; monthly_tuition: number | null; capacity: number; enrolled: number; start: string } & Record<string, unknown>
+type SeedAcademy = { key: string; name: string; lat: number; lng: number; programs: SeedProgram[] }
+
+async function moveEnglishIntoSchoolHours(app: App, draftInstitution: string): Promise<string> {
+  const seed = JSON.parse(readFileSync(new URL('../apps/api/app/seed/data/academies.json', import.meta.url), 'utf8')) as { academies: SeedAcademy[] }
+  const pick = seed.academies
+    .filter((a) => a.name !== draftInstitution)
+    .flatMap((a) => a.programs.map((p) => ({ academy: a, program: p })))
+    .find(({ program: p }) => p.subject === '영어' && p.grade_min <= 5 && 5 <= p.grade_max && p.monthly_tuition !== null && p.enrolled < p.capacity)
+  expect(pick, '다른 학원의 초5 영어 반').toBeTruthy()
+  const { academy, program } = pick!
+
+  const parent = await signIn(app, 'parent1')
+  const [child] = await call(app, parent, 'GET', '/api/children')
+  const recs = await call(app, parent, 'POST', '/api/recommendations', { child_id: child.id })
+  const rec = recs.items.find((r: { institution_name: string; subject: string; start: string }) => r.institution_name === academy.name && r.subject === '영어' && r.start === program.start)
+  expect(rec, `${academy.name} 영어 추천`).toBeTruthy()
+
+  const { key: _key, ...fields } = program
+  const accounts = JSON.parse(readFileSync(new URL('../apps/api/app/seed/data/accounts.json', import.meta.url), 'utf8')) as { accounts: { login_id: string; institution: string | null }[] }
+  const staff = await signIn(app, accounts.accounts.find((x) => x.institution === academy.key)!.login_id)
+  await call(app, staff, 'PUT', `/api/academy/programs/${rec.program_id}`, { ...fields, lat: academy.lat, lng: academy.lng, days: ['tue', 'thu'], start: '14:00', end: '15:00' })
   return '14:00~15:00'
 }
 
 test('TC-48 일정의 영어 수업을 학교 시간과 겹치는 프로그램으로 바꾸면 그 칸에 시간 중복이 보이고 확정 버튼이 비활성이다', async ({ app, screen }) => {
-  const span = await moveEnglishIntoSchoolHours(app)
   const english = await englishLine(screen)
+  const span = await moveEnglishIntoSchoolHours(app, english.institution)
   await expect(screen.getByRole('button', '일정 확정')).toBeEnabled()
 
   await screen.getByRole('button', `${english.institution} 영어 바꾸기`).first().tap()
