@@ -1,0 +1,430 @@
+{
+  "schemaVersion": "report-1",
+  "run": {
+    "id": "01a12539-9b74-7b13-b0a7-487a12f61c45",
+    "specVersion": "0.1",
+    "runner": {
+      "name": "e2e",
+      "version": "0.18.0"
+    },
+    "status": "passed",
+    "exitCode": 0,
+    "startedAt": "2026-10-10T09:51:35.004Z",
+    "finishedAt": "2026-10-10T09:51:36.691Z",
+    "project": {
+      "id": "app",
+      "configDigest": "94024af33f0f77ebd52eab25b5d0dd055727f8d5d3c55998122dd445ecf902c3"
+    },
+    "environment": {
+      "ci": false,
+      "trustNoticeShown": false,
+      "os": "darwin 27.0.0",
+      "arch": "arm64",
+      "runtime": "node v24.18.0"
+    },
+    "vcs": {
+      "commit": "78c32bd13be855ab2f7d9b3756e7084303f4d66d",
+      "branch": "main",
+      "dirty": false
+    },
+    "targets": [
+      {
+        "id": "web",
+        "index": 0,
+        "platform": "web",
+        "baseOrigin": "http://127.0.0.1:13000",
+        "environment": "test",
+        "engine": {
+          "name": "web",
+          "version": "0.13.0",
+          "spiVersion": 1
+        },
+        "capabilities": [
+          "actions",
+          "artifacts",
+          "browser",
+          "keyboard",
+          "location",
+          "observation",
+          "pointer",
+          "state"
+        ],
+        "artifactCapabilities": [
+          "screenshot",
+          "trace",
+          "video"
+        ],
+        "stateCapability": true
+      }
+    ],
+    "serialGroups": [],
+    "results": [
+      {
+        "id": "5a5a2209a6749a1cd03696393d5d5dd29f46339e8600ef890069605f1cb465f4",
+        "testId": "tests/smoke.e2e.ts::%EC%84%B8%EC%85%98%20%EC%97%86%EC%9D%B4%20%EC%B2%AB%20%ED%99%94%EB%A9%B4%EC%9D%84%20%EC%97%B4%EB%A9%B4%20%EB%A1%9C%EA%B7%B8%EC%9D%B8%20%ED%99%94%EB%A9%B4%EC%9D%B4%20%EB%B3%B4%EC%9D%B8%EB%8B%A4",
+        "kind": "test",
+        "declarationIndex": 0,
+        "titlePath": [
+          "세션 없이 첫 화면을 열면 로그인 화면이 보인다"
+        ],
+        "file": "tests/smoke.e2e.ts",
+        "source": {
+          "file": "tests/smoke.e2e.ts",
+          "line": 5,
+          "column": 1
+        },
+        "targetId": "web",
+        "platform": "web",
+        "agent": "default",
+        "repeat": 0,
+        "tags": [],
+        "selected": true,
+        "status": "passed",
+        "attempts": [
+          {
+            "id": "01a12539-9d44-7898-9be4-0099a63fccfc",
+            "index": 0,
+            "status": "passed",
+            "startedAt": "2026-10-10T09:51:35.236Z",
+            "durationMs": 989,
+            "artifacts": [
+              {
+                "id": "01a12539-9d44-7898-9be4-0099a63fccfc:artifact:0",
+                "kind": "trace",
+                "mediaType": "application/zip",
+                "redaction": "not-required",
+                "producer": {
+                  "kind": "attempt"
+                },
+                "path": "web/tests_smoke.e2e.ts___EC_84_B8_EC_85_98_20_EC_97_86_EC_9D_B4_20_EC_B2_AB_20_ED_99_94_EB_A9_B4_EC_9D_84_20_EC_97_-43668f23/default/attempt-0/trace/trace.zip",
+                "size": 313265,
+                "sha256": "26abef8deb46d0bb64f1cd5d4fc71e26021bdeacbc9d9bea9db9f4dc94398bbe"
+              }
+            ],
+            "secondaryErrors": [],
+            "cleanup": "complete",
+            "steps": [
+              {
+                "id": "01a12539-9d44-7898-9be4-0099a63fccfc:0",
+                "index": 0,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/",
+                "status": "passed",
+                "startedAt": "2026-10-10T09:51:35.763Z",
+                "durationMs": 299,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/smoke.e2e.ts",
+                  "line": 6,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a12539-9d44-7898-9be4-0099a63fccfc:1",
+                "index": 1,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T09:51:36.062Z",
+                "durationMs": 137,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/smoke.e2e.ts",
+                  "line": 7,
+                  "column": 52
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "7925f91e0a22fbbc796beb05d58f0cc833d5bacb656e3d87b185891d3376109e",
+        "testId": "tests/smoke.e2e.ts::%EC%84%B8%EC%85%98%20%EC%97%86%EC%9D%B4%20%EB%B3%B4%ED%98%B8%EC%9E%90%C2%B7%EA%B8%B0%EA%B4%80%20%ED%99%94%EB%A9%B4%20%EC%A3%BC%EC%86%8C%EB%A1%9C%20%EA%B0%80%EB%A9%B4%20%EB%A1%9C%EA%B7%B8%EC%9D%B8%20%ED%99%94%EB%A9%B4%EC%9C%BC%EB%A1%9C%20%EB%8F%8C%EC%95%84%EA%B0%84%EB%8B%A4",
+        "kind": "test",
+        "declarationIndex": 1,
+        "titlePath": [
+          "세션 없이 보호자·기관 화면 주소로 가면 로그인 화면으로 돌아간다"
+        ],
+        "file": "tests/smoke.e2e.ts",
+        "source": {
+          "file": "tests/smoke.e2e.ts",
+          "line": 10,
+          "column": 1
+        },
+        "targetId": "web",
+        "platform": "web",
+        "agent": "default",
+        "repeat": 0,
+        "tags": [],
+        "selected": true,
+        "status": "passed",
+        "attempts": [
+          {
+            "id": "01a12539-a121-7c67-b4be-df14edae91aa",
+            "index": 0,
+            "status": "passed",
+            "startedAt": "2026-10-10T09:51:36.225Z",
+            "durationMs": 443,
+            "artifacts": [
+              {
+                "id": "01a12539-a121-7c67-b4be-df14edae91aa:artifact:0",
+                "kind": "trace",
+                "mediaType": "application/zip",
+                "redaction": "not-required",
+                "producer": {
+                  "kind": "attempt"
+                },
+                "path": "web/tests_smoke.e2e.ts___EC_84_B8_EC_85_98_20_EC_97_86_EC_9D_B4_20_EB_B3_B4_ED_98_B8_EC_9E_90_C2_B7_EA_B8_B0_EA_B4_-ab7f06d4/default/attempt-0/trace/trace.zip",
+                "size": 352277,
+                "sha256": "0f3a5e8875afdd1d1730c62f3c3f39eef50c813cdff489d045b0f531cb26e84d"
+              }
+            ],
+            "secondaryErrors": [],
+            "cleanup": "complete",
+            "steps": [
+              {
+                "id": "01a12539-a121-7c67-b4be-df14edae91aa:0",
+                "index": 0,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/chat",
+                "status": "passed",
+                "startedAt": "2026-10-10T09:51:36.230Z",
+                "durationMs": 81,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/smoke.e2e.ts",
+                  "line": 12,
+                  "column": 15
+                }
+              },
+              {
+                "id": "01a12539-a121-7c67-b4be-df14edae91aa:1",
+                "index": 1,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T09:51:36.311Z",
+                "durationMs": 138,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/smoke.e2e.ts",
+                  "line": 13,
+                  "column": 54
+                }
+              },
+              {
+                "id": "01a12539-a121-7c67-b4be-df14edae91aa:2",
+                "index": 2,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/schedule",
+                "status": "passed",
+                "startedAt": "2026-10-10T09:51:36.450Z",
+                "durationMs": 29,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/smoke.e2e.ts",
+                  "line": 12,
+                  "column": 15
+                }
+              },
+              {
+                "id": "01a12539-a121-7c67-b4be-df14edae91aa:3",
+                "index": 3,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T09:51:36.479Z",
+                "durationMs": 21,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/smoke.e2e.ts",
+                  "line": 13,
+                  "column": 54
+                }
+              },
+              {
+                "id": "01a12539-a121-7c67-b4be-df14edae91aa:4",
+                "index": 4,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/children",
+                "status": "passed",
+                "startedAt": "2026-10-10T09:51:36.500Z",
+                "durationMs": 20,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/smoke.e2e.ts",
+                  "line": 12,
+                  "column": 15
+                }
+              },
+              {
+                "id": "01a12539-a121-7c67-b4be-df14edae91aa:5",
+                "index": 5,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T09:51:36.520Z",
+                "durationMs": 20,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/smoke.e2e.ts",
+                  "line": 13,
+                  "column": 54
+                }
+              },
+              {
+                "id": "01a12539-a121-7c67-b4be-df14edae91aa:6",
+                "index": 6,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/academy",
+                "status": "passed",
+                "startedAt": "2026-10-10T09:51:36.540Z",
+                "durationMs": 17,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/smoke.e2e.ts",
+                  "line": 12,
+                  "column": 15
+                }
+              },
+              {
+                "id": "01a12539-a121-7c67-b4be-df14edae91aa:7",
+                "index": 7,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T09:51:36.557Z",
+                "durationMs": 19,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/smoke.e2e.ts",
+                  "line": 13,
+                  "column": 54
+                }
+              },
+              {
+                "id": "01a12539-a121-7c67-b4be-df14edae91aa:8",
+                "index": 8,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/school",
+                "status": "passed",
+                "startedAt": "2026-10-10T09:51:36.577Z",
+                "durationMs": 17,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/smoke.e2e.ts",
+                  "line": 12,
+                  "column": 15
+                }
+              },
+              {
+                "id": "01a12539-a121-7c67-b4be-df14edae91aa:9",
+                "index": 9,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T09:51:36.594Z",
+                "durationMs": 19,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/smoke.e2e.ts",
+                  "line": 13,
+                  "column": 54
+                }
+              },
+              {
+                "id": "01a12539-a121-7c67-b4be-df14edae91aa:10",
+                "index": 10,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/impact",
+                "status": "passed",
+                "startedAt": "2026-10-10T09:51:36.614Z",
+                "durationMs": 16,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/smoke.e2e.ts",
+                  "line": 12,
+                  "column": 15
+                }
+              },
+              {
+                "id": "01a12539-a121-7c67-b4be-df14edae91aa:11",
+                "index": 11,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T09:51:36.630Z",
+                "durationMs": 19,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/smoke.e2e.ts",
+                  "line": 13,
+                  "column": 54
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "errors": [],
+    "summary": {
+      "discovered": 2,
+      "selected": 2,
+      "executed": 2,
+      "passed": 2,
+      "failed": 0,
+      "interrupted": 0,
+      "flaky": 0,
+      "skipped": 0
+    },
+    "limits": {
+      "maxAgentContextBytes": 16384,
+      "maxLedgerBytes": 8192,
+      "maxObservationBytes": 262144,
+      "maxEventsPerStep": 1000,
+      "maxModelTokensPerCall": 64000
+    },
+    "usage": {
+      "discoveredResults": 2,
+      "maxAgentContextBytes": 0,
+      "maxLedgerBytes": 0,
+      "maxObservationBytes": 0,
+      "artifactBytes": 665542,
+      "downloads": 0,
+      "events": 0,
+      "modelTokens": 0,
+      "maxModelCallsInStep": 0,
+      "maxActionStepsInStep": 0
+    }
+  }
+}
