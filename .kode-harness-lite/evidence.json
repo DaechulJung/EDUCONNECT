@@ -1,1 +1,1 @@
-{"DaechulJung/EDUCONNECT":["docs/evidence/e2e-doc/TC-63.md","docs/evidence/e2e-doc/TC-64.md","docs/evidence/e2e-doc/TC-65.md","docs/evidence/e2e-doc/TC-66.md"]}
+{"DaechulJung/EDUCONNECT":["docs/evidence/e2e-doc/TC-63.md","docs/evidence/e2e-doc/TC-64.md","docs/evidence/e2e-doc/TC-65.md","docs/evidence/e2e-doc/TC-66.md","tests/auth.e2e.ts","apps/api/tests/test_authz.py","apps/api/tests/test_auth.py","apps/api/tests/test_audit.py"]}

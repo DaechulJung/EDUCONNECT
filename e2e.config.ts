@@ -5,4 +5,7 @@ import { web } from '@e2e-dev/web'
 // `docker compose up --build --wait` (what CI does) or `npm run dev:api` + `npm run dev:web`.
 export default {
   targets: [{ engine: web(), app: { url: process.env.APP_URL ?? 'http://localhost:3000' } }],
+  // One worker: every TC resets the shared seed (POST /api/test/reset clears all sessions), so
+  // parallel files would sign each other out. CI already runs with one worker.
+  workers: 1,
 } satisfies E2EConfig
