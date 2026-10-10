@@ -1,4 +1,5 @@
-import { beforeEach, expect, test, type App, type Locator, type Screen } from 'e2e'
+import { expect, type App, type Locator, type Screen } from 'e2e'
+import { beforeEach, test } from '@e2e-dev/web'
 import { AROUND, TASK, WITHIN, api, expectAroundCard, resetSeed, row, send, signInParent } from './chat-support'
 
 // REQ-05 with the LLM double (LLM_PROVIDER=fake): TC-28 (AC-05.1), TC-29 (AC-05.2),
@@ -105,4 +106,31 @@ test('#5 회귀 새 과목 칩: 학원이 등록한 과목 로봇이 조건 시�
   await screen.getByRole('article', '조건 카드').getByRole('button', '고치기').tap()
   const chips = screen.getByRole('dialog', '조건을 고쳐 주세요').getByRole('group', '선호 과목')
   await expect(chips.getByRole('button', '로봇')).toBeVisible()
+})
+
+// #5 회귀 (TC-16 flake, 정대철_테스트 12:48Z): before /api/children answered, the page had no child and answered
+// "먼저 자녀를 등록해 주세요", which experience 169행 keeps for a parent with no child. 98행: while loading the
+// send button is disabled with "처리하고 있어요". The children response is held until the checks are done.
+test('#5 회귀 자녀 목록 불러오는 중에는 보내기가 비활성이고 "먼저 자녀를 등록해 주세요"가 나오지 않으며, 목록이 오면 보내서 조건 카드가 보인다', async ({ app, screen, browser }) => {
+  let release!: () => void
+  const held = new Promise<void>((resolve) => { release = resolve })
+  await browser.route('**/api/children', async (route) => {
+    await held
+    await route.continue()
+  })
+  await api(app, '/api/test/llm', { task: TASK, mode: 'fixed', response: AROUND_REPLY })
+  await app.open('/chat')
+  const input = screen.getByLabel('챗봇에 보낼 말')
+  await input.fill(AROUND)
+  await input.press('Enter')
+  await expect(screen.getByText('먼저 자녀를 등록해 주세요')).not.toBeVisible()
+  await expect(screen.getByRole('button', '보내기')).toBeDisabled()
+  await expect(screen.getByText('처리하고 있어요')).toBeVisible()
+
+  // Released, the route passes this and every later children request through (unroute would race the held one).
+  release()
+  await expect(screen.getByRole('button', '보내기')).toBeEnabled({ timeout: 10_000 })
+  await screen.getByRole('button', '보내기').tap()
+  await expectAroundCard(screen)
+  await expect(screen.getByText('먼저 자녀를 등록해 주세요')).not.toBeVisible()
 })

@@ -1,0 +1,19 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- /Users/agentneo/Desktop/71_Hackerthon/01_Pre_Project/AIDX_PRE_TRAINING_2/.worktrees/verify/apps/api/.venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/agentneo/Desktop/71_Hackerthon/01_Pre_Project/AIDX_PRE_TRAINING_2/.worktrees/verify/apps/api
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 9 items
+
+tests/test_recommend.py::test_base_scenario_rows_have_every_column_and_only_english_or_math PASSED [ 11%]
+tests/test_recommend.py::test_grade_mismatch_full_and_undisclosed_programs_are_left_out PASSED [ 22%]
+tests/test_recommend.py::test_reasons_request_carries_the_interest_and_reasons_come_from_the_model PASSED [ 33%]
+tests/test_recommend.py::test_model_error_gives_template_reasons_with_the_same_rows PASSED [ 44%]
+tests/test_recommend.py::test_same_conditions_give_the_same_order PASSED [ 55%]
+tests/test_recommend.py::test_type_and_days_conditions_bound_every_row PASSED [ 66%]
+tests/test_recommend.py::test_other_parents_child_is_not_found PASSED    [ 77%]
+tests/test_recommend.py::test_prompt_sends_labels_not_codes PASSED       [ 88%]
+tests/test_recommend.py::test_code_tokens_in_model_reasons_become_labels PASSED [100%]
+
+============================== 9 passed in 3.04s ===============================

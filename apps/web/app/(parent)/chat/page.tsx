@@ -14,7 +14,7 @@ import { RecommendTable } from '@/components/parent/RecommendTable'
 import { SwapSheet } from '@/components/parent/SwapSheet'
 import { confirmPlan, createPlanDraft, getConditions, listChildren, listSubjects, recommendPrograms, saveConditions, sendChatMessage, updateChild, updatePlan, type Conditions, type Plan, type PlanItem, type Recommendation } from '@/lib/client'
 import { confirmFailure, swapCandidates, type ErrorBody, swapProgram, withoutProgram } from '@/lib/plan'
-import { BASE_SUBJECTS, childLabel, pickChild, sameConditions, subjectOptions } from '@/lib/conditions'
+import { BASE_SUBJECTS, childGate, childLabel, pickChild, sameConditions, subjectOptions } from '@/lib/conditions'
 import { isTimetableMissing, saveDismissalAndReplan, type Dismissal } from '@/lib/dismissal'
 
 type Message = { id: number; role: 'user' | 'ai'; text: string; error?: boolean }
@@ -73,6 +73,9 @@ function Chat() {
     },
   })
   const child = pickChild(children.data, childId)
+  const gate = childGate({ status: children.status, fetching: children.isFetching }, !!child)
+  // A message can go once the list has answered: to the child, or the "먼저 자녀를 등록해 주세요" answer.
+  const canSend = gate === 'ready' || gate === 'none'
   const saved = useQuery({
     queryKey: ['conditions', child?.id],
     queryFn: async () => (await getConditions({ path: { child_id: child!.id } })).data ?? null,
@@ -117,7 +120,7 @@ function Chat() {
 
   async function ask(question: string) {
     const text = question.trim()
-    if (!text || thinking) return
+    if (!text || thinking || !canSend) return
     if (!child) {
       add('user', text)
       add('ai', '먼저 자녀를 등록해 주세요')
@@ -294,12 +297,17 @@ function Chat() {
             </p>
           </div>
 
-          {children.isError && (
-            <p className="kds-info-line kds-info-line--error" role="alert">
-              <Icon name="ic-line-warning" size={16} />자녀 정보를 불러오지 못했어요. 잠시 뒤 다시 열어 주세요.
-            </p>
+          {gate === 'loading' && <div className="kds-chat__thinking" role="status" aria-busy="true">처리하고 있어요</div>}
+          {/* experience State Patterns 오류: send stays disabled, the typed message is kept, '다시 시도' reloads the list. */}
+          {gate === 'error' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)', alignItems: 'flex-start' }}>
+              <p className="kds-info-line kds-info-line--error" role="alert">
+                <Icon name="ic-line-warning" size={16} />응답을 받지 못했어요. 입력은 그대로 있어요.
+              </p>
+              <button type="button" className="kds-button kds-button--secondary kds-button--small" onClick={() => children.refetch()}>다시 시도</button>
+            </div>
           )}
-          {children.isSuccess && !child && (
+          {gate === 'none' && (
             <div className="kds-empty">
               <Icon name="ic-line-info" />
               <p>등록한 자녀가 없어요</p>
@@ -349,7 +357,7 @@ function Chat() {
             <ul className="kds-list body-small-medium" aria-label="추천 질문" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
               {SUGGESTIONS.map((s) => (
                 <li key={s}>
-                  <button type="button" onClick={() => ask(s)} style={{ background: 'var(--surface-primary-02)', borderRadius: 'var(--radius-12)', paddingInline: 'var(--space-16)' }}>
+                  <button type="button" disabled={!canSend} onClick={() => ask(s)} style={{ background: 'var(--surface-primary-02)', borderRadius: 'var(--radius-12)', paddingInline: 'var(--space-16)' }}>
                     {s}
                     <Icon name="ic-line-chevron_right" size={20} />
                   </button>
@@ -365,7 +373,7 @@ function Chat() {
         <form className="kds-prompt-dock" style={{ maxWidth: 748, marginInline: 'auto' }} onSubmit={(e) => { e.preventDefault(); ask(input) }}>
           <span className="kds-ai-mark" aria-hidden="true" />
           <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="조건을 말씀해 주세요" aria-label="챗봇에 보낼 말" maxLength={500} />
-          <button type="submit" className="kds-icon-button" aria-label="보내기" disabled={!input.trim() || thinking}>
+          <button type="submit" className="kds-icon-button" aria-label="보내기" disabled={!input.trim() || thinking || !canSend}>
             <Icon name="ic-line-send" />
           </button>
         </form>
