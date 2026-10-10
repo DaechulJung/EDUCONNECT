@@ -1570,6 +1570,10 @@ export type ListSchoolsErrors = {
      */
     401: ErrorBody;
     /**
+     * Forbidden
+     */
+    403: ErrorBody;
+    /**
      * Validation Error
      */
     422: HttpValidationError;

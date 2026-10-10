@@ -1,8 +1,8 @@
 import { beforeEach, expect, test, type Screen } from 'e2e'
 import { resetSeed, signInParent } from './chat-support'
+import { makePlan, minutes, saveConditions, week } from './plan-support'
 
-// REQ-04 in the browser (FLOW-04, mobile width): TC-23 (AC-04.1), TC-25 (AC-04.3), TC-26 (AC-04.4).
-// TC-24 (AC-04.2) and TC-27 (AC-04.5) need plan generation (#7) and are added after it lands.
+// REQ-04 in the browser (FLOW-04, mobile width): TC-23 (AC-04.1), TC-24 (AC-04.2), TC-25 (AC-04.3), TC-26 (AC-04.4).
 // The app must run with ENABLE_TEST_ROUTES=1 and the seed password in SEED_PASSWORD.
 
 const MOBILE = { width: 390, height: 844 }
@@ -38,7 +38,7 @@ async function fillAc041(screen: Screen, alias: string, age = '11') {
 const childRow = (screen: Screen, alias: string) =>
   screen.getByRole('table', '자녀 목록').getByRole('row').filter({ hasText: alias })
 
-test('TC-23 자녀 탭에서 AC-04.1 값으로 저장하면 자녀 목록에 별칭과 학년이 보이고 새로 고쳐도 같다', async ({ app, screen }) => {
+test('TC-23 자녀 탭에서 AC-04.1 값으로 저장하면 자녀 목록에 별칭과 학년이 보이고 새로 고쳐도 같다', async ({ app, screen, browser }) => {
   const alias = `별${Date.now() % 100000}`
   await openForm(app, screen)
   await fillAc041(screen, alias)
@@ -53,6 +53,15 @@ test('TC-23 자녀 탭에서 AC-04.1 값으로 저장하면 자녀 목록에 별
   await app.open('/children')
   await expect(childRow(screen, alias)).toHaveCount(1, { timeout: 10_000 })
   await expect(childRow(screen, alias)).toContainText('초5')
+
+  // The list shows only alias and grade, so check the stored school against the one picked by name.
+  const { schools, children } = await browser.evaluate(async () => ({
+    schools: await (await fetch('/api/catalog/schools')).json(),
+    children: await (await fetch('/api/children')).json(),
+  })) as { schools: { id: string; name: string }[]; children: { alias: string; school_id: string | null }[] }
+  const picked = schools.find((school) => school.name === '한빛초등학교')
+  expect(picked).toBeTruthy()
+  expect(children.find((child) => child.alias === alias)?.school_id).toBe(picked!.id)
 })
 
 test('TC-25 만 나이 13이면 동의 확인 전 저장 버튼이 비활성이고 안내가 보이며, 체크하면 저장된다', async ({ app, screen }) => {
@@ -91,4 +100,28 @@ test('TC-26 자녀 등록 화면에 실명·연락처 칸이 없고 저장 API �
   expect(Object.keys(body).sort()).toEqual(
     ['age', 'alias', 'consent_checked', 'existing_events', 'goal', 'grade', 'id', 'interests', 'manual_dismissal', 'school_id'],
   )
+})
+
+test('TC-24 토 10:00~12:00 기존 일정이 있는 자녀로 일정을 만들면 그 시간에 다른 수업이 없다', async ({ app, screen, browser }) => {
+  const alias = `토${Date.now() % 100000}`
+  await openForm(app, screen)
+  await fillAc041(screen, alias)
+  await screen.getByLabel('법정대리인 동의 확인(모의)').check()
+  await screen.getByRole('button', '자녀 저장').tap()
+  await expect(childRow(screen, alias)).toHaveCount(1, { timeout: 10_000 })
+
+  await browser.setViewport({ width: 1280, height: 900 }) // week() reads the desktop weekly table
+  await app.open('/chat')
+  await saveConditions(app, screen, async (sheet) => {
+    await sheet.getByLabel(`${alias}(초5)`).check()
+  })
+  await expect(screen.getByRole('article', '조건 카드').getByRole('group', '대상 자녀')).toContainText(alias)
+  await makePlan(screen)
+  const days = await week(screen)
+  expect(days.flatMap((d) => d.classes).length, '일정이 만들어짐').toBeGreaterThan(0)
+  const saturday = days.find((d) => d.day === '토')!
+  for (const c of saturday.classes) {
+    const overlaps = minutes(c.start) < minutes('12:00') && minutes(c.end) > minutes('10:00')
+    expect(overlaps, `토 ${c.text}`).toBe(false)
+  }
 })

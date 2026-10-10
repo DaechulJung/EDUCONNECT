@@ -10,7 +10,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.authz import AcademyStaff, AnyUser, SchoolStaff
+from app.core.authz import AcademyStaff, AnyUser, Parent, SchoolStaff
 from app.core.db import get_session
 from app.core.errors import error_responses, not_implemented
 from app.schemas.catalog import (
@@ -101,6 +101,6 @@ async def list_subjects(session: AnyUser) -> list[str]:
     raise not_implemented()
 
 
-@router.get("/catalog/schools", responses=error_responses(401))
-async def list_schools(session: AnyUser, db: Db) -> list[School]:
+@router.get("/catalog/schools", responses=error_responses(401, 403))
+async def list_schools(session: Parent, db: Db) -> list[School]:
     return await schools.list_all(db)

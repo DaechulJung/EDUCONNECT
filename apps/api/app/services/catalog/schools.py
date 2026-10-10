@@ -11,6 +11,6 @@ async def list_all(db: AsyncSession) -> list[School]:
     rows = await db.scalars(
         select(Institution)
         .where(Institution.kind == "school")
-        .order_by(Institution.name, Institution.id)
+        .order_by(Institution.name.collate("C"), Institution.id)  # 가나다 order, not the DB locale
     )
     return [School(id=str(row.id), name=row.name) for row in rows]

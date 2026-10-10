@@ -23,7 +23,8 @@ def test_lists_schools_only_id_and_name(client, make_account, sync_db) -> None:
 
     assert response.status_code == 200
     body = response.json()
-    assert body and sorted(body, key=lambda s: (s["name"], s["id"])) == school_rows(sync_db)
+    # name order comes from the server, not re-sorted here
+    assert body and body == school_rows(sync_db)
     assert "시험 academy" not in {s["name"] for s in body}
     assert all(set(s) == {"id", "name"} for s in body)
 
@@ -31,3 +32,9 @@ def test_lists_schools_only_id_and_name(client, make_account, sync_db) -> None:
 def test_signed_out_is_401(client) -> None:
     client.cookies.clear()
     assert client.get("/api/catalog/schools").status_code == 401
+
+
+def test_academy_staff_is_403(client, make_account) -> None:
+    login_id, _, _ = make_account("academy")
+    assert login(client, login_id).status_code == 200
+    assert client.get("/api/catalog/schools").status_code == 403
