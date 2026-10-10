@@ -11,6 +11,8 @@ docker compose down                 # 끄기 (데이터까지 지우려면 -v)
 
 첫 화면이 데이터베이스·벡터 검색·Redis 연결 상태를 보여 줘요.
 
+데모 데이터는 띄운 뒤 `npm run seed`로 넣어요(`.env`에 `SEED_PASSWORD` 필요, 아래 개발 참고). 시드 계정 아이디는 `parent1`·`parent2`·`academy-a`~`academy-e`·`school-elem`·`school-mid`예요.
+
 ## 개발
 
 필요한 것: Node.js 24 이상, [uv](https://docs.astral.sh/uv/), Docker.
@@ -19,6 +21,8 @@ docker compose down                 # 끄기 (데이터까지 지우려면 -v)
 npm install                 # 웹 의존성
 npm run infra               # db · redis만 띄움 (localhost:15432 · 16379, 로컬 PostgreSQL과 겹치지 않게)
 npm run migrate             # 마이그레이션 적용 (pgvector 확장 포함)
+npm run seed                # 시드 적재(학교 2·학원 5·데모 계정·자녀 2). .env의 SEED_PASSWORD가 모든 시드 계정 비밀번호
+npm run seed -- --reset     # 시험이 만든 데이터를 지우고 시드로 되돌림
 npm run dev:api             # API :8000, 코드를 바꾸면 다시 시작
 npm run dev:web             # 웹 :3000, /api는 next.config.ts가 :8000으로 전달
 npm run gen:api             # API를 바꾼 뒤 웹 클라이언트(apps/web/lib/client) 다시 생성 — 서버를 띄우지 않아도 된다

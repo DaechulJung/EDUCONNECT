@@ -1,0 +1,33 @@
+{
+  "_note": "합성 데모 자녀. 실명·연락처 없음(별칭만). parent는 accounts.json, school은 schools.json의 key. 나머지 필드는 family의 ChildIn 형식이다.",
+  "children": [
+    {
+      "key": "child-elem5",
+      "parent": "parent-1",
+      "school": "school-elem",
+      "child": {
+        "alias": "하늘",
+        "age": 11,
+        "grade": 5,
+        "interests": ["영어", "수학"],
+        "goal": "중학교 입학 전 영어·수학 기초 다지기",
+        "existing_events": [{"dow": "sat", "start": "09:00", "end": "10:00", "label": "수영"}],
+        "consent_checked": true
+      }
+    },
+    {
+      "key": "child-mid1",
+      "parent": "parent-2",
+      "school": "school-mid",
+      "child": {
+        "alias": "바다",
+        "age": 13,
+        "grade": 7,
+        "interests": ["수학", "코딩"],
+        "goal": "중1 수학 내신 대비",
+        "existing_events": [],
+        "consent_checked": true
+      }
+    }
+  ]
+}
