@@ -85,3 +85,13 @@
 - [x] E2E TC-19·22 (`188df37`)
 - [x] main `de8e2e8`(#6·#7 포함) merge 뒤 TC-20·21 — school 4/4 (`4112287`)
 - [x] main `0c0f143` merge, gen:api 일치, `npm run check` api 224·web 36, E2E 38/38 → AC-03.1~03.4 done → `Closes #3` PR
+## #4 자녀 정보 등록 — BUILDER (10:32 분배 조정으로 dev:2→dev:1)
+- 완료 조건: AC-04.1~04.5 done(TC-23~27), `npm run check`·`npx e2e run` 통과, `Closes #4` PR VERIFIER 승인. TC-24·27은 #7 병합 뒤
+- [x] `POST /api/children`(14세 미만 동의 확인, 실명·연락처 거부) — #6 PUT·`get_own` 공유
+- [x] `GET /api/catalog/schools` 보호자 전용 401·403, 이름순(9aa773ce 결정), arch 2곳 별도 커밋
+- [x] 자녀 탭 목록·등록 시트, TC-23(school_id 대조)·25·26 E2E
+- [x] TC-24 토 기존 일정 배치 E2E(#7 병합 뒤)
+- [x] AC-04.5: 422 `school_timetable_missing`, reset `omit_timetable`, DismissalForm, pytest·web 단위·TC-27(8fe841de 결정)
+- [x] main `de8e2e8` merge(evidence.json 합집합) 뒤 check api 230·web 33, E2E children 5/5
+- [x] 문서: arch 233·237행, experience 85·169행, development.md #4 행·한계 1줄
+- [ ] AC-04.5 done → `Closes #4` PR → CI 3/3 → VERIFIER 승인 → 병합
