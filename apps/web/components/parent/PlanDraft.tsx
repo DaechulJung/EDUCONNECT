@@ -2,17 +2,26 @@
 
 import { useSyncExternalStore } from 'react'
 import { Icon } from '@/components/kds/kds'
-import type { Plan } from '@/lib/client'
+import type { Plan, PlanItem } from '@/lib/client'
 import { formatWon } from '@/lib/conditions'
-import { NO_PLAN, itemMonthly, overBudget, relaxationLabels, weekColumns, type DayEntry } from '@/lib/plan'
+import { BLOCKED, NO_PLAN, canConfirm, itemMonthly, overBudget, relaxationLabels, weekColumns, type DayEntry } from '@/lib/plan'
+
+// Draft edits (#8): '빼기'·'바꾸기' change the draft in place, '일정 확정' asks first (experience 112행).
+export type PlanActions = {
+  busy: boolean
+  onRemove: (item: PlanItem) => void
+  onSwap: (item: PlanItem) => void
+  onConfirm: () => void
+}
 
 // 일정 초안 (experience): weekly table from 768px, per-day list below, then the monthly cost summary.
-// Removing, swapping and confirming arrive with #8; this shows the server's draft as is.
-export function PlanDraft({ plan }: { plan: Plan }) {
+// Without actions it is read-only (확정 계획 on the 일정 탭).
+export function PlanDraft({ plan, actions, label = '일정 초안' }: { plan: Plan; actions?: PlanActions; label?: string }) {
   const wide = useWide()
   const columns = weekColumns(plan)
+  const single = plan.items.length <= 1
   return (
-    <section aria-label="일정 초안" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-16)' }}>
+    <section aria-label={label} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-16)' }}>
       {wide ? (
         <div className="kds-table-wrap">
           <table className="kds-table" aria-label="주간 일정표">
@@ -23,7 +32,7 @@ export function PlanDraft({ plan }: { plan: Plan }) {
               <tr>
                 {columns.map((c) => (
                   <td key={c.day} style={{ verticalAlign: 'top' }}>
-                    <Entries entries={c.entries} day={c.label} />
+                    <Entries entries={c.entries} day={c.label} actions={actions} single={single} />
                   </td>
                 ))}
               </tr>
@@ -35,17 +44,23 @@ export function PlanDraft({ plan }: { plan: Plan }) {
           {columns.map((c) => (
             <section key={c.day} aria-label={`${c.label}요일`}>
               <h4 className="body-medium-bold" style={{ margin: 0 }}>{c.label}요일</h4>
-              <Entries entries={c.entries} day={c.label} />
+              <Entries entries={c.entries} day={c.label} actions={actions} single={single} />
             </section>
           ))}
         </div>
       )}
       <Summary plan={plan} />
+      {actions && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
+          {!canConfirm(plan) && <p className="kds-info-line kds-info-line--error" role="alert"><Icon name="ic-line-warning" size={16} />{BLOCKED}</p>}
+          <button type="button" className="kds-button" disabled={!canConfirm(plan) || actions.busy} onClick={actions.onConfirm}>일정 확정</button>
+        </div>
+      )}
     </section>
   )
 }
 
-function Entries({ entries, day }: { entries: DayEntry[]; day: string }) {
+function Entries({ entries, day, actions, single }: { entries: DayEntry[]; day: string; actions?: PlanActions; single: boolean }) {
   if (entries.length === 0) return <p className="caption-medium-medium" style={{ margin: 0, color: 'var(--text-tertiary-01)' }}>일정 없음</p>
   return (
     <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
@@ -62,6 +77,12 @@ function Entries({ entries, day }: { entries: DayEntry[]; day: string }) {
             {e.violations.map((v) => (
               <span key={v} className="kds-tag kds-tag--critical"><Icon name="ic-line-warning" size={16} />{v}</span>
             ))}
+            {actions && (
+              <span style={{ display: 'flex', gap: 'var(--space-4)' }}>
+                <button type="button" className="kds-button kds-button--tertiary kds-button--small" aria-label={`${e.item.institution_name} ${e.item.subject} 빼기`} disabled={actions.busy || single} onClick={() => actions.onRemove(e.item)}>빼기</button>
+                <button type="button" className="kds-button kds-button--tertiary kds-button--small" aria-label={`${e.item.institution_name} ${e.item.subject} 바꾸기`} disabled={actions.busy} onClick={() => actions.onSwap(e.item)}>바꾸기</button>
+              </span>
+            )}
           </li>
         ),
       )}
