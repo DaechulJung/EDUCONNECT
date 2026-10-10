@@ -44,7 +44,7 @@ export default function OrgLayout({ children }: LayoutProps<'/'>) {
           {children}
         </main>
       </div>
-      <footer className="kds-footer"><div className="kds-container"><p className="caption-medium-medium">EDUCONNECT · 연습용 목업 데이터</p></div></footer>
+      <footer className="kds-footer"><div className="kds-container"><p className="caption-medium-medium">EDUCONNECT · 예시 데이터</p></div></footer>
     </div>
   )
 }

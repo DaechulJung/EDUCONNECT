@@ -38,6 +38,7 @@ export default function ParentLayout({ children }: LayoutProps<'/'>) {
               <p className="caption-medium-medium" style={{ margin: 0, color: 'var(--text-secondary-01)', display: 'flex', gap: 'var(--space-8)', alignItems: 'center' }}>
                 <span>모두의 AI 연동</span>
                 <span className="kds-tag kds-tag--info">{meta.data.modu_ai_status === 'mock' ? '모의' : meta.data.modu_ai_status}</span>
+                <span>{meta.data.ai_provider_label}</span>
               </p>
             )}
           </div>
@@ -46,6 +47,7 @@ export default function ParentLayout({ children }: LayoutProps<'/'>) {
           </div>
         </header>
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>{children}</div>
+        <p className="caption-medium-medium" style={{ margin: 0, paddingBlock: 'var(--space-8)', textAlign: 'center', color: 'var(--text-tertiary-01)' }}>예시 데이터</p>
         <nav className="kds-bottomnav caption-medium-medium" aria-label="하단 메뉴" style={{ position: 'sticky', bottom: 0 }}>
           {TABS.map((tab) => {
             const current = pathname.startsWith(tab.href)
