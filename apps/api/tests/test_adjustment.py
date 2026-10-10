@@ -8,7 +8,6 @@ import uuid
 
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import text
 
 from app.seed import load
 from tests.conftest import login
@@ -175,15 +174,90 @@ def test_later_dismissal_without_alternative_shows_relaxations(parent, wednesday
     assert stored(sync_db, wednesday["id"]) == before
 
 
-def test_deleted_program_is_content_changed_not_affected(parent, sync_db) -> None:  # noqa: F811  AD-4
+def test_deleted_program_is_content_changed_and_counted(parent) -> None:  # noqa: F811  PR #29 a
+    # PRD 196행 "바꾸거나 지우면 REQ-09 영향 처리", experience 82·185행 '영향 있음 · 내용 변경'
     plan = confirmed(parent)
-    with sync_db.begin() as conn:
-        conn.execute(text("UPDATE programs SET deleted_at = now() WHERE id = :id"), {"id": MATH})
+    login(parent, "academy-a")
+    assert parent.delete(f"/api/academy/programs/{MATH}").status_code in (200, 204)
     after = listed(parent, plan["id"])
     assert after["impact"] == {
-        "affected": False,
+        "affected": True,
         "reasons": [{"kind": "content_changed", "program_id": str(MATH), "amount": None}],
     }
+    login(parent, "academy-a")
+    assert parent.get("/api/org/impact").json()["affected_plans"] == 1
+
+
+def test_time_change_without_violation_is_content_changed(parent) -> None:  # noqa: F811  PR #29 a
+    plan = confirmed(parent)
+    change_math(parent, start="15:10", end="16:40")
+    after = listed(parent, plan["id"])
+    assert after["impact"]["affected"] is True
+    assert kinds(after) == ["content_changed"]
+    login(parent, "academy-a")
+    assert (
+        parent.get("/api/org/impact", params={"program_id": str(MATH)}).json()["affected_plans"]
+        == 1
+    )
+
+
+def test_confirmed_plan_shows_current_school_times(parent, wednesday) -> None:  # noqa: F811
+    # PR #29 Codex P2 1: school blocks show today's dismissal, not the confirm-time snapshot
+    # (experience 78·181행: what broke and the alternative on one screen).
+    login(parent, "school-elem")
+    entries = [{"grade": 5, "dow": "wed", "dismissal": "15:30"}]
+    assert parent.put("/api/school/timetable", json={"entries": entries}).status_code == 200
+    plan = listed(parent, wednesday["id"])
+    assert plan["school"]["wed"] == "15:30"
+    assert parent.get(f"/api/plans/{wednesday['id']}").json()["school"]["wed"] == "15:30"
+
+
+TWO_ACADEMIES = {**BASE, "subjects": ["수학", "논술"], "density": "normal"}
+
+
+def change_essay(client: TestClient, **fields) -> None:
+    login(client, "academy-e")
+    current = next(p for p in client.get("/api/academy/programs").json() if p["id"] == str(ESSAY))
+    body = {k: v for k, v in current.items() if k not in ("id", "institution_id")}
+    response = client.put(f"/api/academy/programs/{ESSAY}", json={**body, **fields})
+    assert response.status_code == 200, response.text
+
+
+@pytest.fixture
+def two_academies(parent) -> dict:  # noqa: F811
+    """학원 A 수학(화·금 15:00)과 학원 E 논술(수 15:00)이 함께 든 확정 계획."""
+    assert parent.put(f"/api/children/{CHILD}/conditions", json=TWO_ACADEMIES).status_code == 200
+    plan = confirmed(parent)
+    assert set(ids(plan)) == {str(MATH), str(ESSAY)}
+    return plan
+
+
+def counts(client: TestClient, login_id: str, **params) -> int:
+    login(client, login_id)
+    return client.get("/api/org/impact", params=params).json()["affected_plans"]
+
+
+def test_org_count_is_only_the_academy_whose_change_broke_it(parent, two_academies) -> None:  # noqa: F811
+    # PR #29 Codex P2 2: experience 37행 "이 기관 변경으로 영향받는 계획 수"
+    change_essay(parent, start="13:00", end="14:30")  # 초5 수 하교 13:40과 겹침
+    assert kinds(listed(parent, two_academies["id"])) == ["time_overlap"]
+    assert counts(parent, "academy-e") == 1
+    assert counts(parent, "academy-a") == 0
+    assert counts(parent, "academy-a", program_id=str(MATH)) == 0
+    assert counts(parent, "school-elem", grade=5) == 0  # 하교 시각은 그대로
+
+
+def test_over_budget_counts_for_the_academy_that_raised_it(parent, two_academies) -> None:  # noqa: F811
+    change_essay(parent, monthly_tuition=1_000_000)
+    assert kinds(listed(parent, two_academies["id"])) == ["over_budget"]
+    assert counts(parent, "academy-e") == 1
+    assert counts(parent, "academy-a") == 0
+
+
+def test_school_count_needs_a_changed_dismissal(parent, overlapped) -> None:  # noqa: F811
+    # 학원 A가 수학을 학교 시간으로 옮긴 위반은 학교 변경 때문이 아니다
+    assert counts(parent, "school-elem", grade=5) == 0
+    assert counts(parent, "academy-a") == 1
 
 
 def test_adjustment_needs_a_confirmed_plan_of_your_own(parent) -> None:  # noqa: F811  AD-8

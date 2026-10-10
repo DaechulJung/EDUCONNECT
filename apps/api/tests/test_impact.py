@@ -87,20 +87,25 @@ def test_moved_far_away_without_time_is_travel_short() -> None:
     assert impact.affected is True
 
 
-def test_harmless_time_change_is_content_changed_only() -> None:
+# PRD 196·252행, experience 82·185행: 시각·금액 변경과 삭제도
+# '영향 있음 · 내용 변경'이다 (PR #29 a).
+def test_harmless_time_change_is_content_changed_and_affected() -> None:
     later = replace(MATH, start_min=hm("16:30"), end_min=hm("17:30"))
     impact = assess(ITEMS, {"math": later, "eng": ENG}, CTX, CAP)
     assert impact.reasons == (Violation("math", CONTENT_CHANGED),)
-    assert impact.affected is False
+    assert impact.affected is True
 
 
-def test_deleted_program_is_content_changed_and_left_out() -> None:
+def test_deleted_program_is_content_changed_left_out_and_affected() -> None:
     impact = assess(ITEMS, {"eng": ENG}, CTX, CAP)
     assert impact.reasons == (Violation("math", CONTENT_CHANGED),)
-    assert impact.affected is False
+    assert impact.affected is True
 
 
 def test_snapshot_cap_is_used_not_a_newer_cap() -> None:
     raised = replace(MATH, monthly_tuition=560_000)  # 합계 1,110,000원
     assert assess(ITEMS, {"math": raised, "eng": ENG}, CTX, CAP).affected is True
-    assert assess(ITEMS, {"math": raised, "eng": ENG}, CTX, 1_200_000).affected is False
+    # 더 큰 상한이면 예산 초과가 아니고 금액 변경(내용 변경)만 남는다.
+    newer = assess(ITEMS, {"math": raised, "eng": ENG}, CTX, 1_200_000)
+    assert newer.violations == ()
+    assert newer.reasons == (Violation("math", CONTENT_CHANGED),)

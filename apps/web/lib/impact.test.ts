@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 import type { Plan, PlanItem } from './client'
-import { IMPACT_NONE, affectedLabel, impactLabel, proposalPlan } from './impact'
+import { IMPACT_NONE, affectedLabel, changedItems, impactLabel, proposalPlan } from './impact'
 
 test('영향 태그는 위반 사유를 가운뎃점으로 잇고 예산 초과는 금액을 붙인다 (AC-09.2·09.3)', () => {
   expect(impactLabel({ affected: true, reasons: [{ kind: 'time_overlap', program_id: 'p1' }] })).toBe('영향 있음 · 시간 중복')
@@ -17,8 +17,11 @@ test('영향 태그는 위반 사유를 가운뎃점으로 잇고 예산 초과�
   ).toBe('영향 있음 · 시간 중복 · 이동 부족')
 })
 
-test('위반 없는 내용 변경은 영향 있음이 아니고, 영향이 없으면 태그가 없다 (AD-4)', () => {
-  expect(impactLabel({ affected: false, reasons: [{ kind: 'content_changed', program_id: 'p1' }] })).toBeNull()
+test('시각·금액 변경과 삭제는 영향 있음 · 내용 변경이고, 영향이 없으면 태그가 없다 (PRD 196·252행, experience 82행)', () => {
+  expect(impactLabel({ affected: true, reasons: [{ kind: 'content_changed', program_id: 'p1' }] })).toBe('영향 있음 · 내용 변경')
+  expect(
+    impactLabel({ affected: true, reasons: [{ kind: 'time_overlap', program_id: 'p1' }, { kind: 'content_changed', program_id: 'p2' }, { kind: 'content_changed', program_id: 'p3' }] }),
+  ).toBe('영향 있음 · 시간 중복 · 내용 변경')
   expect(impactLabel({ affected: false, reasons: [] })).toBeNull()
   expect(impactLabel(null)).toBeNull()
   expect(impactLabel(undefined)).toBeNull()
@@ -36,3 +39,14 @@ test('조정안은 기존 계획의 학교 시간·상한에 대안 항목과 �
   expect(p).toMatchObject({ status: 'confirmed', items: [item], school: { mon: '14:40' }, budget_cap: 1_100_000, monthly_total: 400_000, violations: [] })
   expect(p.impact).toBeNull()
 })
+
+test('조정안에서 기존 계획과 다른 칸은 새 프로그램이거나 요일·시각이 바뀐 항목이다 (experience 83행)', () => {
+  const base: PlanItem = { program_id: 'p1', institution_name: '새봄영어수학학원', subject: '수학', type: 'academy', days: ['tue', 'fri'], start: '15:00', end: '16:30', monthly_tuition: 470_000, monthly_other: 40_000 }
+  const kept = { ...base, program_id: 'p2', subject: '영어', days: ['mon', 'thu'] }
+  const moved = { ...kept, start: '16:00', end: '17:20' }
+  const added = { ...base, program_id: 'p9', institution_name: '다온수학학원', days: ['mon', 'wed'], start: '16:30', end: '17:50' }
+  expect(changedItems([base, kept], [kept, added])).toEqual(['p9'])
+  expect(changedItems([base, kept], [base, moved])).toEqual(['p2'])
+  expect(changedItems([base], [base])).toEqual([])
+})
+

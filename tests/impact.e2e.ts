@@ -201,3 +201,80 @@ test('TC-56 학원 A 담당자의 영향 확인 화면과 영향 조회 API에�
   const text = JSON.stringify(body)
   for (const leaked of [child.alias, child.id, 'parent1', plan.id]) expect(text).not.toContain(leaked)
 })
+
+// PR #29 회귀 (VERIFIER 보류 13:29Z, 정대철_테스트 판단 13:24Z·13:28Z). Each case was RED on de31198.
+
+// Codex P2 1 (experience 78·181행): after the school moves 초5 Wednesday dismissal to 15:30 (TC-55's change), the
+// adjustment screen's confirmed plan shows today's school time, not the 13:40 it was confirmed with.
+test('#9 회귀 하교 시각이 바뀐 뒤 조정안 화면의 기존 계획 학교 칸은 지금 하교 시각이다', async ({ app, screen }) => {
+  await confirmedPlan(app, { ...NORMAL, subjects: ['논술'] })
+  const school = await signIn(app, 'school-elem')
+  await call(app, school, 'PUT', '/api/school/timetable', { entries: [{ grade: 5, dow: 'wed', dismissal: '15:30' }] })
+
+  await openSchedule(app, screen)
+  await screen.getByRole('link', '조정안 보기').tap()
+  const current = screen.getByRole('region', '기존 계획')
+  await expect(current).toBeVisible({ timeout: 15_000 })
+  await expect(current.getByRole('listitem', '수 학교')).toHaveText(/~15:30/)
+})
+
+// Codex P2 3 (experience 37·90행, FLOW-02 2단계 "또는 학교 담당자"): the school's timetable save shows the result line.
+test('#9 회귀 학교 담당자가 초5 수요일 하교를 수업과 겹치게 늦춰 저장하면 결과 줄에 영향받는 계획 1건이 보인다', async ({ app, screen, browser }) => {
+  await confirmedPlan(app, { ...NORMAL, subjects: ['논술'] })
+  await browser.setViewport({ width: 1280, height: 800 }) // organization width (prd 4.2)
+  await app.open('/login')
+  await screen.getByLabel('아이디').fill('school-elem')
+  await screen.getByLabel('비밀번호').fill(process.env.SEED_PASSWORD!)
+  await screen.getByRole('button', '로그인').tap()
+  await screen.getByRole('tab', '5학년').tap()
+  await screen.getByLabel('5학년 수요일 하교 시각').fill('15:30')
+  await screen.getByRole('button', '시간표 저장').tap()
+  await expect(screen.getByRole('status', '영향 결과')).toContainText('영향받는 계획 1건', { timeout: 15_000 })
+})
+
+// a (PRD 196·252행, experience 82·185행): deleting a program a confirmed plan uses is '영향 있음 · 내용 변경' for the
+// parent and one affected plan for the academy.
+test('#9 회귀 확정 계획의 프로그램을 학원이 삭제하면 보호자에게 영향 있음 · 내용 변경, 학원에 영향받는 계획 1건이 보인다', async ({ app, screen }) => {
+  const { plan } = await confirmedPlan(app, BASE)
+  const math = await academyMath(app, plan)
+  const response = await fetch(new URL(`/api/academy/programs/${math.id}`, app.baseUrl), { method: 'DELETE', headers: { cookie: math.staff } })
+  expect(response.ok, 'DELETE program').toBe(true)
+
+  await openSchedule(app, screen)
+  await expect(impactTag(screen)).toHaveText('영향 있음 · 내용 변경', { timeout: 15_000 })
+
+  await app.clearState()
+  await signInAcademy(app, screen)
+  await app.open('/impact')
+  await expect(screen.getByRole('region', '영향 요약')).toContainText('영향받는 계획 1건', { timeout: 15_000 })
+})
+
+test('#9 회귀 확정 계획의 수업 시각만 바뀌고 위반이 없으면 영향 있음 · 내용 변경이 보인다', async ({ app, screen }) => {
+  const { plan } = await confirmedPlan(app, BASE)
+  const math = await academyMath(app, plan)
+  await call(app, math.staff, 'PUT', `/api/academy/programs/${math.id}`, { ...math.fields, start: '15:10', end: '16:40' })
+
+  await openSchedule(app, screen)
+  await expect(impactTag(screen)).toHaveText('영향 있음 · 내용 변경', { timeout: 15_000 })
+})
+
+// b (experience 83행): in the alternative, the classes that differ from the confirmed plan are bold, the rest are not.
+test('#9 회귀 조정안 대안에서 기존 계획과 바뀐 칸만 굵게 보인다', async ({ app, screen, browser }) => {
+  const { plan } = await confirmedPlan(app, NORMAL)
+  await moveMathIntoSchoolHours(app, plan)
+
+  await openSchedule(app, screen)
+  await screen.getByRole('link', '조정안 보기').tap()
+  await expect(screen.getByRole('region', '대안 일정')).toBeVisible({ timeout: 15_000 })
+  const weights = await browser.evaluate((before: string[]) => {
+    const region = document.querySelector('[aria-label="대안 일정"]')!
+    return Array.from(region.querySelectorAll('li[aria-label$="수업"]'))
+      .filter((li) => li.getClientRects().length > 0)
+      .map((li) => {
+        const text = li.textContent ?? ''
+        return { text, kept: before.some((b) => text.includes(b)), weight: Number(getComputedStyle(li.querySelector('span:nth-child(2)')!).fontWeight) }
+      })
+  }, plan.items.filter((i) => i.subject !== '수학').map((i) => `${i.institution_name}${i.start}`))
+  expect(weights.some((w) => !w.kept), `alternative classes ${JSON.stringify(weights)}`).toBe(true)
+  for (const w of weights) expect(w.weight >= 600, `${w.text} weight ${w.weight}`).toBe(!w.kept)
+})
