@@ -1,0 +1,18 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- /Users/agentneo/Desktop/Sync/DS_Projects/30_Projects/PRJ-017_KT_Hackerthon2026/AIDX_PRE_TRAINING_2/EDUCONNECT/apps/api/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/agentneo/Desktop/Sync/DS_Projects/30_Projects/PRJ-017_KT_Hackerthon2026/AIDX_PRE_TRAINING_2/EDUCONNECT/apps/api
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 8 items
+
+tests/test_seed.py::test_ac_11_1_schools_academies_and_subjects PASSED   [ 12%]
+tests/test_seed.py::test_ac_11_2_program_fields_with_two_exceptions PASSED [ 25%]
+tests/test_seed.py::test_ac_11_3_demo_children_one_per_school PASSED     [ 37%]
+tests/test_seed.py::test_seed_accounts_roles_and_login PASSED            [ 50%]
+tests/test_seed.py::test_seed_ids_are_stable PASSED                      [ 62%]
+tests/test_seed.py::test_ac_11_4_reset_command_removes_test_data PASSED  [ 75%]
+tests/test_seed.py::test_seed_command_refuses_a_seeded_database_and_an_empty_password PASSED [ 87%]
+tests/test_seed.py::test_reset_without_password_keeps_sessions PASSED    [100%]
+
+============================== 8 passed in 3.99s ===============================

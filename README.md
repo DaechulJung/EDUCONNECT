@@ -11,6 +11,8 @@ docker compose down                 # 끄기 (데이터까지 지우려면 -v)
 
 첫 화면이 데이터베이스·벡터 검색·Redis 연결 상태를 보여 줘요.
 
+데모 데이터는 띄운 뒤 `npm run seed`로 넣어요(저장소 루트 `.env`에 `SEED_PASSWORD` 필요 — compose와 같은 파일, 아래 개발 참고). 시드 계정 아이디는 `parent1`·`parent2`·`academy-a`~`academy-e`·`school-elem`·`school-mid`예요.
+
 ## 개발
 
 필요한 것: Node.js 24 이상, [uv](https://docs.astral.sh/uv/), Docker.
@@ -19,13 +21,15 @@ docker compose down                 # 끄기 (데이터까지 지우려면 -v)
 npm install                 # 웹 의존성
 npm run infra               # db · redis만 띄움 (localhost:15432 · 16379, 로컬 PostgreSQL과 겹치지 않게)
 npm run migrate             # 마이그레이션 적용 (pgvector 확장 포함)
+npm run seed                # 시드 적재(학교 2·학원 5·데모 계정·자녀 2). 루트 .env의 SEED_PASSWORD가 모든 시드 계정 비밀번호
+npm run seed -- --reset     # 시험이 만든 데이터를 지우고 시드로 되돌림
 npm run dev:api             # API :8000, 코드를 바꾸면 다시 시작
 npm run dev:web             # 웹 :3000, /api는 next.config.ts가 :8000으로 전달
 npm run gen:api             # API를 바꾼 뒤 웹 클라이언트(apps/web/lib/client) 다시 생성 — 서버를 띄우지 않아도 된다
 npx e2e run tests/<파일>    # 화면 시험(앱이 떠 있어야 함). 처음 한 번 npx @e2e-dev/web install chromium
 ```
 
-DB 이름·계정 기본값은 `educonnect`예요. 다른 worktree에서 포트를 바꿀 때는 `DB_PORT`·`REDIS_PORT`(·`WEB_PORT`·`API_PORT`)만 바꾸면 앱·alembic·시험이 같은 포트로 붙어요. `DATABASE_URL`·`REDIS_URL`을 주면 그 값이 우선이에요. 시험 초기화·`/api/test/reset`·시드 초기화는 접속한 DB 이름이 `educonnect`(또는 `educonnect_*`)가 아니면 아무것도 지우지 않고 멈추고, Redis는 `educonnect:` 키만 지워요.
+DB 이름·계정 기본값은 `educonnect`예요. 다른 worktree에서 포트를 바꿀 때는 `DB_PORT`·`REDIS_PORT`(·`WEB_PORT`·`API_PORT`)만 바꾸면 앱·alembic·시험이 같은 포트로 붙어요. `DATABASE_URL`·`REDIS_URL`을 주면 그 값이 우선이에요. API·시드는 루트 `.env`를 읽고, `apps/api/.env`가 있으면 그 값이 우선이에요. 시험 초기화·`/api/test/reset`·시드 초기화는 접속한 DB 이름이 `educonnect`(또는 `educonnect_*`)가 아니면 아무것도 지우지 않고 멈추고, Redis는 `educonnect:` 키만 지워요.
 
 끝내기 전에: `npm run check` — db·redis를 띄우고 마이그레이션한 뒤 웹·API의 lint·format·타입·테스트를 한 번에 돌려요(Docker가 켜져 있어야 해요). main으로 가는 PR에서는 `.github/workflows/ci.yml`이 같은 검사와 빌드를 하고, 앱 전체를 Docker로 띄워 화면 시험(`tests/*.e2e.ts`) 전체를 돌려요. main에 바로 올린 문서 커밋에서는 돌지 않아요.
 

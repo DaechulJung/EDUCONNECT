@@ -1,0 +1,2 @@
+run passed exit 0 {'discovered': 12, 'selected': 1, 'executed': 1, 'passed': 1, 'failed': 0, 'interrupted': 0, 'flaky': 0, 'skipped': 0} commit dd1434abe4d130b44dedb612e46d466c242dffc7 dirty False
+passed tests/chat-fallback.e2e.ts TC-32 키가 없으면 규칙 추출로 같은 조건 카드가 보이고 응답이 이어진다

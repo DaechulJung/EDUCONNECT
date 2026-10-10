@@ -1,0 +1,78 @@
+{
+  "_note": "합성 목업. 항목은 NEIS 학교기본정보(학교명·학교급·좌표)와 시간표(학년·요일별 마지막 교시)를 참고했다. timetable 값은 하교 시각, after_school은 그 학교 방과후 프로그램이다.",
+  "schools": [
+    {
+      "key": "school-elem",
+      "name": "한빛초등학교",
+      "school_level": "elementary",
+      "lat": 37.5,
+      "lng": 127.03,
+      "timetable": {
+        "1": {"mon": "13:10", "tue": "13:10", "wed": "12:30", "thu": "13:10", "fri": "13:10"},
+        "2": {"mon": "13:10", "tue": "13:10", "wed": "12:30", "thu": "13:10", "fri": "13:10"},
+        "3": {"mon": "13:50", "tue": "13:50", "wed": "13:10", "thu": "13:50", "fri": "13:50"},
+        "4": {"mon": "13:50", "tue": "13:50", "wed": "13:10", "thu": "13:50", "fri": "13:50"},
+        "5": {"mon": "14:40", "tue": "14:40", "wed": "13:40", "thu": "14:40", "fri": "14:40"},
+        "6": {"mon": "14:40", "tue": "14:40", "wed": "13:40", "thu": "14:40", "fri": "14:40"}
+      },
+      "after_school": [
+        {
+          "key": "elem-english-talk",
+          "subject": "영어",
+          "days": ["wed"],
+          "start": "14:00",
+          "end": "14:40",
+          "monthly_tuition": 30000,
+          "monthly_other": 0,
+          "instructor": "이수아",
+          "grade_min": 3,
+          "grade_max": 6,
+          "capacity": 20,
+          "enrolled": 14
+        },
+        {
+          "key": "elem-robot",
+          "subject": "로봇과학",
+          "days": ["fri"],
+          "start": "15:00",
+          "end": "16:20",
+          "monthly_tuition": 40000,
+          "monthly_other": 15000,
+          "instructor": "정민호",
+          "grade_min": 3,
+          "grade_max": 6,
+          "capacity": 16,
+          "enrolled": 11
+        }
+      ]
+    },
+    {
+      "key": "school-mid",
+      "name": "한빛중학교",
+      "school_level": "middle",
+      "lat": 37.504,
+      "lng": 127.035,
+      "timetable": {
+        "7": {"mon": "15:30", "tue": "16:30", "wed": "14:40", "thu": "15:30", "fri": "15:30"},
+        "8": {"mon": "15:30", "tue": "16:30", "wed": "14:40", "thu": "15:30", "fri": "15:30"},
+        "9": {"mon": "16:30", "tue": "16:30", "wed": "14:40", "thu": "16:30", "fri": "15:30"}
+      },
+      "after_school": [
+        {
+          "key": "mid-math-support",
+          "subject": "수학",
+          "days": ["wed"],
+          "start": "14:50",
+          "end": "15:40",
+          "monthly_tuition": 0,
+          "monthly_other": 0,
+          "instructor": "한서연",
+          "grade_min": 7,
+          "grade_max": 9,
+          "capacity": 25,
+          "enrolled": 18
+        }
+      ]
+    }
+  ]
+}

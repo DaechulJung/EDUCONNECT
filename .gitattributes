@@ -1,2 +1,4 @@
 # Same line endings on macOS, Linux and Windows clones (core.autocrlf would turn files into CRLF).
 * text=auto eol=lf
+# Parallel Issue branches append to the same work-log files; keep both sides on merge (W4 작업 기록).
+tasks/*.md merge=union

@@ -81,7 +81,7 @@ updated: 2026-10-10
 
 - **Binds (적용 대상):** REQ-01, 보호 API 전체
 - **Prevents (막는 어긋남):** 라우터마다 인증·소유권 검사를 다르게 해 남의 자원이 보이거나 상태 코드가 섞이는 것
-- **Rule (규칙):** 로그인 성공 시 32바이트 임의 토큰을 Redis `session:<토큰>`(값: 계정 ID·역할·기관 ID, TTL 8시간)에 두고 쿠키 `ec_session`(HttpOnly, SameSite=Lax, Path=/, Max-Age=28800)으로 준다. 로그아웃은 Redis 키를 지운다. 비밀번호는 `hashlib.scrypt`(n=2^14, r=8, p=1, 16바이트 salt)로 `scrypt$<n>$<r>$<p>$<salt>$<hash>` 형식 저장. 연속 실패 수·잠금 해제 시각은 `accounts` 열에 두고 5회 실패 시 15분 잠근다. 쿠키는 `set_cookie(httponly=True, samesite="lax", max_age=28800, path="/")`로 명시하고 로컬 http라 Secure는 끈다. 모든 보호 라우터는 `core/authz.py`의 `require_role(...)` 의존성으로 세션 없음·만료 401, 역할 불일치 403을 판정한다. 소유권은 각 모듈 쿼리가 세션의 계정·기관 ID 조건으로 거르고, 결과가 없으면 반드시 `core.authz.deny_not_found(session, target)`(감사 기록 후 404)을 호출한다. 라우터에서 `HTTPException(401·403·404)`을 직접 던지지 않는다(grep 시험으로 확인). 웹의 로그인 가드는 레이아웃에서 `GET /api/auth/me`를 부르는 클라이언트 확인이며, 권한 판정의 근거는 항상 서버다.
+- **Rule (규칙):** 로그인 성공 시 32바이트 임의 토큰을 Redis `educonnect:session:<토큰>`(값: 계정 ID·역할·기관 ID, TTL 8시간)에 두고 쿠키 `ec_session`(HttpOnly, SameSite=Lax, Path=/, Max-Age=28800)으로 준다. 로그아웃은 Redis 키를 지운다. 비밀번호는 `hashlib.scrypt`(n=2^14, r=8, p=1, 16바이트 salt)로 `scrypt$<n>$<r>$<p>$<salt>$<hash>` 형식 저장. 연속 실패 수·잠금 해제 시각은 `accounts` 열에 두고 5회 실패 시 15분 잠근다. 쿠키는 `set_cookie(httponly=True, samesite="lax", max_age=28800, path="/")`로 명시하고 로컬 http라 Secure는 끈다. 모든 보호 라우터는 `core/authz.py`의 `require_role(...)` 의존성으로 세션 없음·만료 401, 역할 불일치 403을 판정한다. 소유권은 각 모듈 쿼리가 세션의 계정·기관 ID 조건으로 거르고, 결과가 없으면 반드시 `core.authz.deny_not_found(session, target)`(감사 기록 후 404)을 호출한다. 라우터에서 `HTTPException(401·403·404)`을 직접 던지지 않는다(grep 시험으로 확인). 웹의 로그인 가드는 레이아웃에서 `GET /api/auth/me`를 부르는 클라이언트 확인이며, 권한 판정의 근거는 항상 서버다.
 
 ### AD-9 — 감사 기록
 

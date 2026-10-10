@@ -19,6 +19,8 @@ from app.services.auth.passwords import hash_password
 
 # Per run, never a seed value; the same in `conftest` and `tests.conftest` imports.
 TEST_PASSWORD = os.environ.setdefault("EDU_TEST_PASSWORD", "test-only-" + uuid.uuid4().hex[:8])
+# Seed accounts in tests use the same per-run value, never the SEED_PASSWORD from .env.
+settings.seed_password = TEST_PASSWORD
 
 
 @pytest.fixture(scope="session")
@@ -79,6 +81,30 @@ def make_account(sync_db, password_hash):
                 )
 
 
+@pytest.fixture
+def make_child(sync_db):
+    """A child row for a parent account; returns its id. Removed after the test."""
+    created: list[str] = []
+
+    def make(parent_id: str, alias: str = "하늘") -> str:
+        child_id = str(uuid.uuid4())
+        with sync_db.begin() as conn:
+            conn.execute(
+                text(
+                    "INSERT INTO children (id, parent_id, alias, age, grade)"
+                    " VALUES (:id, :parent, :alias, 11, 5)"
+                ),
+                {"id": child_id, "parent": parent_id, "alias": alias},
+            )
+        created.append(child_id)
+        return child_id
+
+    yield make
+    with sync_db.begin() as conn:
+        for child_id in created:
+            conn.execute(text("DELETE FROM children WHERE id = :id"), {"id": child_id})
+
+
 @pytest.fixture(scope="module")
 def client() -> Iterator[TestClient]:
     with TestClient(create_app(Settings(enable_test_routes=False))) as c:
@@ -90,6 +116,13 @@ def _reset_clock() -> Iterator[None]:
     clock.reset()
     yield
     clock.reset()
+
+
+@pytest.fixture(scope="module")
+def seeded() -> Iterator[TestClient]:
+    """Client with the test routes on; call `POST /api/test/reset` to start from the seed."""
+    with TestClient(create_app(Settings(enable_test_routes=True))) as c:
+        yield c
 
 
 def login(client: TestClient, login_id: str, password: str = TEST_PASSWORD):

@@ -1,0 +1,14 @@
+
+ RUN  e2e v0.18.0 /Users/agentneo/Desktop/Sync/DS_Projects/30_Projects/PRJ-017_KT_Hackerthon2026/AIDX_PRE_TRAINING_2/EDUCONNECT
+      run 01a12539-9b74-7b13-b0a7-487a12f61c45 · targets: web
+
+ ✓ |web| tests/smoke.e2e.ts (2 tests) 1.43s
+   ✓ 세션 없이 첫 화면을 열면 로그인 화면이 보인다 989ms
+   ✓ 세션 없이 보호자·기관 화면 주소로 가면 로그인 화면으로 돌아간다 443ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  18:51:35
+   Duration  1.69s
+     Report  .e2e/report.json
+

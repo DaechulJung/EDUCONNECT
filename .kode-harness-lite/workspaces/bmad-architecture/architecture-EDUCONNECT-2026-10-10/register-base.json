@@ -1,0 +1,213 @@
+{
+  "schemaVersion": 2,
+  "document": {
+    "id": "architecture",
+    "title": "EDUCONNECT 아키텍처",
+    "path": "docs/arch.md",
+    "version": "1a3f3cbee50562f0dd8b8057df4ed6d472fa67920c9ff6224cf79132332dd4ca"
+  },
+  "requirements": [
+    {
+      "body": "## 목적\n\n공통 계약을 먼저 고정한다: 모든 테이블 모델·첫 마이그레이션, 모든 API 경로·스키마(라우트 껍데기), 생성 웹 클라이언트, 세션 인증·권한 거부·감사 기록 골격, AI 공급자 경계, 시험 라우트, 보호자·기관 레이아웃, loopback 게시 포트. 이후 기능 PR은 main.py·alembic/env.py·레이아웃을 고치지 않는다 (docs/arch.md AD-3).\n\n## 완료 조건\n\n- [ ] BASE-01.1 AD-16의 모든 테이블(accounts·audit_events·institutions·programs·school_timetables·children·child_conditions·plans) 모델이 모듈별 `app/models/*.py`에 있고, `0002` 마이그레이션이 `alembic upgrade head`로 적용되며 `alembic check`가 차이 없음을 보고한다\n- [ ] BASE-01.2 'API·데이터·권한 경계' 표의 모든 경로가 `main.py`에 등록되어 OpenAPI에 요청·응답 스키마와 함께 나오고, 아직 구현하지 않은 경로는 501을 돌려준다(pytest로 경로 목록 대조)\n- [ ] BASE-01.3 `npm run gen:api`로 만든 `apps/web/openapi.json`·`apps/web/lib/client`가 커밋되어 있고, 다시 실행해도 git diff가 없다\n- [ ] BASE-01.4 시드 계정으로 `POST /api/auth/login`하면 `ec_session` 쿠키(HttpOnly·SameSite=Lax·Max-Age=28800)가 발급되고 `GET /api/auth/me`가 역할·기관 ID를 돌려주며, 로그아웃 뒤 같은 쿠키는 401이다. 비밀번호 저장값은 `scrypt$`로 시작한다(pytest)\n- [ ] BASE-01.5 `core/authz.py`의 `require_role`이 세션 없음 401·역할 불일치 403을, `deny_not_found`가 404와 `audit_events` 1행(`access_denied_404`)을 남기고, `core/units.py`·`core/vocab.py`·`core/clock.py`가 AD-6·AD-15·AD-11대로 동작한다(pytest)\n- [ ] BASE-01.6 `ai/port.py`의 `complete_json`이 `LLM_PROVIDER=fake·none·auto`에 따라 구현을 고르고, 키 없음·https 아님·`/openai/v1/`로 끝나지 않는 주소·스키마 불일치·오류에서 `LlmUnavailable`을 올리며, 로그 마스킹 필터가 키·주소 값을 가린다(pytest, 실제 Azure 호출 없음). `openai==3.28.0`이 `uv.lock`에 고정된다\n- [ ] BASE-01.7 `ENABLE_TEST_ROUTES=1`일 때만 `/api/test/reset`·`/api/test/clock`·`/api/test/llm`·`/api/test/llm/requests`가 있고 0이면 404다(pytest 두 설정)\n- [ ] BASE-01.8 웹에 로그인 화면, `(parent)` 레이아웃(머리말 `/api/meta` 표시 자리, 하단 탭 챗봇·일정·자녀, 로그아웃), `(org)` 레이아웃(사이드바 프로그램·시간표·영향 확인), 빈 `components/impact/ImpactSummary.tsx`가 있고, `GET /api/auth/me` 기반 로그인 가드가 역할에 맞지 않는 경로를 로그인 화면으로 보낸다. `kds-lint` error 0\n- [ ] BASE-01.9 `compose.yml`의 web·api·db·redis `ports`가 모두 `\"127.0.0.1:${WEB_PORT·API_PORT·DB_PORT·REDIS_PORT:-기본값}:내부포트\"` 형식이고, api `environment:`가 `AZURE_OPENAI_*`·`LLM_PROVIDER`·`ENABLE_TEST_ROUTES`·`SEED_PASSWORD`를 `${NAME:-}`로 넘기며, `.env.example`에 새 변수 이름만(값 없이) 있다\n- [ ] BASE-01.10 `npm run check`가 통과하고 PR의 CI(web·api·e2e)가 모두 통과한다\n\n## 담당\n\n- 담당: dev:1 (AILIEN_BUILDER)\n- 리뷰어: AILIEN_VERIFIER\n\n## 완료 증거\n\n| 항목 | 내용 |\n| --- | --- |\n| 커밋 URL | 미기록 |\n| 시험 명령 | 미기록 |\n| 결과 | 미기록 |\n| 화면·로그 경로 | 미기록 |",
+      "originalId": "BASE-01",
+      "title": "기반 작업: API·DB 계약, 세션 인증 골격, AI 공급자 경계, 공통 레이아웃",
+      "text": "공통 계약을 먼저 고정한다: 모든 테이블 모델·첫 마이그레이션, 모든 API 경로·스키마(라우트 껍데기), 생성 웹 클라이언트, 세션 인증·권한 거부·감사 기록 골격, AI 공급자 경계, 시험 라우트, 보호자·기관 레이아웃, loopback 게시 포트. 이후 기능 PR은 main.py·alembic/env.py·레이아웃을 고치지 않는다 (docs/arch.md AD-3).",
+      "classification": "mixed",
+      "role": "requirement",
+      "sourceRefs": [
+        {
+          "documentId": "architecture",
+          "pathOrUrl": "docs/arch.md",
+          "version": "1a3f3cbee50562f0dd8b8057df4ed6d472fa67920c9ff6224cf79132332dd4ca",
+          "location": {
+            "line_start": 50,
+            "line_end": 55
+          }
+        }
+      ],
+      "conditions": [
+        {
+          "originalId": "BASE-01.1",
+          "text": "BASE-01.1 AD-16의 모든 테이블(accounts·audit_events·institutions·programs·school_timetables·children·child_conditions·plans) 모델이 모듈별 `app/models/*.py`에 있고, `0002` 마이그레이션이 `alembic upgrade head`로 적용되며 `alembic check`가 차이 없음을 보고한다",
+          "verificationScope": "functional-condition",
+          "verify": "test",
+          "verify_by": "agent",
+          "sourceRefs": [
+            {
+              "documentId": "architecture",
+              "pathOrUrl": "docs/arch.md",
+              "version": "1a3f3cbee50562f0dd8b8057df4ed6d472fa67920c9ff6224cf79132332dd4ca",
+              "location": {
+                "line_start": 128,
+                "line_end": 148
+              }
+            }
+          ]
+        },
+        {
+          "originalId": "BASE-01.2",
+          "text": "BASE-01.2 'API·데이터·권한 경계' 표의 모든 경로가 `main.py`에 등록되어 OpenAPI에 요청·응답 스키마와 함께 나오고, 아직 구현하지 않은 경로는 501을 돌려준다(pytest로 경로 목록 대조)",
+          "verificationScope": "functional-condition",
+          "verify": "test",
+          "verify_by": "agent",
+          "sourceRefs": [
+            {
+              "documentId": "architecture",
+              "pathOrUrl": "docs/arch.md",
+              "version": "1a3f3cbee50562f0dd8b8057df4ed6d472fa67920c9ff6224cf79132332dd4ca",
+              "location": {
+                "line_start": 221,
+                "line_end": 240
+              }
+            }
+          ]
+        },
+        {
+          "originalId": "BASE-01.3",
+          "text": "BASE-01.3 `npm run gen:api`로 만든 `apps/web/openapi.json`·`apps/web/lib/client`가 커밋되어 있고, 다시 실행해도 git diff가 없다",
+          "verificationScope": "functional-condition",
+          "verify": "test",
+          "verify_by": "agent",
+          "sourceRefs": [
+            {
+              "documentId": "architecture",
+              "pathOrUrl": "docs/arch.md",
+              "version": "1a3f3cbee50562f0dd8b8057df4ed6d472fa67920c9ff6224cf79132332dd4ca",
+              "location": {
+                "line_start": 50,
+                "line_end": 55
+              }
+            }
+          ]
+        },
+        {
+          "originalId": "BASE-01.4",
+          "text": "BASE-01.4 시드 계정으로 `POST /api/auth/login`하면 `ec_session` 쿠키(HttpOnly·SameSite=Lax·Max-Age=28800)가 발급되고 `GET /api/auth/me`가 역할·기관 ID를 돌려주며, 로그아웃 뒤 같은 쿠키는 401이다. 비밀번호 저장값은 `scrypt$`로 시작한다(pytest)",
+          "verificationScope": "functional-condition",
+          "verify": "test",
+          "verify_by": "agent",
+          "sourceRefs": [
+            {
+              "documentId": "architecture",
+              "pathOrUrl": "docs/arch.md",
+              "version": "1a3f3cbee50562f0dd8b8057df4ed6d472fa67920c9ff6224cf79132332dd4ca",
+              "location": {
+                "line_start": 80,
+                "line_end": 85
+              }
+            }
+          ]
+        },
+        {
+          "originalId": "BASE-01.5",
+          "text": "BASE-01.5 `core/authz.py`의 `require_role`이 세션 없음 401·역할 불일치 403을, `deny_not_found`가 404와 `audit_events` 1행(`access_denied_404`)을 남기고, `core/units.py`·`core/vocab.py`·`core/clock.py`가 AD-6·AD-15·AD-11대로 동작한다(pytest)",
+          "verificationScope": "functional-condition",
+          "verify": "test",
+          "verify_by": "agent",
+          "sourceRefs": [
+            {
+              "documentId": "architecture",
+              "pathOrUrl": "docs/arch.md",
+              "version": "1a3f3cbee50562f0dd8b8057df4ed6d472fa67920c9ff6224cf79132332dd4ca",
+              "location": {
+                "line_start": 80,
+                "line_end": 85
+              }
+            }
+          ]
+        },
+        {
+          "originalId": "BASE-01.6",
+          "text": "BASE-01.6 `ai/port.py`의 `complete_json`이 `LLM_PROVIDER=fake·none·auto`에 따라 구현을 고르고, 키 없음·https 아님·`/openai/v1/`로 끝나지 않는 주소·스키마 불일치·오류에서 `LlmUnavailable`을 올리며, 로그 마스킹 필터가 키·주소 값을 가린다(pytest, 실제 Azure 호출 없음). `openai==3.28.0`이 `uv.lock`에 고정된다",
+          "verificationScope": "functional-condition",
+          "verify": "test",
+          "verify_by": "agent",
+          "sourceRefs": [
+            {
+              "documentId": "architecture",
+              "pathOrUrl": "docs/arch.md",
+              "version": "1a3f3cbee50562f0dd8b8057df4ed6d472fa67920c9ff6224cf79132332dd4ca",
+              "location": {
+                "line_start": 92,
+                "line_end": 97
+              }
+            }
+          ]
+        },
+        {
+          "originalId": "BASE-01.7",
+          "text": "BASE-01.7 `ENABLE_TEST_ROUTES=1`일 때만 `/api/test/reset`·`/api/test/clock`·`/api/test/llm`·`/api/test/llm/requests`가 있고 0이면 404다(pytest 두 설정)",
+          "verificationScope": "functional-condition",
+          "verify": "test",
+          "verify_by": "agent",
+          "sourceRefs": [
+            {
+              "documentId": "architecture",
+              "pathOrUrl": "docs/arch.md",
+              "version": "1a3f3cbee50562f0dd8b8057df4ed6d472fa67920c9ff6224cf79132332dd4ca",
+              "location": {
+                "line_start": 98,
+                "line_end": 103
+              }
+            }
+          ]
+        },
+        {
+          "originalId": "BASE-01.8",
+          "text": "BASE-01.8 웹에 로그인 화면, `(parent)` 레이아웃(머리말 `/api/meta` 표시 자리, 하단 탭 챗봇·일정·자녀, 로그아웃), `(org)` 레이아웃(사이드바 프로그램·시간표·영향 확인), 빈 `components/impact/ImpactSummary.tsx`가 있고, `GET /api/auth/me` 기반 로그인 가드가 역할에 맞지 않는 경로를 로그인 화면으로 보낸다. `kds-lint` error 0",
+          "verificationScope": "functional-condition",
+          "verify": "test",
+          "verify_by": "agent",
+          "sourceRefs": [
+            {
+              "documentId": "architecture",
+              "pathOrUrl": "docs/arch.md",
+              "version": "1a3f3cbee50562f0dd8b8057df4ed6d472fa67920c9ff6224cf79132332dd4ca",
+              "location": {
+                "line_start": 16,
+                "line_end": 35
+              }
+            }
+          ]
+        },
+        {
+          "originalId": "BASE-01.9",
+          "text": "BASE-01.9 `compose.yml`의 web·api·db·redis `ports`가 모두 `\"127.0.0.1:${WEB_PORT·API_PORT·DB_PORT·REDIS_PORT:-기본값}:내부포트\"` 형식이고, api `environment:`가 `AZURE_OPENAI_*`·`LLM_PROVIDER`·`ENABLE_TEST_ROUTES`·`SEED_PASSWORD`를 `${NAME:-}`로 넘기며, `.env.example`에 새 변수 이름만(값 없이) 있다",
+          "verificationScope": "functional-condition",
+          "verify": "test",
+          "verify_by": "agent",
+          "sourceRefs": [
+            {
+              "documentId": "architecture",
+              "pathOrUrl": "docs/arch.md",
+              "version": "1a3f3cbee50562f0dd8b8057df4ed6d472fa67920c9ff6224cf79132332dd4ca",
+              "location": {
+                "line_start": 104,
+                "line_end": 109
+              }
+            }
+          ]
+        },
+        {
+          "originalId": "BASE-01.10",
+          "text": "BASE-01.10 `npm run check`가 통과하고 PR의 CI(web·api·e2e)가 모두 통과한다",
+          "verificationScope": "functional-condition",
+          "verify": "test",
+          "verify_by": "agent",
+          "sourceRefs": [
+            {
+              "documentId": "architecture",
+              "pathOrUrl": "docs/arch.md",
+              "version": "1a3f3cbee50562f0dd8b8057df4ed6d472fa67920c9ff6224cf79132332dd4ca",
+              "location": {
+                "line_start": 50,
+                "line_end": 55
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "unresolved": []
+}
