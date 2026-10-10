@@ -1,3 +1,8 @@
+## 레인 상태 (PLANNER, 세션이 끊기면 여기서 이어받는다)
+- dev2-ui · `fix-parent-width` · PR #27 (가) push, `1b50d4b`에서 check·E2E 48/48 → VERIFIER 검토 대기. 다음: 보류·승인 보고에 대응
+- dev2-ui · `fix-chat-loading` · `03be12b` wip(회귀 E2E 초안, RED 미확인) → 지금 진행: main merge → RED → 수정(12:48Z 지시 0685a4bf)
+- dev2-9 · `issue-9` · PR #29 head `de31198` VERIFIER 시험 중 → 다음: 리뷰 보고가 오면 대응
+
 ## #6 프로그램 추천·비교 — PLANNER (dev:2)
 완료 조건: AC-06.1~06.7을 시험 자료와 함께 done 처리하고 `npm run check`·E2E 통과 뒤 `Closes #6` PR. AC-06.4 전제로 #4의 `PUT /api/children/{id}`만 먼저 구현(10:13 결정, AC-04.x는 #4).
 - [x] 추천 API `POST /api/recommendations`(엔진 후보 필터·정렬 위) — `0ad1b81`
@@ -78,6 +83,16 @@
 - [x] `tests/branding.e2e.ts` TC-67·68 — 앱 기동 전 합성 `AZURE_OPENAI_ENDPOINT`, 없으면 TC-68 실패 확인. CI e2e env에 합성 값
 - [x] arch 분배 문장 3곳(별도 커밋, BUZZ 04c89f41)
 - [ ] AC-12.1·12.2 done, development.md, PR
+## 보호자 폭 결함(표 모양·상단 제목·E2E 폭) — PLANNER 하위 레인 (#6 AC-06.1, #7 AC-07.1 다시 열기)
+완료 조건: 표 모양을 들어 있는 틀의 실제 폭으로 고르고(보호자 폰 틀 안에서는 항상 카드·요일 목록), 390px 상단 제목이 잘리지 않으며, 보호자 E2E는 390×844·기관 E2E는 1280 폭으로 돈다. 재현 E2E RED → GREEN, `npm run check`·전체 E2E(`--exclude-tag ai`) 통과, `Closes #6`·`Closes #7` PR.
+- [x] #6 AC-06.1·#7 AC-07.1 다시 열기(kode CLI)
+- [x] 폭 설정(보호자 390×844, 기관 1280×720)과 재현 E2E(1440 넘침·390 제목) 작성, 수정 전 코드로 RED 확인(`.scratch/red/`)
+- [x] 틀 폭 측정 훅(ResizeObserver)으로 RecommendTable·PlanDraft 모양 결정, 상단 제목 수정 → GREEN
+- [x] 영향받은 보호자 E2E 선택자(비교표 카드·요일 목록) 수정
+- [x] gen:api 차이 0, `npm run check`, 전체 E2E(390·1440은 parent-width E2E로 측정)
+- [x] TC-49 안쪽 확정 계획 이름(자녀 이름 전 '자녀') — VERIFIER 12:32Z
+- [x] 추천 이유 코드값(`tight`) → 라벨(`9769eb9`) — 정대철_테스트 12:38Z 지시 결함 2
+- [x] AC-06.1·AC-07.1 done(E2E 42/42 `9a082f9`), development.md·lessons, PR
 ## #3 학교 정규·방과후 시간표 등록·관리 — BUILDER
 - 완료 조건: AC-03.1~03.4 done(TC-19~22), `npm run check`·`npx e2e run` 통과, `Closes #3` PR VERIFIER 승인. AC-03.2(일정)·03.3(추천)은 #6·#7 병합 뒤
 - [x] 방과후 목록·등록·삭제 API, 같은 학년·요일 겹침 422 `time_overlap`(AC-03.4) — `test_after_school.py`
@@ -85,6 +100,10 @@
 - [x] E2E TC-19·22 (`188df37`)
 - [x] main `de8e2e8`(#6·#7 포함) merge 뒤 TC-20·21 — school 4/4 (`4112287`)
 - [x] main `0c0f143` merge, gen:api 일치, `npm run check` api 224·web 36, E2E 38/38 → AC-03.1~03.4 done → `Closes #3` PR
+- [ ] PR #27 Codex P2 (가)(13:04Z 결정 78b98fbf): 768 이상 틀 748 가운데, 표 판정 뷰포트 768, experience 132행 "(최대 748px)"
+  - [x] 768×1024·1440×900 회귀 E2E(표·7열 격자, 넘침 0, 시각·금액 한 줄) `77959fd`에서 RED(카드·요일 목록, 틀 480)
+  - [x] 틀·판정 수정(`aa54544`)·experience 132행(`7607d1e`)·main `02b2096` 병합 → GREEN
+  - [x] 최종 head `1b50d4b` check(api 242·web 47)·gen:api 0·E2E 48/48·links 0, push, Codex P2 답글(r4237682509), VERIFIER
 ## #4 자녀 정보 등록 — BUILDER (10:32 분배 조정으로 dev:2→dev:1)
 - 완료 조건: AC-04.1~04.5 done(TC-23~27), `npm run check`·`npx e2e run` 통과, `Closes #4` PR VERIFIER 승인. TC-24·27은 #7 병합 뒤
 - [x] `POST /api/children`(14세 미만 동의 확인, 실명·연락처 거부) — #6 PUT·`get_own` 공유

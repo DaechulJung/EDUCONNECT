@@ -34,19 +34,30 @@ export async function monthlyTotal(screen: Screen): Promise<number> {
   return won((await group.textContent()) ?? '')
 }
 
-// Every class and the school block per day, read from the weekly table cells (Monday first).
+// 주간 일정표 in either shape (experience): a per-day list (role=group, one section per day) in the parent
+// phone frame, a Monday-first table in a wide frame. Both carry the name "주간 일정표" and the same
+// "<요일> 학교" / "<요일> 수업" list items, so the days are read the same way.
+export function weekView(screen: Screen): Locator {
+  return screen.getByLabel('주간 일정표', { exact: true, visible: true })
+}
+
+// Every class and the school block per day (Monday first).
 export async function week(screen: Screen): Promise<{ day: string; school: string | null; classes: { subject: string; start: string; end: string; text: string }[] }[]> {
-  const table = screen.getByRole('table', '주간 일정표')
-  await expect(table).toBeVisible({ timeout: 15_000 })
-  expect((await table.getByRole('columnheader').allTextContents()).map((h) => h.trim())).toEqual(DAYS)
+  const view = weekView(screen)
+  await expect(view).toBeVisible({ timeout: 15_000 })
+  const table = screen.getByRole('table', '주간 일정표', { visible: true })
+  const days = (await table.count()) > 0
+    ? await table.getByRole('columnheader').allTextContents()
+    : (await view.getByRole('heading').allTextContents()).map((h) => h.replace(/요일$/, ''))
+  expect(days.map((d) => d.trim())).toEqual(DAYS)
   const out = []
   for (const day of DAYS) {
-    const school = await table.getByRole('listitem', `${day} 학교`).allTextContents()
+    const school = await view.getByRole('listitem', `${day} 학교`).allTextContents()
     const classes = []
-    // One read per day: the draft table re-renders when the server's answer lands, so held nodes can go stale.
-    for (const text of await table.getByRole('listitem', `${day} 수업`).allTextContents()) {
+    // One read per day: the draft re-renders when the server's answer lands, so held nodes can go stale.
+    for (const text of await view.getByRole('listitem', `${day} 수업`).allTextContents()) {
       const [, start, end] = text.match(/(\d\d:\d\d)~(\d\d:\d\d)/) ?? []
-      // The cell starts with the subject; institution names like 새봄영어수학학원 hold both words.
+      // The entry starts with the subject; institution names like 새봄영어수학학원 hold both words.
       classes.push({ subject: text.trim().startsWith('영어') ? '영어' : text.trim().startsWith('수학') ? '수학' : text, start, end, text })
     }
     out.push({ day, school: school[0]?.match(/~(\d\d:\d\d)/)?.[1] ?? null, classes })

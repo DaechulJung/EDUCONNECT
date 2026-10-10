@@ -1,5 +1,9 @@
-import { beforeEach, expect, test, type App, type Locator, type Screen } from 'e2e'
+import { expect, type App, type Screen } from 'e2e'
+import { beforeEach, test, type Browser } from '@e2e-dev/web'
 import { AROUND, TASK, api, send, signInParent } from './chat-support'
+import { weekView } from './plan-support'
+import { rows, showRecommendations } from './recommend-support'
+import { asOrg, asParent } from './viewport'
 
 // REQ-02 in the browser (FLOW-05): TC-13 (AC-02.1), TC-14 (AC-02.2), TC-16 (AC-02.4),
 // TC-17 (AC-02.5: list, comparison table and schedule draft), TC-18 (AC-02.6).
@@ -10,7 +14,9 @@ async function resetSeed(app: App) {
   expect(response.status).toBe(200)
 }
 
-async function signInAcademy(app: App, screen: Screen, loginId = 'academy-a') {
+// Academy screens are checked at the desktop width (prd 4.2); parent steps switch back to the phone width.
+async function signInAcademy(app: App, screen: Screen, browser: Browser, loginId = 'academy-a') {
+  await asOrg(browser)
   const password = process.env.SEED_PASSWORD
   expect(password, 'SEED_PASSWORD').toBeTruthy()
   await app.open('/login')
@@ -45,8 +51,8 @@ beforeEach(async ({ app }) => {
   await app.clearState()
 })
 
-test('TC-13 코딩 프로그램을 등록하면 교습비·기타경비가 나뉜 채 목록에 남는다', async ({ app, screen }) => {
-  await signInAcademy(app, screen)
+test('TC-13 코딩 프로그램을 등록하면 교습비·기타경비가 나뉜 채 목록에 남는다', async ({ app, screen, browser }) => {
+  await signInAcademy(app, screen, browser)
   await screen.getByRole('button', '프로그램 등록').tap()
   await fillAc021(screen)
   await screen.getByRole('button', '프로그램 저장').tap()
@@ -65,8 +71,8 @@ test('TC-13 코딩 프로그램을 등록하면 교습비·기타경비가 나�
   await expect(reloaded).toContainText('20,000원')
 })
 
-test('TC-14 잘못된 값 4종은 칸 옆 오류를 보이고 목록에 추가되지 않는다', async ({ app, screen }) => {
-  await signInAcademy(app, screen)
+test('TC-14 잘못된 값 4종은 칸 옆 오류를 보이고 목록에 추가되지 않는다', async ({ app, screen, browser }) => {
+  await signInAcademy(app, screen, browser)
   const table = screen.getByRole('table', '학원 프로그램 목록')
   const before = await table.getByRole('row').count()
   await screen.getByRole('button', '프로그램 등록').tap()
@@ -89,13 +95,15 @@ test('TC-14 잘못된 값 4종은 칸 옆 오류를 보이고 목록에 추가�
   }
   await expect(screen.getByText('경도를 입력해 주세요')).toBeVisible()
   await app.restart()
+  await asOrg(browser)
   await expect(screen.getByRole('table', '학원 프로그램 목록').getByRole('row')).toHaveCount(before, { timeout: 10_000 })
 })
 
 // The chat card's conditions come from the LLM double; the parent saves them and opens the table.
 const AROUND_REPLY = { subjects: ['영어', '수학'], budget_amount: 1_000_000, budget_mode: 'around', types: [], days: [], density: 'tight' }
 
-async function recommendAs(app: App, screen: Screen, reply: object, message: string): Promise<Record<string, string>[]> {
+async function recommendAs(app: App, screen: Screen, browser: Browser, reply: object, message: string): Promise<Record<string, string>[]> {
+  await asParent(browser)
   await app.clearState()
   await signInParent(app, screen)
   await app.open('/chat')
@@ -108,7 +116,8 @@ async function recommendAs(app: App, screen: Screen, reply: object, message: str
 }
 
 // Same parent again: the chat page opens on the saved card, so the table uses the saved conditions.
-async function recommendSaved(app: App, screen: Screen): Promise<Record<string, string>[]> {
+async function recommendSaved(app: App, screen: Screen, browser: Browser): Promise<Record<string, string>[]> {
+  await asParent(browser)
   await app.clearState()
   await signInParent(app, screen)
   await app.open('/chat')
@@ -116,30 +125,18 @@ async function recommendSaved(app: App, screen: Screen): Promise<Record<string, 
   return showTable(screen)
 }
 
+// The parent comparison opens as cards in the phone frame (tests/recommend-support.ts reads either shape).
 async function showTable(screen: Screen): Promise<Record<string, string>[]> {
-  await screen.getByRole('button', '추천 보기').tap()
-  const table = screen.getByRole('table', '추천 비교표')
-  await expect(table).toBeVisible({ timeout: 15_000 })
-  return rows(table)
-}
-
-// Column values of every body row, by header name.
-async function rows(table: Locator): Promise<Record<string, string>[]> {
-  const header = await table.getByRole('columnheader').allTextContents()
-  const out: Record<string, string>[] = []
-  for (const r of await table.getByRole('row').all()) {
-    const cells = await r.getByRole('cell').allTextContents()
-    if (cells.length) out.push(Object.fromEntries(header.map((h, i) => [h.trim(), cells[i].trim()])))
-  }
-  return out
+  await showRecommendations(screen)
+  return rows(screen)
 }
 
 type Key = { 학원명: string; 과목: string; 요일: string; 시간: string }
 const hits = (body: Record<string, string>[], k: Key) =>
   body.filter((r) => r['학원명'] === k.학원명 && r['과목'] === k.과목 && r['요일'] === k.요일 && r['시간'] === k.시간)
 
-test('TC-16 학원이 피아노(예체능 학원)를 등록하면 피아노를 선호 과목에 넣은 초5 보호자의 비교표에 나온다', async ({ app, screen }) => {
-  await signInAcademy(app, screen)
+test('TC-16 학원이 피아노(예체능 학원)를 등록하면 피아노를 선호 과목에 넣은 초5 보호자의 비교표에 나온다', async ({ app, screen, browser }) => {
+  await signInAcademy(app, screen, browser)
   await screen.getByRole('button', '프로그램 등록').tap()
   await fillAc021(screen)
   await screen.getByLabel('과목').fill('피아노')
@@ -156,7 +153,7 @@ test('TC-16 학원이 피아노(예체능 학원)를 등록하면 피아노를 �
   const piano = screen.getByRole('table', '학원 프로그램 목록').getByRole('row').filter({ hasText: '피아노' })
   await expect(piano.filter({ hasText: '17:10~17:50' })).toHaveCount(1, { timeout: 10_000 })
 
-  const body = await recommendAs(app, screen, { ...AROUND_REPLY, subjects: ['피아노'] }, '초5 아이 피아노 배우게 월 100만원 전후로')
+  const body = await recommendAs(app, screen, browser, { ...AROUND_REPLY, subjects: ['피아노'] }, '초5 아이 피아노 배우게 월 100만원 전후로')
   const row = hits(body, { 학원명: '새봄영어수학학원', 과목: '피아노', 요일: '월·수', 시간: '17:10~17:50' })
   expect(row, JSON.stringify(body)).toHaveLength(1)
   expect(row[0]['유형']).toBe('예체능 학원')
@@ -166,21 +163,21 @@ test('TC-16 학원이 피아노(예체능 학원)를 등록하면 피아노를 �
 // Seed (apps/api/app/seed/data/academies.json): b-elem-math-undisclosed has no monthly tuition.
 const UNDISCLOSED: Key = { 학원명: '다온수학학원', 과목: '수학', 요일: '화·목', 시간: '16:40~18:00' }
 
-test('TC-17 시드 미공개 프로그램이 학원 목록에 "미공개"로 보이고 AC-06.1 조건의 비교표와 일정에 없다', async ({ app, screen }) => {
-  await signInAcademy(app, screen, 'academy-b') // the seed undisclosed program belongs to academy B
+test('TC-17 시드 미공개 프로그램이 학원 목록에 "미공개"로 보이고 AC-06.1 조건의 비교표와 일정에 없다', async ({ app, screen, browser }) => {
+  await signInAcademy(app, screen, browser, 'academy-b') // the seed undisclosed program belongs to academy B
   const table = screen.getByRole('table', '학원 프로그램 목록')
   const undisclosed = table.getByRole('row').filter({ hasText: '미공개' })
   await expect(undisclosed).toHaveCount(1)
   await expect(undisclosed).toContainText(UNDISCLOSED.시간)
 
-  const body = await recommendAs(app, screen, AROUND_REPLY, AROUND)
+  const body = await recommendAs(app, screen, browser, AROUND_REPLY, AROUND)
   expect(body.length).toBeGreaterThan(0)
   expect(hits(body, UNDISCLOSED)).toEqual([])
   for (const r of body) expect(r['월 교습비']).not.toContain('미공개')
 
   // Schedule half (#7): the draft from the same saved conditions has classes, none of them the undisclosed one.
   await screen.getByRole('button', '일정 만들기').tap()
-  const week = screen.getByRole('table', '주간 일정표')
+  const week = weekView(screen)
   await expect(week).toBeVisible({ timeout: 15_000 })
   const classes: string[] = []
   for (const day of UNDISCLOSED.요일.split('·').concat(['월', '수', '금', '토', '일'])) {
@@ -194,12 +191,12 @@ test('TC-17 시드 미공개 프로그램이 학원 목록에 "미공개"로 보
 // Seed b-elem-math (초3~초6, 월·수, disclosed) is in the AC-06.1 table until academy B deletes it.
 const DELETED: Key = { 학원명: '다온수학학원', 과목: '수학', 요일: '월·수', 시간: '16:30~17:50' }
 
-test('TC-18 확정 계획에 쓰이지 않은 프로그램을 삭제하면 학원 목록과 보호자 비교표에서 사라진다', async ({ app, screen }) => {
-  const before = await recommendAs(app, screen, AROUND_REPLY, AROUND)
+test('TC-18 확정 계획에 쓰이지 않은 프로그램을 삭제하면 학원 목록과 보호자 비교표에서 사라진다', async ({ app, screen, browser }) => {
+  const before = await recommendAs(app, screen, browser, AROUND_REPLY, AROUND)
   expect(hits(before, DELETED), 'listed before the delete').toHaveLength(1)
 
   await app.clearState()
-  await signInAcademy(app, screen, 'academy-b')
+  await signInAcademy(app, screen, browser, 'academy-b')
   const table = screen.getByRole('table', '학원 프로그램 목록')
   const count = await table.getByRole('row').count()
   const target = table.getByRole('row').filter({ hasText: DELETED.시간 })
@@ -210,9 +207,10 @@ test('TC-18 확정 계획에 쓰이지 않은 프로그램을 삭제하면 학�
   await expect(table.getByRole('row')).toHaveCount(count - 1, { timeout: 10_000 })
   await expect(table.getByRole('row').filter({ hasText: DELETED.시간 })).toHaveCount(0)
   await app.restart()
+  await asOrg(browser)
   await expect(screen.getByRole('table', '학원 프로그램 목록').getByRole('row').filter({ hasText: DELETED.시간 })).toHaveCount(0, { timeout: 10_000 })
 
-  const after = await recommendSaved(app, screen)
+  const after = await recommendSaved(app, screen, browser)
   expect(after.length).toBeGreaterThan(0)
   expect(hits(after, DELETED)).toEqual([])
 })
