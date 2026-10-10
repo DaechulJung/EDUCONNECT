@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 import type { Conditions } from './client'
-import { budgetError, childLabel, conditionRows, sameConditions, subjectOptions } from './conditions'
+import { budgetError, childLabel, conditionRows, pickChild, sameConditions, subjectOptions } from './conditions'
 
 const around: Conditions = {
   child_id: 'c1',
@@ -45,4 +45,13 @@ test('저장하지 않은 수정이 있는지 순서와 무관하게 비교한�
 
 test('과목 선택지는 중복 없이 합친다', () => {
   expect(subjectOptions(['영어', ' 수학'], ['수학', '피아노'], undefined)).toEqual(['영어', '수학', '피아노'])
+})
+
+test('대상 자녀는 고른 자녀이고, 고르기 전이나 목록에 없으면 첫 자녀다', () => {
+  const kids = [{ id: 'a' }, { id: 'b' }]
+  expect(pickChild(kids, null)?.id).toBe('a')
+  expect(pickChild(kids, 'b')?.id).toBe('b')
+  expect(pickChild(kids, 'gone')?.id).toBe('a')
+  expect(pickChild([], null)).toBeNull()
+  expect(pickChild(undefined, 'b')).toBeNull()
 })

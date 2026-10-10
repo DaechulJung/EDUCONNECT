@@ -9,19 +9,25 @@ type Day = NonNullable<Conditions['days']>[number]
 type ProgramType = NonNullable<Conditions['types']>[number]
 
 // '고치기' bottom sheet (experience 조건 고치기). '적용' only changes the card; saving is separate.
-export function ConditionSheet({ open, value, subjects, childName, onApply, onClose }: {
+export function ConditionSheet({ open, value, subjects, childId, childOptions, onApply, onClose }: {
   open: boolean
   value: Conditions
   subjects: string[]
-  childName: string
-  onApply: (next: Conditions) => void
+  childId: string
+  childOptions: { id: string; label: string }[]
+  onApply: (next: Conditions, childId: string) => void
   onClose: () => void
 }) {
   const [draft, setDraft] = useState(value)
+  const [target, setTarget] = useState(childId)
   const [opened, setOpened] = useState(open)
   if (open !== opened) {
     setOpened(open)
-    if (open) setDraft(value) // each opening starts from the card's current values
+    if (open) {
+      // each opening starts from the card's current values
+      setDraft(value)
+      setTarget(childId)
+    }
   }
   const error = budgetError(draft)
   const money = (key: 'budget_target' | 'budget_cap') => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,14 +43,18 @@ export function ConditionSheet({ open, value, subjects, childName, onApply, onCl
       footer={
         <>
           <button type="button" className="kds-button kds-button--secondary" onClick={onClose}>취소</button>
-          <button type="button" className="kds-button" disabled={!!error} onClick={() => onApply(draft)}>적용</button>
+          <button type="button" className="kds-button" disabled={!!error} onClick={() => onApply(draft, target)}>적용</button>
         </>
       }
     >
       <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-24)' }}>
-        <fieldset style={{ border: 0, margin: 0, padding: 0 }}>
+        <fieldset style={{ border: 0, margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
           <legend className="body-medium-semibold">대상 자녀</legend>
-          <label className="kds-radio"><input type="radio" name="child" checked readOnly /> {childName}</label>
+          {childOptions.map((c) => (
+            <label key={c.id} className="kds-radio">
+              <input type="radio" name="child" value={c.id} checked={target === c.id} onChange={() => setTarget(c.id)} /> {c.label}
+            </label>
+          ))}
         </fieldset>
         <div>
           <p className="body-medium-semibold" style={{ margin: 0 }}>선호 과목</p>

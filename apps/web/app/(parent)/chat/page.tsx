@@ -8,7 +8,7 @@ import { useToast } from '@/components/kds/kds-hooks'
 import { ConditionCard } from '@/components/parent/ConditionCard'
 import { ConditionSheet } from '@/components/parent/ConditionSheet'
 import { getConditions, listChildren, listSubjects, saveConditions, sendChatMessage, type Conditions } from '@/lib/client'
-import { BASE_SUBJECTS, childLabel, sameConditions, subjectOptions } from '@/lib/conditions'
+import { BASE_SUBJECTS, childLabel, pickChild, sameConditions, subjectOptions } from '@/lib/conditions'
 
 type Message = { id: number; role: 'user' | 'ai'; text: string; error?: boolean }
 
@@ -33,6 +33,7 @@ function Chat() {
   const [editing, setEditing] = useState(false)
   const [saving, setSaving] = useState(false)
   const [saveError, setSaveError] = useState<string | null>(null)
+  const [childId, setChildId] = useState<string | null>(null)
   const nextId = useRef(1)
   const endRef = useRef<HTMLDivElement>(null)
 
@@ -44,7 +45,7 @@ function Chat() {
       return data ?? []
     },
   })
-  const child = children.data?.[0] ?? null
+  const child = pickChild(children.data, childId)
   const saved = useQuery({
     queryKey: ['conditions', child?.id],
     queryFn: async () => (await getConditions({ path: { child_id: child!.id } })).data ?? null,
@@ -185,9 +186,10 @@ function Chat() {
         <ConditionSheet
           open={editing}
           value={shown}
-          childName={childName}
+          childId={child.id}
+          childOptions={(children.data ?? []).map((c) => ({ id: c.id, label: childLabel(c) }))}
           subjects={subjectOptions(subjects.data, shown.subjects, BASE_SUBJECTS)}
-          onApply={(next) => { setCard(next); setEditing(false) }}
+          onApply={(next, nextChildId) => { setCard(next); setChildId(nextChildId); setSaveError(null); setEditing(false) }}
           onClose={() => setEditing(false)}
         />
       )}

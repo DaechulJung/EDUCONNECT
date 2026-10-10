@@ -2867,11 +2867,13 @@
           },
           "budget_target": {
             "type": "integer",
+            "maximum": 2147483647.0,
             "minimum": 0.0,
             "title": "Budget Target"
           },
           "budget_cap": {
             "type": "integer",
+            "maximum": 2147483647.0,
             "minimum": 0.0,
             "title": "Budget Cap"
           },
@@ -2939,11 +2941,13 @@
           },
           "budget_target": {
             "type": "integer",
+            "maximum": 2147483647.0,
             "minimum": 0.0,
             "title": "Budget Target"
           },
           "budget_cap": {
             "type": "integer",
+            "maximum": 2147483647.0,
             "minimum": 0.0,
             "title": "Budget Cap"
           },
