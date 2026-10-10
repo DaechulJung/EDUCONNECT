@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 import type { Plan, PlanItem } from './client'
-import { UNAVAILABLE_TAG, canConfirm, confirmFailure, itemMonthly, overBudget, relaxationLabels, swapCandidates, swapProgram, weekColumns, withoutProgram } from './plan'
+import { BLOCKED, OVER_BUDGET, UNAVAILABLE, UNAVAILABLE_TAG, canConfirm, confirmFailure, confirmNotice, itemMonthly, overBudget, relaxationLabels, swapCandidates, swapProgram, weekColumns, withoutProgram } from './plan'
 
 const item = (over: Partial<PlanItem>): PlanItem => ({
   program_id: 'p1',
@@ -95,4 +95,22 @@ test('확정 422 unknown_program은 그 칸에 신청 불가를 붙이고 초안
   expect(mon.map((e) => (e.kind === 'class' ? e.violations : []))).toEqual([[], [UNAVAILABLE_TAG]])
   expect(confirmFailure(plan(), 500, undefined)).toBeNull()
   expect(confirmFailure(plan(), 422, { detail: 'empty_plan' })).toBeNull()
+})
+
+test('확정 409 over_budget은 응답 amount로 예산 초과를 보이고 시간 중복 안내는 보이지 않는다 (PR #24 P2)', () => {
+  const body = { detail: 'violations', data: { violations: [{ program_id: null, kind: 'over_budget' as const, amount: 10_000 }] } }
+  const failure = confirmFailure(plan(), 409, body)!
+  // 옛 초안의 monthly_total(990,000)·budget_cap(1,100,000)으로는 초과가 아니다. 서버의 현재 판정을 따른다.
+  expect(overBudget(failure.plan)).toBe('예산 초과 10,000원')
+  expect(canConfirm(failure.plan, failure.unavailable)).toBe(false)
+  expect(confirmNotice(failure.plan, failure.unavailable)).toBe(OVER_BUDGET)
+  expect(confirmNotice(failure.plan, failure.unavailable)).not.toBe(BLOCKED)
+})
+
+test('확정 버튼 아래 안내는 위반 종류를 따른다', () => {
+  expect(confirmNotice(plan())).toBeNull()
+  expect(confirmNotice(plan({ violations: [{ program_id: 'p2', kind: 'time_overlap' }, { program_id: null, kind: 'over_budget', amount: 1 }] }))).toBe(BLOCKED)
+  expect(confirmNotice(plan({ violations: [{ program_id: 'p2', kind: 'travel_short' }] }))).toBe(BLOCKED)
+  expect(confirmNotice(plan(), ['p1'])).toBe(UNAVAILABLE)
+  expect(confirmNotice(plan({ status: 'confirmed' }))).toBeNull()
 })

@@ -4,7 +4,7 @@ import { useSyncExternalStore } from 'react'
 import { Icon } from '@/components/kds/kds'
 import type { Plan, PlanItem } from '@/lib/client'
 import { formatWon } from '@/lib/conditions'
-import { BLOCKED, NO_PLAN, UNAVAILABLE, canConfirm, itemMonthly, overBudget, relaxationLabels, weekColumns, type DayEntry } from '@/lib/plan'
+import { NO_PLAN, canConfirm, confirmNotice, itemMonthly, overBudget, relaxationLabels, weekColumns, type DayEntry } from '@/lib/plan'
 
 // Draft edits (#8): '빼기'·'바꾸기' change the draft in place, '일정 확정' asks first (experience 112행).
 export type PlanActions = {
@@ -23,6 +23,7 @@ export function PlanDraft({ plan, actions, label = '일정 초안' }: { plan: Pl
   const unavailable = actions?.unavailable ?? []
   const columns = weekColumns(plan, unavailable)
   const confirmable = canConfirm(plan, unavailable)
+  const notice = confirmNotice(plan, unavailable)
   const single = plan.items.length <= 1
   return (
     <section aria-label={label} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-16)' }}>
@@ -56,7 +57,7 @@ export function PlanDraft({ plan, actions, label = '일정 초안' }: { plan: Pl
       <Summary plan={plan} />
       {actions && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
-          {!confirmable && <p className="kds-info-line kds-info-line--error" role="alert"><Icon name="ic-line-warning" size={16} />{unavailable.length ? UNAVAILABLE : BLOCKED}</p>}
+          {notice && <p className="kds-info-line kds-info-line--error" role="alert"><Icon name="ic-line-warning" size={16} />{notice}</p>}
           <button type="button" className="kds-button" disabled={!confirmable || actions.busy} onClick={actions.onConfirm}>일정 확정</button>
         </div>
       )}

@@ -5,6 +5,7 @@ export const NO_PLAN = '조건을 만족하는 일정이 없습니다'
 export const BLOCKED = '겹치는 수업이 있어요. 바꾸거나 빼 주세요'
 export const UNAVAILABLE = '신청할 수 없게 된 수업이 있어요. 바꾸거나 빼 주세요'
 export const UNAVAILABLE_TAG = '신청 불가'
+export const OVER_BUDGET = '예산을 넘었어요. 바꾸거나 빼 주세요'
 
 // Server relaxation names (engine RELAX_*) → what the parent can change (experience 조건 불만족).
 const RELAXATIONS: Record<string, string> = {
@@ -54,8 +55,9 @@ export function itemMonthly(i: Pick<PlanItem, 'monthly_tuition' | 'monthly_other
   return i.monthly_tuition + i.monthly_other
 }
 
-export function overBudget(plan: Pick<Plan, 'monthly_total' | 'budget_cap'>): string | null {
-  const over = plan.monthly_total - plan.budget_cap
+// The server's over_budget amount (current total − cap) wins: after a 409 the plan's totals are the old snapshot.
+export function overBudget(plan: Pick<Plan, 'monthly_total' | 'budget_cap' | 'violations'>): string | null {
+  const over = plan.violations.find((v) => v.kind === 'over_budget')?.amount ?? plan.monthly_total - plan.budget_cap
   return over > 0 ? `예산 초과 ${formatWon(over)}` : null
 }
 
@@ -63,6 +65,13 @@ export function overBudget(plan: Pick<Plan, 'monthly_total' | 'budget_cap'>): st
 // and with no program the server refused on the last confirm or edit.
 export function canConfirm(plan: Pick<Plan, 'status' | 'violations'>, unavailable: readonly string[] = []): boolean {
   return plan.status === 'draft' && plan.violations.length === 0 && unavailable.length === 0
+}
+
+// Notice under '일정 확정' when it is disabled, by what blocks it: refused programs, then cell violations, then budget only.
+export function confirmNotice(plan: Pick<Plan, 'status' | 'violations'>, unavailable: readonly string[] = []): string | null {
+  if (plan.status !== 'draft' || canConfirm(plan, unavailable)) return null
+  if (unavailable.length) return UNAVAILABLE
+  return plan.violations.some((v) => v.kind !== 'over_budget') ? BLOCKED : OVER_BUDGET
 }
 
 export type ErrorBody = { detail?: string; data?: { violations?: Plan['violations']; program_ids?: string[] } } | undefined
