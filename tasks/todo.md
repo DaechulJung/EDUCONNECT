@@ -53,7 +53,11 @@
 - [x] 초안 빼기·바꾸기·확정 화면, 일정 탭 확정 계획(`169595e`)
 - [x] E2E TC-47~49(`tests/plan.e2e.ts`, edu-dev2b): 11:2xZ 3회 연속 3/3, `schedule.e2e.ts` 4/4
 - [x] #7 병합(`f5e3edd`) 뒤 origin/main merge, `npm run check` exit 0(api 209·web 19), AC-08.1~08.3 done, lessons
-- [ ] PR(`Closes #8`) → CI 3/3 → VERIFIER 승인 → 병합
+- [x] PR #23 병합(`fca1e24`) — 관문 누락(VERIFIER PR 코멘트·Codex 처리 코멘트 없음)으로 다시 열기(결정 `b9c2c418`)
+- [x] Codex P1: `update_draft` 자녀 행 잠금 + 결정형 경합 시험 — `9084ff1`
+- [x] Codex P2: 확정 409 위반 갱신·422 신청 불가, web 시험 2 — `063ba5a`, experience State Patterns 1행 — `0c93870`
+- [x] Codex P2(plans.py 230) 부분 반영, 한계 development.md 기록. check api 210·web 21, gen:api 0, E2E 27/27
+- [ ] PR(`Closes #8`) → Codex 처리 코멘트 → VERIFIER PR 승인 코멘트 → CI 3/3 → `--match-head-commit` 병합
 ## #12 모두의 AI 교육 에이전트 표현과 연동 경계 — BUILDER (10:32 분배 조정으로 dev:2→dev:1)
 - 완료 조건: AC-12.1·12.2 done(TC-67·68), `npm run check`·`npx e2e run` 통과, `Closes #12` PR VERIFIER 승인
 - [x] 라벨 #12·#4 dev:2→dev:1
