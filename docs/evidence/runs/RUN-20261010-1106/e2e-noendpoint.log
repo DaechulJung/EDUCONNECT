@@ -1,0 +1,32 @@
+
+ RUN  e2e v0.18.0 /Users/agentneo/Desktop/Sync/DS_Projects/30_Projects/PRJ-017_KT_Hackerthon2026/AIDX_PRE_TRAINING_2/.worktrees/verify
+      run 01a1257f-6102-76ce-8cb0-0a33e63dccc8 · targets: web
+
+ ❯ |web| tests/branding.e2e.ts (2 tests | 1 failed) 2.55s
+   ✓ TC-67 시드 보호자 화면 머리에 "EDUCONNECT · 모두의 AI 교육 에이전트"와 연동 상태 "모의"가 보인다 2.01s
+   × TC-68 챗봇 화면의 AI 공급자 표기가 "Azure OpenAI(국내 리전)"이고 화면과 /api/meta에 엔드포인트 호스트가 0건이다 543ms
+     → AZURE_OPENAI_ENDPOINT (synthetic) is set before the app starts: expected…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |web| tests/branding.e2e.ts > TC-68 챗봇 화면의 AI 공급자 표기가 "Azure OpenAI(국내 리전)"이고 화면과 /api/meta에 엔드포인트 호스트가 0건이다
+ASSERTION_FAILED: AZURE_OPENAI_ENDPOINT (synthetic) is set before the app starts: expected false to be true
+ ❯ tests/branding.e2e.ts:16:93
+     14| function syntheticHost(): string {
+     15|   const endpoint = process.env.AZURE_OPENAI_ENDPOINT ?? ''
+     16|   expect(endpoint !== '', 'AZURE_OPENAI_ENDPOINT (synthetic) is set b…
+       |                                                                                             ^
+     17|   let host = ''
+     18|   try {
+ ❯ at http://localhost:13000/
+ ❯ screen .e2e/artifacts/web/tests_branding.e2e.ts__TC-68_20_EC_B1_97_EB_B4_87_20_ED_99_94_EB_A9_B4_EC_9D_98_20AI_20_EA_B3_B5_EA_B8_89_EC_9E-21ca48c1/default/attempt-0/failure/screen.txt
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 0 passed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  20:07:47
+   Duration  2.83s
+     Report  .e2e/report.json
+

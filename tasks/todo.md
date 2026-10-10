@@ -53,3 +53,10 @@
 - [x] 초안 빼기·바꾸기·확정 화면, 일정 탭 확정 계획(`169595e`)
 - [ ] E2E TC-47~49(`tests/plan.e2e.ts`, edu-dev2b)
 - [ ] #7 병합 뒤 origin/main merge, `npm run check`, AC-08.1~08.3 done, lessons, PR
+## #12 모두의 AI 교육 에이전트 표현과 연동 경계 — BUILDER (10:32 분배 조정으로 dev:2→dev:1)
+- 완료 조건: AC-12.1·12.2 done(TC-67·68), `npm run check`·`npx e2e run` 통과, `Closes #12` PR VERIFIER 승인
+- [x] 라벨 #12·#4 dev:2→dev:1
+- [x] `GET /api/meta` 고정 문구(AD-14 모의 경계), `test_meta`(앱 생성 전 합성 Azure 값, 호스트 0건), 501 목록에서 제외, `gen:api`
+- [x] `tests/branding.e2e.ts` TC-67·68 — 앱 기동 전 합성 `AZURE_OPENAI_ENDPOINT`, 없으면 TC-68 실패 확인. CI e2e env에 합성 값
+- [x] arch 분배 문장 3곳(별도 커밋, BUZZ 04c89f41)
+- [ ] AC-12.1·12.2 done, development.md, PR

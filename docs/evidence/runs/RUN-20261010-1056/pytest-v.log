@@ -1,0 +1,22 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- /Users/agentneo/Desktop/Sync/DS_Projects/30_Projects/PRJ-017_KT_Hackerthon2026/AIDX_PRE_TRAINING_2/.worktrees/verify/apps/api/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/agentneo/Desktop/Sync/DS_Projects/30_Projects/PRJ-017_KT_Hackerthon2026/AIDX_PRE_TRAINING_2/.worktrees/verify/apps/api
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 12 items
+
+tests/test_recommend.py::test_base_scenario_rows_have_every_column_and_only_english_or_math PASSED [  8%]
+tests/test_recommend.py::test_grade_mismatch_full_and_undisclosed_programs_are_left_out PASSED [ 16%]
+tests/test_recommend.py::test_reasons_request_carries_the_interest_and_reasons_come_from_the_model PASSED [ 25%]
+tests/test_recommend.py::test_model_error_gives_template_reasons_with_the_same_rows PASSED [ 33%]
+tests/test_recommend.py::test_same_conditions_give_the_same_order PASSED [ 41%]
+tests/test_recommend.py::test_type_and_days_conditions_bound_every_row PASSED [ 50%]
+tests/test_recommend.py::test_other_parents_child_is_not_found PASSED    [ 58%]
+tests/test_family_update.py::test_updates_own_child PASSED               [ 66%]
+tests/test_family_update.py::test_other_parents_child_404 PASSED         [ 75%]
+tests/test_family_update.py::test_signed_out_is_401 PASSED               [ 83%]
+tests/test_family_update.py::test_consent_and_real_names PASSED          [ 91%]
+tests/test_family_update.py::test_unknown_school_is_rejected PASSED      [100%]
+
+============================== 12 passed in 2.73s ==============================

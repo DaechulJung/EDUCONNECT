@@ -2287,15 +2287,6 @@ export type GetMetaData = {
     url: '/api/meta';
 };
 
-export type GetMetaErrors = {
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
-};
-
-export type GetMetaError = GetMetaErrors[keyof GetMetaErrors];
-
 export type GetMetaResponses = {
     /**
      * Successful Response
