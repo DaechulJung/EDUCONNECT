@@ -1,0 +1,25 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- /Users/agentneo/Desktop/71_Hackerthon/01_Pre_Project/AIDX_PRE_TRAINING_2/.worktrees/verify/apps/api/.venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/agentneo/Desktop/71_Hackerthon/01_Pre_Project/AIDX_PRE_TRAINING_2/.worktrees/verify/apps/api
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 15 items
+
+tests/test_family_create.py::test_creates_child_for_session_parent PASSED [  6%]
+tests/test_family_create.py::test_under_14_without_consent_is_422 PASSED [ 13%]
+tests/test_family_create.py::test_real_name_or_contact_fields_rejected PASSED [ 20%]
+tests/test_family_create.py::test_invalid_school_is_422 PASSED           [ 26%]
+tests/test_family_create.py::test_signed_out_is_401 PASSED               [ 33%]
+tests/test_catalog_schools.py::test_lists_schools_only_id_and_name PASSED [ 40%]
+tests/test_catalog_schools.py::test_signed_out_is_401 PASSED             [ 46%]
+tests/test_catalog_schools.py::test_academy_staff_is_403 PASSED          [ 53%]
+tests/test_plans_dismissal.py::test_reset_without_omit_loads_every_timetable_row[None] PASSED [ 60%]
+tests/test_plans_dismissal.py::test_reset_without_omit_loads_every_timetable_row[body1] PASSED [ 66%]
+tests/test_plans_dismissal.py::test_reset_without_omit_loads_every_timetable_row[body2] PASSED [ 73%]
+tests/test_plans_dismissal.py::test_reset_omit_leaves_out_only_that_grade PASSED [ 80%]
+tests/test_plans_dismissal.py::test_reset_omit_rejects_unknown_school PASSED [ 86%]
+tests/test_plans_dismissal.py::test_draft_without_timetable_or_manual_time_is_422 PASSED [ 93%]
+tests/test_plans_dismissal.py::test_manual_dismissal_places_classes_after_it PASSED [100%]
+
+============================== 15 passed in 3.26s ==============================

@@ -228,12 +228,13 @@ sequenceDiagram
 | `GET·POST /api/children`, `GET·PUT /api/children/:id` | 자기 자녀(별칭·만 나이·학년·학교·관심사·교육 목표·기존 일정·하교 시각 직접 입력·동의 확인). 실명·연락처 없음 | 보호자(자기 자녀) | 401, 403, 404, 422 `consent_required` | `app/api/family.py` |
 | `POST /api/chat/messages`, `GET·PUT /api/children/:id/conditions` | 대화 1회 응답(조건 초안·출처 llm/fallback), 자녀별 조건 | 보호자(자기 자녀) | 401, 403, 404, 422 | `app/api/chat.py` |
 | `GET /api/catalog/subjects` | 삭제되지 않은 프로그램 과목 목록(AD-15) | 로그인 사용자 | 401 | `app/api/catalog.py` |
+| `GET /api/catalog/schools` | 자녀 등록 폼의 학교 선택지(시드 학교 `id`·`name`만, 좌표·담당자 없음) | 보호자 | 401, 403 | `app/api/catalog.py` |
 | `POST /api/recommendations` | 자녀 조건 기준 비교표 | 보호자(자기 자녀) | 401, 403, 404 | `app/api/planner.py` |
-| `POST /api/plans/draft`, `GET /api/plans`, `GET·PUT /api/plans/:id`, `POST /api/plans/:id/confirm` | 초안 생성·수정(빼기·바꾸기), 확정, 목록(영향 표시 포함) | 보호자(자기 계획) | 401, 403, 404, 409 `violations`, 422 `no_feasible_plan` | `app/api/planner.py` |
+| `POST /api/plans/draft`, `GET /api/plans`, `GET·PUT /api/plans/:id`, `POST /api/plans/:id/confirm` | 초안 생성·수정(빼기·바꾸기), 확정, 목록(영향 표시 포함) | 보호자(자기 계획) | 401, 403, 404, 409 `violations`, 422 `no_feasible_plan`, 422 `school_timetable_missing` | `app/api/planner.py` |
 | `GET /api/plans/:id/adjustment`, `POST /api/plans/:id/adjustment/accept`, `POST /api/plans/:id/adjustment/reject` | 영향 사유, 조정안, 수락·거절 | 보호자(자기 계획) | 401, 403, 404, 422 `no_feasible_plan` | `app/api/planner.py` |
 | `GET /api/org/impact?program_id=·?grade=` | 이 기관 변경으로 영향받는 확정 계획 수(전체·항목별, AD-4 모양). 자녀·보호자·계획 ID 없음 | 학원·학교 담당자(자기 기관) | 401, 403 | `app/api/planner.py` |
 | `GET /api/meta`, `GET /api/health` | 서비스 이름·부제, 모두의 AI 상태 `mock`, AI 공급자 표기 "Azure OpenAI(국내 리전)", 상태 점검 | 모두 | - | `app/api/meta.py`, `app/api/health.py` |
-| `/api/test/*` | 시드 초기화, 시계 이동, LLM 대역 모드·요청 기록 | `ENABLE_TEST_ROUTES=1`일 때만 존재 | 404(꺼져 있음) | `app/api/testing.py` |
+| `/api/test/*` | 시드 초기화(시간표 일부 제외 옵션), 시계 이동, LLM 대역 모드·요청 기록 | `ENABLE_TEST_ROUTES=1`일 때만 존재 | 404(꺼져 있음) | `app/api/testing.py` |
 | DB `accounts`, `audit_events` | 계정·해시·잠금, 감사 기록 | `accounts`는 auth 모듈만, `audit_events`는 `core/audit.py`만 쓰기 | - | `app/models/auth.py` |
 | DB `institutions`, `programs`, `school_timetables` | 기관·프로그램(방과후 포함, soft delete)·학년·요일별 하교 시각(AD-16) | catalog 모듈만 쓰기 | - | `app/models/catalog.py` |
 | DB `children`, `child_conditions`, `plans` | 자녀, 자녀별 조건, 계획(초안·확정·superseded, 스냅숏) — 열 모양은 AD-16 | 각각 family·chat·planner만 쓰기 | - | `app/models/family.py`, `app/models/chat.py`, `app/models/planner.py` |
@@ -280,7 +281,7 @@ EDUCONNECT/
 | REQ-01 | `app/api/auth.py`, `app/services/auth/`, `app/core/authz.py`, `app/core/audit.py`, `apps/web/app/login/` | AD-8, AD-9, AD-11, AD-13 |
 | REQ-02 | `app/api/catalog.py`, `app/services/catalog/programs.py`, `apps/web/app/(org)/academy/` | AD-2, AD-4, AD-6 |
 | REQ-03 | `app/api/catalog.py`, `app/services/catalog/school.py`, `apps/web/app/(org)/school/` | AD-2, AD-4, AD-6 |
-| REQ-04 | `app/api/family.py`, `app/services/family/`, `apps/web/app/(parent)/children/` | AD-2, AD-6, AD-8 |
+| REQ-04 | `app/api/family.py`, `app/services/family/`, `app/api/catalog.py`(`list_schools`), `apps/web/app/(parent)/children/` | AD-2, AD-6, AD-8 |
 | REQ-05 | `app/api/chat.py`, `app/services/chat/`, `apps/web/app/(parent)/chat/` | AD-5, AD-10, AD-13 |
 | REQ-06 | `app/services/planner/recommend.py`, `app/services/planner/engine.py`, `app/services/planner/travel.py` | AD-5, AD-6, AD-7, AD-10 |
 | REQ-07 | `app/services/planner/engine.py`, `app/services/planner/plans.py`, `apps/web/app/(parent)/schedule/` | AD-5, AD-6, AD-7 |
