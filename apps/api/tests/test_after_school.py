@@ -10,7 +10,7 @@ from sqlalchemy import text
 from app.seed.load import seed_id
 from tests.conftest import login
 
-# AC-03.3's robot program. The seed robot class runs Fri 15:00~16:20, so 14:00~15:00 only touches it.
+# AC-03.3's robot program. The seed robot class runs Fri 15:00~16:20; 14:00~15:00 only touches it.
 ROBOT = {
     "subject": "로봇", "days": ["fri"], "start": "14:00", "end": "15:00",
     "monthly_tuition": 30000, "monthly_other": 0, "instructor": "시험 강사",
@@ -82,7 +82,7 @@ def test_no_overlap_when_grade_day_or_time_differs(change: dict, seeded: TestCli
 
 def test_other_schools_programs_do_not_count_as_overlap(seeded: TestClient) -> None:
     assert login(seeded, "school-mid").status_code == 200
-    # The middle school's own Wed 14:50~15:40 class overlaps; the elementary Wed class does not count.
+    # Its own Wed 14:50~15:40 class overlaps; the elementary Wed class does not count.
     clash = {**ROBOT, "days": ["wed"], "start": "15:00", "end": "16:00", "grade_min": 7}
     clash["grade_max"] = 9
     assert seeded.post("/api/school/after-school", json=clash).json()["detail"] == "time_overlap"
