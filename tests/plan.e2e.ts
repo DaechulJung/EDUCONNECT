@@ -102,6 +102,7 @@ test('TC-48 일정의 영어 수업을 학교 시간과 겹치는 프로그램�
   await sheet.getByRole('button', new RegExp(span)).first().tap()
   // Wait for the server's re-judged draft before reading the table (it re-renders when the answer lands).
   await expect(screen.getByRole('button', '일정 확정')).toBeDisabled({ timeout: 15_000 })
+  await expect(screen.getByText('겹치는 수업이 있어요. 바꾸거나 빼 주세요')).toBeVisible({ timeout: 15_000 })
 
   const days = await week(screen)
   const swapped = days.flatMap((d) => d.classes).filter((c) => `${c.start}~${c.end}` === span)

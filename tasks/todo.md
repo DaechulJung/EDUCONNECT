@@ -51,8 +51,9 @@
 완료 조건: AC-08.1~08.3을 시험 자료와 함께 done 처리하고 `npm run check` 통과 뒤, #7 병합 후 origin/main을 merge해 `Closes #8` PR.
 - [x] 일정 목록·수정·확정 API와 pytest(`407507f`·`02139fe`): 위반 있는 초안 저장, 위반 시 확정 409, 이전 확정 superseded
 - [x] 초안 빼기·바꾸기·확정 화면, 일정 탭 확정 계획(`169595e`)
-- [ ] E2E TC-47~49(`tests/plan.e2e.ts`, edu-dev2b)
-- [ ] #7 병합 뒤 origin/main merge, `npm run check`, AC-08.1~08.3 done, lessons, PR
+- [x] E2E TC-47~49(`tests/plan.e2e.ts`, edu-dev2b): 11:2xZ 3회 연속 3/3, `schedule.e2e.ts` 4/4
+- [x] #7 병합(`f5e3edd`) 뒤 origin/main merge, `npm run check` exit 0(api 209·web 19), AC-08.1~08.3 done, lessons
+- [ ] PR(`Closes #8`) → CI 3/3 → VERIFIER 승인 → 병합
 ## #12 모두의 AI 교육 에이전트 표현과 연동 경계 — BUILDER (10:32 분배 조정으로 dev:2→dev:1)
 - 완료 조건: AC-12.1·12.2 done(TC-67·68), `npm run check`·`npx e2e run` 통과, `Closes #12` PR VERIFIER 승인
 - [x] 라벨 #12·#4 dev:2→dev:1

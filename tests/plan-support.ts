@@ -43,8 +43,8 @@ export async function week(screen: Screen): Promise<{ day: string; school: strin
   for (const day of DAYS) {
     const school = await table.getByRole('listitem', `${day} 학교`).allTextContents()
     const classes = []
-    for (const li of await table.getByRole('listitem', `${day} 수업`).all()) {
-      const text = (await li.textContent()) ?? ''
+    // One read per day: the draft table re-renders when the server's answer lands, so held nodes can go stale.
+    for (const text of await table.getByRole('listitem', `${day} 수업`).allTextContents()) {
       const [, start, end] = text.match(/(\d\d:\d\d)~(\d\d:\d\d)/) ?? []
       // The cell starts with the subject; institution names like 새봄영어수학학원 hold both words.
       classes.push({ subject: text.trim().startsWith('영어') ? '영어' : text.trim().startsWith('수학') ? '수학' : text, start, end, text })
