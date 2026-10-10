@@ -17,7 +17,7 @@ export function ConditionCard({ value, childName, dirty, saving, error, onEdit, 
     <article className="kds-card" aria-label="조건 카드" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
       <h3 className="body-large-bold" style={{ margin: 0 }}>조건 카드</h3>
       {conditionRows(value, childName).map((row) => (
-        <div key={row.label} className="kds-kv body-small-medium">
+        <div key={row.label} className="kds-kv body-small-medium" role="group" aria-label={row.label}>
           <span className="kds-kv__label">{row.label}</span>
           <span className="kds-kv__value">{row.value}</span>
         </div>
