@@ -144,6 +144,9 @@ def test_create_waits_for_the_school_lock_then_sees_the_overlap(sync_db, seeded)
     assert login(seeded, "school-elem").status_code == 200
     school = seed_id("school-elem")
     result: dict = {}
+    count = text("SELECT count(*) FROM programs WHERE institution_id = :id AND deleted_at IS NULL")
+    with sync_db.connect() as conn:
+        before = conn.execute(count, {"id": school}).scalar_one()
 
     def create() -> None:
         result["response"] = seeded.post("/api/school/after-school", json=OVERLAP)
@@ -170,3 +173,5 @@ def test_create_waits_for_the_school_lock_then_sees_the_overlap(sync_db, seeded)
     assert not worker.is_alive()
     response = result["response"]
     assert (response.status_code, response.json()["detail"]) == (422, "time_overlap")
+    with sync_db.connect() as conn:  # only A's row was stored
+        assert conn.execute(count, {"id": school}).scalar_one() == before + 1
