@@ -136,3 +136,76 @@ test('TC-49 위반이 없는 일정을 확정하면 일정 탭에 확정 계획�
   expect(await slots(screen)).toEqual(draftWeek)
   expect(await monthlyTotal(screen)).toBe(draftTotal)
 })
+
+// #8 회귀 (PR #24 Codex P1): the draft goes stale after an academy staff member changes one of its programs through
+// the product API, then '일정 확정' gets 409 violations or 422 unknown_program. The screen must redraw the draft in place.
+type PlanBody = { id: string; status: string; budget_cap: number; monthly_total: number; created_at: string; items: { program_id: string; institution_name: string; subject: string; start: string; end: string; type: string; monthly_tuition: number }[] }
+
+async function latestDraft(app: App, parent: string): Promise<PlanBody> {
+  const plans = (await call(app, parent, 'GET', '/api/plans')) as PlanBody[]
+  const drafts = plans.filter((p) => p.status === 'draft').sort((a, b) => b.created_at.localeCompare(a.created_at))
+  expect(drafts.length, '초안').toBeGreaterThan(0)
+  return drafts[0]
+}
+
+// Staff of the academy that runs one academy program of the draft, and that program as the staff API returns it.
+async function draftProgramWithStaff(app: App, draft: PlanBody) {
+  const item = draft.items.find((i) => i.type === 'academy')
+  expect(item, '초안의 학원 프로그램').toBeTruthy()
+  const seed = JSON.parse(readFileSync(new URL('../apps/api/app/seed/data/academies.json', import.meta.url), 'utf8')) as { academies: SeedAcademy[] }
+  const academy = seed.academies.find((a) => a.name === item!.institution_name)
+  expect(academy, `${item!.institution_name} 시드`).toBeTruthy()
+  const accounts = JSON.parse(readFileSync(new URL('../apps/api/app/seed/data/accounts.json', import.meta.url), 'utf8')) as { accounts: { login_id: string; institution: string | null }[] }
+  const staff = await signIn(app, accounts.accounts.find((x) => x.institution === academy!.key)!.login_id)
+  const programs = (await call(app, staff, 'GET', '/api/academy/programs')) as ({ id: string; institution_id: string; monthly_tuition: number } & Record<string, unknown>)[]
+  const program = programs.find((p) => p.id === item!.program_id)
+  expect(program, '담당자 목록의 초안 프로그램').toBeTruthy()
+  return { staff, program: program! }
+}
+
+async function planStatus(app: App, parent: string, id: string): Promise<string | undefined> {
+  return ((await call(app, parent, 'GET', '/api/plans')) as PlanBody[]).find((p) => p.id === id)?.status
+}
+
+async function confirmDraft(screen: Screen) {
+  await screen.getByRole('button', '일정 확정').tap()
+  await screen.getByRole('dialog', '이 일정으로 확정할까요?').getByRole('button', '일정 확정').tap()
+}
+
+test('#8 회귀 확정 409: 초안을 만든 뒤 교습비가 올라 예산을 넘으면 예산 초과 금액이 보이고 확정이 막힌다', async ({ app, screen }) => {
+  const parent = await signIn(app, 'parent1')
+  const draft = await latestDraft(app, parent)
+  const { staff, program } = await draftProgramWithStaff(app, draft)
+  // Raise the tuition so the current total ends exactly 10,000원 over the cap; amounts come from the API.
+  const raise = draft.budget_cap - draft.monthly_total + 10_000
+  expect(raise).toBeGreaterThan(0)
+  const { id, institution_id: _institution, ...fields } = program
+  await call(app, staff, 'PUT', `/api/academy/programs/${id}`, { ...fields, monthly_tuition: program.monthly_tuition + raise })
+  await expect(screen.getByRole('button', '일정 확정')).toBeEnabled()
+
+  await confirmDraft(screen)
+
+  await expect(screen.getByText('예산 초과 10,000원')).toBeVisible({ timeout: 15_000 })
+  await expect(screen.getByRole('button', '일정 확정')).toBeDisabled()
+  await expect(screen.getByText('겹치는 수업이 있어요. 바꾸거나 빼 주세요')).toHaveCount(0)
+  expect(await planStatus(app, parent, draft.id)).toBe('draft')
+})
+
+test('#8 회귀 확정 422: 초안을 만든 뒤 프로그램이 삭제되면 그 칸에 신청 불가가 보이고 확정이 막힌다', async ({ app, screen }) => {
+  const parent = await signIn(app, 'parent1')
+  const draft = await latestDraft(app, parent)
+  const { staff, program } = await draftProgramWithStaff(app, draft)
+  const response = await fetch(new URL(`/api/academy/programs/${program.id}`, app.baseUrl), { method: 'DELETE', headers: { cookie: staff } })
+  expect(response.status).toBe(204)
+  await expect(screen.getByRole('button', '일정 확정')).toBeEnabled()
+
+  await confirmDraft(screen)
+
+  await expect(screen.getByText('신청할 수 없게 된 수업이 있어요. 바꾸거나 빼 주세요')).toBeVisible({ timeout: 15_000 })
+  await expect(screen.getByRole('button', '일정 확정')).toBeDisabled()
+  const gone = draft.items.find((i) => i.program_id === program.id)!
+  const cells = (await week(screen)).flatMap((d) => d.classes).filter((c) => c.subject === gone.subject && c.text.includes(gone.institution_name) && c.start === gone.start)
+  expect(cells.length).toBeGreaterThan(0)
+  for (const c of cells) expect(c.text).toContain('신청 불가')
+  expect(await planStatus(app, parent, draft.id)).toBe('draft')
+})
