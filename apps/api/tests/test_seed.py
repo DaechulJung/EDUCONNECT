@@ -187,11 +187,14 @@ def test_ac_11_4_reset_command_removes_test_data(sync_db) -> None:
 
 def test_seed_command_refuses_a_seeded_database_and_an_empty_password(tmp_path: Path) -> None:
     def run(password: str) -> subprocess.CompletedProcess[str]:
-        # Outside apps/api, so a developer's .env cannot fill the empty SEED_PASSWORD back in
+        # Outside apps/api, so a developer's .env cannot fill the empty SEED_PASSWORD back in.
+        # The .env DB_PORT is not read there either, so pass the test database address explicitly.
+        env = {"SEED_PASSWORD": password, "PYTHONPATH": str(API_DIR)}
+        env |= {"DATABASE_URL": load.settings.database_url, "REDIS_URL": load.settings.redis_url}
         return subprocess.run(
             [sys.executable, "-m", "app.seed"],
             cwd=tmp_path,
-            env=os.environ | {"SEED_PASSWORD": password, "PYTHONPATH": str(API_DIR)},
+            env=os.environ | env,
             capture_output=True,
             text=True,
         )
