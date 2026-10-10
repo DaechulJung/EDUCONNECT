@@ -1,0 +1,90 @@
+/* 예시 화면 전용 꾸밈 — 공통 컴포넌트는 tokens/kds-components.css 에 있음.
+   여기는 이 예시들에만 쓰는 장식(쿠폰·바코드·요금제 카드 배치 등). KDS 토큰만 사용. */
+
+.muted  { color: var(--text-secondary-01); }
+.hint   { color: var(--text-tertiary-01); }
+.critical { color: var(--text-feedback-critical-01); }
+.em { color: var(--text-feedback-critical-02); }
+.stack  { display: flex; flex-direction: column; }
+.row    { display: flex; align-items: center; }
+.strike { text-decoration: line-through; color: var(--text-disabled-01); }
+
+/* 모바일 화면 틀 (데스크톱에서 열어도 폰 폭으로 보이게) */
+.mo-frame {
+  max-width: 480px; min-height: 100dvh; margin-inline: auto;
+  background: var(--background-default);
+  display: flex; flex-direction: column;
+}
+
+/* ── 업무형 (요금납부 시안) ── */
+.text-link { display: inline-flex; align-items: center; gap: var(--space-2); align-self: flex-end; color: var(--text-primary); text-decoration: none; }
+.sep { display: inline-block; width: 1px; height: 10px; margin-inline: var(--space-6); background: var(--border-secondary-01); vertical-align: middle; }
+.promo {
+  display: flex; align-items: center; gap: var(--space-8);
+  min-height: 50px; padding: var(--space-12) var(--space-16);
+  border-radius: var(--radius-12); background: var(--surface-primary-02);
+  color: var(--text-primary); text-decoration: none;
+}
+.promo .kds-icon:last-child { margin-left: auto; }
+.coin { width: 16px; height: 16px; border-radius: var(--radius-circle); background: var(--graphic-yellow-main); }
+.notes { margin: 0; padding-left: var(--space-16); color: var(--text-secondary-01); display: flex; flex-direction: column; gap: var(--space-4); }
+.radio-row { display: flex; align-items: center; gap: var(--space-12); min-height: 48px; cursor: pointer; }
+.radio-row input { appearance: none; margin: 0; width: 20px; height: 20px; border-radius: var(--radius-circle); border: 1.5px solid var(--border-primary-01); flex: none; }
+.radio-row input:checked { border: 6px solid var(--fill-primary); }
+.radio-row .kds-icon:last-child { margin-left: auto; color: var(--icon-secondary-01); }
+.group-title { padding-top: var(--space-8); }
+
+/* ── 피드형 (혜택 탭 시안, data-mode="agent") ── */
+.feed-top { display: flex; align-items: center; height: 52px; padding-inline: var(--margin-platform) var(--space-8); }
+.feed-top h1 { margin: 0; }
+.feed-top .kds-topnav__actions { margin-left: auto; display: flex; }
+.feed-top .kds-icon-button { width: 36px; }
+.feed { display: flex; flex-direction: column; padding-bottom: var(--space-24); }
+.kds-feed-card.tile--list { padding: var(--space-12) var(--space-20); gap: 0; }
+.tag-vvip { display: inline-flex; align-items: center; min-height: 20px; padding: var(--space-2) var(--space-6); border-radius: var(--radius-4); background: var(--tag-membership-fill-vvip); color: var(--tag-membership-text-inverse); }
+.barcode {
+  height: 58px;
+  background: repeating-linear-gradient(90deg,
+    var(--fill-primary) 0 3px, transparent 3px 5px, var(--fill-primary) 5px 6px, transparent 6px 9px,
+    var(--fill-primary) 9px 13px, transparent 13px 15px, var(--fill-primary) 15px 16px, transparent 16px 19px);
+}
+.logo-row { display: flex; align-items: center; gap: var(--space-12); min-height: 65px; }
+.logo-row p { margin: 0; }
+.logo-mark { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: var(--radius-8); color: var(--static-white); }
+.logo-mark--red { background: var(--graphic-red-main); }
+.logo-mark--yellow { background: var(--graphic-yellow-main); }
+.logo-mark--purple { background: var(--graphic-purple-main); }
+.ai-line { display: flex; align-items: center; gap: var(--space-8); padding: var(--space-4) var(--space-8); color: var(--text-secondary-01); text-decoration: none; }
+.ai-line .kds-icon:last-child { margin-left: auto; color: var(--icon-tertiary-01); }
+.kds-ai-pill { margin: var(--space-8) auto 0; }
+.coupon { flex: none; width: 144px; background: var(--surface-primary-02); border-radius: var(--radius-16); display: flex; flex-direction: column; }
+.coupon__body { padding: var(--space-12); display: flex; flex-direction: column; gap: var(--space-4); }
+.coupon__body p { margin: 0; }
+.coupon__icon { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: var(--radius-12); margin-bottom: var(--space-8); }
+.coupon__icon--blue { background: var(--graphic-blue-sub-light); color: var(--graphic-blue-main); }
+.coupon__icon--teal { background: var(--graphic-teal-sub-light); color: var(--graphic-teal-main); }
+.coupon__icon--purple { background: var(--graphic-purple-sub-light); color: var(--graphic-purple-main); }
+.coupon__foot { margin: 0 var(--space-8); padding: var(--space-10) 0; border: 0; border-top: 1px dashed var(--border-secondary-01); background: none; color: var(--text-secondary-01); cursor: pointer; }
+.deal { display: flex; gap: var(--space-12); padding: var(--space-12); }
+.deal__img { flex: none; width: 117px; height: 128px; border-radius: var(--radius-12); background: var(--graphic-yellow-sub-light); color: var(--graphic-yellow-main); display: flex; align-items: center; justify-content: center; }
+.deal p { margin: 0; }
+.dock-area { position: sticky; bottom: 0; margin-top: auto; }
+.dock-area .kds-bottomnav { position: static; }
+.home-indicator { height: 34px; background: var(--surface-primary-02); display: flex; align-items: flex-end; justify-content: center; padding-bottom: var(--space-8); }
+.home-indicator::after { content: ""; width: 139px; height: 5px; border-radius: var(--radius-circle); background: var(--fill-primary); }
+
+/* ── PC (요금제 목록) ── */
+.pc-main { padding-bottom: var(--space-80); }
+.pc-main h1, .pc-main h2, .pc-main h3, .pc-main p { margin: 0; }
+.page-head { padding: var(--space-32) 0 var(--space-24); }
+.pc-main .kds-chips { gap: var(--space-8); margin-bottom: var(--space-32); }
+.plan-grid { row-gap: var(--space-24); }
+.plan-grid .kds-card { grid-column: span 4; }
+.plan-grid .kds-card .kds-button { margin-top: auto; }
+.plan-price { display: flex; align-items: baseline; gap: var(--space-4); padding-top: var(--space-12); }
+.plan-spec { list-style: none; margin: 0; padding: var(--space-12) 0 var(--space-24); display: flex; flex-direction: column; gap: var(--space-8); border-top: var(--stroke-border) solid var(--border-secondary-01); }
+.plan-spec li { display: flex; justify-content: space-between; }
+.band { margin-top: var(--space-48); padding: var(--space-32); border-radius: var(--radius-12); background: var(--surface-primary-02); display: flex; align-items: center; justify-content: space-between; gap: var(--space-24); }
+@media (max-width: 767px) {
+  .band { flex-direction: column; align-items: flex-start; }
+}

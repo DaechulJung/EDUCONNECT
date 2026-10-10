@@ -1,0 +1,76 @@
+name: CI
+
+# Runs on PRs into main, so it checks the merged result before it lands.
+# Documents committed straight to main do not start it.
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run lint -w web
+      - run: npm run typecheck -w web
+      - run: npm run test -w web
+      - run: npm run build -w web
+
+  api:
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: pgvector/pgvector:0.8.7-pg18-trixie
+        env:
+          POSTGRES_USER: app
+          POSTGRES_PASSWORD: app
+          POSTGRES_DB: app
+        ports: ["15432:5432"] # same host ports as compose.yml, so the app defaults work
+        options: --health-cmd "pg_isready -U app" --health-interval 2s --health-retries 30
+      redis:
+        image: redis:8.10-alpine
+        ports: ["16379:6379"]
+        options: --health-cmd "redis-cli ping" --health-interval 2s --health-retries 30
+    defaults:
+      run:
+        working-directory: apps/api
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.2.0 # no floating major tags after v7, so pin the release
+      - run: uv sync --locked
+      - run: uv run ruff check
+      - run: uv run ruff format --check
+      - run: uv run alembic upgrade head
+      - run: uv run pytest
+
+  e2e:
+    # The whole app in Docker, then every browser test (tests/*.e2e.ts): the regression run for all Issues together.
+    runs-on: ubuntu-latest
+    env:
+      E2E_TELEMETRY_DISABLED: 1
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx @e2e-dev/web install chromium --with-deps
+      - run: docker compose up --build --wait
+      - run: npx e2e run --exclude-tag ai # tests tagged ai need a model key: run them locally before submitting
+      - if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: e2e
+          path: .e2e/
+          if-no-files-found: ignore

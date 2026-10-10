@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KDS 2.0 예시 — 모바일 납부 방법 선택</title>
+  <link rel="stylesheet" href="../tokens/kds-tokens.css">
+  <link rel="stylesheet" href="../tokens/kds-base.css">
+  <link rel="stylesheet" href="../tokens/kds-components.css">
+  <link rel="stylesheet" href="examples.css">
+</head>
+<body>
+  <!-- 요금납부 > 납부 방법 선택 (KDS 2.0 디자인 시안 기준 예시)
+       · 라디오 목록 + 그룹 제목 + 얇은 구분선, 섹션 사이는 8px 회색 띠
+       · 하단 CTA: 풀 와이드 검정 1개 -->
+  <div class="mo-frame">
+    <header class="kds-topnav">
+      <button class="kds-topnav__brand" aria-label="서비스 선택">
+        <img src="../images/logo_kt.svg" alt="KT">
+        <span class="kds-icon kds-icon--16" style="--icon: url(../icons/ic-line-chevron_down.svg)" aria-hidden="true"></span>
+      </button>
+      <div class="kds-topnav__actions">
+        <button class="kds-icon-button" aria-label="검색"><span class="kds-icon" style="--icon: url(../icons/ic-line-search.svg)" aria-hidden="true"></span></button>
+        <button class="kds-icon-button" aria-label="전체 메뉴"><span class="kds-icon" style="--icon: url(../icons/ic-line-menu.svg)" aria-hidden="true"></span></button>
+      </div>
+    </header>
+
+    <div class="kds-info-band body-small-medium">
+      <span>모바일</span><span>010-12**-*678</span>
+    </div>
+
+    <main>
+      <section class="kds-section">
+        <div class="kds-kv">
+          <h1 class="body-small-bold">지금 납부하실 금액</h1>
+          <p class="heading-medium-bold">284,990원</p>
+        </div>
+      </section>
+
+      <hr class="kds-divider-band">
+
+      <form class="kds-section" aria-labelledby="method-title">
+        <h2 id="method-title" class="body-medium-bold">어떤 방법으로 낼까요?</h2>
+
+        <div class="stack">
+          <h3 class="body-small-bold group-title">간편결제</h3>
+          <label class="radio-row body-small-semibold"><input type="radio" name="pay" checked> 카카오페이
+            <span class="kds-icon kds-icon--20" style="--icon: url(../icons/ic-line-chevron_up.svg)" aria-hidden="true"></span></label>
+          <ul class="notes caption-medium-medium" style="padding: var(--space-12) var(--space-16) var(--space-12) var(--space-32); background: var(--surface-primary-02); border-radius: var(--radius-8)">
+            <li>카카오톡 또는 카카오페이 앱을 먼저 설치한 후 이용해 주세요.</li>
+            <li>카카오페이 머니·포인트로만 납부할 수 있어요.</li>
+          </ul>
+          <label class="radio-row body-small-semibold"><input type="radio" name="pay"> 토스페이
+            <span class="kds-icon kds-icon--20" style="--icon: url(../icons/ic-line-chevron_down.svg)" aria-hidden="true"></span></label>
+          <label class="radio-row body-small-semibold"><input type="radio" name="pay"> 페이코
+            <span class="kds-icon kds-icon--20" style="--icon: url(../icons/ic-line-chevron_down.svg)" aria-hidden="true"></span></label>
+        </div>
+
+        <hr class="kds-divider">
+
+        <div class="stack">
+          <h3 class="body-small-bold group-title">계좌/지로(가상계좌) 납부</h3>
+          <label class="radio-row body-small-semibold"><input type="radio" name="pay"> 간편계좌이체
+            <span class="kds-icon kds-icon--20" style="--icon: url(../icons/ic-line-chevron_down.svg)" aria-hidden="true"></span></label>
+          <label class="radio-row body-small-semibold"><input type="radio" name="pay"> 실시간 계좌이체
+            <span class="kds-icon kds-icon--20" style="--icon: url(../icons/ic-line-chevron_down.svg)" aria-hidden="true"></span></label>
+          <label class="radio-row body-small-semibold"><input type="radio" name="pay"> 가상계좌 납부
+            <span class="kds-icon kds-icon--20" style="--icon: url(../icons/ic-line-chevron_down.svg)" aria-hidden="true"></span></label>
+        </div>
+
+        <hr class="kds-divider">
+
+        <div class="stack">
+          <h3 class="body-small-bold group-title">카드 납부</h3>
+          <label class="radio-row body-small-semibold"><input type="radio" name="pay"> 신용/체크카드 납부
+            <span class="kds-icon kds-icon--20" style="--icon: url(../icons/ic-line-chevron_down.svg)" aria-hidden="true"></span></label>
+        </div>
+      </form>
+
+      <hr class="kds-divider-band">
+
+      <ul class="kds-list body-small-medium">
+        <li><a href="#">요금 납부 안내<span class="kds-icon kds-icon--20" style="--icon: url(../icons/ic-line-chevron_right.svg)" aria-hidden="true"></span></a></li>
+        <li><a href="#">납부 수단별 안내<span class="kds-icon kds-icon--20" style="--icon: url(../icons/ic-line-chevron_right.svg)" aria-hidden="true"></span></a></li>
+      </ul>
+    </main>
+
+    <div class="kds-cta-bar">
+      <button class="kds-button kds-button--primary kds-button--large label-medium-semibold">선택한 납부 방법으로 납부</button>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ko" data-platform="desktop">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PC 화면 템플릿</title>
+  <link rel="stylesheet" href="../tokens/kds-tokens.css">
+  <link rel="stylesheet" href="../tokens/kds-base.css">
+  <link rel="stylesheet" href="../tokens/kds-components.css">
+  <style>
+    .page-head { padding: var(--space-32) 0 var(--space-24); display: flex; flex-direction: column; gap: var(--space-8); }
+    .page-head h1, .page-head p { margin: 0; }
+    .cards { row-gap: var(--space-24); }
+    .cards > .kds-card { grid-column: span 4; }
+    .cards > .kds-card > .kds-button:last-child { margin-top: auto; }
+  </style>
+</head>
+<body>
+  <!-- PC 템플릿 (1280px 이상): GNB → (Breadcrumb) → 1080 콘텐츠 → Footer
+       PC에는 모바일 전용(TopNavigation·BottomNavigation·BottomSheet)을 쓰지 않는다 -->
+  <header class="kds-gnb">
+    <div class="kds-container kds-gnb__inner">
+      <img class="kds-gnb__logo" src="../images/logo_kt.svg" alt="KT">
+      <nav aria-label="주요 메뉴">
+        <ul class="kds-gnb__menu">
+          <li><a href="#" aria-current="page">메뉴 1</a></li>
+          <li><a href="#">메뉴 2</a></li>
+          <li><a href="#">메뉴 3</a></li>
+        </ul>
+      </nav>
+      <div class="kds-gnb__actions">
+        <button class="kds-icon-button" aria-label="검색"><span class="kds-icon" style="--icon: url(../icons/ic-line-search.svg)" aria-hidden="true"></span></button>
+        <button class="kds-button kds-button--small">로그인</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="kds-container">
+    <ol class="kds-breadcrumb"><li><a href="#">홈</a></li><li>›</li><li aria-current="page">현재 페이지</li></ol>
+
+    <div class="page-head">
+      <h1 class="display-medium-bold">페이지 제목</h1>
+      <p class="body-large-medium" style="color: var(--text-secondary-01)">한 줄 설명</p>
+    </div>
+
+    <div class="kds-chips" style="margin-bottom: var(--space-32)">
+      <button class="kds-chip" aria-pressed="true">전체</button>
+      <button class="kds-chip">분류 1</button>
+      <button class="kds-chip">분류 2</button>
+    </div>
+
+    <div class="kds-grid cards">
+      <article class="kds-card">
+        <span class="kds-tag kds-tag--info" style="align-self: flex-start">태그</span>
+        <h2 class="title-large-bold">카드 제목</h2>
+        <div class="kds-kv body-medium-medium"><span class="kds-kv__label">항목</span><span class="kds-kv__value">값</span></div>
+        <button class="kds-button kds-button--tertiary kds-button--full">자세히 보기</button>
+      </article>
+      <article class="kds-card">
+        <h2 class="title-large-bold">카드 제목</h2>
+        <div class="kds-kv body-medium-medium"><span class="kds-kv__label">항목</span><span class="kds-kv__value">값</span></div>
+        <button class="kds-button kds-button--tertiary kds-button--full">자세히 보기</button>
+      </article>
+      <article class="kds-card">
+        <h2 class="title-large-bold">카드 제목</h2>
+        <div class="kds-kv body-medium-medium"><span class="kds-kv__label">항목</span><span class="kds-kv__value">값</span></div>
+        <button class="kds-button kds-button--tertiary kds-button--full">자세히 보기</button>
+      </article>
+    </div>
+
+    <div class="kds-pagination"><button aria-current="page">1</button><button>2</button><button>3</button></div>
+  </main>
+
+  <footer class="kds-footer"><div class="kds-container">© KT Corp.</div></footer>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ko" data-platform="desktop">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PC 관리 화면 템플릿</title>
+  <link rel="stylesheet" href="../tokens/kds-tokens.css">
+  <link rel="stylesheet" href="../tokens/kds-base.css">
+  <link rel="stylesheet" href="../tokens/kds-components.css">
+  <script src="../tokens/kds-datepicker.js" defer></script>
+  <style>
+    .page-head { padding: var(--space-32) 0 var(--space-24); }
+    .page-head h1 { margin: 0; }
+    .stack { display: flex; flex-direction: column; gap: var(--space-24); }
+    .summary { row-gap: var(--space-16); }
+    .summary > .kds-card { grid-column: span 3; gap: var(--space-4); }
+    .filters { display: grid; grid-template-columns: 2fr 3fr 1fr; gap: var(--space-12); align-items: end; }
+    .chart-card { gap: var(--space-16); }
+    .chart-card__head { display: flex; justify-content: space-between; align-items: center; }
+    .chart-card__head .kds-select { width: auto; min-height: 40px; }
+    .bars { display: flex; align-items: flex-end; justify-content: space-around; height: 160px; padding-inline: var(--space-8); border-bottom: var(--stroke-border) solid var(--border-secondary-01); }
+    .bars > span { width: var(--space-32); height: var(--value); border-radius: var(--radius-4) var(--radius-4) 0 0; background: var(--data-visual-default-teal); }
+    .bars > span.is-strong { background: var(--data-visual-strong-teal); }
+    .bars-x { display: flex; justify-content: space-around; padding-inline: var(--space-8); font-size: var(--font-size-12); color: var(--text-tertiary-01); }
+    .bars-x > span { width: var(--space-32); text-align: center; white-space: nowrap; }
+    .legend { display: flex; gap: var(--space-16); font-size: var(--font-size-12); color: var(--text-secondary-01); }
+    .legend i { display: inline-block; width: 8px; height: 8px; margin-right: var(--space-4); border-radius: var(--radius-circle); background: var(--data-visual-default-teal); }
+    .slots { display: flex; gap: var(--space-2); }
+    .slots > span { flex: 1; height: 8px; border-radius: var(--radius-4); background: var(--fill-secondary-01); }
+    .slots > span.is-on { background: var(--data-visual-default-teal); }
+  </style>
+</head>
+<body>
+  <!-- PC 관리 화면 템플릿: 요약 숫자 → 필터(검색·기간·선택 상자) → 표 → 페이지네이션, 차트 카드, 시간 선택
+       표는 kds-table, 날짜는 kds-datepicker, 차트·점유 표시는 teal(--data-visual-*) -->
+  <header class="kds-gnb"><div class="kds-container kds-gnb__inner">
+    <img class="kds-gnb__logo" src="../images/logo_kt.svg" alt="KT">
+    <nav><ul class="kds-gnb__menu"><li><a href="#" aria-current="page">문의 관리</a></li><li><a href="#">통계</a></li><li><a href="#">설정</a></li></ul></nav>
+    <div class="kds-gnb__actions"><button class="kds-icon-button" aria-label="내 정보"><span class="kds-icon" style="--icon:url(../icons/ic-line-my.svg)" aria-hidden="true"></span></button></div>
+  </div></header>
+
+  <main class="kds-container stack">
+    <ol class="kds-breadcrumb"><li><a href="#">관리자</a></li><li aria-hidden="true">›</li><li aria-current="page">문의 관리</li></ol>
+    <div class="page-head"><h1 class="display-medium-bold font-brand">문의 관리</h1></div>
+
+    <section class="kds-grid summary" aria-label="처리 현황">
+      <div class="kds-card kds-card--filled"><span class="body-medium-medium">전체</span><strong class="heading-medium-bold">57</strong></div>
+      <div class="kds-card kds-card--filled"><span class="body-medium-medium">접수</span><strong class="heading-medium-bold">25</strong></div>
+      <div class="kds-card kds-card--filled"><span class="body-medium-medium">처리 중</span><strong class="heading-medium-bold">16</strong></div>
+      <div class="kds-card kds-card--filled"><span class="body-medium-medium">답변 완료</span><strong class="heading-medium-bold">16</strong></div>
+    </section>
+
+    <div class="filters">
+      <form class="kds-search" role="search"><input placeholder="제목·고객명 검색"><button class="kds-icon-button" aria-label="검색"><span class="kds-icon" style="--icon:url(../icons/ic-line-search.svg)" aria-hidden="true"></span></button></form>
+      <div class="kds-date-range">
+        <span class="kds-datepicker"><input class="kds-field__input" placeholder="시작일" readonly aria-label="시작일"></span>
+        <span aria-hidden="true">~</span>
+        <span class="kds-datepicker"><input class="kds-field__input" placeholder="종료일" readonly aria-label="종료일"></span>
+      </div>
+      <select class="kds-field__input kds-select" aria-label="상태"><option>전체 상태</option><option>접수</option><option>처리 중</option><option>답변 완료</option></select>
+    </div>
+
+    <div>
+      <p class="kds-result-count">조회결과 <b>57</b>개</p>
+    <div class="kds-table-wrap">
+      <table class="kds-table">
+        <colgroup><col style="width:88px"><col style="width:88px"><col><col style="width:96px"><col style="width:112px"><col style="width:104px"></colgroup>
+        <thead><tr><th>번호</th><th>유형</th><th>제목</th><th>고객명</th><th>접수일</th><th>상태</th></tr></thead>
+        <tbody>
+          <tr aria-selected="true"><td>1057</td><td>요금</td><td>청구 금액이 평소보다 많이 나왔어요</td><td>김민수</td><td>2026.10.06</td><td><span class="kds-tag kds-tag--info">접수</span></td></tr>
+          <tr aria-selected="false"><td>1056</td><td>장애</td><td>인터넷 속도가 느려요</td><td>최유진</td><td>2026.10.06</td><td><span class="kds-tag kds-tag--progress">처리 중</span></td></tr>
+          <tr aria-selected="false"><td>1055</td><td>서비스</td><td>명의 변경 절차 문의</td><td>조수아</td><td>2026.10.05</td><td><span class="kds-tag kds-tag--positive">답변 완료</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    </div>
+    <nav class="kds-pagination" aria-label="페이지"><button aria-current="page">1</button><button>2</button><button>3</button></nav>
+
+    <section class="kds-card chart-card" aria-labelledby="chart-title">
+      <div class="chart-card__head"><h2 class="title-large-bold" id="chart-title" style="margin:0">월별 문의 수</h2>
+        <select class="kds-field__input kds-select" aria-label="기간"><option>최근 6개월</option><option>최근 1년</option></select></div>
+      <div class="bars" role="img" aria-label="5월 32건, 6월 48건, 7월 40건, 8월 64건, 9월 56건, 10월 80건">
+        <span style="--value:40%"></span><span style="--value:60%"></span><span style="--value:50%"></span><span style="--value:80%"></span><span style="--value:70%"></span><span class="is-strong" style="--value:100%"></span>
+      </div>
+      <div class="bars-x"><span>5월</span><span>6월</span><span>7월</span><span>8월</span><span>9월</span><span>10월</span></div>
+      <div class="legend"><span><i></i>문의 수</span></div>
+    </section>
+
+    <section class="kds-card" aria-labelledby="slot-title">
+      <h2 class="title-large-bold" id="slot-title" style="margin:0">상담 예약 시간</h2>
+      <div class="slots" aria-label="09시~18시 예약 현황"><span class="is-on"></span><span class="is-on"></span><span></span><span class="is-on"></span><span></span><span></span><span class="is-on"></span><span></span><span></span></div>
+      <div class="kds-time-buttons">
+        <button class="kds-time-button" disabled>09:00</button><button class="kds-time-button" disabled>10:00</button>
+        <button class="kds-time-button" aria-pressed="true">11:00</button><button class="kds-time-button" disabled>12:00</button>
+        <button class="kds-time-button" aria-pressed="false">13:00</button><button class="kds-time-button" aria-pressed="false">14:00</button>
+      </div>
+    </section>
+  </main>
+  <footer class="kds-footer"><div class="kds-container">© KT Corp.</div></footer>
+</body>
+</html>

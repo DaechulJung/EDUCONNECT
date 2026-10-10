@@ -1,0 +1,186 @@
+/**
+ * KDS 2.0 기본 스타일 — kds-tokens.css 다음에 불러오세요.
+ *
+ *   <link rel="stylesheet" href="tokens/kds-tokens.css">
+ *   <link rel="stylesheet" href="tokens/kds-base.css">
+ *
+ * 들어있는 것
+ *   1. 폰트 (Pretendard, KT Flow — KT Flow는 해커톤 참가자 전용, 외부 공유 금지)
+ *   2. 개발 스토리북 이름 별칭 — 실제 KDS 2.0 패키지와 같은 CSS 변수 이름도 쓸 수 있게
+ *   3. 문서 기본값 (body 배경·글꼴·글자색)
+ *   4. 타이포 클래스 (.title-large-bold 등, 스토리북과 같은 이름)
+ *   5. 레이아웃 도우미 (.kds-container, .kds-grid)
+ *
+ * 모드 전환: <html data-mode="agent|dark|dark-agent">  (기본 = light)
+ * PC 여백:  <html data-platform="desktop|tablet">       (기본 = mobile)
+ */
+
+/* ── 1. 폰트 ───────────────────────────────────────────── */
+@font-face { font-family: "Pretendard"; font-weight: 400; font-display: swap; src: local("Pretendard Regular"), url(../fonts/web/Pretendard-Regular.woff2) format("woff2"); }
+@font-face { font-family: "Pretendard"; font-weight: 500; font-display: swap; src: local("Pretendard Medium"), url(../fonts/web/Pretendard-Medium.woff2) format("woff2"); }
+@font-face { font-family: "Pretendard"; font-weight: 600; font-display: swap; src: local("Pretendard SemiBold"), url(../fonts/web/Pretendard-SemiBold.woff2) format("woff2"); }
+@font-face { font-family: "Pretendard"; font-weight: 700; font-display: swap; src: local("Pretendard Bold"), url(../fonts/web/Pretendard-Bold.woff2) format("woff2"); }
+@font-face { font-family: "KT Flow"; font-weight: 500; font-display: swap; src: local("KTFLOW Medium"), url(../fonts/web/KTFLOW-MEDIUM.woff2) format("woff2"); }
+@font-face { font-family: "KT Flow"; font-weight: 700; font-display: swap; src: local("KTFLOW Bold"), url(../fonts/web/KTFLOW-BOLD.woff2) format("woff2"); }
+
+/* ── 2. 개발 스토리북 이름 별칭 ────────────────────────── */
+:root {
+  --font-family-default: "Pretendard", system-ui, -apple-system, "Apple SD Gothic Neo", sans-serif;
+  --font-family-brand: "KT Flow", "Pretendard", system-ui, -apple-system, sans-serif;
+
+  --line-height-default-148: 148%;
+  --line-height-reading-170: 170%;
+  --line-height-reading-158: 158%;
+  --line-height-reading-130: 130%;
+  --letter-spacing-default: 0;
+  --letter-spacing-tight: -0.01em;
+
+  --link-primary: var(--link-link-primary);
+  --link-primary-hover: var(--link-link-primary-hover);
+  --link-primary-pressed: var(--link-link-primary-pressed);
+
+  --space-0: 0;
+  --space-1: 1px;
+  --space-3: 3px;
+  --space-28: 28px;
+
+  --elevation-level-0-fill: var(--elevation-level-0);
+  --elevation-level-1-fill: var(--elevation-level-1);
+  --elevation-level-2-fill: var(--elevation-level-2);
+  --elevation-level-3-fill: var(--elevation-level-3);
+  --elevation-level-4-fill: var(--elevation-level-4);
+  --elevation-level-2-box-shadow: var(--shadow-1);
+  --elevation-level-3-box-shadow: var(--shadow-2);
+  --elevation-level-4-box-shadow: var(--shadow-3);
+
+  /* PC 콘텐츠 최대 폭 (브레이크포인트 아님) */
+  --container-max-width: 1080px;
+}
+
+/* ── 3. 문서 기본값 ────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--background-default);
+  color: var(--text-primary);
+  font-family: var(--font-family-default);
+  font-size: var(--font-size-15);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-default);
+  letter-spacing: var(--letter-spacing-default);
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--link-primary); }
+button, input, select, textarea { font: inherit; color: inherit; }
+img, svg { display: block; max-width: 100%; }
+
+/* ── 4. 타이포 클래스 (스토리북 Typography 기준) ───────── */
+/* display·heading·title 은 브랜드 서체(KT Flow)를 쓸 수 있는 유일한 단계.
+   .font-brand 를 함께 붙였을 때만 KT Flow, 기본은 Pretendard. */
+.display-xlarge-medium   { font-size: var(--font-size-60); font-weight: 500; line-height: 130%; letter-spacing: var(--letter-spacing-tight); }
+.display-xlarge-bold     { font-size: var(--font-size-60); font-weight: 700; line-height: 130%; letter-spacing: var(--letter-spacing-tight); }
+.display-large-medium    { font-size: var(--font-size-40); font-weight: 500; line-height: 130%; letter-spacing: var(--letter-spacing-tight); }
+.display-large-bold      { font-size: var(--font-size-40); font-weight: 700; line-height: 130%; letter-spacing: var(--letter-spacing-tight); }
+.display-medium-medium   { font-size: var(--font-size-36); font-weight: 500; line-height: 148%; }
+.display-medium-bold     { font-size: var(--font-size-36); font-weight: 700; line-height: 148%; }
+
+.heading-large-medium    { font-size: var(--font-size-32); font-weight: 500; line-height: 148%; }
+.heading-large-bold      { font-size: var(--font-size-32); font-weight: 700; line-height: 148%; }
+.heading-medium-medium   { font-size: var(--font-size-24); font-weight: 500; line-height: 148%; }
+.heading-medium-bold     { font-size: var(--font-size-24); font-weight: 700; line-height: 148%; }
+.heading-small-medium    { font-size: var(--font-size-22); font-weight: 500; line-height: 148%; }
+.heading-small-bold      { font-size: var(--font-size-22); font-weight: 700; line-height: 148%; }
+
+.title-large-medium      { font-size: var(--font-size-20); font-weight: 500; line-height: 148%; }
+.title-large-bold        { font-size: var(--font-size-20); font-weight: 700; line-height: 148%; }
+.title-medium-medium     { font-size: var(--font-size-18); font-weight: 500; line-height: 148%; }
+.title-medium-semibold   { font-size: var(--font-size-18); font-weight: 600; line-height: 148%; }
+.title-medium-bold       { font-size: var(--font-size-18); font-weight: 700; line-height: 148%; }
+.title-small-semibold    { font-size: var(--font-size-16); font-weight: 600; line-height: 148%; }
+.title-small-bold        { font-size: var(--font-size-16); font-weight: 700; line-height: 148%; }
+
+.label-large-medium      { font-size: var(--font-size-17); font-weight: 500; line-height: 148%; }
+.label-large-semibold    { font-size: var(--font-size-17); font-weight: 600; line-height: 148%; }
+.label-medium-semibold   { font-size: var(--font-size-15); font-weight: 600; line-height: 148%; }
+.label-small-medium      { font-size: var(--font-size-13); font-weight: 500; line-height: 148%; }
+.label-small-semibold    { font-size: var(--font-size-13); font-weight: 600; line-height: 148%; }
+.label-small-bold        { font-size: var(--font-size-13); font-weight: 700; line-height: 148%; }
+.label-xsmall-medium     { font-size: var(--font-size-10); font-weight: 500; line-height: normal; }
+.label-xsmall-semibold   { font-size: var(--font-size-10); font-weight: 600; line-height: normal; }
+.label-xsmall-bold       { font-size: var(--font-size-10); font-weight: 700; line-height: normal; }
+
+.body-large-medium       { font-size: var(--font-size-16); font-weight: 500; line-height: 148%; }
+.body-large-semibold     { font-size: var(--font-size-16); font-weight: 600; line-height: 148%; }
+.body-large-bold         { font-size: var(--font-size-16); font-weight: 700; line-height: 148%; }
+.body-reading-large-regular { font-size: var(--font-size-16); font-weight: 400; line-height: 170%; }
+.body-reading-large-bold    { font-size: var(--font-size-16); font-weight: 700; line-height: 170%; }
+.body-medium-medium      { font-size: var(--font-size-15); font-weight: 500; line-height: 148%; }
+.body-medium-semibold    { font-size: var(--font-size-15); font-weight: 600; line-height: 148%; }
+.body-medium-bold        { font-size: var(--font-size-15); font-weight: 700; line-height: 148%; }
+.body-reading-medium-regular { font-size: var(--font-size-15); font-weight: 400; line-height: 158%; }
+.body-reading-medium-bold    { font-size: var(--font-size-15); font-weight: 700; line-height: 158%; }
+.body-small-medium       { font-size: var(--font-size-14); font-weight: 500; line-height: 148%; }
+.body-small-semibold     { font-size: var(--font-size-14); font-weight: 600; line-height: 148%; }
+.body-small-bold         { font-size: var(--font-size-14); font-weight: 700; line-height: 148%; }
+.body-reading-small-regular { font-size: var(--font-size-14); font-weight: 400; line-height: 158%; }
+.body-reading-small-bold    { font-size: var(--font-size-14); font-weight: 700; line-height: 158%; }
+
+.caption-medium-medium   { font-size: var(--font-size-12); font-weight: 500; line-height: 148%; }
+.caption-medium-semibold { font-size: var(--font-size-12); font-weight: 600; line-height: 148%; }
+
+.font-brand { font-family: var(--font-family-brand); }
+
+
+/* ── 5. 레이아웃 도우미 ────────────────────────────────── */
+/* 모바일(~767): 좌우 20 / 4컬럼 / 거터 12
+   태블릿(768~1279): 좌우 20 / 8컬럼 / 거터 16 — 컴포넌트는 모바일 세트 사용
+   PC(1280~): 콘텐츠 1080 가운데 정렬 / 12컬럼 / 거터 24 — 컴포넌트는 PC 세트 사용 */
+.kds-container {
+  width: 100%;
+  max-width: calc(var(--container-max-width) + var(--margin-platform) * 2);
+  margin-inline: auto;
+  padding-inline: var(--margin-platform);
+}
+
+.kds-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: var(--gutter-platform);
+}
+
+@media (min-width: 768px) {
+  :root { --gutter-platform: var(--space-16); }
+  .kds-grid { grid-template-columns: repeat(8, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1280px) {
+  :root { --margin-platform: var(--space-24); --gutter-platform: var(--space-24); }
+  .kds-grid { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+}
+
+/* 아이콘 — SVG 파일을 마스크로 써서 글자색(currentColor)으로 칠한다
+   <span class="kds-icon" style="--icon: url(icons/ic-line-search.svg)" aria-hidden="true"></span>
+   색: color: var(--icon-primary)  /  크기: .kds-icon--20 · .kds-icon--16 */
+.kds-icon {
+  display: inline-block;
+  flex: none;
+  width: var(--icon-size-medium);
+  height: var(--icon-size-medium);
+  background-color: currentColor;
+  -webkit-mask: var(--icon) center / contain no-repeat;
+  mask: var(--icon) center / contain no-repeat;
+}
+.kds-icon--20 { width: var(--icon-size-small); height: var(--icon-size-small); }
+.kds-icon--16 { width: var(--icon-size-xsmall); height: var(--icon-size-xsmall); }
+/* 키트에 없는 아이콘을 Lucide SVG로 대신할 때 — 자리는 그대로 두고 그림만 22/24로 줄여 KDS 아이콘과 크기를 맞춘다
+   <span class="kds-icon kds-icon--lucide" style="--icon: url(icons/lucide/ticket.svg)" aria-hidden="true"></span> */
+.kds-icon--lucide { -webkit-mask-size: 91.667%; mask-size: 91.667%; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}

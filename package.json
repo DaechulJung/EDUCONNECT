@@ -1,0 +1,23 @@
+{
+  "name": "app",
+  "private": true,
+  "workspaces": ["apps/web"],
+  "scripts": {
+    "up": "docker compose up --build --wait",
+    "down": "docker compose down",
+    "infra": "docker compose up --wait db redis",
+    "migrate": "uv run --directory apps/api alembic upgrade head",
+    "dev:api": "uv run --directory apps/api uvicorn app.main:app --reload",
+    "dev:web": "npm run dev -w web",
+    "lint": "npm run lint -w web && uv run --directory apps/api ruff check && uv run --directory apps/api ruff format --check",
+    "typecheck": "npm run typecheck -w web",
+    "test": "npm run test -w web && uv run --directory apps/api pytest",
+    "build": "npm run build -w web",
+    "gen:api": "uv run --directory apps/api python -m app.export_openapi > apps/web/openapi.json && npm run gen:api -w web",
+    "check": "npm run infra && npm run migrate && npm run lint && npm run typecheck && npm test"
+  },
+  "devDependencies": {
+    "@e2e-dev/web": "^0.13.0",
+    "e2e": "^0.18.0"
+  }
+}

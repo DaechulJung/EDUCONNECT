@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ko" data-mode="agent">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KDS 2.0 예시 — 모바일 혜택</title>
+  <link rel="stylesheet" href="../tokens/kds-tokens.css">
+  <link rel="stylesheet" href="../tokens/kds-base.css">
+  <link rel="stylesheet" href="../tokens/kds-components.css">
+  <link rel="stylesheet" href="examples.css">
+</head>
+<body>
+  <!-- 혜택 탭 (KDS 2.0 디자인 시안 기준 예시) — 피드형 화면
+       · <html data-mode="agent">: 회색 바탕 + 흰 카드(radius 20·16), AI 추천 줄, 하단 AI 입력창 + Bottom Navigation
+       · 빨강은 글자 강조(등급 태그·횟수·할인율)에만. 버튼·큰 면에는 쓰지 않는다 -->
+  <div class="mo-frame">
+    <header class="feed-top">
+      <h1 class="title-medium-bold">홍길*님</h1>
+      <div class="kds-topnav__actions">
+        <button class="kds-icon-button" aria-label="멤버십 바코드"><span class="kds-icon" style="--icon: url(../icons/ic-line-barcode.svg)" aria-hidden="true"></span></button>
+        <button class="kds-icon-button" aria-label="알림, 새 알림 있음"><span class="kds-icon" style="--icon: url(../icons/ic-line-alarm_unread.svg)" aria-hidden="true"></span></button>
+        <button class="kds-icon-button" aria-label="검색"><span class="kds-icon" style="--icon: url(../icons/ic-line-search.svg)" aria-hidden="true"></span></button>
+      </div>
+    </header>
+
+    <main class="feed">
+      <p class="kds-ai-pill body-small-semibold">
+        <span class="kds-ai-mark" aria-hidden="true"></span>홍길*님이 놓친 혜택 발견했어요!
+        <span class="kds-icon kds-icon--16" style="--icon: url(../icons/ic-line-refresh.svg); color: var(--icon-secondary-01)" aria-hidden="true"></span>
+      </p>
+
+      <!-- 나의 멤버십 -->
+      <section class="kds-feed-section" aria-labelledby="my-title">
+        <h2 id="my-title" class="title-medium-bold">나의 멤버십 <span class="tag-vvip label-xsmall-semibold">VVIP</span></h2>
+        <div class="kds-feed-card stack" style="gap: var(--space-12)">
+          <div class="barcode" role="img" aria-label="멤버십 바코드"></div>
+          <p class="row body-small-medium hint" style="margin: 0; gap: var(--space-4)">2917 1025 2649 6343
+            <span class="kds-icon kds-icon--16" style="--icon: url(../icons/ic-line-duplicate.svg)" aria-hidden="true"></span></p>
+          <div class="kds-kv body-small-medium"><span class="hint">연간 누적 할인</span><span class="kds-kv__value body-large-semibold">138,500원<span class="kds-icon kds-icon--16" style="--icon: url(../icons/ic-line-chevron_right.svg)" aria-hidden="true"></span></span></div>
+          <hr class="kds-divider">
+          <div class="kds-kv body-small-medium"><span>VVIP <b class="em">9회</b> 남음 <span class="hint caption-medium-medium">3회 사용</span></span><span class="caption-medium-semibold">이번 달 이용 가능</span></div>
+        </div>
+      </section>
+
+      <!-- 나를 위한 멤버십 혜택 -->
+      <section class="kds-feed-section" aria-labelledby="for-me-title">
+        <h2 id="for-me-title" class="title-medium-bold">나를 위한 멤버십 혜택<span class="kds-icon kds-icon--20" style="--icon: url(../icons/ic-line-chevron_right.svg)" aria-hidden="true"></span></h2>
+        <div class="kds-feed-card tile--list">
+          <div class="logo-row"><span class="logo-mark logo-mark--red"><span class="kds-icon kds-icon--20" style="--icon: url(../icons/ic-fill-play.svg)" aria-hidden="true"></span></span>
+            <div><p class="body-medium-semibold">영화+팝콘 1회 무료</p><p class="caption-medium-medium hint">영화관 제휴</p></div></div>
+          <div class="logo-row"><span class="logo-mark logo-mark--yellow"><span class="kds-icon kds-icon--20" style="--icon: url(../icons/ic-fill-benefit.svg)" aria-hidden="true"></span></span>
+            <div><p class="body-medium-semibold">도넛 콤보 월 1회 무료</p><p class="caption-medium-medium hint">베이커리 제휴</p></div></div>
+          <div class="logo-row"><span class="logo-mark logo-mark--purple"><span class="kds-icon kds-icon--20" style="--icon: url(../icons/ic-fill-shopper_bag.svg)" aria-hidden="true"></span></span>
+            <div><p class="body-medium-semibold">커피 1잔 무료</p><p class="caption-medium-medium hint">카페 제휴</p></div></div>
+        </div>
+        <a class="ai-line body-small-medium" href="#"><span class="kds-ai-mark" aria-hidden="true"></span><span><span class="em">나에게 맞는</span> 멤버십 혜택 추천해줘</span>
+          <span class="kds-icon kds-icon--16" style="--icon: url(../icons/ic-line-chevron_right.svg)" aria-hidden="true"></span></a>
+      </section>
+
+      <!-- 장기고객 혜택 (가로 스크롤 타일) -->
+      <section class="kds-feed-section" aria-labelledby="long-title">
+        <h2 id="long-title" class="title-medium-bold"><span>장기고객 혜택 <span class="em">6</span>장</span></h2>
+        <div class="kds-hscroll">
+          <article class="coupon">
+            <div class="coupon__body">
+              <span class="coupon__icon coupon__icon--blue"><span class="kds-icon" style="--icon: url(../icons/ic-fill-volume.svg)" aria-hidden="true"></span></span>
+              <p class="caption-medium-medium hint">KT 구독</p>
+              <p class="body-medium-semibold">음악 스트리밍 3천원 할인</p>
+            </div>
+            <button class="coupon__foot label-small-medium">쿠폰 등록하기</button>
+          </article>
+          <article class="coupon">
+            <div class="coupon__body">
+              <span class="coupon__icon coupon__icon--teal"><span class="kds-icon" style="--icon: url(../icons/ic-line-cellular.svg)" aria-hidden="true"></span></span>
+              <p class="caption-medium-medium hint">데이터 쿠폰</p>
+              <p class="body-medium-semibold">5G 데이터 2GB 리필권</p>
+            </div>
+            <button class="coupon__foot label-small-medium">쿠폰 등록하기</button>
+          </article>
+          <article class="coupon">
+            <div class="coupon__body">
+              <span class="coupon__icon coupon__icon--purple"><span class="kds-icon" style="--icon: url(../icons/ic-fill-play.svg)" aria-hidden="true"></span></span>
+              <p class="caption-medium-medium hint">KT 구독</p>
+              <p class="body-medium-semibold">OTT 월 3천원 할인</p>
+            </div>
+            <button class="coupon__foot label-small-medium">쿠폰 등록하기</button>
+          </article>
+        </div>
+      </section>
+
+      <!-- 핫딜 -->
+      <section class="kds-feed-section" aria-labelledby="deal-title">
+        <h2 id="deal-title" class="title-medium-bold">5시 핫딜</h2>
+        <div class="kds-feed-card deal">
+          <div class="deal__img"><span class="kds-icon" style="--icon: url(../icons/ic-fill-cart.svg); width: var(--icon-size-xlarge); height: var(--icon-size-xlarge)" aria-hidden="true"></span></div>
+          <div class="stack" style="gap: var(--space-4); justify-content: center">
+            <p class="caption-medium-medium hint">오늘 핫딜<span class="sep"></span><span style="color: var(--text-feedback-info-01)">최대 할인</span></p>
+            <p class="body-medium-semibold">치킨 한 마리 + 콜라 SET</p>
+            <p class="caption-medium-medium strike">25,500원</p>
+            <p class="body-medium-bold"><span class="em">100% 할인</span> 0원</p>
+          </div>
+        </div>
+        <div class="kds-dots" aria-hidden="true"><span aria-current="true"></span><span></span><span></span><span></span></div>
+      </section>
+
+      <!-- 칩 필터 -->
+      <section class="kds-feed-section" aria-labelledby="movie-title">
+        <h2 id="movie-title" class="title-medium-bold">영화/공연 할인 예매</h2>
+        <div class="kds-chips" role="group" aria-label="분류">
+          <button class="kds-chip label-small-semibold" aria-pressed="true">영화</button>
+          <button class="kds-chip label-small-semibold" aria-pressed="false">공연</button>
+        </div>
+      </section>
+    </main>
+
+    <!-- 하단: AI 입력창 + Bottom Navigation + Home Indicator -->
+    <div class="dock-area">
+      <label class="kds-prompt-dock body-medium-medium">
+        <span class="kds-ai-mark" aria-hidden="true"></span>
+        <input type="text" placeholder="알고 싶은 정보, AI에게 물어보세요" aria-label="AI에게 질문">
+        <span class="kds-icon" style="--icon: url(../icons/ic-line-mic.svg); color: var(--icon-secondary-01)" aria-hidden="true"></span>
+      </label>
+      <nav class="kds-bottomnav caption-medium-medium" aria-label="하단 메뉴">
+        <a href="#"><span class="kds-icon" style="--icon: url(../icons/ic-line-home.svg)" aria-hidden="true"></span>홈</a>
+        <a href="#" aria-current="page"><span class="kds-icon" style="--icon: url(../icons/ic-fill-benefit.svg)" aria-hidden="true"></span>혜택</a>
+        <a href="#"><span class="kds-icon" style="--icon: url(../icons/ic-line-shopper_bag.svg)" aria-hidden="true"></span>다이렉트샵</a>
+        <a href="#"><span class="kds-icon" style="--icon: url(../icons/ic-line-bulb.svg)" aria-hidden="true"></span>마이 AI</a>
+        <a href="#"><span class="kds-icon" style="--icon: url(../icons/ic-line-menu.svg)" aria-hidden="true"></span>메뉴</a>
+      </nav>
+      <div class="home-indicator" aria-hidden="true"></div>
+    </div>
+  </div>
+</body>
+</html>

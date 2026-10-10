@@ -1,0 +1,128 @@
+/*
+ * AID-X 브랜드 레이어 — kds-design 스킬 확장 (KT 공식 키트 파일 아님)
+ * KDS 2.0 컴포넌트·흐름은 그대로 두고 AID-X Day & Hackathon 톤(퍼플·오로라·그라데이션)만 덧씌운다.
+ * 켜기: <html data-brand="aidx">  ·  불러오기: kds-tokens → kds-base → kds-components → 이 파일
+ * 값 출처: AIDD kt-ux-v2-aidx_v1 tokens/aidx-brand.json (AID-X Day 발표·전시 양식에서 관찰)
+ * 바뀌는 것: 주요 버튼(퍼플 그라데이션)·강조 버튼·초점·선택 탭·텍스트 버튼·AI 표시(퍼플→블루)·카드 그림자,
+ *           선택 상태(칩·선택 버튼·체크·라디오·스위치·진행 막대·단계·날짜·현재 메뉴·현재 페이지 = --fill-primary 퍼플)
+ * 그대로: 보조·비활성 버튼, 오류·완료·태그 의미색
+ */
+
+:root {
+  --aidx-purple-900: #3C0067;
+  --aidx-purple-700: #6800DA;
+  --aidx-purple-600: #6C2BDA;
+  --aidx-purple-500: #8500FF;
+  --aidx-purple-450: #9747FF;
+  --aidx-purple-400: #A771EF;
+  --aidx-purple-300: #DAADFF;
+  --aidx-purple-200: #E6DCFF;
+  --aidx-purple-150: #EADDF6;
+  --aidx-purple-100: #F3F0F7;
+  --aidx-purple-50: #F8F5FF;
+  --aidx-ink: #191A1B;
+  --aidx-gradient-brand: linear-gradient(90deg, #8500FF 0%, #A771EF 100%);        /* 큰 글자(19px Bold 이상)·장식 */
+  --aidx-gradient-brand-safe: linear-gradient(90deg, #8500FF 0%, #9747FF 100%);   /* 작은 흰 글자 바탕 (최악 4.51:1) */
+  --aidx-gradient-logo-x: linear-gradient(135deg, #9497FF 0%, #5938FF 50%, #191FFF 100%);
+  --aidx-gradient-aurora: linear-gradient(120deg, #AFD2FD 0%, #FFFFFF 50%, #C3C3F6 100%);
+  --aidx-gradient-aurora-dark: linear-gradient(120deg, #1B2540 0%, #16161F 50%, #2A2450 100%);
+  --aidx-shadow-card: 0 4px 16px rgba(60, 0, 103, 0.10);
+}
+
+/* KDS 토큰 다시 정의 — 모드 래퍼([data-mode])가 토큰을 다시 정의해도 브랜드 값이 이기도록 함께 지정 */
+[data-brand="aidx"], [data-brand="aidx"] [data-mode] {
+  --gradient-ai-solid-start: #9497FF;
+  --gradient-ai-solid-stop-01: #5938FF;
+  --gradient-ai-solid-stop-02: #5938FF;
+  --gradient-ai-solid-stop-03: #3A2BFF;
+  --gradient-ai-solid-end: #191FFF;
+  --gradient-ai-text-start: #8500FF;
+  --gradient-ai-text-stop-01: #6C2BDA;
+  --gradient-ai-text-stop-02: #5938FF;
+  --gradient-ai-text-stop-03: #3A2BFF;
+  --gradient-ai-text-end: #191FFF;
+  --gradient-ai-border-stop-01: #9747FF;
+  --gradient-ai-border-stop-02: #5938FF;
+  --gradient-ai-indicator-start: #9747FF;
+  --gradient-ai-indicator-stop: #5938FF;
+  --gradient-ai-indicator-end: #191FFF;
+  --gradient-ai-indicator-accent-start: #8500FF;
+  --gradient-ai-indicator-accent-end: #9747FF;
+  --border-primary-focused: var(--aidx-purple-500);
+  --fill-accent-primary: var(--aidx-purple-500);
+  --fill-accent-primary-hover: var(--aidx-purple-700);
+  --fill-accent-primary-pressed: var(--aidx-purple-900);
+  --fill-primary: var(--aidx-purple-500); /* 선택 상태 전부(키트가 이 토큰 하나로 칠한다) — 흰 글자 6.1:1 */
+}
+[data-brand="aidx"]:is([data-mode="dark"], [data-mode="dark-agent"]),
+[data-brand="aidx"] :is([data-mode="dark"], [data-mode="dark-agent"]) { --fill-primary: var(--aidx-purple-400); } /* 다크: 글자 --text-inverse(#191A1B) 5.2:1 */
+
+/* 주요·강조 버튼: brand-safe 그라데이션 (보조·3차·비활성은 KDS 그대로) */
+[data-brand="aidx"] .kds-button:not(.kds-button--secondary):not(.kds-button--tertiary):not(:disabled):not([aria-disabled="true"]) {
+  background: var(--aidx-gradient-brand-safe);
+  color: #FFFFFF;
+}
+[data-brand="aidx"] .kds-button:not(.kds-button--secondary):not(.kds-button--tertiary):not(:disabled):not([aria-disabled="true"]):hover { background: var(--aidx-purple-700); }
+[data-brand="aidx"] .kds-button:not(.kds-button--secondary):not(.kds-button--tertiary):not(:disabled):not([aria-disabled="true"]):active { background: var(--aidx-purple-900); }
+
+/* 초점·선택 탭·텍스트 버튼 */
+/* 초점: 버튼·링크·탭에만 퍼플 테두리. 입력칸은 KDS 테두리(--border-primary-focused → 퍼플)를 쓰고,
+   테두리가 없는 입력(검색·AI 입력창)은 바깥 틀에 퍼플 테두리 — 둥근 틀 안에 네모 테두리가 생기지 않게 */
+[data-brand="aidx"] :is(a, button, summary, [role="tab"], [tabindex]:not([tabindex="-1"])):focus-visible { outline: 2px solid var(--aidx-purple-500); outline-offset: 2px; }
+[data-brand="aidx"] :is(.kds-prompt-dock, .kds-search):has(input:focus-visible) { outline: 2px solid var(--aidx-purple-500); outline-offset: 2px; }
+[data-brand="aidx"] .kds-tabs > [role="tab"][aria-selected="true"] { color: var(--aidx-purple-700); border-bottom-color: var(--aidx-purple-700); }
+[data-brand="aidx"] .kds-text-button:hover { color: var(--aidx-purple-700); }
+
+/* 카드: 테두리 대신 퍼플 그림자 (요약 숫자 --filled 면은 그대로) */
+[data-brand="aidx"] .kds-card:not(.kds-card--filled) { border-color: transparent; box-shadow: var(--aidx-shadow-card); }
+[data-brand="aidx"] .kds-card--link:not(.kds-card--filled):hover { border-color: var(--aidx-purple-200); }
+
+/* 한국어 제목·표는 어절 단위로 줄바꿈("서비|스를" 방지), 공백 없는 긴 문자열만 글자 단위 (AID-X DESIGN.md) */
+[data-brand="aidx"] :is(h1, h2, h3, th, td), .aidx-hero { word-break: keep-all; overflow-wrap: anywhere; }
+
+/* ── AID-X 식별 요소 ── */
+
+/* 히어로: CSS 오로라 + 글래스 오브젝트(장식, 1–3개) */
+.aidx-hero {
+  position: relative; overflow: hidden; isolation: isolate;
+  display: flex; flex-direction: column; gap: var(--space-12);
+  padding: var(--space-48) var(--space-32); border-radius: var(--radius-16);
+  background: var(--aidx-gradient-aurora); color: var(--aidx-ink);
+}
+.aidx-hero > :not(.aidx-hero__object) { position: relative; z-index: 1; max-width: 62%; margin: 0; }
+.aidx-hero__object { position: absolute; z-index: 0; right: var(--space-24); top: 50%; width: clamp(120px, 24%, 260px); height: auto; transform: translateY(-50%); pointer-events: none; }
+.aidx-hero__object + .aidx-hero__object { right: auto; left: 58%; top: auto; bottom: calc(var(--space-12) * -1); width: clamp(72px, 12%, 140px); transform: none; }
+@media (max-width: 767px) {
+  .aidx-hero { padding: var(--space-32) var(--space-20); }
+  .aidx-hero > :not(.aidx-hero__object) { max-width: 100%; }
+  .aidx-hero__object { width: 112px; top: var(--space-12); right: var(--space-12); transform: none; opacity: 0.55; }
+  .aidx-hero__object + .aidx-hero__object { display: none; }
+}
+
+/* 눈썹 라벨: PART n | 소제목 */
+.aidx-eyebrow { display: inline-flex; align-items: center; gap: var(--space-6); margin: 0; font-size: var(--font-size-14); font-weight: var(--font-weight-bold); line-height: 150%; color: var(--aidx-purple-700); }
+.aidx-eyebrow__sep { color: var(--aidx-purple-300); font-weight: var(--font-weight-medium); }
+
+/* 키워드 칩: 기본 = brand-safe + 흰 글자 Bold, -soft = 연보라 면, -outline = 테두리 */
+.aidx-chips { display: flex; flex-wrap: wrap; gap: var(--space-8); margin: 0; padding: 0; list-style: none; }
+.aidx-chip { display: inline-flex; align-items: center; min-height: 28px; padding: 0 var(--space-12); border-radius: var(--radius-circle); background: var(--aidx-gradient-brand-safe); color: #FFFFFF; font-size: var(--font-size-14); font-weight: var(--font-weight-bold); white-space: nowrap; }
+.aidx-chip--soft { background: var(--aidx-purple-100); color: var(--aidx-purple-700); }
+.aidx-chip--outline { background: none; color: var(--aidx-purple-700); box-shadow: inset 0 0 0 1px var(--aidx-purple-150); }
+
+/* KPI 밴드: 왼쪽 그라데이션 라벨 + 오른쪽 내용 */
+.aidx-band { display: flex; align-items: stretch; overflow: hidden; border-radius: var(--radius-12); background: var(--aidx-purple-50); }
+.aidx-band__label { display: flex; align-items: center; padding: var(--space-12) var(--space-16); background: var(--aidx-gradient-brand-safe); color: #FFFFFF; font-size: var(--font-size-14); font-weight: var(--font-weight-bold); white-space: nowrap; }
+.aidx-band__body { display: flex; align-items: center; gap: var(--space-8); padding: var(--space-12) var(--space-16); color: var(--aidx-ink); }
+
+/* 워드마크: 비율 유지·색 그대로, 최소 높이 24. GNB 안에서는 768px 미만이면 숨긴다(GNB 메뉴처럼) — 360px에서 가로 스크롤 방지 */
+.aidx-wordmark { display: block; flex: none; height: 28px; width: auto; }
+@media (max-width: 767px) { .kds-gnb .aidx-wordmark { display: none; } }
+
+/* ── 다크 모드 ── */
+[data-brand="aidx"]:is([data-mode="dark"], [data-mode="dark-agent"]) .kds-card:not(.kds-card--filled),
+[data-brand="aidx"] :is([data-mode="dark"], [data-mode="dark-agent"]) .kds-card:not(.kds-card--filled) { box-shadow: none; border-color: var(--border-secondary-01); }
+:is([data-mode="dark"], [data-mode="dark-agent"]) .aidx-hero { background: var(--aidx-gradient-aurora-dark); color: #FFFFFF; }
+:is([data-mode="dark"], [data-mode="dark-agent"]) .aidx-eyebrow { color: var(--aidx-purple-300); }
+:is([data-mode="dark"], [data-mode="dark-agent"]) .aidx-band { background: rgba(133, 0, 255, 0.14); }
+:is([data-mode="dark"], [data-mode="dark-agent"]) .aidx-band__body { color: #FFFFFF; }
+:is([data-mode="dark"], [data-mode="dark-agent"]) .aidx-wordmark { filter: brightness(0) invert(1); }

@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ko" data-platform="desktop">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KDS 2.0 예시 — PC 요금제 목록</title>
+  <link rel="stylesheet" href="../tokens/kds-tokens.css">
+  <link rel="stylesheet" href="../tokens/kds-base.css">
+  <link rel="stylesheet" href="../tokens/kds-components.css">
+  <link rel="stylesheet" href="examples.css">
+</head>
+<body>
+  <!-- Navigation (GNB, PC 전용) -->
+  <header class="kds-gnb">
+    <div class="kds-container kds-gnb__inner">
+      <a href="#" aria-label="KT 홈"><img class="kds-gnb__logo" src="../images/logo_kt.svg" alt=""></a>
+      <nav aria-label="주 메뉴" style="display: contents">
+        <ul class="kds-gnb__menu title-medium-semibold">
+          <li><a href="#" aria-current="page">모바일</a></li>
+          <li><a href="#">인터넷·TV</a></li>
+          <li><a href="#">혜택</a></li>
+          <li><a href="#">고객지원</a></li>
+        </ul>
+      </nav>
+      <div class="kds-gnb__actions">
+        <button class="kds-icon-button" aria-label="검색"><span class="kds-icon" style="--icon: url(../icons/ic-line-search.svg)" aria-hidden="true"></span></button>
+        <button class="kds-icon-button" aria-label="마이"><span class="kds-icon" style="--icon: url(../icons/ic-line-my.svg)" aria-hidden="true"></span></button>
+        <button class="kds-icon-button" aria-label="장바구니"><span class="kds-icon" style="--icon: url(../icons/ic-line-cart.svg)" aria-hidden="true"></span></button>
+        <button class="kds-icon-button" aria-label="전체 메뉴"><span class="kds-icon" style="--icon: url(../icons/ic-line-menu.svg)" aria-hidden="true"></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="kds-container pc-main">
+    <!-- Breadcrumb (PC 전용) -->
+    <nav aria-label="현재 위치">
+      <ol class="kds-breadcrumb caption-medium-medium">
+        <li>홈</li>
+        <li aria-hidden="true"><span class="kds-icon kds-icon--16" style="--icon: url(../icons/ic-line-chevron_right.svg)"></span></li>
+        <li>모바일</li>
+        <li aria-hidden="true"><span class="kds-icon kds-icon--16" style="--icon: url(../icons/ic-line-chevron_right.svg)"></span></li>
+        <li aria-current="page">5G 요금제</li>
+      </ol>
+    </nav>
+
+    <div class="page-head stack" style="gap: var(--space-8)">
+      <h1 class="display-medium-bold font-brand">5G 요금제</h1>
+      <p class="body-large-medium muted">쓰는 만큼 고르고, 결합하면 더 저렴해져요.</p>
+    </div>
+
+    <!-- Chip (PC: 높이 36, 16px) -->
+    <div class="kds-chips" role="group" aria-label="데이터 필터">
+      <button class="kds-chip body-large-semibold" aria-pressed="true">전체</button>
+      <button class="kds-chip body-large-semibold" aria-pressed="false">무제한</button>
+      <button class="kds-chip body-large-semibold" aria-pressed="false">100GB 이상</button>
+      <button class="kds-chip body-large-semibold" aria-pressed="false">청년</button>
+    </div>
+
+    <!-- 12컬럼 그리드 × Card -->
+    <div class="kds-grid plan-grid">
+      <article class="kds-card">
+        <span><span class="kds-tag kds-tag--progress label-small-semibold">인기</span></span>
+        <h2 class="title-large-bold">5G 초이스 베이직</h2>
+        <p class="plan-price"><span class="heading-medium-bold">90,000</span><span class="body-large-medium">원/월</span></p>
+        <ul class="plan-spec body-medium-medium">
+          <li><span class="muted">데이터</span><span>무제한</span></li>
+          <li><span class="muted">음성·문자</span><span>기본 제공</span></li>
+          <li><span class="muted">OTT</span><span>1종 선택</span></li>
+        </ul>
+        <button class="kds-button kds-button--tertiary kds-button--large label-medium-semibold">자세히 보기</button>
+      </article>
+      <article class="kds-card">
+        <span><span class="kds-tag label-small-semibold">기본</span></span>
+        <h2 class="title-large-bold">5G 심플 110GB</h2>
+        <p class="plan-price"><span class="heading-medium-bold">69,000</span><span class="body-large-medium">원/월</span></p>
+        <ul class="plan-spec body-medium-medium">
+          <li><span class="muted">데이터</span><span>110GB</span></li>
+          <li><span class="muted">음성·문자</span><span>기본 제공</span></li>
+          <li><span class="muted">소진 후</span><span>5Mbps</span></li>
+        </ul>
+        <button class="kds-button kds-button--tertiary kds-button--large label-medium-semibold">자세히 보기</button>
+      </article>
+      <article class="kds-card">
+        <span><span class="kds-tag kds-tag--info label-small-semibold">청년 혜택</span></span>
+        <h2 class="title-large-bold">Y 5G 슬림</h2>
+        <p class="plan-price"><span class="heading-medium-bold">55,000</span><span class="body-large-medium">원/월</span></p>
+        <ul class="plan-spec body-medium-medium">
+          <li><span class="muted">데이터</span><span>30GB</span></li>
+          <li><span class="muted">음성·문자</span><span>기본 제공</span></li>
+          <li><span class="muted">대상</span><span>만 34세 이하</span></li>
+        </ul>
+        <button class="kds-button kds-button--tertiary kds-button--large label-medium-semibold">자세히 보기</button>
+      </article>
+    </div>
+
+    <!-- Pagination (PC 전용) -->
+    <nav class="kds-pagination body-large-medium" aria-label="페이지">
+      <button class="kds-icon-button" aria-label="이전 페이지"><span class="kds-icon kds-icon--20" style="--icon: url(../icons/ic-line-chevron_left.svg)" aria-hidden="true"></span></button>
+      <button aria-current="page">1</button>
+      <button>2</button>
+      <button>3</button>
+      <button class="kds-icon-button" aria-label="다음 페이지"><span class="kds-icon kds-icon--20" style="--icon: url(../icons/ic-line-chevron_right.svg)" aria-hidden="true"></span></button>
+    </nav>
+
+    <!-- 뮤트 밴드 + CTA (검정 Primary) -->
+    <section class="band" aria-labelledby="consult-title">
+      <div class="stack" style="gap: var(--space-4)">
+        <h2 id="consult-title" class="title-large-bold">어떤 요금제가 맞을지 모르겠다면</h2>
+        <p class="body-large-medium muted">최근 3개월 사용량으로 맞는 요금제를 찾아드려요.</p>
+      </div>
+      <button class="kds-button kds-button--primary kds-button--large label-large-semibold">요금제 추천받기</button>
+    </section>
+  </main>
+
+  <footer class="kds-footer">
+    <div class="kds-container caption-medium-medium">KDS 2.0 예시 화면 — 실제 상품 정보가 아닙니다.</div>
+  </footer>
+</body>
+</html>

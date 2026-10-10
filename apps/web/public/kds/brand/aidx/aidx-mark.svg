@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="AID-X 스파클 마크">
+  <!-- AIDD 자체 제작. AID·X 로고의 4점 스파클 형태와 X 그라데이션(#9497FF→#5938FF→#191FFF)을 따른 파생 마크. 원본 로고 대체가 아니라 파비콘·작은 아이콘용. -->
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9497FF"/><stop offset="0.55" stop-color="#5938FF"/><stop offset="1" stop-color="#191FFF"/></linearGradient>
+    <linearGradient id="h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8500FF"/><stop offset="1" stop-color="#DAADFF"/></linearGradient>
+  </defs>
+  <path fill="url(#g)" d="M30 4c1.5 12.6 6.9 21 27 27-20.1 6-25.5 14.4-27 27-1.5-12.6-6.9-21-27-27C23.1 25 28.5 16.6 30 4Z"/>
+  <path fill="url(#h)" d="M52 38c.6 4.6 2.5 7.6 9.5 9.5-7 1.9-8.9 4.9-9.5 9.5-.6-4.6-2.5-7.6-9.5-9.5 7-1.9 8.9-4.9 9.5-9.5Z"/>
+</svg>

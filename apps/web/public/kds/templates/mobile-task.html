@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>업무형 화면 템플릿</title>
+  <link rel="stylesheet" href="../tokens/kds-tokens.css">
+  <link rel="stylesheet" href="../tokens/kds-base.css">
+  <link rel="stylesheet" href="../tokens/kds-components.css">
+  <style>
+    /* 화면 틀: 폰 폭으로 고정, CTA를 아래에 붙이기 위한 세로 배치 */
+    .page { max-width: 480px; min-height: 100dvh; margin-inline: auto; display: flex; flex-direction: column; background: var(--background-default); }
+  </style>
+</head>
+<body>
+  <!-- 업무형 템플릿: 납부·신청·변경·조회처럼 한 가지 일을 끝내는 화면
+       규칙: 테두리 카드를 쌓지 않는다 → kds-section(평평한 영역) + kds-divider-band(8px 회색 띠)
+       하단 CTA: 1개면 검정 풀 폭, 2개면 회색(보조) 왼쪽 + 검정(주요) 오른쪽 -->
+  <div class="page">
+
+    <header class="kds-topnav">
+      <button class="kds-icon-button" aria-label="뒤로">
+        <span class="kds-icon" style="--icon: url(../icons/ic-line-chevron_left.svg)" aria-hidden="true"></span>
+      </button>
+      <h1 class="kds-topnav__title">화면 제목</h1>
+    </header>
+
+    <!-- 선택(없으면 삭제): 회선·상태 한 줄 -->
+    <div class="kds-info-band"><span>모바일</span><span>010-12**-*678</span></div>
+
+    <main>
+      <section class="kds-section">
+        <h2 class="kds-section__title">섹션 제목</h2>
+        <div class="kds-kv body-small-medium">
+          <span class="kds-kv__label">항목 이름</span>
+          <span class="kds-kv__value">값</span>
+        </div>
+        <div class="kds-kv">
+          <span class="kds-kv__label body-small-bold" style="color: var(--text-primary)">대표 금액</span>
+          <span class="kds-kv__value heading-medium-bold">58,000원</span>
+        </div>
+      </section>
+
+      <hr class="kds-divider-band">
+
+      <section class="kds-section">
+        <h2 class="kds-section__title">입력</h2>
+        <label class="kds-field">
+          <span class="kds-field__label">이름</span>
+          <input class="kds-field__input" placeholder="이름을 입력하세요">
+          <span class="kds-field__helper">실명으로 입력해 주세요</span>
+        </label>
+        <label class="kds-radio"><input type="radio" name="opt" checked> 선택지 1</label>
+        <label class="kds-radio"><input type="radio" name="opt"> 선택지 2</label>
+      </section>
+
+      <hr class="kds-divider-band">
+
+      <!-- 카드형 선택: 이름+설명이 있는 항목 고르기 (쿠폰·요금제 등) -->
+      <section class="kds-section">
+        <h2 class="kds-section__title">카드형 선택</h2>
+        <div class="kds-select-buttons kds-select-buttons--list">
+          <label class="kds-select-button"><input type="radio" name="item" checked>
+            <span class="kds-select-button__title">항목 이름</span><span class="kds-select-button__sub">보조 설명</span></label>
+          <label class="kds-select-button"><input type="radio" name="item">
+            <span class="kds-select-button__title">항목 이름</span><span class="kds-select-button__sub">보조 설명</span></label>
+        </div>
+        <div class="kds-kv body-small-medium"><span class="kds-kv__label">남은 데이터</span><span class="kds-kv__value">68%</span></div>
+        <div class="kds-progress" role="progressbar" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100" style="--value: 68%"></div>
+      </section>
+
+      <!-- 빈 상태 (데이터가 없을 때 위 섹션 대신) -->
+      <div class="kds-empty">
+        <span class="kds-icon kds-empty__icon" style="--icon: url(../icons/ic-line-inbox.svg)" aria-hidden="true"></span>
+        <p class="kds-empty__text">아직 내역이 없어요</p>
+      </div>
+
+      <hr class="kds-divider-band">
+
+      <ul class="kds-list body-small-medium">
+        <li><a href="#">안내 링크<span class="kds-icon kds-icon--20" style="--icon: url(../icons/ic-line-chevron_right.svg)" aria-hidden="true"></span></a></li>
+      </ul>
+    </main>
+
+    <div class="kds-cta-bar">
+      <button class="kds-button kds-button--secondary">보조 행동</button>
+      <button class="kds-button kds-button--primary">주요 행동</button>
+    </div>
+  </div>
+</body>
+</html>

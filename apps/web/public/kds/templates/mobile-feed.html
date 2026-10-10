@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ko" data-mode="agent">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>피드형 화면 템플릿</title>
+  <link rel="stylesheet" href="../tokens/kds-tokens.css">
+  <link rel="stylesheet" href="../tokens/kds-base.css">
+  <link rel="stylesheet" href="../tokens/kds-components.css">
+  <style>
+    .page { max-width: 480px; min-height: 100dvh; margin-inline: auto; display: flex; flex-direction: column; background: var(--background-default); }
+    .page__head { display: flex; align-items: center; height: 52px; padding-inline: var(--margin-platform) var(--space-8); }
+    .page__head h1 { margin: 0; }
+    .page__bottom { position: sticky; bottom: 0; margin-top: auto; }
+    .page__bottom .kds-bottomnav { position: static; }
+  </style>
+</head>
+<body>
+  <!-- 피드형 템플릿: 홈·혜택·마이처럼 카드를 둘러보는 탭 화면, AI가 섞인 화면
+       <html data-mode="agent"> → 바탕 연회색, 카드 흰색(테두리 없음)
+       빨강은 짧은 글자 강조(할인율·남은 횟수)에만. 버튼은 검정 -->
+  <div class="page">
+
+    <header class="page__head">
+      <h1 class="title-medium-bold">홍길*님</h1>
+      <div class="kds-topnav__actions">
+        <button class="kds-icon-button" aria-label="알림"><span class="kds-icon" style="--icon: url(../icons/ic-line-alarm.svg)" aria-hidden="true"></span></button>
+        <button class="kds-icon-button" aria-label="검색"><span class="kds-icon" style="--icon: url(../icons/ic-line-search.svg)" aria-hidden="true"></span></button>
+      </div>
+    </header>
+
+    <main>
+      <section class="kds-feed-section">
+        <h2 class="kds-feed-section__title">섹션 제목
+          <a class="kds-text-button" href="#">더보기<span class="kds-icon kds-icon--16" style="--icon: url(../icons/ic-line-chevron_right.svg)" aria-hidden="true"></span></a>
+        </h2>
+        <div class="kds-feed-card">
+          <p class="title-small-bold">카드 제목</p>
+          <div class="kds-kv body-small-medium"><span class="kds-kv__label">항목</span><span class="kds-kv__value">값</span></div>
+          <button class="kds-button kds-button--secondary kds-button--small">카드 안 행동</button>
+        </div>
+      </section>
+
+      <section class="kds-feed-section">
+        <h2 class="kds-feed-section__title">가로로 넘기는 카드</h2>
+        <div class="kds-hscroll">
+          <div class="kds-feed-card kds-hscroll__item" style="padding: var(--space-12); border-radius: var(--radius-16)"><p class="body-small-semibold">카드 1</p></div>
+          <div class="kds-feed-card kds-hscroll__item" style="padding: var(--space-12); border-radius: var(--radius-16)"><p class="body-small-semibold">카드 2</p></div>
+          <div class="kds-feed-card kds-hscroll__item" style="padding: var(--space-12); border-radius: var(--radius-16)"><p class="body-small-semibold">카드 3</p></div>
+        </div>
+        <div class="kds-dots"><span aria-current="true"></span><span></span><span></span></div>
+      </section>
+    </main>
+
+    <div class="page__bottom">
+      <label class="kds-prompt-dock">
+        <span class="kds-ai-mark" aria-hidden="true"></span>
+        <input placeholder="AI에게 물어보세요" aria-label="AI에게 질문">
+      </label>
+      <nav class="kds-bottomnav" aria-label="주요 메뉴">
+        <a href="#"><span class="kds-icon" style="--icon: url(../icons/ic-line-home.svg)" aria-hidden="true"></span>홈</a>
+        <a href="#" aria-current="page"><span class="kds-icon" style="--icon: url(../icons/ic-fill-benefit.svg)" aria-hidden="true"></span>혜택</a>
+        <a href="#"><span class="kds-icon" style="--icon: url(../icons/ic-line-my.svg)" aria-hidden="true"></span>마이</a>
+        <a href="#"><span class="kds-icon" style="--icon: url(../icons/ic-line-menu.svg)" aria-hidden="true"></span>메뉴</a>
+      </nav>
+    </div>
+  </div>
+</body>
+</html>

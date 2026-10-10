@@ -1,0 +1,545 @@
+/**
+ * KDS 2.0 컴포넌트 클래스 — 해커톤판
+ * kds-tokens.css → kds-base.css → kds-components.css 순서로 불러오세요.
+ *
+ * 버튼·카드·입력창을 직접 그리지 말고 아래 클래스를 붙이세요.
+ * 모든 값은 KDS 토큰(CSS 변수)만 씁니다.
+ *
+ * 목록 (Ctrl+F로 찾기)
+ *   공통   kds-button · kds-icon-button · kds-text-button · kds-card · kds-tag · kds-chip · kds-progress · kds-empty
+ *          kds-field · kds-select · kds-datepicker · kds-time-button · kds-table · kds-search · kds-tabs · kds-checkbox · kds-radio · kds-switch · kds-select-button
+ *          kds-list · kds-kv · kds-divider · kds-divider-band · kds-dots · kds-toast · kds-popup
+ *   모바일 kds-topnav · kds-info-band · kds-section · kds-cta-bar · kds-bottomnav · kds-sheet
+ *          kds-feed-card · kds-ai-pill · kds-prompt-dock
+ *   PC     kds-gnb · kds-lnb · kds-breadcrumb · kds-pagination · kds-footer
+ *   공통+  kds-result-count · kds-info-line · kds-notice · kds-chat
+ */
+
+/* ════════════════ 공통 ════════════════ */
+
+/* ── Button ──────────────────────────────
+   <button class="kds-button kds-button--primary kds-button--large">확인</button>
+   변형: --primary(검정, 기본) --secondary(회색) --tertiary(흰 바탕+테두리) --accent(KT 레드, 요청 시에만)
+   크기: --xsmall 32 / --small 40 / --medium 44 / --large 48(모바일 하단 CTA)   너비: --full */
+.kds-button {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-4);
+  min-height: 44px; padding: var(--space-8) var(--space-16);
+  border: 0; border-radius: var(--radius-8); cursor: pointer; white-space: nowrap; text-decoration: none;
+  font-size: var(--font-size-15); font-weight: var(--font-weight-semibold); line-height: 148%;
+  background: var(--fill-primary); color: var(--text-inverse);
+  transition: background-color var(--motion-duration-short) var(--motion-easing-ease-out);
+}
+.kds-button--primary:hover { background: var(--fill-primary-hover); }
+.kds-button--primary:active { background: var(--fill-primary-pressed); }
+.kds-button--secondary { background: var(--fill-secondary-01); color: var(--text-primary); }
+.kds-button--secondary:hover { background: var(--fill-secondary-hover-01); }
+.kds-button--secondary:active { background: var(--fill-secondary-pressed-01); }
+.kds-button--tertiary { background: var(--fill-tertiary); color: var(--text-primary); box-shadow: inset 0 0 0 var(--stroke-border) var(--border-primary-01); }
+.kds-button--tertiary:hover { background: var(--fill-tertiary-hover-01); }
+.kds-button--accent { background: var(--fill-accent-primary); color: var(--text-inverse); }
+.kds-button--accent:hover { background: var(--fill-accent-primary-hover); }
+.kds-button--xsmall { min-height: 32px; padding-inline: var(--space-12); border-radius: var(--radius-4); font-size: var(--font-size-13); }
+.kds-button--small  { min-height: 40px; padding-inline: var(--space-12); border-radius: var(--radius-6); font-size: var(--font-size-14); }
+.kds-button--medium { min-height: 44px; }
+.kds-button--large  { min-height: 48px; font-size: var(--font-size-16); }
+.kds-button--full   { width: 100%; }
+.kds-button:disabled, .kds-button[aria-disabled="true"] { background: var(--fill-disabled-01); color: var(--text-disabled-01); box-shadow: none; cursor: not-allowed; }
+
+/* 아이콘만 있는 버튼 — 반드시 aria-label
+   <button class="kds-icon-button" aria-label="검색"><span class="kds-icon" style="--icon:url(icons/ic-line-search.svg)"></span></button> */
+.kds-icon-button {
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+  width: 40px; height: 40px; padding: 0; border: 0; border-radius: var(--radius-8);
+  background: none; color: var(--icon-primary); cursor: pointer;
+}
+.kds-icon-button:hover { background: var(--fill-tertiary-hover-01); }
+
+/* 글자 버튼 (링크형) — 뒤에 chevron 아이콘을 붙이기도 함 */
+.kds-text-button {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  padding: 0; border: 0; background: none; cursor: pointer; text-decoration: none;
+  font-size: var(--font-size-14); font-weight: var(--font-weight-medium); color: var(--text-secondary-01);
+}
+.kds-text-button:hover { color: var(--text-primary); }
+
+/* ── Card ────────────────────────────────
+   기본(테두리) / --filled(연회색 면). 모바일 업무형 화면을 카드로 쌓지 말 것 → kds-section 사용 */
+.kds-card {
+  display: flex; flex-direction: column; gap: var(--space-12);
+  padding: var(--space-20); border-radius: var(--radius-12);
+  background: var(--surface-primary-01); border: var(--stroke-border) solid var(--border-secondary-01);
+}
+.kds-card--filled { background: var(--surface-primary-02); border-color: transparent; }
+.kds-card--link { color: inherit; text-decoration: none; cursor: pointer; }
+.kds-card--link:hover { border-color: var(--border-primary-01); }
+
+/* ── Tag (상태 표시) ─────────────────────
+   <span class="kds-tag kds-tag--info">진행중</span>
+   변형: --default --info --progress --positive --warning --critical --complete */
+.kds-tag {
+  display: inline-flex; align-items: center; flex: none;
+  min-height: 20px; padding: var(--space-2) var(--space-6); border-radius: var(--radius-4);
+  font-size: var(--font-size-12); font-weight: var(--font-weight-semibold); line-height: 148%;
+  background: var(--tag-status-fill-default); color: var(--tag-status-text-default);
+}
+.kds-tag--info     { background: var(--tag-status-fill-info);     color: var(--tag-status-text-info); }
+.kds-tag--progress { background: var(--tag-status-fill-progress); color: var(--tag-status-text-progress); }
+.kds-tag--positive { background: var(--tag-status-fill-positive); color: var(--tag-status-text-positive); }
+.kds-tag--warning  { background: var(--tag-status-fill-warning);  color: var(--tag-status-text-warning); }
+.kds-tag--critical { background: var(--tag-status-fill-critical); color: var(--tag-status-text-critical); }
+.kds-tag--complete { background: var(--tag-status-fill-complete); color: var(--tag-status-text-complete); }
+
+/* ── Chip (선택 칩) ──────────────────────
+   <div class="kds-chips"><button class="kds-chip" aria-pressed="true">전체</button>…</div>
+   선택 = aria-pressed="true" → 검정 채움. PC는 자동으로 36px로 커짐 */
+.kds-chips { display: flex; gap: var(--space-6); flex-wrap: wrap; }
+.kds-chip {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-4);
+  min-height: 32px; min-width: 56px; padding: var(--space-6) var(--space-12);
+  border: 0; border-radius: var(--radius-circle); cursor: pointer;
+  font-size: var(--font-size-13); font-weight: var(--font-weight-medium);
+  background: var(--chip-fill-inactive-default); color: var(--text-primary);
+}
+.kds-chip:hover { background: var(--chip-fill-inactive-hover); }
+.kds-chip[aria-pressed="true"] { background: var(--fill-primary); color: var(--text-inverse); }
+
+/* ── Text Field ──────────────────────────
+   <label class="kds-field">
+     <span class="kds-field__label">이름</span>
+     <input class="kds-field__input" placeholder="이름을 입력하세요">
+     <span class="kds-field__helper">도움말</span>
+   </label>
+   에러: kds-field--error (빨간 테두리는 에러에만) */
+.kds-field { display: flex; flex-direction: column; gap: var(--space-6); }
+.kds-field__label { font-size: var(--font-size-14); font-weight: var(--font-weight-semibold); color: var(--text-primary); }
+.kds-field__input {
+  width: 100%; min-height: 52px; padding: var(--space-12) var(--space-16);
+  border: var(--stroke-border) solid var(--border-primary-01); border-radius: var(--radius-8);
+  background: var(--surface-primary-01); color: var(--text-primary);
+  font-size: var(--font-size-16); font-weight: var(--font-weight-medium); outline: 0;
+}
+textarea.kds-field__input { min-height: 120px; resize: vertical; }
+.kds-field__input::placeholder { color: var(--text-tertiary-01); }
+.kds-field__input:focus { border-color: var(--border-primary-focused); box-shadow: var(--shadow-1); }
+.kds-field__input:disabled { background: var(--fill-disabled-01); color: var(--text-disabled-01); }
+.kds-field__helper { font-size: var(--font-size-12); font-weight: var(--font-weight-medium); color: var(--text-secondary-01); }
+.kds-field--error .kds-field__input { border-color: var(--border-feedback-critical); }
+.kds-field--error .kds-field__helper { color: var(--text-feedback-critical-01); }
+
+/* ── Search ── 검색은 이 컴포넌트만 (TextField로 만들지 않음). 아이콘은 오른쪽
+   <form class="kds-search" role="search"><input placeholder="검색어"><button class="kds-icon-button" aria-label="검색">…</button></form> */
+.kds-search {
+  display: flex; align-items: center; gap: var(--space-4);
+  min-height: 48px; padding-inline: var(--space-16) var(--space-4);
+  border-radius: var(--radius-8); background: var(--fill-secondary-01);
+}
+.kds-search input { flex: 1; min-width: 0; border: 0; outline: 0; background: none; font-size: var(--font-size-16); }
+.kds-search input::placeholder { color: var(--text-tertiary-01); }
+
+/* ── Select (드롭다운) ── 브라우저 기본 select에 입력창 모양만 입힌다. 4개 이하·짧은 선택지는 kds-chip / kds-radio
+   <label class="kds-field"><span class="kds-field__label">상태</span>
+     <select class="kds-field__input kds-select"><option>전체</option>…</select></label> */
+.kds-select {
+  appearance: none; -webkit-appearance: none; cursor: pointer;
+  padding-right: calc(var(--space-16) + var(--icon-size-small) + var(--space-8));
+  background: var(--surface-primary-01) url(../icons/ic-line-chevron_down.svg) no-repeat right var(--space-16) center / var(--icon-size-small);
+}
+
+/* ── Date Picker (날짜 선택) ── 입력창 + 달력 아이콘, 누르면 아래로 달력이 열린다
+   tokens/kds-datepicker.js 를 불러오면 동작한다 (직접 달력을 만들지 않는다. 날짜를 칩·버튼 줄로 대신하지 않는다)
+   <label class="kds-field"><span class="kds-field__label">예약일</span>
+     <span class="kds-datepicker"><input class="kds-field__input" placeholder="날짜 선택" readonly data-min="today"></span></label>
+   값: input.value = "2026.10.14" / 선택 시 change 이벤트 / data-min="today" 이면 지난 날 선택 불가
+   기간: 시작·종료 kds-datepicker 두 개를 kds-date-range 로 감싸고 사이에 "~" */
+.kds-datepicker { position: relative; display: block; }
+.kds-datepicker > .kds-field__input { cursor: pointer; padding-right: calc(var(--space-16) + var(--icon-size-small) + var(--space-8)); }
+.kds-datepicker::after {
+  content: ""; position: absolute; right: var(--space-16); top: 50%; translate: 0 -50%; pointer-events: none;
+  width: var(--icon-size-small); height: var(--icon-size-small); background: var(--icon-primary);
+  -webkit-mask: url(../icons/ic-line-calendar.svg) center / contain no-repeat; mask: url(../icons/ic-line-calendar.svg) center / contain no-repeat;
+}
+.kds-date-range { display: flex; align-items: center; gap: var(--space-8); }
+.kds-date-range > .kds-datepicker { flex: 1; }
+.kds-calendar {
+  position: absolute; z-index: 20; top: calc(100% + var(--space-4)); left: 0;
+  width: 360px; padding: var(--space-20); border-radius: var(--radius-12);
+  background: var(--surface-primary-04); box-shadow: var(--shadow-2);
+}
+.kds-calendar[hidden] { display: none; }
+.kds-calendar__head { display: flex; align-items: center; justify-content: center; gap: var(--space-8); height: 44px; margin-bottom: var(--space-10); }
+.kds-calendar__title { min-width: 120px; text-align: center; font-size: var(--font-size-18); font-weight: var(--font-weight-bold); }
+.kds-calendar__grid { display: grid; grid-template-columns: repeat(7, 1fr); row-gap: 0; }
+.kds-calendar__dow { height: 40px; display: grid; place-items: center; font-size: var(--font-size-13); color: var(--text-tertiary-01); }
+.kds-calendar__day {
+  height: 48px; display: grid; place-items: center; border: 0; background: none; cursor: pointer; padding: 0;
+  font-size: var(--font-size-15); font-weight: var(--font-weight-medium); color: var(--text-primary);
+}
+.kds-calendar__day > span { width: 40px; height: 40px; display: grid; place-items: center; border-radius: var(--radius-circle); }
+.kds-calendar__day:hover > span { background: var(--fill-tertiary); }
+.kds-calendar__day.is-sunday { color: var(--text-feedback-critical-01); }
+.kds-calendar__day.is-today > span { box-shadow: inset 0 0 0 var(--stroke-border) var(--border-primary-01); }
+.kds-calendar__day[aria-pressed="true"] > span { background: var(--fill-primary); color: var(--text-inverse); }
+.kds-calendar__day:disabled { cursor: default; color: var(--text-disabled-01); }
+.kds-calendar__day:disabled > span { background: none; }
+
+/* ── Time Button (시간 선택) ── 시간대 고르기. 선택 = aria-pressed="true", 마감 = disabled
+   <div class="kds-time-buttons"><button class="kds-time-button" aria-pressed="false">09:00</button>…</div> */
+.kds-time-buttons { display: flex; flex-wrap: wrap; gap: var(--space-8); }
+.kds-time-button {
+  min-width: 90px; height: 40px; padding-inline: var(--space-20); cursor: pointer;
+  border: var(--stroke-border) solid var(--border-primary-01); border-radius: var(--radius-8); background: var(--surface-primary-01);
+  font-size: var(--font-size-14); font-weight: var(--font-weight-medium); color: var(--text-primary);
+}
+.kds-time-button[aria-pressed="true"] { border: 2px solid var(--fill-primary); font-weight: var(--font-weight-bold); }
+.kds-time-button:disabled { cursor: default; border-color: var(--border-disabled-01); color: var(--text-disabled-01); }
+
+/* ── Table (표) ── 목록·내역·비교. 위 굵은 선 + 회색 머리줄 + 얇은 행 구분선. 세로 선 없음
+   <div class="kds-table-wrap"><table class="kds-table"><thead><tr><th>번호</th>…</tr></thead><tbody><tr><td>1057</td>…</tr></tbody></table></div>
+   숫자·금액 칸: class="is-num"(오른쪽 정렬) / 행 선택: tbody tr에 aria-selected="true" / 칸 너비는 <col style="width:…">
+   표 안 상태는 kds-tag. 칸을 색 덩어리로 채우지 않는다 */
+.kds-table-wrap { position: relative; overflow-x: auto; }
+.kds-table { width: 100%; border-collapse: collapse; border-top: var(--stroke-border) solid var(--border-primary-01); font-size: var(--font-size-14); }
+.kds-table th {
+  height: 44px; padding: 0 var(--space-16); background: var(--surface-primary-02); text-align: left; white-space: nowrap;
+  font-weight: var(--font-weight-semibold); color: var(--text-secondary-01); border-bottom: var(--stroke-border) solid var(--border-secondary-01);
+}
+.kds-table td { height: 56px; padding: var(--space-8) var(--space-16); font-weight: var(--font-weight-medium); color: var(--text-secondary-01); border-bottom: var(--stroke-border) solid var(--border-secondary-01); }
+.kds-table .is-num { text-align: right; font-variant-numeric: tabular-nums; }
+.kds-table tbody tr[aria-selected], .kds-table tbody tr[onclick], .kds-table tbody tr[data-href] { cursor: pointer; }
+.kds-table tbody tr:hover > td { background: var(--fill-tertiary); }
+.kds-table tbody tr[aria-selected="true"] > td { background: var(--fill-secondary-01); }
+.kds-table__empty { padding: var(--space-40) 0; text-align: center; color: var(--text-tertiary-01); }
+
+/* ── 결과 건수 · 안내 한 줄 · 안내 배너 ── 표·목록 위에. 상자로 감싸지 않는다
+   <p class="kds-result-count">조회결과 <b>67</b>개</p>
+   <p class="kds-info-line"><span class="kds-icon kds-icon--16" style="--icon:url(icons/ic-line-info.svg)" aria-hidden="true"></span>일부 항목만 조회할 수 있어요.</p>
+   <div class="kds-notice"><div><strong class="kds-notice__title">체험판 이용 중</strong><p class="kds-notice__body">…</p></div><a class="kds-text-button" href="#">자세히 보기 ›</a></div>
+   오류도 같은 모양 한 줄: kds-info-line--error (분홍·노랑 박스 금지) */
+.kds-result-count { margin: 0 0 var(--space-8); font-size: var(--font-size-13); font-weight: var(--font-weight-medium); color: var(--text-tertiary-01); }
+.kds-result-count b { color: var(--text-primary); font-weight: var(--font-weight-bold); }
+.kds-info-line { display: flex; align-items: center; gap: var(--space-4); margin: 0; font-size: var(--font-size-13); font-weight: var(--font-weight-medium); color: var(--text-tertiary-01); }
+.kds-info-line--error { color: var(--text-feedback-critical-01); }
+.kds-notice { display: flex; align-items: center; justify-content: space-between; gap: var(--space-16); padding: var(--space-16) var(--space-20) var(--space-16) var(--space-24); border-radius: var(--radius-12); background: var(--surface-primary-02); }
+.kds-notice__title { display: block; font-size: var(--font-size-16); font-weight: var(--font-weight-bold); color: var(--text-feedback-info-01); }
+.kds-notice__body { margin: var(--space-2) 0 0; font-size: var(--font-size-13); font-weight: var(--font-weight-medium); color: var(--text-secondary-01); }
+
+/* ── AI 대화 ── 사용자 말만 말풍선, AI 답변은 말풍선 없이 읽기용 본문. 대화 열 폭 748
+   <div class="kds-chat"><p class="kds-chat__user">요금제 추천해줘</p><div class="kds-chat__answer">…</div></div> */
+.kds-chat { display: flex; flex-direction: column; gap: var(--space-24); width: 100%; max-width: 748px; margin-inline: auto; }
+.kds-chat__user {
+  align-self: flex-end; max-width: 540px; margin: 0; padding: var(--space-12) var(--space-16); border-radius: var(--radius-16);
+  background: var(--surface-primary-01); font-size: var(--font-size-16); font-weight: var(--font-weight-medium); line-height: 148%;
+}
+[data-mode="agent"] .kds-chat__user, .kds-chat--on-gray .kds-chat__user { background: var(--surface-primary-02); }
+.kds-chat--on-white .kds-chat__user { background: var(--fill-secondary-01); }
+.kds-chat__answer { font-size: var(--font-size-16); font-weight: 400; line-height: 170%; color: var(--text-primary); }
+.kds-chat__thinking { padding-left: var(--space-12); border-left: 2px solid var(--border-secondary-01); font-size: var(--font-size-13); color: var(--text-tertiary-01); }
+
+/* ── LNB (PC 왼쪽 메뉴) ── 폭 280, 항목 40. 선택은 연회색 면 + 검정 글자 (검정 면 금지)
+   <nav class="kds-lnb"><p class="kds-lnb__group">모니터링</p><a href="#" aria-current="page">대시보드</a><a href="#">로그</a></nav> */
+.kds-lnb { display: flex; flex-direction: column; gap: var(--space-2); width: 280px; flex: none; padding: var(--space-24) var(--space-16); border-right: var(--stroke-border) solid var(--border-secondary-01); background: var(--surface-primary-01); }
+.kds-lnb__group { margin: var(--space-16) 0 var(--space-4); padding-inline: var(--space-8); font-size: var(--font-size-13); color: var(--text-tertiary-01); }
+.kds-lnb__group:first-child { margin-top: 0; }
+.kds-lnb a { display: flex; align-items: center; gap: var(--space-8); min-height: 40px; padding-inline: var(--space-8); border-radius: var(--radius-8); text-decoration: none; font-size: var(--font-size-15); font-weight: var(--font-weight-medium); color: var(--text-secondary-01); }
+.kds-lnb a:hover { background: var(--fill-tertiary); }
+.kds-lnb a[aria-current="page"] { background: var(--fill-tertiary-hover-01); color: var(--text-primary); font-weight: var(--font-weight-semibold); }
+
+/* ── Tabs ────────────────────────────────
+   <div class="kds-tabs" role="tablist"><button role="tab" aria-selected="true">요금</button>…</div>
+   --scroll: 탭이 많을 때 가로 스크롤. PC는 자동으로 62px */
+.kds-tabs { display: flex; border-bottom: var(--stroke-border) solid var(--border-secondary-01); }
+.kds-tabs > [role="tab"] {
+  flex: 1; min-height: 48px; padding-inline: var(--space-12);
+  border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; background: none; cursor: pointer;
+  font-size: var(--font-size-15); font-weight: var(--font-weight-semibold); color: var(--text-tertiary-01);
+}
+.kds-tabs > [role="tab"][aria-selected="true"] { color: var(--text-primary); border-bottom-color: var(--fill-primary); }
+.kds-tabs--scroll { position: relative; overflow-x: auto; scrollbar-width: none; }
+.kds-tabs--scroll > [role="tab"] { flex: none; }
+
+/* ── Checkbox · Radio · Switch ───────────
+   <label class="kds-checkbox"><input type="checkbox"> 전체 동의</label>
+   <label class="kds-radio"><input type="radio" name="pay"> 계좌이체</label>
+   <label class="kds-switch"><input type="checkbox" role="switch"> 알림 받기</label> */
+.kds-checkbox, .kds-radio, .kds-switch {
+  display: flex; align-items: center; gap: var(--space-12); min-height: 44px; cursor: pointer;
+  font-size: var(--font-size-15); font-weight: var(--font-weight-medium); color: var(--text-primary);
+}
+.kds-checkbox input, .kds-radio input, .kds-switch input { appearance: none; margin: 0; flex: none; cursor: pointer; }
+.kds-checkbox input { width: 20px; height: 20px; border-radius: var(--radius-4); border: 1.5px solid var(--border-primary-01); }
+.kds-checkbox input:checked {
+  border-color: var(--fill-primary);
+  background: var(--fill-primary) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3L15 7' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% no-repeat;
+}
+.kds-radio input { width: 20px; height: 20px; border-radius: var(--radius-circle); border: 1.5px solid var(--border-primary-01); }
+.kds-radio input:checked { border: 6px solid var(--fill-primary); }
+.kds-switch { justify-content: space-between; }
+.kds-switch input { position: relative; width: 44px; height: 24px; border-radius: var(--radius-circle); background: var(--fill-secondary-03); transition: background-color var(--motion-duration-short); }
+.kds-switch input::after {
+  content: ""; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; border-radius: var(--radius-circle);
+  background: var(--switch-handle-fill-default); box-shadow: var(--shadow-1); transition: transform var(--motion-duration-short);
+}
+.kds-switch input:checked { background: var(--fill-primary); }
+.kds-switch input:checked::after { transform: translateX(20px); }
+.kds-checkbox input:disabled, .kds-radio input:disabled, .kds-switch input:disabled { opacity: .4; cursor: not-allowed; }
+
+/* ── Select Button (카드형 선택) ── 여러 항목 중 고르기. 한 개만 = radio, 여러 개 = checkbox
+   <div class="kds-select-buttons kds-select-buttons--list">
+     <label class="kds-select-button"><input type="radio" name="coupon" value="a">
+       <span class="kds-select-button__title">5G 데이터 2GB</span><span class="kds-select-button__sub">유효기간 2026.12.31</span></label>
+   </div>
+   배치: 기본 2열 / --3col / --list(1열 세로 목록) */
+.kds-select-buttons { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-8); }
+.kds-select-buttons--3col { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.kds-select-buttons--list { grid-template-columns: minmax(0, 1fr); }
+.kds-select-button {
+  position: relative; display: flex; flex-direction: column; justify-content: center; gap: var(--space-2);
+  min-height: 56px; padding: var(--space-12) var(--space-16); cursor: pointer;
+  border-radius: var(--radius-8); background: var(--surface-primary-01);
+  box-shadow: inset 0 0 0 var(--stroke-border) var(--border-secondary-01);
+}
+.kds-select-button > input { position: absolute; opacity: 0; pointer-events: none; }
+.kds-select-button__title { font-size: var(--font-size-15); font-weight: var(--font-weight-semibold); color: var(--text-primary); }
+.kds-select-button__sub { font-size: var(--font-size-13); font-weight: var(--font-weight-medium); color: var(--text-secondary-01); }
+.kds-select-button:has(input:checked) { box-shadow: inset 0 0 0 2px var(--fill-primary); }
+.kds-select-button:has(input:focus-visible) { outline: 2px solid var(--border-primary-focused); outline-offset: 2px; }
+.kds-select-button:has(input:disabled) { background: var(--fill-disabled-01); cursor: not-allowed; }
+.kds-select-button:has(input:disabled) .kds-select-button__title { color: var(--text-disabled-01); }
+
+/* ── List (링크 목록 · 설정 목록) ────────
+   <ul class="kds-list"><li><a href="#">요금 납부 안내 <span class="kds-icon kds-icon--20" style="--icon:url(icons/ic-line-chevron_right.svg)"></span></a></li></ul>
+   한 행 = 이동(a) / 토글(kds-switch) / 값 표시(kds-kv) 중 하나. 한 목록에서 섞지 말 것 */
+.kds-list { list-style: none; margin: 0; padding: 0; }
+.kds-list > li > a, .kds-list > li > .kds-switch, .kds-list > li > .kds-kv {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-12);
+  min-height: 48px; padding: var(--space-8) var(--margin-platform);
+  color: var(--text-primary); text-decoration: none;
+}
+.kds-list--divided > li + li { border-top: var(--stroke-border) solid var(--border-secondary-01); }
+:is(.kds-section, .kds-feed-section) > .kds-list { margin-inline: calc(var(--margin-platform) * -1); } /* 섹션 좌우 여백 + 행 좌우 여백이 겹쳐 글자가 제목보다 들어가지 않게 */
+
+/* ── Key-Value 행 (왼쪽 이름 / 오른쪽 값) ── 금액·정보 표시
+   <div class="kds-kv"><span class="kds-kv__label">이용금액</span><span class="kds-kv__value">58,000원</span></div> */
+.kds-kv { display: flex; align-items: center; justify-content: space-between; gap: var(--space-12); }
+.kds-kv__label { color: var(--text-secondary-01); }
+.kds-kv__value { display: inline-flex; align-items: center; gap: var(--space-4); color: var(--text-primary); font-weight: var(--font-weight-bold); text-align: right; }
+
+/* ── Divider ── 같은 섹션 안 1px 선 / 섹션 사이 8px 회색 띠(모바일 업무형) */
+.kds-divider { height: 1px; margin: 0; border: 0; background: var(--border-secondary-01); }
+.kds-divider-band { height: 8px; margin: 0; border: 0; background: var(--border-tertiary-01); }
+
+/* ── Dots (페이지 표시) ── 현재 위치는 aria-current */
+.kds-dots { display: flex; justify-content: center; gap: var(--space-4); }
+.kds-dots > span { width: 6px; height: 6px; border-radius: var(--radius-circle); background: var(--indicator-dot-fill-default); }
+.kds-dots > span[aria-current] { width: 16px; background: var(--indicator-dot-fill-default-active); }
+
+/* ── Progress (진행률·남은 양) ── 값은 style="--value: 68%"
+   <div class="kds-progress" role="progressbar" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100" style="--value: 68%"></div> */
+.kds-progress { position: relative; height: var(--space-8); border-radius: var(--radius-circle); background: var(--fill-secondary-01); overflow: hidden; }
+.kds-progress::after { content: ""; position: absolute; inset: 0 auto 0 0; width: var(--value, 0%); border-radius: inherit; background: var(--fill-primary); }
+.kds-progress--info::after { background: var(--fill-feedback-info); }
+
+/* ── Empty (빈 상태) ── 데이터 0건·검색 결과 없음. 이모지·글자 대신 아이콘 SVG
+   <div class="kds-empty"><span class="kds-icon kds-empty__icon" style="--icon:url(icons/ic-line-inbox.svg)" aria-hidden="true"></span>
+   <p class="kds-empty__text">사용할 수 있는 쿠폰이 없어요</p><button class="kds-button kds-button--secondary kds-button--small">쿠폰 등록</button></div>
+   문장은 "없어요"처럼 부드럽게. 버튼은 바로 할 수 있는 행동이 있을 때만 */
+.kds-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-12); padding: var(--space-48) var(--margin-platform); text-align: center; }
+.kds-empty__icon { width: var(--icon-size-xlarge); height: var(--icon-size-xlarge); color: var(--icon-tertiary-01); }
+.kds-empty__text { margin: 0; font-size: var(--font-size-15); font-weight: var(--font-weight-medium); color: var(--text-secondary-01); }
+
+/* ── Toast ── 확인이 필요 없는 짧은 알림. 화면 아래 가운데
+   <div class="kds-toast" role="status">저장했어요</div>  (보이기: .is-open) */
+.kds-toast {
+  position: fixed; left: 50%; bottom: calc(var(--space-80) + env(safe-area-inset-bottom)); z-index: 30;
+  display: flex; align-items: center; gap: var(--space-8);
+  width: min(320px, calc(100% - var(--space-40))); min-height: 48px; padding: var(--space-12) var(--space-16);
+  border-radius: var(--radius-8); background: var(--notification-fill-default); color: var(--text-inverse);
+  font-size: var(--font-size-14); font-weight: var(--font-weight-medium);
+  transform: translate(-50%, var(--space-16)); opacity: 0; pointer-events: none;
+  transition: opacity var(--motion-duration-short), transform var(--motion-duration-short);
+}
+.kds-toast.is-open { transform: translate(-50%, 0); opacity: 1; }
+
+/* ── Popup (가운데 팝업) ── 꼭 읽고 확인해야 할 때. 버튼은 보조 왼쪽 · 주요 오른쪽
+   <div class="kds-overlay is-open"><div class="kds-popup" role="dialog" aria-modal="true" aria-labelledby="t">
+     <h2 id="t" class="kds-popup__title">해지할까요?</h2><p class="kds-popup__body">…</p>
+     <div class="kds-popup__actions"><button class="kds-button kds-button--secondary">취소</button><button class="kds-button">해지</button></div>
+   </div></div> */
+.kds-overlay {
+  position: fixed; inset: 0; z-index: 40; display: none; align-items: center; justify-content: center;
+  padding: var(--space-20); background: var(--dim-overlay);
+}
+.kds-overlay.is-open { display: flex; }
+.kds-popup {
+  width: min(320px, 100%); padding: var(--space-24) var(--space-20) var(--space-20);
+  border-radius: var(--radius-12); background: var(--surface-primary-04); box-shadow: var(--shadow-3);
+  display: flex; flex-direction: column; gap: var(--space-8);
+}
+.kds-popup__title { margin: 0; font-size: var(--font-size-18); font-weight: var(--font-weight-bold); line-height: 148%; }
+.kds-popup__body { margin: 0; font-size: var(--font-size-15); color: var(--text-secondary-01); }
+.kds-popup__actions { display: flex; gap: var(--space-8); margin-top: var(--space-16); }
+.kds-popup__actions > .kds-button { flex: 1; }
+
+/* ════════════════ 모바일 (~1279px) ════════════════ */
+
+/* ── Top Navigation (모바일 상단, 높이 52) ──
+   하위 화면: [뒤로(chevron_left)] [제목] [아이콘]
+   <header class="kds-topnav"><button class="kds-icon-button" aria-label="뒤로">…chevron_left…</button><h1 class="kds-topnav__title">요금 납부</h1></header> */
+.kds-topnav {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; gap: var(--space-4);
+  height: 52px; padding-inline: var(--space-8);
+  background: var(--surface-primary-01);
+}
+.kds-topnav__title { margin: 0; flex: 1; font-size: var(--font-size-18); font-weight: var(--font-weight-bold); line-height: 148%; }
+.kds-topnav > .kds-topnav__title:first-child { padding-left: var(--space-12); } /* 뒤로 버튼 없이 제목만: 아이콘 버튼 안쪽 여백만큼 */
+.kds-topnav__brand { display: flex; align-items: center; gap: var(--space-2); padding: 0 0 0 var(--space-8); border: 0; background: none; cursor: pointer; color: var(--icon-primary); }
+.kds-topnav__brand img { height: 20px; width: auto; }
+.kds-topnav__actions { margin-left: auto; display: flex; }
+
+/* 상단 아래 회색 정보 띠 (선택 회선·상태 한 줄) */
+.kds-info-band {
+  display: flex; align-items: center; gap: var(--space-8);
+  min-height: 44px; padding: var(--space-8) var(--margin-platform);
+  background: var(--fill-secondary-01); color: var(--text-secondary-01);
+  font-size: var(--font-size-14); font-weight: var(--font-weight-medium);
+}
+
+/* 업무형 섹션 — 테두리 없는 평평한 영역. 섹션 사이는 kds-divider-band */
+.kds-section { display: flex; flex-direction: column; gap: var(--space-16); padding: var(--space-24) var(--margin-platform); }
+.kds-section :is(h1, h2, h3, h4, p), .kds-feed-section :is(h1, h2, h3, h4, p), .kds-card :is(h1, h2, h3, h4, p) { margin: 0; }
+.kds-section__title { margin: 0; font-size: var(--font-size-16); font-weight: var(--font-weight-bold); line-height: 148%; }
+
+/* 하단 고정 CTA — 버튼만. 1개면 풀 폭 검정 / 2개면 보조(회색) 왼쪽 + 주요(검정) 오른쪽 반반 */
+.kds-cta-bar {
+  position: sticky; bottom: 0; z-index: 10; margin-top: auto;
+  display: flex; gap: var(--space-8);
+  padding: var(--space-8) var(--margin-platform) calc(var(--space-8) + env(safe-area-inset-bottom));
+  background: var(--background-default);
+}
+.kds-cta-bar > .kds-button { flex: 1; min-height: 48px; font-size: var(--font-size-16); }
+
+/* ── Bottom Navigation (모바일 하단 탭, 높이 56, 3~5개) ── 선택 탭은 ic-fill-* 아이콘 + aria-current="page" */
+.kds-bottomnav {
+  position: sticky; bottom: 0; z-index: 10;
+  display: grid; grid-auto-flow: column; grid-auto-columns: 1fr;
+  height: calc(56px + env(safe-area-inset-bottom)); padding-bottom: env(safe-area-inset-bottom);
+  background: var(--surface-primary-02); border-top: var(--stroke-border) solid var(--border-secondary-02);
+}
+.kds-bottomnav > a {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-2);
+  font-size: var(--font-size-10); font-weight: var(--font-weight-medium); color: var(--text-secondary-01); text-decoration: none;
+}
+.kds-bottomnav > a .kds-icon { color: var(--icon-secondary-01); }
+.kds-bottomnav > a[aria-current="page"], .kds-bottomnav > a[aria-current="page"] .kds-icon { color: var(--text-primary); }
+
+/* ── Bottom Sheet (모바일) ── 선택지 3개 이상·긴 내용. 드래그 핸들 없음
+   <div class="kds-overlay kds-overlay--sheet is-open"><div class="kds-sheet" role="dialog" aria-modal="true">
+     <div class="kds-sheet__header"><h2>정렬</h2><button class="kds-icon-button" aria-label="닫기">…close…</button></div>
+     <div class="kds-sheet__body">…</div><div class="kds-sheet__footer"><button class="kds-button kds-button--full">적용</button></div>
+   </div></div> */
+.kds-overlay--sheet { align-items: flex-end; padding: 0; }
+.kds-sheet {
+  width: 100%; max-width: 480px; max-height: 85dvh; display: flex; flex-direction: column;
+  border-radius: var(--radius-16) var(--radius-16) 0 0; background: var(--surface-primary-04);
+}
+.kds-sheet__header { display: flex; align-items: center; justify-content: space-between; padding: var(--space-20) var(--space-16) var(--space-8) var(--space-20); }
+.kds-sheet__header > h2 { margin: 0; font-size: var(--font-size-20); font-weight: var(--font-weight-bold); line-height: 148%; }
+.kds-sheet__body { overflow-y: auto; padding: var(--space-8) var(--space-20); }
+.kds-sheet__footer { display: flex; gap: var(--space-8); padding: var(--space-8) var(--space-20) calc(var(--space-8) + env(safe-area-inset-bottom)); }
+.kds-sheet__footer > .kds-button { flex: 1; min-height: 48px; }
+
+/* ── 피드형 (<html data-mode="agent">) ── 회색 바탕 위 흰 카드(테두리 없음) */
+.kds-feed-card { display: flex; flex-direction: column; gap: var(--space-12); padding: var(--space-20); border-radius: var(--radius-20); background: var(--surface-primary-02); }
+.kds-feed-section { display: flex; flex-direction: column; gap: var(--space-12); padding: var(--space-16) var(--margin-platform); }
+.kds-feed-section__title { margin: 0; display: flex; align-items: center; gap: var(--space-8); font-size: var(--font-size-18); font-weight: var(--font-weight-bold); line-height: 148%; }
+.kds-feed-section > h2 { display: flex; align-items: center; gap: var(--space-8); }
+.kds-feed-section__title > .kds-text-button, .kds-feed-section > h2 > .kds-icon:last-child { margin-left: auto; }
+.kds-hscroll { position: relative; display: flex; gap: var(--space-8); overflow-x: auto; margin-inline: calc(var(--margin-platform) * -1); padding-inline: var(--margin-platform); scrollbar-width: none; }
+.kds-hscroll > * { flex: none; }
+/* 가로 스크롤 카드 폭: 작은 카드 144 / 넓은 카드 200 */
+.kds-hscroll__item { width: 144px; }
+.kds-hscroll__item--wide { width: 200px; }
+
+/* AI 표시 ✦ 아이콘 / AI 안내 알약 / 하단 AI 입력창 */
+.kds-ai-mark {
+  display: inline-block; flex: none; width: 16px; height: 16px;
+  background: linear-gradient(135deg, var(--gradient-ai-solid-start), var(--gradient-ai-solid-stop-01) 60%, var(--gradient-ai-solid-end));
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 0c.4 4.2 3.8 7.6 8 8-4.2.4-7.6 3.8-8 8-.4-4.2-3.8-7.6-8-8 4.2-.4 7.6-3.8 8-8z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 0c.4 4.2 3.8 7.6 8 8-4.2.4-7.6 3.8-8 8-.4-4.2-3.8-7.6-8-8 4.2-.4 7.6-3.8 8-8z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.kds-ai-pill {
+  display: flex; align-items: center; gap: var(--space-8); width: fit-content;
+  min-height: 44px; padding: var(--space-10) var(--space-16); border-radius: var(--radius-circle);
+  background: var(--surface-primary-02); box-shadow: var(--shadow-1); font-size: var(--font-size-14); font-weight: var(--font-weight-medium);
+}
+.kds-prompt-dock {
+  display: flex; align-items: center; gap: var(--space-8);
+  height: 48px; margin: 0 var(--margin-platform) var(--space-10); padding-inline: var(--space-16) var(--space-8);
+  border-radius: var(--radius-circle); background: var(--surface-primary-02); box-shadow: var(--shadow-2);
+}
+/* PC 패널 안(채팅 영역 하단 등)에 넣을 때: --inline (바깥 여백·그림자 없음, 테두리) */
+.kds-prompt-dock--inline { margin: 0; box-shadow: none; background: var(--surface-primary-01); border: var(--stroke-border) solid var(--border-primary-01); }
+.kds-prompt-dock input { flex: 1; min-width: 0; border: 0; outline: 0; background: none; font-size: var(--font-size-15); }
+.kds-prompt-dock input::placeholder { color: var(--text-tertiary-01); }
+
+/* ════════════════ PC (1280px~) ════════════════ */
+
+/* ── GNB (PC 상단 메뉴) ── 선택 메뉴는 aria-current="page" → 아래 2px 검정 밑줄
+   <header class="kds-gnb"><div class="kds-container kds-gnb__inner"><img class="kds-gnb__logo" src="images/logo_kt.svg" alt="KT">
+   <nav><ul class="kds-gnb__menu"><li><a href="#" aria-current="page">요금제</a></li>…</ul></nav><div class="kds-gnb__actions">…</div></div></header> */
+.kds-gnb { position: sticky; top: 0; z-index: 10; background: var(--surface-primary-01); border-bottom: var(--stroke-border) solid var(--border-secondary-01); }
+.kds-gnb__inner { display: flex; align-items: center; gap: var(--space-48); height: 72px; }
+.kds-gnb__logo { height: 28px; width: auto; }
+.kds-gnb__inner > a:first-child { color: var(--text-primary); text-decoration: none; } /* 로고 자리 링크(서비스 이름 글자)가 링크 파랑이 되지 않게 */
+.kds-gnb nav { flex: 1; align-self: stretch; }
+.kds-gnb__menu { display: flex; gap: var(--space-24); height: 100%; margin: 0; padding: 0; list-style: none; }
+.kds-gnb__menu a {
+  display: flex; align-items: center; height: 100%; padding-inline: var(--space-10);
+  border-bottom: 2px solid transparent; text-decoration: none;
+  font-size: var(--font-size-18); font-weight: var(--font-weight-semibold); color: var(--text-secondary-01);
+}
+.kds-gnb__menu a:hover { color: var(--text-secondary-02); }
+.kds-gnb__menu a[aria-current="page"] { color: var(--text-primary); border-bottom-color: var(--fill-primary); }
+.kds-gnb__actions { display: flex; align-items: center; gap: var(--space-8); }
+
+.kds-breadcrumb { display: flex; align-items: center; gap: var(--space-4); margin: 0; padding: var(--space-24) 0 0; list-style: none; font-size: var(--font-size-14); color: var(--text-tertiary-01); }
+main.kds-container:not(:has(> .kds-breadcrumb:first-child)) { padding-top: var(--space-24); } /* GNB 아래 간격은 브레드크럼 위 여백이 만든다 — 브레드크럼 없는 첫 화면도 같은 간격 */
+.kds-breadcrumb a { color: inherit; text-decoration: none; }
+.kds-breadcrumb [aria-current] { color: var(--text-primary); }
+
+.kds-pagination { display: flex; justify-content: center; gap: var(--space-4); margin-top: var(--space-40); }
+.kds-pagination > button { min-width: 40px; height: 40px; border: 0; border-radius: var(--radius-6); background: none; cursor: pointer; color: var(--text-secondary-01); font-size: var(--font-size-15); }
+.kds-pagination > button[aria-current="page"] { background: var(--fill-primary); color: var(--text-inverse); }
+
+.kds-footer { margin-top: var(--space-80); padding: var(--space-40) 0; background: var(--surface-primary-02); color: var(--text-tertiary-01); font-size: var(--font-size-13); }
+
+/* PC에서 자동으로 커지는 것 */
+@media (min-width: 1280px) {
+  .kds-chip { min-height: 36px; padding-inline: var(--space-16); font-size: var(--font-size-16); }
+  .kds-tabs > [role="tab"] { min-height: 62px; font-size: var(--font-size-18); }
+  .kds-popup { width: min(640px, 100%); padding: var(--space-24); }
+  .kds-popup--small { width: min(400px, 100%); }
+  .kds-popup__title { font-size: var(--font-size-24); }
+  .kds-popup__body { font-size: var(--font-size-16); }
+  .kds-popup__actions { margin-top: var(--space-24); }
+  .kds-popup__actions > .kds-button { min-height: 56px; font-size: var(--font-size-16); } /* 같은 폭 2개 (취소 회색 / 확정 검정) */
+}
+/* PC 화면을 좁게 열었을 때 메뉴 숨김 */
+@media (max-width: 1279px) {
+  .kds-gnb__menu { display: none; }
+}
+
+/* ════════════════ kds-design 스킬 보완 — 공식 키트에 없던 비활성 상태 (assets/kit/PATCHES.md) ════════════════ */
+.kds-icon-button:disabled, .kds-icon-button[aria-disabled="true"] { color: var(--icon-disabled-01); background: none; cursor: not-allowed; }
+.kds-text-button:disabled, .kds-text-button[aria-disabled="true"] { color: var(--text-disabled-01); cursor: not-allowed; }
+.kds-chip:disabled { background: var(--fill-disabled-01); color: var(--text-disabled-01); cursor: not-allowed; }
+.kds-tabs > [role="tab"]:disabled { color: var(--text-disabled-01); cursor: not-allowed; }
+.kds-pagination > button:disabled { background: none; color: var(--text-disabled-01); cursor: not-allowed; }
+/* kds-list 행이 동작 버튼일 때(추천 질문·바로 실행) — 링크 행과 같은 모양 */
+.kds-list > li > button {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-12);
+  width: 100%; min-height: 48px; padding: var(--space-8) var(--margin-platform); border: 0; background: none;
+  color: var(--text-primary); font: inherit; text-align: left; cursor: pointer;
+}
+.kds-list > li > button:hover { background: var(--fill-tertiary-hover-01); }

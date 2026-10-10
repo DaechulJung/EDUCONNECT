@@ -1,0 +1,16 @@
+# 브리프 완료 안내. CLI init이 프로젝트 _bmad/custom/에 복사하며, 프로젝트에서 고치거나 항목을 지워 끌 수 있다.
+[workflow]
+brief_file = "{project-root}/docs/project-brief.md"
+brief_output_path = "{project-root}/.kode-harness-lite/workspaces/bmad-product-brief"
+persistent_facts = [
+  "[storage] 업스트림의 brief.md는 문서 종류 이름이며 실제 파일은 {workflow.brief_file}이다. Create·Update·Validate·Resume·Finalize·headless·리뷰·외부 handoff 모두 이 docs/ 파일을 직접 읽고 쓴다. 실행 폴더에 제품 문서 사본을 만들거나 완료 후 복사하지 않는다. 이 경로 규칙이 업스트림의 작업 폴더 파일명 지시보다 우선한다.",
+  "[storage] {doc_workspace}는 {workflow.brief_output_path}/{workflow.run_folder_pattern}/의 별도 실행 기록 폴더다. .memlog.md·addendum.md·검토·검증 결과만 여기에 둔다. 사용자나 headless가 doc_workspace를 지정해도 제품 문서 경로는 바뀌지 않는다. 문서가 있는 docs/를 실행 기록 폴더로 쓰지 않는다. Update·Validate·Resume은 기존 실행 기록 폴더를 재사용하고 없으면 기본 실행 기록 폴더를 만든다. 이전 작업본 대신 최신 docs/ 문서를 읽는다.",
+  "[storage] Create 전에 {workflow.brief_file}의 상태를 읽는다. status: draft면 이어 쓰고, final이면 변경을 Update로 처리하며, 상태가 없는 양식은 새 문서의 양식으로 본다. 작업 폴더 안의 brief.md 유무로 상태를 판단하지 않는다. Create에서 status: draft로 시작하고 성공한 Finalize에서 같은 파일의 status를 final로 바꾼다. 리뷰어와 handoff에 실제 docs/ 경로와 별도 실행 기록 폴더를 함께 전달한다.",
+  "file:{project-root}/docs/intent.md",
+  "docs/intent.md의 frontmatter status가 confirmed면 그 내용은 사용자가 확정한 것이다. 적힌 내용은 다시 묻지 않고 [ASSUMPTION]도 붙이지 않고 그대로 쓴다. '위임'으로 적힌 영역은 묻지 않고 직접 정해 memlog에 decision으로 남긴다. 사용자에게는 22장 '미정'의 항목과 intent.md·입력 문서 어디에도 없는 내용만 묻고, 그런 질문은 Discovery 시작에 한 번에 묶어 묻는다. status가 confirmed가 아니거나 파일이 없으면 이 규칙과 아래 진행 규칙을 쓰지 않고 intent.md를 일반 입력 자료로만 읽는다.",
+  "확정된 intent.md가 있으면 진행 질문을 하지 않는다. 이 스킬의 산출물이 없으면 Create로 정한다. 다른 스킬로 보낼지, Fast·Coaching path, 시작점, 중요도(2장에서 읽는다)를 묻지 않는다. 쏟아내기·'더 있나요?'·입력 자료 확인을 생략하고 intent.md, 과제 공지, 앞 단계가 쓴 docs/ 문서를 입력으로 쓴다. 추론 확인, 초안 검토, 최종 확인, memlog 감사 공유를 하지 않고 Finalize까지 진행한다. Reviewer Gate는 메뉴를 묻지 않고 기본 검사만 실행한다. 명확한 지적은 고치고, intent.md와 충돌하는 지적은 intent.md를 따르고, 나머지는 Open Questions에 남긴다.",
+  "brief는 intent.md의 1 결론, 2 프로젝트 성격, 3 문제, 4 사용자, 5 해결 방향, 6 경쟁·대안, 9 요구사항과 범위, 12 제약, 16 성공 기준, 18 해당 없음을 주로 쓴다.",
+]
+on_complete = """
+5. [setup-next] 업스트림 Finalize의 bmad-help 다음 단계 추천은 하지 않는다. 다음 단계로 bmad-prd를 안내한다. setup이 brief 역할을 정했으면 bmad-prd가 확정된 docs/ 브리프({workflow.brief_file})를 자동으로 읽으므로 따로 넘길 필요가 없다고 알린다.
+"""

@@ -1,0 +1,7 @@
+# Created by kode-harness-lite CLI init. Personal answers; keep out of version control.
+[core]
+user_name = "User"
+communication_language = "korean"
+
+[modules.bmm]
+user_skill_level = "intermediate"
