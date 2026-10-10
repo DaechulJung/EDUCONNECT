@@ -7,8 +7,9 @@ import { Icon, ToastProvider } from '@/components/kds/kds'
 import { useToast } from '@/components/kds/kds-hooks'
 import { ConditionCard } from '@/components/parent/ConditionCard'
 import { ConditionSheet } from '@/components/parent/ConditionSheet'
+import { NoPlan, PlanDraft } from '@/components/parent/PlanDraft'
 import { RecommendTable } from '@/components/parent/RecommendTable'
-import { getConditions, listChildren, listSubjects, recommendPrograms, saveConditions, sendChatMessage, type Conditions, type Recommendation } from '@/lib/client'
+import { createPlanDraft, getConditions, listChildren, listSubjects, recommendPrograms, saveConditions, sendChatMessage, type Conditions, type Plan, type Recommendation } from '@/lib/client'
 import { BASE_SUBJECTS, childLabel, pickChild, sameConditions, subjectOptions } from '@/lib/conditions'
 
 type Message = { id: number; role: 'user' | 'ai'; text: string; error?: boolean }
@@ -38,9 +39,14 @@ function Chat() {
   const [recs, setRecs] = useState<Recommendation[] | null>(null)
   const [recommending, setRecommending] = useState(false)
   const [recError, setRecError] = useState<string | null>(null)
+  const [plan, setPlan] = useState<Plan | null>(null)
+  const [noPlan, setNoPlan] = useState<string[] | null>(null)
+  const [planning, setPlanning] = useState(false)
+  const [planError, setPlanError] = useState<string | null>(null)
   const nextId = useRef(1)
-  // Bumped whenever the child or the card changes; a recommendation answer for an older value is dropped.
+  // Bumped whenever the child or the card changes; a recommendation or plan answer for an older value is dropped.
   const recContext = useRef(0)
+  const planContext = useRef(0)
   const endRef = useRef<HTMLDivElement>(null)
 
   const children = useQuery({
@@ -76,6 +82,11 @@ function Chat() {
     setRecs(null)
     setRecError(null)
     setRecommending(false)
+    planContext.current++
+    setPlan(null)
+    setNoPlan(null)
+    setPlanError(null)
+    setPlanning(false)
   }
 
   const add = (role: Message['role'], text: string, error = false) =>
@@ -138,6 +149,28 @@ function Chat() {
     setRecs(data.items)
   }
 
+  async function makePlan() {
+    if (!child) return
+    const context = ++planContext.current
+    setPlanning(true)
+    setPlanError(null)
+    setPlan(null)
+    setNoPlan(null)
+    const { data, error, response } = await createPlanDraft({ body: { child_id: child.id } })
+    if (context !== planContext.current) return
+    setPlanning(false)
+    if (data) {
+      setPlan(data)
+      return
+    }
+    const body = error as { detail?: string; data?: { relaxations?: string[] } } | undefined
+    if (response?.status === 422 && body?.detail === 'no_feasible_plan') {
+      setNoPlan(body.data?.relaxations ?? [])
+      return
+    }
+    setPlanError(response?.status === 404 ? '찾을 수 없어요' : '일정을 만들지 못했어요. 다시 시도해 주세요.')
+  }
+
   const lastAi = [...messages].reverse().find((m) => m.role === 'ai' && !m.error)?.id
 
   return (
@@ -176,17 +209,20 @@ function Chat() {
                   <Link className="kds-button kds-button--secondary kds-button--small" style={{ alignSelf: 'flex-start' }} href="/children">자녀 등록</Link>
                 )}
                 {m.id === lastAi && shown && child && (
-                  <ConditionCard value={shown} childName={childName} dirty={dirty} saving={saving} error={saveError} onEdit={() => setEditing(true)} onSave={save} canRecommend={!!saved.data} recommending={recommending} onRecommend={recommend} />
+                  <ConditionCard value={shown} childName={childName} dirty={dirty} saving={saving} error={saveError} onEdit={() => setEditing(true)} onSave={save} canRecommend={!!saved.data} recommending={recommending} onRecommend={recommend} planning={planning} onPlan={makePlan} />
                 )}
               </div>
             ),
           )}
           {lastAi === undefined && saved.data && child && (
-            <ConditionCard value={shown!} childName={childName} dirty={dirty} saving={saving} error={saveError} onEdit={() => setEditing(true)} onSave={save} canRecommend={!!saved.data} recommending={recommending} onRecommend={recommend} />
+            <ConditionCard value={shown!} childName={childName} dirty={dirty} saving={saving} error={saveError} onEdit={() => setEditing(true)} onSave={save} canRecommend={!!saved.data} recommending={recommending} onRecommend={recommend} planning={planning} onPlan={makePlan} />
           )}
 
           {recError && <p className="kds-info-line kds-info-line--error" role="alert"><Icon name="ic-line-warning" size={16} />{recError}</p>}
           {recs && <RecommendTable items={recs} />}
+          {planError && <p className="kds-info-line kds-info-line--error" role="alert"><Icon name="ic-line-warning" size={16} />{planError}</p>}
+          {plan && <PlanDraft plan={plan} />}
+          {noPlan && <NoPlan relaxations={noPlan} onEdit={() => setEditing(true)} />}
 
           {thinking && <div className="kds-chat__thinking" role="status">조건을 정리하는 중</div>}
           {!thinking && messages.length === 0 && (
