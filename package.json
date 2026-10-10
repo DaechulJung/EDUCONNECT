@@ -1,7 +1,9 @@
 {
   "name": "app",
   "private": true,
-  "workspaces": ["apps/web"],
+  "workspaces": [
+    "apps/web"
+  ],
   "scripts": {
     "up": "docker compose up --build --wait",
     "down": "docker compose down",
@@ -19,6 +21,7 @@
   },
   "devDependencies": {
     "@e2e-dev/web": "^0.13.0",
+    "axe-core": "^4.14.0",
     "e2e": "^0.18.0"
   }
 }
