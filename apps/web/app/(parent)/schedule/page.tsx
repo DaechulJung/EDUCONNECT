@@ -63,7 +63,7 @@ export default function Page() {
             {impact && (
               <div aria-live="polite" style={{ display: 'flex', gap: 'var(--space-8)', alignItems: 'center', flexWrap: 'wrap' }}>
                 <span className="kds-tag kds-tag--warning" aria-label="영향 표시"><Icon name="ic-line-warning" size={16} />{impact}</span>
-                <Link className="kds-button kds-button--secondary kds-button--small" href={`/schedule/${p.id}/adjustment`}>조정안 보기</Link>
+                <Link className="kds-button kds-button--secondary kds-button--small" href={`/schedule/adjustment?plan=${p.id}`}>조정안 보기</Link>
               </div>
             )}
             <PlanDraft plan={p} label={`${name(p.child_id)} 확정 계획`} />

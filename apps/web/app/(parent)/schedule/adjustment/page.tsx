@@ -2,7 +2,8 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import Link from 'next/link'
-import { useParams, useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 import { Icon } from '@/components/kds/kds'
 import { useToast } from '@/components/kds/kds-hooks'
 import { PlanDraft } from '@/components/parent/PlanDraft'
@@ -16,13 +17,23 @@ type NoAlternative = { relaxations: string[] }
 // '조정안 수락' (the plan becomes the alternative, the tag goes) or '그대로 두기' (nothing changes, the tag stays).
 // With no alternative: "조건을 만족하는 대안이 없습니다" and the relaxations the server found (AC-09.6).
 export default function Page() {
-  const { planId } = useParams<{ planId: string }>()
+  // The plan id is a search param (runtime data), read inside a Suspense boundary.
+  return (
+    <Suspense>
+      <Adjustment />
+    </Suspense>
+  )
+}
+
+function Adjustment() {
+  const planId = useSearchParams().get('plan') ?? ''
   const router = useRouter()
   const toast = useToast()
   const queryClient = useQueryClient()
 
   const plan = useQuery({
     queryKey: ['plans', planId],
+    enabled: planId !== '',
     queryFn: async () => {
       const { data, error } = await getPlan({ path: { plan_id: planId } })
       if (error || !data) throw new Error('plan')
@@ -31,6 +42,7 @@ export default function Page() {
   })
   const adjustment = useQuery({
     queryKey: ['plans', planId, 'adjustment'],
+    enabled: planId !== '',
     queryFn: async () => {
       const { data, error, response } = await getAdjustment({ path: { plan_id: planId } })
       if (data) return { kind: 'proposal' as const, adjustment: data }
