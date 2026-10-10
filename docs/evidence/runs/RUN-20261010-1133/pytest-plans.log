@@ -1,0 +1,22 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- /Users/agentneo/Desktop/71_Hackerthon/01_Pre_Project/AIDX_PRE_TRAINING_2/.worktrees/verify/apps/api/.venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/agentneo/Desktop/71_Hackerthon/01_Pre_Project/AIDX_PRE_TRAINING_2/.worktrees/verify/apps/api
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 12 items
+
+tests/test_plans.py::test_removing_an_english_program_drops_it_and_its_monthly_cost PASSED [  8%]
+tests/test_plans.py::test_swapping_in_a_school_time_program_is_saved_with_time_overlap PASSED [ 16%]
+tests/test_plans.py::test_confirm_with_violations_is_409_and_leaves_the_draft PASSED [ 25%]
+tests/test_plans.py::test_confirmed_plan_is_listed_and_survives_sign_in_again PASSED [ 33%]
+tests/test_plans.py::test_second_confirm_supersedes_the_first PASSED     [ 41%]
+tests/test_plans.py::test_confirmed_plan_cannot_be_edited_or_confirmed_again PASSED [ 50%]
+tests/test_plans.py::test_bad_program_lists_are_422[program_ids0-empty_plan] PASSED [ 58%]
+tests/test_plans.py::test_bad_program_lists_are_422[program_ids1-duplicate_program] PASSED [ 66%]
+tests/test_plans.py::test_bad_program_lists_are_422[program_ids2-unknown_program] PASSED [ 75%]
+tests/test_plans.py::test_unpublished_or_other_grade_program_cannot_be_swapped_in PASSED [ 83%]
+tests/test_plans.py::test_other_parent_gets_404_with_one_audit_row_each PASSED [ 91%]
+tests/test_plans.py::test_signed_out_is_401 PASSED                       [100%]
+
+============================== 12 passed in 4.32s ==============================

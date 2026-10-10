@@ -1,3 +1,14 @@
+## #6 프로그램 추천·비교 — PLANNER (dev:2)
+완료 조건: AC-06.1~06.7을 시험 자료와 함께 done 처리하고 `npm run check`·E2E 통과 뒤 `Closes #6` PR. AC-06.4 전제로 #4의 `PUT /api/children/{id}`만 먼저 구현(10:13 결정, AC-04.x는 #4).
+- [x] 추천 API `POST /api/recommendations`(엔진 후보 필터·정렬 위) — `0ad1b81`
+- [x] 자녀 수정 PUT(소유권 `_own_row` 공유·404 감사·401·동의 422·모르는 필드 422·응답에 실명 없음) — `223013b`
+- [x] 시드 기반 API 시험(AC-06.1·06.3·06.4·06.5·06.6·06.7) — `bfb0e4d`
+- [x] '추천 보기'·비교표 화면(768px 이상 표, 미만 카드) — `3e83883`
+- [x] E2E TC-35~39·80 — `30caebc`
+- [x] origin/main `5f12264` 병합(`fe804e1`) 후 `npm run check`(api 191·web 9)·E2E 17/17
+- [x] AC-06.1~06.7 done, development.md #5·#6, lessons, PR
+- [x] Issue #4 코멘트에 PR 링크(PR #19)
+
 ## #7 주간 일정 생성·최적화 — PLANNER (dev:2)
 완료 조건: AD-5·AD-6·AD-7 순수 함수 엔진과 단위 시험(`apps/api/tests/test_engine.py`). #11 병합 뒤 시드 기반 시험으로 바꾸고 AC-07.1~07.8을 done 처리한 뒤 `Closes #7` PR.
 - [x] travel.py (하버사인·보정 1.4·15km/h·최소 5분·같은 위치 0분) — issue-7 `8ed4441`
@@ -6,9 +17,9 @@
 - [x] engine.py 일정 생성(결정형 탐색, 촘촘 공백 ≤30, 완화 조건) — `8ed4441`
 - [x] engine.py 추천 정렬(점수, 학원명, 시작 시각, ID) — `8ed4441`
 - [x] 단위 시험 TC-41·42·43·44·46 고정 입력 초안(14개) — `8ed4441`
-- [ ] 고정 입력을 #11 시드(`apps/api/app/seed/data/`)로 교체
-- [ ] AC-07.7 재생성 시험 TC-78(CHG-004), AC-07.8 E2E TC-79(CHG-005)
-- [ ] 일정 API·화면, AC done 처리, PR
+- [x] 고정 입력을 #11 시드(`apps/api/app/seed/data/`)로 교체 — `41d4254`
+- [x] AC-07.7 재생성 시험 TC-78(CHG-004) `41d4254`, AC-07.8 E2E TC-79(CHG-005) `f1863b9`
+- [x] 일정 API(`c2a0394`)·화면(`f1863b9`), `npm run check` api 197·web 16, E2E 22/22, AC-07.1~07.8 done, PR
 
 ## #5 챗봇 대화로 조건 설정과 화면 확인·수정 — PLANNER (dev:2)
 완료 조건: AC-05.1~05.7을 시험 자료와 함께 done 처리하고 `npm run check` 통과 뒤 `Closes #5` PR. AC-05.3·05.4는 CHG-005 문장(새 대화에 값 유지)대로 시험.
@@ -42,4 +53,21 @@
 - [x] 학원 화면: 목록(미공개 표시)·등록 폼(칸 옆 오류)·삭제 확인
 - [x] 화면 단위 시험(program-form)·E2E(TC-13·14·17·18 학원 쪽) — academy.e2e 3/3 (`8bdb38e`)
 - [x] origin/main(#1 병합 678efad) merge 후 재시험 — `npm run check` api 140·web 7
-- [ ] AC-02.4·02.5·02.6 추천·일정 쪽 시험은 #6·#7 병합 뒤 추가
+- [x] origin/main(#6 병합 e60a712) merge, TC-16·17(목록·비교표)·18 E2E — academy 5/5, 전체 E2E 23/23(ai 태그 제외), `npm run check` api 197
+- [x] PR #17 이월 3건: lessons #14 `[BUILDER]`, TC-07 근거에 session.test.ts, TC-76 가짜 Azure 값을 앱 생성 전에 주입
+- [x] TC-17 일정 확인: 로컬 시험 브랜치(issue-2 + origin/issue-7, push 안 함)에서 먼저 작성·실행
+- [x] #7 병합 → origin/main merge → TC-17 전체 재실행 → AC-02.5 done → `Closes #2` PR (#2 blocked-by #7 등록) — main `0994677` merge, E2E 29/29
+## #8 추천 결과 선택·수정과 확정 — PLANNER (dev:2)
+완료 조건: AC-08.1~08.3을 시험 자료와 함께 done 처리하고 `npm run check` 통과 뒤, #7 병합 후 origin/main을 merge해 `Closes #8` PR.
+- [x] 일정 목록·수정·확정 API와 pytest(`407507f`·`02139fe`): 위반 있는 초안 저장, 위반 시 확정 409, 이전 확정 superseded
+- [x] 초안 빼기·바꾸기·확정 화면, 일정 탭 확정 계획(`169595e`)
+- [x] E2E TC-47~49(`tests/plan.e2e.ts`, edu-dev2b): 11:2xZ 3회 연속 3/3, `schedule.e2e.ts` 4/4
+- [x] #7 병합(`f5e3edd`) 뒤 origin/main merge, `npm run check` exit 0(api 209·web 19), AC-08.1~08.3 done, lessons
+- [ ] PR(`Closes #8`) → CI 3/3 → VERIFIER 승인 → 병합
+## #12 모두의 AI 교육 에이전트 표현과 연동 경계 — BUILDER (10:32 분배 조정으로 dev:2→dev:1)
+- 완료 조건: AC-12.1·12.2 done(TC-67·68), `npm run check`·`npx e2e run` 통과, `Closes #12` PR VERIFIER 승인
+- [x] 라벨 #12·#4 dev:2→dev:1
+- [x] `GET /api/meta` 고정 문구(AD-14 모의 경계), `test_meta`(앱 생성 전 합성 Azure 값, 호스트 0건), 501 목록에서 제외, `gen:api`
+- [x] `tests/branding.e2e.ts` TC-67·68 — 앱 기동 전 합성 `AZURE_OPENAI_ENDPOINT`, 없으면 TC-68 실패 확인. CI e2e env에 합성 값
+- [x] arch 분배 문장 3곳(별도 커밋, BUZZ 04c89f41)
+- [ ] AC-12.1·12.2 done, development.md, PR

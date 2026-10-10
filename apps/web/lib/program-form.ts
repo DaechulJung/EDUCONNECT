@@ -85,6 +85,9 @@ export const FIELD_ORDER: FormField[] = [
   'grade_min', 'grade_max', 'capacity', 'enrolled', 'lat', 'lng',
 ]
 
+// Mirrors the API Name constraint (apps/api/app/schemas/catalog.py).
+const NAME_MAX = 50
+
 const HHMM = /^([01]\d|2[0-3]):[0-5]\d$/
 
 function wholeNumber(value: string): number | null {
@@ -103,6 +106,7 @@ function decimal(value: string): number | null {
 export function validateProgram(form: ProgramForm): FormErrors {
   const errors: FormErrors = {}
   if (!form.subject.trim()) errors.subject = '과목을 입력해 주세요'
+  else if (form.subject.trim().length > NAME_MAX) errors.subject = `과목은 ${NAME_MAX}자 이하로 입력해 주세요`
   if (form.days.length === 0) errors.days = '요일을 하나 이상 골라 주세요'
   if (!HHMM.test(form.start)) errors.start = '시작 시각을 입력해 주세요'
   if (!HHMM.test(form.end)) errors.end = '종료 시각을 입력해 주세요'
@@ -118,6 +122,7 @@ export function validateProgram(form: ProgramForm): FormErrors {
   else if (other < 0) errors.monthly_other = '월 기타경비는 0원 이상이어야 해요'
 
   if (!form.instructor.trim()) errors.instructor = '강사를 입력해 주세요'
+  else if (form.instructor.trim().length > NAME_MAX) errors.instructor = `강사는 ${NAME_MAX}자 이하로 입력해 주세요`
   if (Number(form.grade_min) > Number(form.grade_max)) errors.grade_max = '끝 학년은 시작 학년보다 같거나 높아야 해요'
 
   const capacity = wholeNumber(form.capacity)
@@ -157,4 +162,50 @@ export function toProgramIn(form: ProgramForm): ProgramIn {
     lat: Number(form.lat),
     lng: Number(form.lng),
   }
+}
+
+// Edit (FLOW-05 '이미 있는 프로그램의 정보를 정리한다'): the saved program as form strings.
+export function fromProgram(program: Program): ProgramForm {
+  return {
+    subject: program.subject,
+    type: program.type,
+    days: [...program.days],
+    start: program.start,
+    end: program.end,
+    monthly_tuition: program.monthly_tuition == null ? '' : String(program.monthly_tuition),
+    monthly_other: String(program.monthly_other ?? 0),
+    instructor: program.instructor,
+    grade_min: String(program.grade_min),
+    grade_max: String(program.grade_max),
+    capacity: String(program.capacity),
+    enrolled: String(program.enrolled),
+    lat: String(program.lat),
+    lng: String(program.lng),
+  }
+}
+
+// Cross-field checks the API raises with loc ["body"]; matched on the ValueError text in catalog.py.
+const MODEL_ERRORS: [RegExp, FormField, string][] = [
+  [/end must be later/, 'end', '종료 시각은 시작 시각보다 늦어야 해요'],
+  [/grade_min must not exceed/, 'grade_max', '끝 학년은 시작 학년보다 같거나 높아야 해요'],
+  [/enrolled must not exceed/, 'enrolled', '현재 인원은 정원보다 많을 수 없어요'],
+  [/days must not repeat/, 'days', '요일을 다시 골라 주세요'],
+]
+
+// arch 114: a 422 whose `detail` is an array is a field error. Maps it onto the form fields; the
+// API message is never shown. Returns {} when nothing maps (the caller shows the generic banner).
+export function serverErrors(body: unknown): FormErrors {
+  const detail = (body as { detail?: unknown } | null)?.detail
+  if (!Array.isArray(detail)) return {}
+  const errors: FormErrors = {}
+  for (const item of detail as { loc?: unknown[]; msg?: string }[]) {
+    const field = item.loc?.[1]
+    if (typeof field === 'string' && (FIELD_ORDER as string[]).includes(field)) {
+      errors[field as FormField] ??= '입력값을 확인해 주세요'
+      continue
+    }
+    const known = MODEL_ERRORS.find(([pattern]) => pattern.test(item.msg ?? ''))
+    if (known) errors[known[1]] ??= known[2]
+  }
+  return errors
 }

@@ -1,0 +1,3357 @@
+{
+  "schemaVersion": "report-1",
+  "run": {
+    "id": "01a1255b-152e-7501-a52d-74058ad641e7",
+    "specVersion": "0.1",
+    "runner": {
+      "name": "e2e",
+      "version": "0.18.0"
+    },
+    "status": "passed",
+    "exitCode": 0,
+    "startedAt": "2026-10-10T10:28:09.422Z",
+    "finishedAt": "2026-10-10T10:28:39.457Z",
+    "project": {
+      "id": "app",
+      "configDigest": "4f142fbf44ed2cf5a400d40785226117c14967b4e83fbadb0df9cc2e8652c86b"
+    },
+    "environment": {
+      "ci": false,
+      "trustNoticeShown": false,
+      "os": "darwin 27.0.0",
+      "arch": "arm64",
+      "runtime": "node v24.18.0"
+    },
+    "vcs": {
+      "commit": "dd1434abe4d130b44dedb612e46d466c242dffc7",
+      "branch": "main",
+      "dirty": false
+    },
+    "targets": [
+      {
+        "id": "web",
+        "index": 0,
+        "platform": "web",
+        "baseOrigin": "http://localhost:13000",
+        "environment": "test",
+        "engine": {
+          "name": "web",
+          "version": "0.13.0",
+          "spiVersion": 1
+        },
+        "capabilities": [
+          "actions",
+          "artifacts",
+          "browser",
+          "keyboard",
+          "location",
+          "observation",
+          "pointer",
+          "state"
+        ],
+        "artifactCapabilities": [
+          "screenshot",
+          "trace",
+          "video"
+        ],
+        "stateCapability": true
+      }
+    ],
+    "serialGroups": [],
+    "results": [
+      {
+        "id": "b73ec27511a1228190f495c60d04049986e0fa78a54d2b70d63a1b1001905616",
+        "testId": "tests/auth.e2e.ts::TC-01%20%EC%8B%9C%EB%93%9C%20%EA%B3%84%EC%A0%95%203%EC%A2%85%EC%9D%B4%20%EA%B0%81%EC%9E%90%20%EC%B2%AB%20%ED%99%94%EB%A9%B4%EC%9C%BC%EB%A1%9C%20%EB%93%A4%EC%96%B4%EA%B0%84%EB%8B%A4",
+        "kind": "test",
+        "declarationIndex": 1,
+        "titlePath": [
+          "TC-01 시드 계정 3종이 각자 첫 화면으로 들어간다"
+        ],
+        "file": "tests/auth.e2e.ts",
+        "source": {
+          "file": "tests/auth.e2e.ts",
+          "line": 36,
+          "column": 1
+        },
+        "targetId": "web",
+        "platform": "web",
+        "agent": "default",
+        "repeat": 0,
+        "tags": [],
+        "selected": true,
+        "status": "passed",
+        "attempts": [
+          {
+            "id": "01a1255b-196c-70f3-a5f1-4db084f7ddef",
+            "index": 0,
+            "status": "passed",
+            "startedAt": "2026-10-10T10:28:09.708Z",
+            "durationMs": 4106,
+            "artifacts": [
+              {
+                "id": "01a1255b-196c-70f3-a5f1-4db084f7ddef:artifact:0",
+                "kind": "trace",
+                "mediaType": "application/zip",
+                "redaction": "not-required",
+                "producer": {
+                  "kind": "attempt"
+                },
+                "path": "web/tests_auth.e2e.ts__TC-01_20_EC_8B_9C_EB_93_9C_20_EA_B3_84_EC_A0_95_203_EC_A2_85_EC_9D_B4_20_EA_B0_81_EC_9E_90_2-21b9dcc6/default/attempt-0/trace/trace-part1.zip",
+                "size": 55554,
+                "sha256": "a8c5c72fde435b0d074fc76273ab587393924116c77c374d8e80172d749dbe97"
+              },
+              {
+                "id": "01a1255b-196c-70f3-a5f1-4db084f7ddef:artifact:1",
+                "kind": "trace",
+                "mediaType": "application/zip",
+                "redaction": "not-required",
+                "producer": {
+                  "kind": "attempt"
+                },
+                "path": "web/tests_auth.e2e.ts__TC-01_20_EC_8B_9C_EB_93_9C_20_EA_B3_84_EC_A0_95_203_EC_A2_85_EC_9D_B4_20_EA_B0_81_EC_9E_90_2-21b9dcc6/default/attempt-0/trace/trace-part2.zip",
+                "size": 469788,
+                "sha256": "4e79fa79c16c5dcaf49946544ab26387fa789fba70b78c265d273323d20d64f1"
+              },
+              {
+                "id": "01a1255b-196c-70f3-a5f1-4db084f7ddef:artifact:2",
+                "kind": "trace",
+                "mediaType": "application/zip",
+                "redaction": "not-required",
+                "producer": {
+                  "kind": "attempt"
+                },
+                "path": "web/tests_auth.e2e.ts__TC-01_20_EC_8B_9C_EB_93_9C_20_EA_B3_84_EC_A0_95_203_EC_A2_85_EC_9D_B4_20_EA_B0_81_EC_9E_90_2-21b9dcc6/default/attempt-0/trace/trace-part3.zip",
+                "size": 440357,
+                "sha256": "85984bcde026f443eb8325f06427e240413e37b876f7e4c4285f994dd4311fe8"
+              },
+              {
+                "id": "01a1255b-196c-70f3-a5f1-4db084f7ddef:artifact:3",
+                "kind": "trace",
+                "mediaType": "application/zip",
+                "redaction": "not-required",
+                "producer": {
+                  "kind": "attempt"
+                },
+                "path": "web/tests_auth.e2e.ts__TC-01_20_EC_8B_9C_EB_93_9C_20_EA_B3_84_EC_A0_95_203_EC_A2_85_EC_9D_B4_20_EA_B0_81_EC_9E_90_2-21b9dcc6/default/attempt-0/trace/trace.zip",
+                "size": 479437,
+                "sha256": "22710b15c2abb0ffe1cba9a5bb8a505812293a595a3e7fe109bc51d514b45fe7"
+              }
+            ],
+            "secondaryErrors": [],
+            "cleanup": "complete",
+            "steps": [
+              {
+                "id": "01a1255b-196c-70f3-a5f1-4db084f7ddef:0",
+                "index": 0,
+                "kind": "app",
+                "api": "app.clearState",
+                "label": "",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:11.322Z",
+                "durationMs": 317,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 33,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a1255b-196c-70f3-a5f1-4db084f7ddef:1",
+                "index": 1,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/login",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:11.640Z",
+                "durationMs": 81,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 19,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a1255b-196c-70f3-a5f1-4db084f7ddef:2",
+                "index": 2,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"아이디\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:11.722Z",
+                "durationMs": 90,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 20,
+                  "column": 34
+                }
+              },
+              {
+                "id": "01a1255b-196c-70f3-a5f1-4db084f7ddef:3",
+                "index": 3,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"비밀번호\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:11.812Z",
+                "durationMs": 41,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 21,
+                  "column": 35
+                }
+              },
+              {
+                "id": "01a1255b-196c-70f3-a5f1-4db084f7ddef:4",
+                "index": 4,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"button\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:11.854Z",
+                "durationMs": 41,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 22,
+                  "column": 43
+                }
+              },
+              {
+                "id": "01a1255b-196c-70f3-a5f1-4db084f7ddef:5",
+                "index": 5,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByRole(\"navigation\", name: \"하단 메뉴\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:11.896Z",
+                "durationMs": 106,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 26,
+                  "column": 57
+                }
+              },
+              {
+                "id": "01a1255b-196c-70f3-a5f1-4db084f7ddef:6",
+                "index": 6,
+                "kind": "assertion",
+                "api": "expect.toHaveAttribute",
+                "label": "getByRole(\"link\", name: \"챗봇\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:12.002Z",
+                "durationMs": 3,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 27,
+                  "column": 48
+                }
+              },
+              {
+                "id": "01a1255b-196c-70f3-a5f1-4db084f7ddef:7",
+                "index": 7,
+                "kind": "assertion",
+                "api": "expect.not.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:12.007Z",
+                "durationMs": 1055,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 28,
+                  "column": 56
+                }
+              },
+              {
+                "id": "01a1255b-196c-70f3-a5f1-4db084f7ddef:8",
+                "index": 8,
+                "kind": "app",
+                "api": "app.clearState",
+                "label": "",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:13.063Z",
+                "durationMs": 114,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 40,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a1255b-196c-70f3-a5f1-4db084f7ddef:9",
+                "index": 9,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/login",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:13.177Z",
+                "durationMs": 40,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 19,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a1255b-196c-70f3-a5f1-4db084f7ddef:10",
+                "index": 10,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"아이디\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:13.217Z",
+                "durationMs": 38,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 20,
+                  "column": 34
+                }
+              },
+              {
+                "id": "01a1255b-196c-70f3-a5f1-4db084f7ddef:11",
+                "index": 11,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"비밀번호\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:13.255Z",
+                "durationMs": 35,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 21,
+                  "column": 35
+                }
+              },
+              {
+                "id": "01a1255b-196c-70f3-a5f1-4db084f7ddef:12",
+                "index": 12,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"button\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:13.290Z",
+                "durationMs": 39,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 22,
+                  "column": 43
+                }
+              },
+              {
+                "id": "01a1255b-196c-70f3-a5f1-4db084f7ddef:13",
+                "index": 13,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"학원 프로그램 관리\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:13.329Z",
+                "durationMs": 107,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 42,
+                  "column": 59
+                }
+              },
+              {
+                "id": "01a1255b-196c-70f3-a5f1-4db084f7ddef:14",
+                "index": 14,
+                "kind": "app",
+                "api": "app.clearState",
+                "label": "",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:13.436Z",
+                "durationMs": 100,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 44,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a1255b-196c-70f3-a5f1-4db084f7ddef:15",
+                "index": 15,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/login",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:13.536Z",
+                "durationMs": 28,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 19,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a1255b-196c-70f3-a5f1-4db084f7ddef:16",
+                "index": 16,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"아이디\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:13.565Z",
+                "durationMs": 41,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 20,
+                  "column": 34
+                }
+              },
+              {
+                "id": "01a1255b-196c-70f3-a5f1-4db084f7ddef:17",
+                "index": 17,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"비밀번호\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:13.607Z",
+                "durationMs": 33,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 21,
+                  "column": 35
+                }
+              },
+              {
+                "id": "01a1255b-196c-70f3-a5f1-4db084f7ddef:18",
+                "index": 18,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"button\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:13.640Z",
+                "durationMs": 44,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 22,
+                  "column": 43
+                }
+              },
+              {
+                "id": "01a1255b-196c-70f3-a5f1-4db084f7ddef:19",
+                "index": 19,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"학교 시간표 관리\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:13.684Z",
+                "durationMs": 107,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 46,
+                  "column": 58
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "3c10bb2189b4473326de88903cc990d9490a840f6dabed34dde18ed4e3c13c2c",
+        "testId": "tests/auth.e2e.ts::TC-02%20%ED%8B%80%EB%A6%B0%20%EB%B9%84%EB%B0%80%EB%B2%88%ED%98%B8%EB%8A%94%20%EB%AC%B8%EA%B5%AC%EB%A5%BC%20%EB%B3%B4%EC%9D%B4%EA%B3%A0%20%EC%84%B8%EC%85%98%20%EC%BF%A0%ED%82%A4%EB%A5%BC%20%EC%A3%BC%EC%A7%80%20%EC%95%8A%EB%8A%94%EB%8B%A4",
+        "kind": "test",
+        "declarationIndex": 2,
+        "titlePath": [
+          "TC-02 틀린 비밀번호는 문구를 보이고 세션 쿠키를 주지 않는다"
+        ],
+        "file": "tests/auth.e2e.ts",
+        "source": {
+          "file": "tests/auth.e2e.ts",
+          "line": 49,
+          "column": 1
+        },
+        "targetId": "web",
+        "platform": "web",
+        "agent": "default",
+        "repeat": 0,
+        "tags": [],
+        "selected": true,
+        "status": "passed",
+        "attempts": [
+          {
+            "id": "01a1255b-2976-7381-b5b7-05d7c9376003",
+            "index": 0,
+            "status": "passed",
+            "startedAt": "2026-10-10T10:28:13.814Z",
+            "durationMs": 720,
+            "artifacts": [
+              {
+                "id": "01a1255b-2976-7381-b5b7-05d7c9376003:artifact:0",
+                "kind": "trace",
+                "mediaType": "application/zip",
+                "redaction": "not-required",
+                "producer": {
+                  "kind": "attempt"
+                },
+                "path": "web/tests_auth.e2e.ts__TC-02_20_ED_8B_80_EB_A6_B0_20_EB_B9_84_EB_B0_80_EB_B2_88_ED_98_B8_EB_8A_94_20_EB_AC_B8_EA_B5-c55f8446/default/attempt-0/trace/trace-part1.zip",
+                "size": 55555,
+                "sha256": "daba4bf5abd3f84ef723825a0573db484e8a0735530fcbe0d5760337b19d8ad5"
+              },
+              {
+                "id": "01a1255b-2976-7381-b5b7-05d7c9376003:artifact:1",
+                "kind": "trace",
+                "mediaType": "application/zip",
+                "redaction": "not-required",
+                "producer": {
+                  "kind": "attempt"
+                },
+                "path": "web/tests_auth.e2e.ts__TC-02_20_ED_8B_80_EB_A6_B0_20_EB_B9_84_EB_B0_80_EB_B2_88_ED_98_B8_EB_8A_94_20_EB_AC_B8_EA_B5-c55f8446/default/attempt-0/trace/trace.zip",
+                "size": 439322,
+                "sha256": "658887bc76fe47a41609380e17cae722f94d7bcde6a195cd1c128a2e76ec920a"
+              }
+            ],
+            "secondaryErrors": [],
+            "cleanup": "complete",
+            "steps": [
+              {
+                "id": "01a1255b-2976-7381-b5b7-05d7c9376003:0",
+                "index": 0,
+                "kind": "app",
+                "api": "app.clearState",
+                "label": "",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:14.136Z",
+                "durationMs": 94,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 33,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a1255b-2976-7381-b5b7-05d7c9376003:1",
+                "index": 1,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/login",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:14.231Z",
+                "durationMs": 32,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 19,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a1255b-2976-7381-b5b7-05d7c9376003:2",
+                "index": 2,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"아이디\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:14.263Z",
+                "durationMs": 38,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 20,
+                  "column": 34
+                }
+              },
+              {
+                "id": "01a1255b-2976-7381-b5b7-05d7c9376003:3",
+                "index": 3,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"비밀번호\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:14.301Z",
+                "durationMs": 29,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 21,
+                  "column": 35
+                }
+              },
+              {
+                "id": "01a1255b-2976-7381-b5b7-05d7c9376003:4",
+                "index": 4,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"button\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:14.330Z",
+                "durationMs": 35,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 22,
+                  "column": 43
+                }
+              },
+              {
+                "id": "01a1255b-2976-7381-b5b7-05d7c9376003:5",
+                "index": 5,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByRole(\"alert\").filter({ hasText: \"아이디 또는 비밀번호가 올바르지 않습니다\" })",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:14.365Z",
+                "durationMs": 105,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 52,
+                  "column": 82
+                }
+              },
+              {
+                "id": "01a1255b-2976-7381-b5b7-05d7c9376003:6",
+                "index": 6,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:14.470Z",
+                "durationMs": 2,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 53,
+                  "column": 52
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "c162ccd1a6b091e7731644422c2e225907c4cfa66f3c1714efdf1aa44c1aa844",
+        "testId": "tests/auth.e2e.ts::TC-10%20%EC%83%88%EB%A1%9C%20%EA%B3%A0%EC%B9%A8%ED%95%98%EA%B1%B0%EB%82%98%20%EB%8B%A4%EB%A5%B8%20%ED%83%AD%EC%97%90%20%EB%8B%A4%EB%85%80%EC%99%80%EB%8F%84%20%EB%A1%9C%EA%B7%B8%EC%9D%B8%20%ED%99%94%EB%A9%B4%EC%9D%B4%20%EB%8B%A4%EC%8B%9C%20%EB%82%98%EC%98%A4%EC%A7%80%20%EC%95%8A%EB%8A%94%EB%8B%A4",
+        "kind": "test",
+        "declarationIndex": 3,
+        "titlePath": [
+          "TC-10 새로 고침하거나 다른 탭에 다녀와도 로그인 화면이 다시 나오지 않는다"
+        ],
+        "file": "tests/auth.e2e.ts",
+        "source": {
+          "file": "tests/auth.e2e.ts",
+          "line": 65,
+          "column": 1
+        },
+        "targetId": "web",
+        "platform": "web",
+        "agent": "default",
+        "repeat": 0,
+        "tags": [],
+        "selected": true,
+        "status": "passed",
+        "attempts": [
+          {
+            "id": "01a1255b-2c46-7638-9439-bcf55799f386",
+            "index": 0,
+            "status": "passed",
+            "startedAt": "2026-10-10T10:28:14.535Z",
+            "durationMs": 5424,
+            "artifacts": [
+              {
+                "id": "01a1255b-2c46-7638-9439-bcf55799f386:artifact:0",
+                "kind": "trace",
+                "mediaType": "application/zip",
+                "redaction": "not-required",
+                "producer": {
+                  "kind": "attempt"
+                },
+                "path": "web/tests_auth.e2e.ts__TC-10_20_EC_83_88_EB_A1_9C_20_EA_B3_A0_EC_B9_A8_ED_95_98_EA_B1_B0_EB_82_98_20_EB_8B_A4_EB_A5-3d232560/default/attempt-0/trace/trace-part1.zip",
+                "size": 55555,
+                "sha256": "913546ced9be38c604d750b26a2e6814995c36973da10c3dab1b55f591ea09dd"
+              },
+              {
+                "id": "01a1255b-2c46-7638-9439-bcf55799f386:artifact:1",
+                "kind": "trace",
+                "mediaType": "application/zip",
+                "redaction": "not-required",
+                "producer": {
+                  "kind": "attempt"
+                },
+                "path": "web/tests_auth.e2e.ts__TC-10_20_EC_83_88_EB_A1_9C_20_EA_B3_A0_EC_B9_A8_ED_95_98_EA_B1_B0_EB_82_98_20_EB_8B_A4_EB_A5-3d232560/default/attempt-0/trace/trace.zip",
+                "size": 479639,
+                "sha256": "e50bb1ae60ae5a690578d6ea394089731974a741539072c42a2b7859b965a6ac"
+              }
+            ],
+            "secondaryErrors": [],
+            "cleanup": "complete",
+            "steps": [
+              {
+                "id": "01a1255b-2c46-7638-9439-bcf55799f386:0",
+                "index": 0,
+                "kind": "app",
+                "api": "app.clearState",
+                "label": "",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:14.825Z",
+                "durationMs": 100,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 33,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a1255b-2c46-7638-9439-bcf55799f386:1",
+                "index": 1,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/login",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:14.926Z",
+                "durationMs": 47,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 19,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a1255b-2c46-7638-9439-bcf55799f386:2",
+                "index": 2,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"아이디\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:14.975Z",
+                "durationMs": 41,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 20,
+                  "column": 34
+                }
+              },
+              {
+                "id": "01a1255b-2c46-7638-9439-bcf55799f386:3",
+                "index": 3,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"비밀번호\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:15.016Z",
+                "durationMs": 34,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 21,
+                  "column": 35
+                }
+              },
+              {
+                "id": "01a1255b-2c46-7638-9439-bcf55799f386:4",
+                "index": 4,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"button\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:15.050Z",
+                "durationMs": 31,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 22,
+                  "column": 43
+                }
+              },
+              {
+                "id": "01a1255b-2c46-7638-9439-bcf55799f386:5",
+                "index": 5,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByRole(\"navigation\", name: \"하단 메뉴\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:15.081Z",
+                "durationMs": 107,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 26,
+                  "column": 57
+                }
+              },
+              {
+                "id": "01a1255b-2c46-7638-9439-bcf55799f386:6",
+                "index": 6,
+                "kind": "assertion",
+                "api": "expect.toHaveAttribute",
+                "label": "getByRole(\"link\", name: \"챗봇\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:15.188Z",
+                "durationMs": 2,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 27,
+                  "column": 48
+                }
+              },
+              {
+                "id": "01a1255b-2c46-7638-9439-bcf55799f386:7",
+                "index": 7,
+                "kind": "assertion",
+                "api": "expect.not.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:15.190Z",
+                "durationMs": 1064,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 28,
+                  "column": 56
+                }
+              },
+              {
+                "id": "01a1255b-2c46-7638-9439-bcf55799f386:8",
+                "index": 8,
+                "kind": "app",
+                "api": "app.restart",
+                "label": "",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:16.254Z",
+                "durationMs": 108,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 69,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a1255b-2c46-7638-9439-bcf55799f386:9",
+                "index": 9,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByRole(\"navigation\", name: \"하단 메뉴\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:16.362Z",
+                "durationMs": 144,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 26,
+                  "column": 57
+                }
+              },
+              {
+                "id": "01a1255b-2c46-7638-9439-bcf55799f386:10",
+                "index": 10,
+                "kind": "assertion",
+                "api": "expect.toHaveAttribute",
+                "label": "getByRole(\"link\", name: \"챗봇\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:16.508Z",
+                "durationMs": 2,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 27,
+                  "column": 48
+                }
+              },
+              {
+                "id": "01a1255b-2c46-7638-9439-bcf55799f386:11",
+                "index": 11,
+                "kind": "assertion",
+                "api": "expect.not.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:16.510Z",
+                "durationMs": 1061,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 28,
+                  "column": 56
+                }
+              },
+              {
+                "id": "01a1255b-2c46-7638-9439-bcf55799f386:12",
+                "index": 12,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"link\", name: \"일정\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:17.571Z",
+                "durationMs": 40,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 72,
+                  "column": 40
+                }
+              },
+              {
+                "id": "01a1255b-2c46-7638-9439-bcf55799f386:13",
+                "index": 13,
+                "kind": "assertion",
+                "api": "expect.toHaveAttribute",
+                "label": "getByRole(\"link\", name: \"일정\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:17.611Z",
+                "durationMs": 106,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 73,
+                  "column": 48
+                }
+              },
+              {
+                "id": "01a1255b-2c46-7638-9439-bcf55799f386:14",
+                "index": 14,
+                "kind": "assertion",
+                "api": "expect.not.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:17.717Z",
+                "durationMs": 1038,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 74,
+                  "column": 56
+                }
+              },
+              {
+                "id": "01a1255b-2c46-7638-9439-bcf55799f386:15",
+                "index": 15,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"link\", name: \"챗봇\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:18.756Z",
+                "durationMs": 21,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 75,
+                  "column": 40
+                }
+              },
+              {
+                "id": "01a1255b-2c46-7638-9439-bcf55799f386:16",
+                "index": 16,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByRole(\"navigation\", name: \"하단 메뉴\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:18.777Z",
+                "durationMs": 1,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 26,
+                  "column": 57
+                }
+              },
+              {
+                "id": "01a1255b-2c46-7638-9439-bcf55799f386:17",
+                "index": 17,
+                "kind": "assertion",
+                "api": "expect.toHaveAttribute",
+                "label": "getByRole(\"link\", name: \"챗봇\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:18.778Z",
+                "durationMs": 105,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 27,
+                  "column": 48
+                }
+              },
+              {
+                "id": "01a1255b-2c46-7638-9439-bcf55799f386:18",
+                "index": 18,
+                "kind": "assertion",
+                "api": "expect.not.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:18.884Z",
+                "durationMs": 1042,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/auth.e2e.ts",
+                  "line": 28,
+                  "column": 56
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "44895d782bd98294addc06f391daede8118af2d639aa75226d5aaf2f1bd1b808",
+        "testId": "tests/chat-fallback.e2e.ts::TC-32%20%ED%82%A4%EA%B0%80%20%EC%97%86%EC%9C%BC%EB%A9%B4%20%EA%B7%9C%EC%B9%99%20%EC%B6%94%EC%B6%9C%EB%A1%9C%20%EA%B0%99%EC%9D%80%20%EC%A1%B0%EA%B1%B4%20%EC%B9%B4%EB%93%9C%EA%B0%80%20%EB%B3%B4%EC%9D%B4%EA%B3%A0%20%EC%9D%91%EB%8B%B5%EC%9D%B4%20%EC%9D%B4%EC%96%B4%EC%A7%84%EB%8B%A4",
+        "kind": "test",
+        "declarationIndex": 1,
+        "titlePath": [
+          "TC-32 키가 없으면 규칙 추출로 같은 조건 카드가 보이고 응답이 이어진다"
+        ],
+        "file": "tests/chat-fallback.e2e.ts",
+        "source": {
+          "file": "tests/chat-fallback.e2e.ts",
+          "line": 13,
+          "column": 1
+        },
+        "targetId": "web",
+        "platform": "web",
+        "agent": "default",
+        "repeat": 0,
+        "tags": [],
+        "selected": true,
+        "status": "passed",
+        "attempts": [
+          {
+            "id": "01a1255b-417c-76b3-ba1a-92d64b1f3380",
+            "index": 0,
+            "status": "passed",
+            "startedAt": "2026-10-10T10:28:19.964Z",
+            "durationMs": 2993,
+            "artifacts": [
+              {
+                "id": "01a1255b-417c-76b3-ba1a-92d64b1f3380:artifact:0",
+                "kind": "trace",
+                "mediaType": "application/zip",
+                "redaction": "not-required",
+                "producer": {
+                  "kind": "attempt"
+                },
+                "path": "web/tests_chat-fallback.e2e.ts__TC-32_20_ED_82_A4_EA_B0_80_20_EC_97_86_EC_9C_BC_EB_A9_B4_20_EA_B7_9C_EC_B9_99_20_EC-5a4fa91c/default/attempt-0/trace/trace.zip",
+                "size": 517400,
+                "sha256": "186d886c93fb7e6ecfb7961d75d99d71c24eeae8766d2befae34b08adc7bbe87"
+              }
+            ],
+            "secondaryErrors": [],
+            "cleanup": "complete",
+            "steps": [
+              {
+                "id": "01a1255b-417c-76b3-ba1a-92d64b1f3380:0",
+                "index": 0,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/login",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:20.277Z",
+                "durationMs": 93,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 27,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a1255b-417c-76b3-ba1a-92d64b1f3380:1",
+                "index": 1,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"아이디\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:20.371Z",
+                "durationMs": 38,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 28,
+                  "column": 34
+                }
+              },
+              {
+                "id": "01a1255b-417c-76b3-ba1a-92d64b1f3380:2",
+                "index": 2,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"비밀번호\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:20.410Z",
+                "durationMs": 31,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 29,
+                  "column": 35
+                }
+              },
+              {
+                "id": "01a1255b-417c-76b3-ba1a-92d64b1f3380:3",
+                "index": 3,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"button\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:20.441Z",
+                "durationMs": 49,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 30,
+                  "column": 43
+                }
+              },
+              {
+                "id": "01a1255b-417c-76b3-ba1a-92d64b1f3380:4",
+                "index": 4,
+                "kind": "assertion",
+                "api": "expect.not.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:20.490Z",
+                "durationMs": 1156,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 31,
+                  "column": 56
+                }
+              },
+              {
+                "id": "01a1255b-417c-76b3-ba1a-92d64b1f3380:5",
+                "index": 5,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/chat",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:21.646Z",
+                "durationMs": 21,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-fallback.e2e.ts",
+                  "line": 10,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a1255b-417c-76b3-ba1a-92d64b1f3380:6",
+                "index": 6,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"챗봇에 보낼 말\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:21.668Z",
+                "durationMs": 43,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 35,
+                  "column": 39
+                }
+              },
+              {
+                "id": "01a1255b-417c-76b3-ba1a-92d64b1f3380:7",
+                "index": 7,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"button\", name: \"보내기\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:21.711Z",
+                "durationMs": 36,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 36,
+                  "column": 43
+                }
+              },
+              {
+                "id": "01a1255b-417c-76b3-ba1a-92d64b1f3380:8",
+                "index": 8,
+                "kind": "assertion",
+                "api": "expect.toContainText",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"group\", name: \"대상 자녀\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:21.747Z",
+                "durationMs": 109,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 45,
+                  "column": 38
+                }
+              },
+              {
+                "id": "01a1255b-417c-76b3-ba1a-92d64b1f3380:9",
+                "index": 9,
+                "kind": "assertion",
+                "api": "expect.toContainText",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"group\", name: \"선호 과목\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:21.856Z",
+                "durationMs": 3,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 46,
+                  "column": 38
+                }
+              },
+              {
+                "id": "01a1255b-417c-76b3-ba1a-92d64b1f3380:10",
+                "index": 10,
+                "kind": "assertion",
+                "api": "expect.toContainText",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"group\", name: \"목표 월 예산\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:21.859Z",
+                "durationMs": 2,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 47,
+                  "column": 40
+                }
+              },
+              {
+                "id": "01a1255b-417c-76b3-ba1a-92d64b1f3380:11",
+                "index": 11,
+                "kind": "assertion",
+                "api": "expect.toContainText",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"group\", name: \"예산 상한\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:21.861Z",
+                "durationMs": 2,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 48,
+                  "column": 38
+                }
+              },
+              {
+                "id": "01a1255b-417c-76b3-ba1a-92d64b1f3380:12",
+                "index": 12,
+                "kind": "assertion",
+                "api": "expect.toContainText",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"group\", name: \"밀도\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:21.863Z",
+                "durationMs": 1,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 49,
+                  "column": 35
+                }
+              },
+              {
+                "id": "01a1255b-417c-76b3-ba1a-92d64b1f3380:13",
+                "index": 13,
+                "kind": "assertion",
+                "api": "expect.not.toBeVisible",
+                "label": "getByText(\"답변을 만들지 못했어요. 다시 시도해 주세요.\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:21.865Z",
+                "durationMs": 1058,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-fallback.e2e.ts",
+                  "line": 16,
+                  "column": 67
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "cc0475a82d66110f59c7ed5d4ffd5be4d05023d9b9204cafbf8db8f60a6c57d7",
+        "testId": "tests/chat-fallback.e2e.ts::TC-33%20%EB%8C%80%EC%97%AD%EC%9D%B4%20%EC%8A%A4%ED%82%A4%EB%A7%88%EC%97%90%20%EB%A7%9E%EC%A7%80%20%EC%95%8A%EB%8A%94%20JSON%EC%9D%84%20%EC%A3%BC%EB%A9%B4%20%EB%8C%80%EC%B2%B4%20%EA%B2%BD%EB%A1%9C%EB%A1%9C%20%EA%B0%99%EC%9D%80%20%EC%B9%B4%EB%93%9C%EA%B0%80%20%EB%B3%B4%EC%9D%B4%EA%B3%A0%20%EC%98%A4%EB%A5%98%20%EC%9B%90%EB%AC%B8%EC%9D%80%20%EC%97%86%EB%8B%A4",
+        "kind": "test",
+        "declarationIndex": 2,
+        "titlePath": [
+          "TC-33 대역이 스키마에 맞지 않는 JSON을 주면 대체 경로로 같은 카드가 보이고 오류 원문은 없다"
+        ],
+        "file": "tests/chat-fallback.e2e.ts",
+        "source": {
+          "file": "tests/chat-fallback.e2e.ts",
+          "line": 19,
+          "column": 1
+        },
+        "targetId": "web",
+        "platform": "web",
+        "agent": "default",
+        "repeat": 0,
+        "tags": [],
+        "selected": true,
+        "status": "passed",
+        "attempts": [
+          {
+            "id": "01a1255b-4d2e-768e-af6b-0e3aa308f8f0",
+            "index": 0,
+            "status": "passed",
+            "startedAt": "2026-10-10T10:28:22.958Z",
+            "durationMs": 6086,
+            "artifacts": [
+              {
+                "id": "01a1255b-4d2e-768e-af6b-0e3aa308f8f0:artifact:0",
+                "kind": "trace",
+                "mediaType": "application/zip",
+                "redaction": "not-required",
+                "producer": {
+                  "kind": "attempt"
+                },
+                "path": "web/tests_chat-fallback.e2e.ts__TC-33_20_EB_8C_80_EC_97_AD_EC_9D_B4_20_EC_8A_A4_ED_82_A4_EB_A7_88_EC_97_90_20_EB_A7-6a5ee4fb/default/attempt-0/trace/trace.zip",
+                "size": 506293,
+                "sha256": "44eaf9d21d095a03459c405b58526a09a0a702aece0b0ffbdb29fd3f79ce8500"
+              }
+            ],
+            "secondaryErrors": [],
+            "cleanup": "complete",
+            "steps": [
+              {
+                "id": "01a1255b-4d2e-768e-af6b-0e3aa308f8f0:0",
+                "index": 0,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/login",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:23.267Z",
+                "durationMs": 87,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 27,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a1255b-4d2e-768e-af6b-0e3aa308f8f0:1",
+                "index": 1,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"아이디\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:23.355Z",
+                "durationMs": 41,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 28,
+                  "column": 34
+                }
+              },
+              {
+                "id": "01a1255b-4d2e-768e-af6b-0e3aa308f8f0:2",
+                "index": 2,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"비밀번호\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:23.396Z",
+                "durationMs": 29,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 29,
+                  "column": 35
+                }
+              },
+              {
+                "id": "01a1255b-4d2e-768e-af6b-0e3aa308f8f0:3",
+                "index": 3,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"button\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:23.425Z",
+                "durationMs": 40,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 30,
+                  "column": 43
+                }
+              },
+              {
+                "id": "01a1255b-4d2e-768e-af6b-0e3aa308f8f0:4",
+                "index": 4,
+                "kind": "assertion",
+                "api": "expect.not.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:23.465Z",
+                "durationMs": 1147,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 31,
+                  "column": 56
+                }
+              },
+              {
+                "id": "01a1255b-4d2e-768e-af6b-0e3aa308f8f0:5",
+                "index": 5,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/chat",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:24.613Z",
+                "durationMs": 22,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-fallback.e2e.ts",
+                  "line": 10,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a1255b-4d2e-768e-af6b-0e3aa308f8f0:6",
+                "index": 6,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"챗봇에 보낼 말\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:24.641Z",
+                "durationMs": 55,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 35,
+                  "column": 39
+                }
+              },
+              {
+                "id": "01a1255b-4d2e-768e-af6b-0e3aa308f8f0:7",
+                "index": 7,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"button\", name: \"보내기\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:24.697Z",
+                "durationMs": 32,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 36,
+                  "column": 43
+                }
+              },
+              {
+                "id": "01a1255b-4d2e-768e-af6b-0e3aa308f8f0:8",
+                "index": 8,
+                "kind": "assertion",
+                "api": "expect.toContainText",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"group\", name: \"대상 자녀\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:24.729Z",
+                "durationMs": 107,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 45,
+                  "column": 38
+                }
+              },
+              {
+                "id": "01a1255b-4d2e-768e-af6b-0e3aa308f8f0:9",
+                "index": 9,
+                "kind": "assertion",
+                "api": "expect.toContainText",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"group\", name: \"선호 과목\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:24.836Z",
+                "durationMs": 8,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 46,
+                  "column": 38
+                }
+              },
+              {
+                "id": "01a1255b-4d2e-768e-af6b-0e3aa308f8f0:10",
+                "index": 10,
+                "kind": "assertion",
+                "api": "expect.toContainText",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"group\", name: \"목표 월 예산\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:24.844Z",
+                "durationMs": 2,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 47,
+                  "column": 40
+                }
+              },
+              {
+                "id": "01a1255b-4d2e-768e-af6b-0e3aa308f8f0:11",
+                "index": 11,
+                "kind": "assertion",
+                "api": "expect.toContainText",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"group\", name: \"예산 상한\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:24.847Z",
+                "durationMs": 2,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 48,
+                  "column": 38
+                }
+              },
+              {
+                "id": "01a1255b-4d2e-768e-af6b-0e3aa308f8f0:12",
+                "index": 12,
+                "kind": "assertion",
+                "api": "expect.toContainText",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"group\", name: \"밀도\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:24.849Z",
+                "durationMs": 2,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 49,
+                  "column": 35
+                }
+              },
+              {
+                "id": "01a1255b-4d2e-768e-af6b-0e3aa308f8f0:13",
+                "index": 13,
+                "kind": "assertion",
+                "api": "expect.not.toBeVisible",
+                "label": "getByText(\"the schema\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:24.851Z",
+                "durationMs": 1040,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-fallback.e2e.ts",
+                  "line": 24,
+                  "column": 45
+                }
+              },
+              {
+                "id": "01a1255b-4d2e-768e-af6b-0e3aa308f8f0:14",
+                "index": 14,
+                "kind": "assertion",
+                "api": "expect.not.toBeVisible",
+                "label": "getByText(\"{\\\"not\\\"\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:25.891Z",
+                "durationMs": 1041,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-fallback.e2e.ts",
+                  "line": 24,
+                  "column": 45
+                }
+              },
+              {
+                "id": "01a1255b-4d2e-768e-af6b-0e3aa308f8f0:15",
+                "index": 15,
+                "kind": "assertion",
+                "api": "expect.not.toBeVisible",
+                "label": "getByText(\"ValidationError\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:26.933Z",
+                "durationMs": 1042,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-fallback.e2e.ts",
+                  "line": 24,
+                  "column": 45
+                }
+              },
+              {
+                "id": "01a1255b-4d2e-768e-af6b-0e3aa308f8f0:16",
+                "index": 16,
+                "kind": "assertion",
+                "api": "expect.not.toBeVisible",
+                "label": "getByText(\"Traceback\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:27.975Z",
+                "durationMs": 1040,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-fallback.e2e.ts",
+                  "line": 24,
+                  "column": 45
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "f599c2d1ad4c4e729c0f1e9e47dc11bbc2ff1093d0678154f766d9d887048c7c",
+        "testId": "tests/chat.ai.e2e.ts::TC-34%20%EC%8B%A4%EC%A0%9C%20Azure%20OpenAI%20%EC%9D%91%EB%8B%B5%EC%9D%B4%20%EC%8A%A4%ED%82%A4%EB%A7%88%20%EA%B2%80%EC%A6%9D%EC%9D%84%20%ED%86%B5%EA%B3%BC%ED%95%98%EA%B3%A0%20%EC%A1%B0%EA%B1%B4%20%EC%B9%B4%EB%93%9C%EC%97%90%20%EC%98%81%EC%96%B4%C2%B7%EC%88%98%ED%95%99%2C%20%EB%AA%A9%ED%91%9C%201%2C000%2C000%EC%9B%90%EC%9D%B4%20%EB%B3%B4%EC%9D%B8%EB%8B%A4",
+        "kind": "test",
+        "declarationIndex": 1,
+        "titlePath": [
+          "TC-34 실제 Azure OpenAI 응답이 스키마 검증을 통과하고 조건 카드에 영어·수학, 목표 1,000,000원이 보인다"
+        ],
+        "file": "tests/chat.ai.e2e.ts",
+        "source": {
+          "file": "tests/chat.ai.e2e.ts",
+          "line": 32,
+          "column": 1
+        },
+        "targetId": "web",
+        "platform": "web",
+        "agent": "default",
+        "repeat": 0,
+        "tags": [
+          "ai"
+        ],
+        "selected": false,
+        "status": "skipped",
+        "skip": {
+          "cause": "filtered",
+          "reason": "carries an excluded tag"
+        },
+        "attempts": []
+      },
+      {
+        "id": "d6cf41a5d319578c440143339104f09707a2424405896102fa0d707c41f4091e",
+        "testId": "tests/chat.e2e.ts::TC-28%20%EC%A0%84%ED%9B%84%20%EB%AC%B8%EC%9E%A5%EC%9D%84%20%EB%B3%B4%EB%82%B4%EB%A9%B4%20%EC%A1%B0%EA%B1%B4%20%EC%B9%B4%EB%93%9C%EC%97%90%20%EB%AA%A9%ED%91%9C%201%2C000%2C000%EC%9B%90%C2%B7%EC%83%81%ED%95%9C%201%2C100%2C000%EC%9B%90%EC%9D%B4%20%EB%B3%B4%EC%9D%B8%EB%8B%A4",
+        "kind": "test",
+        "declarationIndex": 1,
+        "titlePath": [
+          "TC-28 전후 문장을 보내면 조건 카드에 목표 1,000,000원·상한 1,100,000원이 보인다"
+        ],
+        "file": "tests/chat.e2e.ts",
+        "source": {
+          "file": "tests/chat.e2e.ts",
+          "line": 13,
+          "column": 1
+        },
+        "targetId": "web",
+        "platform": "web",
+        "agent": "default",
+        "repeat": 0,
+        "tags": [],
+        "selected": true,
+        "status": "passed",
+        "attempts": [
+          {
+            "id": "01a1255b-64f8-7a8c-a21d-07d3dbb854db",
+            "index": 0,
+            "status": "passed",
+            "startedAt": "2026-10-10T10:28:29.048Z",
+            "durationMs": 1926,
+            "artifacts": [
+              {
+                "id": "01a1255b-64f8-7a8c-a21d-07d3dbb854db:artifact:0",
+                "kind": "trace",
+                "mediaType": "application/zip",
+                "redaction": "not-required",
+                "producer": {
+                  "kind": "attempt"
+                },
+                "path": "web/tests_chat.e2e.ts__TC-28_20_EC_A0_84_ED_9B_84_20_EB_AC_B8_EC_9E_A5_EC_9D_84_20_EB_B3_B4_EB_82_B4_EB_A9_B4_20_EC-f66141aa/default/attempt-0/trace/trace.zip",
+                "size": 518129,
+                "sha256": "e51b4a0c679dbc97b5121bf04a7714a0057da968a76d0d309bf06ca1ce47418a"
+              }
+            ],
+            "secondaryErrors": [],
+            "cleanup": "complete",
+            "steps": [
+              {
+                "id": "01a1255b-64f8-7a8c-a21d-07d3dbb854db:0",
+                "index": 0,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/login",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:29.363Z",
+                "durationMs": 91,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 27,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a1255b-64f8-7a8c-a21d-07d3dbb854db:1",
+                "index": 1,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"아이디\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:29.454Z",
+                "durationMs": 39,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 28,
+                  "column": 34
+                }
+              },
+              {
+                "id": "01a1255b-64f8-7a8c-a21d-07d3dbb854db:2",
+                "index": 2,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"비밀번호\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:29.493Z",
+                "durationMs": 27,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 29,
+                  "column": 35
+                }
+              },
+              {
+                "id": "01a1255b-64f8-7a8c-a21d-07d3dbb854db:3",
+                "index": 3,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"button\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:29.520Z",
+                "durationMs": 29,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 30,
+                  "column": 43
+                }
+              },
+              {
+                "id": "01a1255b-64f8-7a8c-a21d-07d3dbb854db:4",
+                "index": 4,
+                "kind": "assertion",
+                "api": "expect.not.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:29.549Z",
+                "durationMs": 1148,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 31,
+                  "column": 56
+                }
+              },
+              {
+                "id": "01a1255b-64f8-7a8c-a21d-07d3dbb854db:5",
+                "index": 5,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/chat",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:30.697Z",
+                "durationMs": 26,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 10,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a1255b-64f8-7a8c-a21d-07d3dbb854db:6",
+                "index": 6,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"챗봇에 보낼 말\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:30.730Z",
+                "durationMs": 49,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 35,
+                  "column": 39
+                }
+              },
+              {
+                "id": "01a1255b-64f8-7a8c-a21d-07d3dbb854db:7",
+                "index": 7,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"button\", name: \"보내기\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:30.780Z",
+                "durationMs": 35,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 36,
+                  "column": 43
+                }
+              },
+              {
+                "id": "01a1255b-64f8-7a8c-a21d-07d3dbb854db:8",
+                "index": 8,
+                "kind": "assertion",
+                "api": "expect.toContainText",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"group\", name: \"대상 자녀\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:30.815Z",
+                "durationMs": 107,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 45,
+                  "column": 38
+                }
+              },
+              {
+                "id": "01a1255b-64f8-7a8c-a21d-07d3dbb854db:9",
+                "index": 9,
+                "kind": "assertion",
+                "api": "expect.toContainText",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"group\", name: \"선호 과목\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:30.922Z",
+                "durationMs": 2,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 46,
+                  "column": 38
+                }
+              },
+              {
+                "id": "01a1255b-64f8-7a8c-a21d-07d3dbb854db:10",
+                "index": 10,
+                "kind": "assertion",
+                "api": "expect.toContainText",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"group\", name: \"목표 월 예산\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:30.924Z",
+                "durationMs": 1,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 47,
+                  "column": 40
+                }
+              },
+              {
+                "id": "01a1255b-64f8-7a8c-a21d-07d3dbb854db:11",
+                "index": 11,
+                "kind": "assertion",
+                "api": "expect.toContainText",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"group\", name: \"예산 상한\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:30.926Z",
+                "durationMs": 2,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 48,
+                  "column": 38
+                }
+              },
+              {
+                "id": "01a1255b-64f8-7a8c-a21d-07d3dbb854db:12",
+                "index": 12,
+                "kind": "assertion",
+                "api": "expect.toContainText",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"group\", name: \"밀도\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:30.929Z",
+                "durationMs": 2,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 49,
+                  "column": 35
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "a3e1c1b894cd2ba4dbbfac08a358f038ecc1a27bb61d7f52b50e558cbf4dcf4a",
+        "testId": "tests/chat.e2e.ts::TC-29%20%EC%95%88%EC%97%90%EC%84%9C%20%EB%AC%B8%EC%9E%A5%EC%9D%84%20%EB%B3%B4%EB%82%B4%EB%A9%B4%20%EB%AA%A9%ED%91%9C%EC%99%80%20%EC%83%81%ED%95%9C%EC%9D%B4%20%EB%AA%A8%EB%91%90%201%2C000%2C000%EC%9B%90%EC%9D%B4%EB%8B%A4",
+        "kind": "test",
+        "declarationIndex": 2,
+        "titlePath": [
+          "TC-29 안에서 문장을 보내면 목표와 상한이 모두 1,000,000원이다"
+        ],
+        "file": "tests/chat.e2e.ts",
+        "source": {
+          "file": "tests/chat.e2e.ts",
+          "line": 23,
+          "column": 1
+        },
+        "targetId": "web",
+        "platform": "web",
+        "agent": "default",
+        "repeat": 0,
+        "tags": [],
+        "selected": true,
+        "status": "passed",
+        "attempts": [
+          {
+            "id": "01a1255b-6c7e-747d-bf04-51717eef6c43",
+            "index": 0,
+            "status": "passed",
+            "startedAt": "2026-10-10T10:28:30.975Z",
+            "durationMs": 1994,
+            "artifacts": [
+              {
+                "id": "01a1255b-6c7e-747d-bf04-51717eef6c43:artifact:0",
+                "kind": "trace",
+                "mediaType": "application/zip",
+                "redaction": "not-required",
+                "producer": {
+                  "kind": "attempt"
+                },
+                "path": "web/tests_chat.e2e.ts__TC-29_20_EC_95_88_EC_97_90_EC_84_9C_20_EB_AC_B8_EC_9E_A5_EC_9D_84_20_EB_B3_B4_EB_82_B4_EB_A9-e01153ea/default/attempt-0/trace/trace.zip",
+                "size": 504008,
+                "sha256": "c0ea7639b873de602ee58c82118a55c30d5f85fca363c07ad4967bbb41df18cf"
+              }
+            ],
+            "secondaryErrors": [],
+            "cleanup": "complete",
+            "steps": [
+              {
+                "id": "01a1255b-6c7e-747d-bf04-51717eef6c43:0",
+                "index": 0,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/login",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:31.297Z",
+                "durationMs": 145,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 27,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a1255b-6c7e-747d-bf04-51717eef6c43:1",
+                "index": 1,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"아이디\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:31.442Z",
+                "durationMs": 41,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 28,
+                  "column": 34
+                }
+              },
+              {
+                "id": "01a1255b-6c7e-747d-bf04-51717eef6c43:2",
+                "index": 2,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"비밀번호\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:31.483Z",
+                "durationMs": 36,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 29,
+                  "column": 35
+                }
+              },
+              {
+                "id": "01a1255b-6c7e-747d-bf04-51717eef6c43:3",
+                "index": 3,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"button\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:31.519Z",
+                "durationMs": 44,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 30,
+                  "column": 43
+                }
+              },
+              {
+                "id": "01a1255b-6c7e-747d-bf04-51717eef6c43:4",
+                "index": 4,
+                "kind": "assertion",
+                "api": "expect.not.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:31.564Z",
+                "durationMs": 1150,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 31,
+                  "column": 56
+                }
+              },
+              {
+                "id": "01a1255b-6c7e-747d-bf04-51717eef6c43:5",
+                "index": 5,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/chat",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:32.714Z",
+                "durationMs": 24,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 10,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a1255b-6c7e-747d-bf04-51717eef6c43:6",
+                "index": 6,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"챗봇에 보낼 말\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:32.742Z",
+                "durationMs": 45,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 35,
+                  "column": 39
+                }
+              },
+              {
+                "id": "01a1255b-6c7e-747d-bf04-51717eef6c43:7",
+                "index": 7,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"button\", name: \"보내기\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:32.787Z",
+                "durationMs": 44,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 36,
+                  "column": 43
+                }
+              },
+              {
+                "id": "01a1255b-6c7e-747d-bf04-51717eef6c43:8",
+                "index": 8,
+                "kind": "assertion",
+                "api": "expect.toContainText",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"group\", name: \"목표 월 예산\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:32.831Z",
+                "durationMs": 107,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 30,
+                  "column": 40
+                }
+              },
+              {
+                "id": "01a1255b-6c7e-747d-bf04-51717eef6c43:9",
+                "index": 9,
+                "kind": "assertion",
+                "api": "expect.toContainText",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"group\", name: \"예산 상한\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:32.938Z",
+                "durationMs": 3,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 31,
+                  "column": 38
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "17292d701cfff2a8cad81d376d4eb6d44e0eb6c0eb8ebea82b66418f0ab238f2",
+        "testId": "tests/chat.e2e.ts::TC-30%20%EC%98%88%EC%82%B0%20%EC%83%81%ED%95%9C%EC%9D%84%201%2C000%2C000%EC%9B%90%EC%9C%BC%EB%A1%9C%20%EA%B3%A0%EC%B3%90%20%EC%A0%80%EC%9E%A5%ED%95%98%EB%A9%B4%20%EC%83%88%20%EB%8C%80%ED%99%94%EC%9D%98%20%EC%A1%B0%EA%B1%B4%20%EC%B9%B4%EB%93%9C%EC%97%90%201%2C000%2C000%EC%9B%90%EC%9D%B4%20%EB%82%A8%EB%8A%94%EB%8B%A4",
+        "kind": "test",
+        "declarationIndex": 3,
+        "titlePath": [
+          "TC-30 예산 상한을 1,000,000원으로 고쳐 저장하면 새 대화의 조건 카드에 1,000,000원이 남는다"
+        ],
+        "file": "tests/chat.e2e.ts",
+        "source": {
+          "file": "tests/chat.e2e.ts",
+          "line": 53,
+          "column": 1
+        },
+        "targetId": "web",
+        "platform": "web",
+        "agent": "default",
+        "repeat": 0,
+        "tags": [],
+        "selected": true,
+        "status": "passed",
+        "attempts": [
+          {
+            "id": "01a1255b-7449-7449-80cf-2a5b4bb95e87",
+            "index": 0,
+            "status": "passed",
+            "startedAt": "2026-10-10T10:28:32.970Z",
+            "durationMs": 3432,
+            "artifacts": [
+              {
+                "id": "01a1255b-7449-7449-80cf-2a5b4bb95e87:artifact:0",
+                "kind": "trace",
+                "mediaType": "application/zip",
+                "redaction": "not-required",
+                "producer": {
+                  "kind": "attempt"
+                },
+                "path": "web/tests_chat.e2e.ts__TC-30_20_EC_98_88_EC_82_B0_20_EC_83_81_ED_95_9C_EC_9D_84_201_2C000_2C000_EC_9B_90_EC_9C_BC_E-41266801/default/attempt-0/trace/trace.zip",
+                "size": 770505,
+                "sha256": "810b80b362343b8afb0590fcad9846923d143afbbb219e4f748df1e8b58ad6d0"
+              }
+            ],
+            "secondaryErrors": [],
+            "cleanup": "complete",
+            "steps": [
+              {
+                "id": "01a1255b-7449-7449-80cf-2a5b4bb95e87:0",
+                "index": 0,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/login",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:33.277Z",
+                "durationMs": 82,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 27,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a1255b-7449-7449-80cf-2a5b4bb95e87:1",
+                "index": 1,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"아이디\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:33.359Z",
+                "durationMs": 44,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 28,
+                  "column": 34
+                }
+              },
+              {
+                "id": "01a1255b-7449-7449-80cf-2a5b4bb95e87:2",
+                "index": 2,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"비밀번호\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:33.403Z",
+                "durationMs": 33,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 29,
+                  "column": 35
+                }
+              },
+              {
+                "id": "01a1255b-7449-7449-80cf-2a5b4bb95e87:3",
+                "index": 3,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"button\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:33.436Z",
+                "durationMs": 35,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 30,
+                  "column": 43
+                }
+              },
+              {
+                "id": "01a1255b-7449-7449-80cf-2a5b4bb95e87:4",
+                "index": 4,
+                "kind": "assertion",
+                "api": "expect.not.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:33.471Z",
+                "durationMs": 1150,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 31,
+                  "column": 56
+                }
+              },
+              {
+                "id": "01a1255b-7449-7449-80cf-2a5b4bb95e87:5",
+                "index": 5,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/chat",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:34.621Z",
+                "durationMs": 25,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 10,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a1255b-7449-7449-80cf-2a5b4bb95e87:6",
+                "index": 6,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"챗봇에 보낼 말\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:34.655Z",
+                "durationMs": 41,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 35,
+                  "column": 39
+                }
+              },
+              {
+                "id": "01a1255b-7449-7449-80cf-2a5b4bb95e87:7",
+                "index": 7,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"button\", name: \"보내기\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:34.696Z",
+                "durationMs": 43,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 36,
+                  "column": 43
+                }
+              },
+              {
+                "id": "01a1255b-7449-7449-80cf-2a5b4bb95e87:8",
+                "index": 8,
+                "kind": "assertion",
+                "api": "expect.toContainText",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"group\", name: \"예산 상한\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:34.739Z",
+                "durationMs": 106,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 56,
+                  "column": 38
+                }
+              },
+              {
+                "id": "01a1255b-7449-7449-80cf-2a5b4bb95e87:9",
+                "index": 9,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"button\", name: \"고치기\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:34.845Z",
+                "durationMs": 112,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 38,
+                  "column": 73
+                }
+              },
+              {
+                "id": "01a1255b-7449-7449-80cf-2a5b4bb95e87:10",
+                "index": 10,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByRole(\"dialog\", name: \"조건을 고쳐 주세요\") >> getByLabel(\"예산 상한(원)\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:34.958Z",
+                "durationMs": 9,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 59,
+                  "column": 40
+                }
+              },
+              {
+                "id": "01a1255b-7449-7449-80cf-2a5b4bb95e87:11",
+                "index": 11,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"dialog\", name: \"조건을 고쳐 주세요\") >> getByRole(\"button\", name: \"적용\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:34.967Z",
+                "durationMs": 40,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 41,
+                  "column": 41
+                }
+              },
+              {
+                "id": "01a1255b-7449-7449-80cf-2a5b4bb95e87:12",
+                "index": 12,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"button\", name: \"조건 저장\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:35.007Z",
+                "durationMs": 32,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 42,
+                  "column": 45
+                }
+              },
+              {
+                "id": "01a1255b-7449-7449-80cf-2a5b4bb95e87:13",
+                "index": 13,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByText(\"조건을 저장했어요\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:35.039Z",
+                "durationMs": 106,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 43,
+                  "column": 47
+                }
+              },
+              {
+                "id": "01a1255b-7449-7449-80cf-2a5b4bb95e87:14",
+                "index": 14,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/chat",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:35.145Z",
+                "durationMs": 16,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 47,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a1255b-7449-7449-80cf-2a5b4bb95e87:15",
+                "index": 15,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByRole(\"article\", name: \"조건 카드\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:35.161Z",
+                "durationMs": 125,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 48,
+                  "column": 54
+                }
+              },
+              {
+                "id": "01a1255b-7449-7449-80cf-2a5b4bb95e87:16",
+                "index": 16,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByRole(\"list\", name: \"추천 질문\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:35.286Z",
+                "durationMs": 3,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 50,
+                  "column": 51
+                }
+              },
+              {
+                "id": "01a1255b-7449-7449-80cf-2a5b4bb95e87:17",
+                "index": 17,
+                "kind": "assertion",
+                "api": "expect.toContainText",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"group\", name: \"예산 상한\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:35.289Z",
+                "durationMs": 6,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 62,
+                  "column": 38
+                }
+              },
+              {
+                "id": "01a1255b-7449-7449-80cf-2a5b4bb95e87:18",
+                "index": 18,
+                "kind": "assertion",
+                "api": "expect.not.toContainText",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"group\", name: \"예산 상한\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:35.295Z",
+                "durationMs": 1066,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 63,
+                  "column": 42
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "edecc792f647e6ce55b55cffe1ca910d20b7ee8b4ff06525d1d1ac16580f0f1b",
+        "testId": "tests/chat.e2e.ts::TC-31%20%EC%9C%A0%ED%98%95%20%EA%B5%90%EA%B3%BC%20%ED%95%99%EC%9B%90%C2%B7%EC%9A%94%EC%9D%BC%20%EC%9B%94%C2%B7%EC%88%98%C2%B7%EA%B8%88%EC%9C%BC%EB%A1%9C%20%EC%A0%80%EC%9E%A5%ED%95%98%EB%A9%B4%20%EC%83%88%20%EB%8C%80%ED%99%94%EC%9D%98%20%EC%A1%B0%EA%B1%B4%20%EC%B9%B4%EB%93%9C%EC%97%90%20%EA%B7%B8%20%EA%B0%92%EC%9D%B4%20%EB%82%A8%EB%8A%94%EB%8B%A4",
+        "kind": "test",
+        "declarationIndex": 4,
+        "titlePath": [
+          "TC-31 유형 교과 학원·요일 월·수·금으로 저장하면 새 대화의 조건 카드에 그 값이 남는다"
+        ],
+        "file": "tests/chat.e2e.ts",
+        "source": {
+          "file": "tests/chat.e2e.ts",
+          "line": 66,
+          "column": 1
+        },
+        "targetId": "web",
+        "platform": "web",
+        "agent": "default",
+        "repeat": 0,
+        "tags": [],
+        "selected": true,
+        "status": "passed",
+        "attempts": [
+          {
+            "id": "01a1255b-81b2-7333-b687-e902eef64319",
+            "index": 0,
+            "status": "passed",
+            "startedAt": "2026-10-10T10:28:36.402Z",
+            "durationMs": 2463,
+            "artifacts": [
+              {
+                "id": "01a1255b-81b2-7333-b687-e902eef64319:artifact:0",
+                "kind": "trace",
+                "mediaType": "application/zip",
+                "redaction": "not-required",
+                "producer": {
+                  "kind": "attempt"
+                },
+                "path": "web/tests_chat.e2e.ts__TC-31_20_EC_9C_A0_ED_98_95_20_EA_B5_90_EA_B3_BC_20_ED_95_99_EC_9B_90_C2_B7_EC_9A_94_EC_9D_BC-4d3417ff/default/attempt-0/trace/trace.zip",
+                "size": 837221,
+                "sha256": "0956ace17c84e7a463ef45b815e2e1d27a07f0bdf3a47beac3e6ec327d5a899e"
+              }
+            ],
+            "secondaryErrors": [],
+            "cleanup": "complete",
+            "steps": [
+              {
+                "id": "01a1255b-81b2-7333-b687-e902eef64319:0",
+                "index": 0,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/login",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:36.700Z",
+                "durationMs": 100,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 27,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a1255b-81b2-7333-b687-e902eef64319:1",
+                "index": 1,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"아이디\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:36.800Z",
+                "durationMs": 37,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 28,
+                  "column": 34
+                }
+              },
+              {
+                "id": "01a1255b-81b2-7333-b687-e902eef64319:2",
+                "index": 2,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"비밀번호\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:36.838Z",
+                "durationMs": 28,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 29,
+                  "column": 35
+                }
+              },
+              {
+                "id": "01a1255b-81b2-7333-b687-e902eef64319:3",
+                "index": 3,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"button\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:36.866Z",
+                "durationMs": 32,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 30,
+                  "column": 43
+                }
+              },
+              {
+                "id": "01a1255b-81b2-7333-b687-e902eef64319:4",
+                "index": 4,
+                "kind": "assertion",
+                "api": "expect.not.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:36.898Z",
+                "durationMs": 1160,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 31,
+                  "column": 56
+                }
+              },
+              {
+                "id": "01a1255b-81b2-7333-b687-e902eef64319:5",
+                "index": 5,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/chat",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:38.058Z",
+                "durationMs": 23,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 10,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a1255b-81b2-7333-b687-e902eef64319:6",
+                "index": 6,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"챗봇에 보낼 말\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:38.089Z",
+                "durationMs": 42,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 35,
+                  "column": 39
+                }
+              },
+              {
+                "id": "01a1255b-81b2-7333-b687-e902eef64319:7",
+                "index": 7,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"button\", name: \"보내기\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:38.131Z",
+                "durationMs": 29,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 36,
+                  "column": 43
+                }
+              },
+              {
+                "id": "01a1255b-81b2-7333-b687-e902eef64319:8",
+                "index": 8,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"group\", name: \"학원 유형\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:38.160Z",
+                "durationMs": 105,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 69,
+                  "column": 38
+                }
+              },
+              {
+                "id": "01a1255b-81b2-7333-b687-e902eef64319:9",
+                "index": 9,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"button\", name: \"고치기\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:38.266Z",
+                "durationMs": 112,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 38,
+                  "column": 73
+                }
+              },
+              {
+                "id": "01a1255b-81b2-7333-b687-e902eef64319:10",
+                "index": 10,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"dialog\", name: \"조건을 고쳐 주세요\") >> getByRole(\"group\", name: \"학원 유형\") >> getByRole(\"button\", name: \"교과 학원\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:38.378Z",
+                "durationMs": 30,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 72,
+                  "column": 74
+                }
+              },
+              {
+                "id": "01a1255b-81b2-7333-b687-e902eef64319:11",
+                "index": 11,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"dialog\", name: \"조건을 고쳐 주세요\") >> getByRole(\"group\", name: \"가능 요일\") >> getByRole(\"button\", name: \"월\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:38.408Z",
+                "durationMs": 35,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 74,
+                  "column": 76
+                }
+              },
+              {
+                "id": "01a1255b-81b2-7333-b687-e902eef64319:12",
+                "index": 12,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"dialog\", name: \"조건을 고쳐 주세요\") >> getByRole(\"group\", name: \"가능 요일\") >> getByRole(\"button\", name: \"수\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:38.443Z",
+                "durationMs": 32,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 74,
+                  "column": 76
+                }
+              },
+              {
+                "id": "01a1255b-81b2-7333-b687-e902eef64319:13",
+                "index": 13,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"dialog\", name: \"조건을 고쳐 주세요\") >> getByRole(\"group\", name: \"가능 요일\") >> getByRole(\"button\", name: \"금\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:38.475Z",
+                "durationMs": 32,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 74,
+                  "column": 76
+                }
+              },
+              {
+                "id": "01a1255b-81b2-7333-b687-e902eef64319:14",
+                "index": 14,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"dialog\", name: \"조건을 고쳐 주세요\") >> getByRole(\"button\", name: \"적용\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:38.508Z",
+                "durationMs": 36,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 41,
+                  "column": 41
+                }
+              },
+              {
+                "id": "01a1255b-81b2-7333-b687-e902eef64319:15",
+                "index": 15,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"button\", name: \"조건 저장\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:38.544Z",
+                "durationMs": 31,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 42,
+                  "column": 45
+                }
+              },
+              {
+                "id": "01a1255b-81b2-7333-b687-e902eef64319:16",
+                "index": 16,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByText(\"조건을 저장했어요\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:38.575Z",
+                "durationMs": 106,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 43,
+                  "column": 47
+                }
+              },
+              {
+                "id": "01a1255b-81b2-7333-b687-e902eef64319:17",
+                "index": 17,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/chat",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:38.681Z",
+                "durationMs": 18,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 47,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a1255b-81b2-7333-b687-e902eef64319:18",
+                "index": 18,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByRole(\"article\", name: \"조건 카드\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:38.699Z",
+                "durationMs": 126,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 48,
+                  "column": 54
+                }
+              },
+              {
+                "id": "01a1255b-81b2-7333-b687-e902eef64319:19",
+                "index": 19,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByRole(\"list\", name: \"추천 질문\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:38.825Z",
+                "durationMs": 2,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 50,
+                  "column": 51
+                }
+              },
+              {
+                "id": "01a1255b-81b2-7333-b687-e902eef64319:20",
+                "index": 20,
+                "kind": "assertion",
+                "api": "expect.toHaveText",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"group\", name: \"학원 유형\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:38.828Z",
+                "durationMs": 2,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 77,
+                  "column": 38
+                }
+              },
+              {
+                "id": "01a1255b-81b2-7333-b687-e902eef64319:21",
+                "index": 21,
+                "kind": "assertion",
+                "api": "expect.toHaveText",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"group\", name: \"가능 요일\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:38.830Z",
+                "durationMs": 2,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat.e2e.ts",
+                  "line": 78,
+                  "column": 38
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "5a5a2209a6749a1cd03696393d5d5dd29f46339e8600ef890069605f1cb465f4",
+        "testId": "tests/smoke.e2e.ts::%EC%84%B8%EC%85%98%20%EC%97%86%EC%9D%B4%20%EC%B2%AB%20%ED%99%94%EB%A9%B4%EC%9D%84%20%EC%97%B4%EB%A9%B4%20%EB%A1%9C%EA%B7%B8%EC%9D%B8%20%ED%99%94%EB%A9%B4%EC%9D%B4%20%EB%B3%B4%EC%9D%B8%EB%8B%A4",
+        "kind": "test",
+        "declarationIndex": 0,
+        "titlePath": [
+          "세션 없이 첫 화면을 열면 로그인 화면이 보인다"
+        ],
+        "file": "tests/smoke.e2e.ts",
+        "source": {
+          "file": "tests/smoke.e2e.ts",
+          "line": 5,
+          "column": 1
+        },
+        "targetId": "web",
+        "platform": "web",
+        "agent": "default",
+        "repeat": 0,
+        "tags": [],
+        "selected": true,
+        "status": "passed",
+        "attempts": [
+          {
+            "id": "01a1255b-8b56-7277-b08d-a7077535facc",
+            "index": 0,
+            "status": "passed",
+            "startedAt": "2026-10-10T10:28:38.870Z",
+            "durationMs": 122,
+            "artifacts": [
+              {
+                "id": "01a1255b-8b56-7277-b08d-a7077535facc:artifact:0",
+                "kind": "trace",
+                "mediaType": "application/zip",
+                "redaction": "not-required",
+                "producer": {
+                  "kind": "attempt"
+                },
+                "path": "web/tests_smoke.e2e.ts___EC_84_B8_EC_85_98_20_EC_97_86_EC_9D_B4_20_EC_B2_AB_20_ED_99_94_EB_A9_B4_EC_9D_84_20_EC_97_-43668f23/default/attempt-0/trace/trace.zip",
+                "size": 97205,
+                "sha256": "98e14f5381ea695a5102074b7ff987aa03cc26c020d08e8ee369ce2f4bdc2c47"
+              }
+            ],
+            "secondaryErrors": [],
+            "cleanup": "complete",
+            "steps": [
+              {
+                "id": "01a1255b-8b56-7277-b08d-a7077535facc:0",
+                "index": 0,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:38.873Z",
+                "durationMs": 76,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/smoke.e2e.ts",
+                  "line": 6,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a1255b-8b56-7277-b08d-a7077535facc:1",
+                "index": 1,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:38.949Z",
+                "durationMs": 31,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/smoke.e2e.ts",
+                  "line": 7,
+                  "column": 52
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "7925f91e0a22fbbc796beb05d58f0cc833d5bacb656e3d87b185891d3376109e",
+        "testId": "tests/smoke.e2e.ts::%EC%84%B8%EC%85%98%20%EC%97%86%EC%9D%B4%20%EB%B3%B4%ED%98%B8%EC%9E%90%C2%B7%EA%B8%B0%EA%B4%80%20%ED%99%94%EB%A9%B4%20%EC%A3%BC%EC%86%8C%EB%A1%9C%20%EA%B0%80%EB%A9%B4%20%EB%A1%9C%EA%B7%B8%EC%9D%B8%20%ED%99%94%EB%A9%B4%EC%9C%BC%EB%A1%9C%20%EB%8F%8C%EC%95%84%EA%B0%84%EB%8B%A4",
+        "kind": "test",
+        "declarationIndex": 1,
+        "titlePath": [
+          "세션 없이 보호자·기관 화면 주소로 가면 로그인 화면으로 돌아간다"
+        ],
+        "file": "tests/smoke.e2e.ts",
+        "source": {
+          "file": "tests/smoke.e2e.ts",
+          "line": 10,
+          "column": 1
+        },
+        "targetId": "web",
+        "platform": "web",
+        "agent": "default",
+        "repeat": 0,
+        "tags": [],
+        "selected": true,
+        "status": "passed",
+        "attempts": [
+          {
+            "id": "01a1255b-8bd1-7bea-b461-901e3ea2a75f",
+            "index": 0,
+            "status": "passed",
+            "startedAt": "2026-10-10T10:28:38.993Z",
+            "durationMs": 424,
+            "artifacts": [
+              {
+                "id": "01a1255b-8bd1-7bea-b461-901e3ea2a75f:artifact:0",
+                "kind": "trace",
+                "mediaType": "application/zip",
+                "redaction": "not-required",
+                "producer": {
+                  "kind": "attempt"
+                },
+                "path": "web/tests_smoke.e2e.ts___EC_84_B8_EC_85_98_20_EC_97_86_EC_9D_B4_20_EB_B3_B4_ED_98_B8_EC_9E_90_C2_B7_EA_B8_B0_EA_B4_-ab7f06d4/default/attempt-0/trace/trace.zip",
+                "size": 344941,
+                "sha256": "73e3ac697d3c3980ad3ad2b671e4e06efc02dbf77b898270eb4e61933279a065"
+              }
+            ],
+            "secondaryErrors": [],
+            "cleanup": "complete",
+            "steps": [
+              {
+                "id": "01a1255b-8bd1-7bea-b461-901e3ea2a75f:0",
+                "index": 0,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/chat",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:38.996Z",
+                "durationMs": 84,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/smoke.e2e.ts",
+                  "line": 12,
+                  "column": 15
+                }
+              },
+              {
+                "id": "01a1255b-8bd1-7bea-b461-901e3ea2a75f:1",
+                "index": 1,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:39.080Z",
+                "durationMs": 138,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/smoke.e2e.ts",
+                  "line": 13,
+                  "column": 54
+                }
+              },
+              {
+                "id": "01a1255b-8bd1-7bea-b461-901e3ea2a75f:2",
+                "index": 2,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/schedule",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:39.218Z",
+                "durationMs": 19,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/smoke.e2e.ts",
+                  "line": 12,
+                  "column": 15
+                }
+              },
+              {
+                "id": "01a1255b-8bd1-7bea-b461-901e3ea2a75f:3",
+                "index": 3,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:39.237Z",
+                "durationMs": 19,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/smoke.e2e.ts",
+                  "line": 13,
+                  "column": 54
+                }
+              },
+              {
+                "id": "01a1255b-8bd1-7bea-b461-901e3ea2a75f:4",
+                "index": 4,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/children",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:39.257Z",
+                "durationMs": 18,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/smoke.e2e.ts",
+                  "line": 12,
+                  "column": 15
+                }
+              },
+              {
+                "id": "01a1255b-8bd1-7bea-b461-901e3ea2a75f:5",
+                "index": 5,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:39.275Z",
+                "durationMs": 20,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/smoke.e2e.ts",
+                  "line": 13,
+                  "column": 54
+                }
+              },
+              {
+                "id": "01a1255b-8bd1-7bea-b461-901e3ea2a75f:6",
+                "index": 6,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/academy",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:39.295Z",
+                "durationMs": 16,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/smoke.e2e.ts",
+                  "line": 12,
+                  "column": 15
+                }
+              },
+              {
+                "id": "01a1255b-8bd1-7bea-b461-901e3ea2a75f:7",
+                "index": 7,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:39.312Z",
+                "durationMs": 19,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/smoke.e2e.ts",
+                  "line": 13,
+                  "column": 54
+                }
+              },
+              {
+                "id": "01a1255b-8bd1-7bea-b461-901e3ea2a75f:8",
+                "index": 8,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/school",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:39.331Z",
+                "durationMs": 15,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/smoke.e2e.ts",
+                  "line": 12,
+                  "column": 15
+                }
+              },
+              {
+                "id": "01a1255b-8bd1-7bea-b461-901e3ea2a75f:9",
+                "index": 9,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:39.346Z",
+                "durationMs": 19,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/smoke.e2e.ts",
+                  "line": 13,
+                  "column": 54
+                }
+              },
+              {
+                "id": "01a1255b-8bd1-7bea-b461-901e3ea2a75f:10",
+                "index": 10,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/impact",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:39.365Z",
+                "durationMs": 15,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/smoke.e2e.ts",
+                  "line": 12,
+                  "column": 15
+                }
+              },
+              {
+                "id": "01a1255b-8bd1-7bea-b461-901e3ea2a75f:11",
+                "index": 11,
+                "kind": "assertion",
+                "api": "expect.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:39.380Z",
+                "durationMs": 19,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/smoke.e2e.ts",
+                  "line": 13,
+                  "column": 54
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "errors": [],
+    "summary": {
+      "discovered": 12,
+      "selected": 11,
+      "executed": 11,
+      "passed": 11,
+      "failed": 0,
+      "interrupted": 0,
+      "flaky": 0,
+      "skipped": 0
+    },
+    "limits": {
+      "maxAgentContextBytes": 16384,
+      "maxLedgerBytes": 8192,
+      "maxObservationBytes": 262144,
+      "maxEventsPerStep": 1000,
+      "maxModelTokensPerCall": 64000
+    },
+    "usage": {
+      "discoveredResults": 12,
+      "maxAgentContextBytes": 0,
+      "maxLedgerBytes": 0,
+      "maxObservationBytes": 0,
+      "artifactBytes": 6570909,
+      "downloads": 0,
+      "events": 0,
+      "modelTokens": 0,
+      "maxModelCallsInStep": 0,
+      "maxActionStepsInStep": 0
+    }
+  }
+}

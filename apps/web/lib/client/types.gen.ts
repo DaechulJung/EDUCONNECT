@@ -1666,10 +1666,6 @@ export type UpdateChildErrors = {
      * Unprocessable Content
      */
     422: ErrorBody | FieldErrors;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
 };
 
 export type UpdateChildError = UpdateChildErrors[keyof UpdateChildErrors];
@@ -1833,13 +1829,11 @@ export type RecommendProgramsErrors = {
      */
     404: ErrorBody;
     /**
-     * Validation Error
+     * Response 422 Recommend Programs
+     *
+     * Unprocessable Content
      */
-    422: HttpValidationError;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
+    422: ErrorBody | FieldErrors;
 };
 
 export type RecommendProgramsError = RecommendProgramsErrors[keyof RecommendProgramsErrors];
@@ -1879,10 +1873,6 @@ export type CreatePlanDraftErrors = {
      * Unprocessable Content
      */
     422: ErrorBody | FieldErrors;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
 };
 
 export type CreatePlanDraftError = CreatePlanDraftErrors[keyof CreatePlanDraftErrors];
@@ -1918,13 +1908,13 @@ export type ListPlansErrors = {
      */
     403: ErrorBody;
     /**
+     * Not Found
+     */
+    404: ErrorBody;
+    /**
      * Validation Error
      */
     422: HttpValidationError;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
 };
 
 export type ListPlansError = ListPlansErrors[keyof ListPlansErrors];
@@ -1969,10 +1959,6 @@ export type GetPlanErrors = {
      * Validation Error
      */
     422: HttpValidationError;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
 };
 
 export type GetPlanError = GetPlanErrors[keyof GetPlanErrors];
@@ -2012,13 +1998,15 @@ export type UpdatePlanErrors = {
      */
     404: ErrorBody;
     /**
-     * Validation Error
+     * Conflict
      */
-    422: HttpValidationError;
+    409: ErrorBody;
     /**
-     * Not Implemented
+     * Response 422 Update Plan
+     *
+     * Unprocessable Content
      */
-    501: ErrorBody;
+    422: ErrorBody | FieldErrors;
 };
 
 export type UpdatePlanError = UpdatePlanErrors[keyof UpdatePlanErrors];
@@ -2065,10 +2053,6 @@ export type ConfirmPlanErrors = {
      * Validation Error
      */
     422: HttpValidationError;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
 };
 
 export type ConfirmPlanError = ConfirmPlanErrors[keyof ConfirmPlanErrors];
@@ -2280,15 +2264,6 @@ export type GetMetaData = {
     query?: never;
     url: '/api/meta';
 };
-
-export type GetMetaErrors = {
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
-};
-
-export type GetMetaError = GetMetaErrors[keyof GetMetaErrors];
 
 export type GetMetaResponses = {
     /**

@@ -61,6 +61,7 @@ jobs:
       ENABLE_TEST_ROUTES: 1 # /api/test/* for seed reset, clock and the LLM double (arch AD-11)
       LLM_PROVIDER: fake # CI never calls Azure OpenAI (AC-10.3)
       SEED_PASSWORD: ci-synthetic-seed # synthetic; /api/test/reset loads the seed with it
+      AZURE_OPENAI_ENDPOINT: https://educonnect-synthetic-ci.openai.azure.com/ # synthetic; TC-68 checks the app never shows its host
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7

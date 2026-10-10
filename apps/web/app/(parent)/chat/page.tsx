@@ -2,12 +2,17 @@
 
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
-import { Icon, ToastProvider } from '@/components/kds/kds'
+import { Icon, Popup, ToastProvider } from '@/components/kds/kds'
 import { useToast } from '@/components/kds/kds-hooks'
 import { ConditionCard } from '@/components/parent/ConditionCard'
 import { ConditionSheet } from '@/components/parent/ConditionSheet'
-import { getConditions, listChildren, listSubjects, saveConditions, sendChatMessage, type Conditions } from '@/lib/client'
+import { NoPlan, PlanDraft } from '@/components/parent/PlanDraft'
+import { RecommendTable } from '@/components/parent/RecommendTable'
+import { SwapSheet } from '@/components/parent/SwapSheet'
+import { confirmPlan, createPlanDraft, getConditions, listChildren, listSubjects, recommendPrograms, saveConditions, sendChatMessage, updatePlan, type Conditions, type Plan, type PlanItem, type Recommendation } from '@/lib/client'
+import { swapCandidates, swapProgram, withoutProgram } from '@/lib/plan'
 import { BASE_SUBJECTS, childLabel, pickChild, sameConditions, subjectOptions } from '@/lib/conditions'
 
 type Message = { id: number; role: 'user' | 'ai'; text: string; error?: boolean }
@@ -25,6 +30,7 @@ export default function ChatPage() {
 
 function Chat() {
   const queryClient = useQueryClient()
+  const router = useRouter()
   const toast = useToast()
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
@@ -34,7 +40,22 @@ function Chat() {
   const [saving, setSaving] = useState(false)
   const [saveError, setSaveError] = useState<string | null>(null)
   const [childId, setChildId] = useState<string | null>(null)
+  const [recs, setRecs] = useState<Recommendation[] | null>(null)
+  const [recommending, setRecommending] = useState(false)
+  const [recError, setRecError] = useState<string | null>(null)
+  const [plan, setPlan] = useState<Plan | null>(null)
+  const [noPlan, setNoPlan] = useState<string[] | null>(null)
+  const [planning, setPlanning] = useState(false)
+  const [planError, setPlanError] = useState<string | null>(null)
+  const [planBusy, setPlanBusy] = useState(false)
+  const [swapItem, setSwapItem] = useState<PlanItem | null>(null)
+  const [swapLoading, setSwapLoading] = useState(false)
+  const [swapRecs, setSwapRecs] = useState<Recommendation[] | null>(null)
+  const [confirming, setConfirming] = useState(false)
   const nextId = useRef(1)
+  // Bumped whenever the child or the card changes; a recommendation or plan answer for an older value is dropped.
+  const recContext = useRef(0)
+  const planContext = useRef(0)
   const endRef = useRef<HTMLDivElement>(null)
 
   const children = useQuery({
@@ -65,6 +86,23 @@ function Chat() {
     endRef.current?.scrollIntoView?.({ block: 'end' })
   }, [messages, thinking])
 
+  function clearRecs() {
+    recContext.current++
+    setRecs(null)
+    setRecError(null)
+    setRecommending(false)
+    planContext.current++
+    setPlan(null)
+    setNoPlan(null)
+    setPlanError(null)
+    setPlanning(false)
+    setPlanBusy(false)
+    setSwapItem(null)
+    setSwapRecs(null)
+    setSwapLoading(false)
+    setConfirming(false)
+  }
+
   const add = (role: Message['role'], text: string, error = false) =>
     setMessages((m) => [...m, { id: nextId.current++, role, text, error }])
 
@@ -89,6 +127,7 @@ function Chat() {
     add('ai', data.reply)
     setCard(data.conditions)
     setSaveError(null)
+    clearRecs()
   }
 
   async function save() {
@@ -105,7 +144,93 @@ function Chat() {
     }
     queryClient.setQueryData(['conditions', child.id], data)
     setCard(data)
+    clearRecs()
     toast('조건을 저장했어요')
+  }
+
+  async function recommend() {
+    if (!child) return
+    const context = ++recContext.current
+    setRecommending(true)
+    setRecError(null)
+    const { data } = await recommendPrograms({ body: { child_id: child.id } })
+    if (context !== recContext.current) return
+    setRecommending(false)
+    if (!data) {
+      setRecError('추천을 불러오지 못했어요. 다시 시도해 주세요.')
+      return
+    }
+    setRecs(data.items)
+  }
+
+  async function makePlan() {
+    if (!child) return
+    const context = ++planContext.current
+    setPlanning(true)
+    setPlanError(null)
+    setPlan(null)
+    setNoPlan(null)
+    const { data, error, response } = await createPlanDraft({ body: { child_id: child.id } })
+    if (context !== planContext.current) return
+    setPlanning(false)
+    if (data) {
+      setPlan(data)
+      return
+    }
+    const body = error as { detail?: string; data?: { relaxations?: string[] } } | undefined
+    if (response?.status === 422 && body?.detail === 'no_feasible_plan') {
+      setNoPlan(body.data?.relaxations ?? [])
+      return
+    }
+    setPlanError(response?.status === 404 ? '찾을 수 없어요' : '일정을 만들지 못했어요. 다시 시도해 주세요.')
+  }
+
+  // 빼기·바꾸기 (#8): send the whole program list; the server re-judges and returns violations and the total.
+  async function editPlan(programIds: string[]) {
+    if (!plan) return
+    const context = planContext.current
+    setPlanBusy(true)
+    setPlanError(null)
+    const { data } = await updatePlan({ path: { plan_id: plan.id }, body: { program_ids: programIds } })
+    if (context !== planContext.current) return
+    setPlanBusy(false)
+    if (data) setPlan(data)
+    else setPlanError('일정을 고치지 못했어요. 다시 시도해 주세요.')
+  }
+
+  // '바꾸기' candidates come from the recommendation list; fetch it once (without opening the 비교표) if needed.
+  async function openSwap(item: PlanItem) {
+    setSwapItem(item)
+    if (recs || swapRecs || !child) return
+    const context = planContext.current
+    setSwapLoading(true)
+    const { data } = await recommendPrograms({ body: { child_id: child.id } })
+    if (context !== planContext.current) return
+    setSwapLoading(false)
+    setSwapRecs(data?.items ?? [])
+  }
+
+  async function pickSwap(programId: string) {
+    if (!plan || !swapItem) return
+    const ids = swapProgram(plan, swapItem.program_id, programId)
+    setSwapItem(null)
+    await editPlan(ids)
+  }
+
+  async function confirm() {
+    if (!plan) return
+    const context = planContext.current
+    setPlanBusy(true)
+    const { data } = await confirmPlan({ path: { plan_id: plan.id } })
+    if (context !== planContext.current) return
+    setPlanBusy(false)
+    setConfirming(false)
+    if (!data) {
+      setPlanError('일정을 확정하지 못했어요. 겹치는 수업이 없는지 확인해 주세요.')
+      return
+    }
+    await queryClient.invalidateQueries({ queryKey: ['plans'] })
+    router.push('/schedule')
   }
 
   const lastAi = [...messages].reverse().find((m) => m.role === 'ai' && !m.error)?.id
@@ -146,14 +271,30 @@ function Chat() {
                   <Link className="kds-button kds-button--secondary kds-button--small" style={{ alignSelf: 'flex-start' }} href="/children">자녀 등록</Link>
                 )}
                 {m.id === lastAi && shown && child && (
-                  <ConditionCard value={shown} childName={childName} dirty={dirty} saving={saving} error={saveError} onEdit={() => setEditing(true)} onSave={save} />
+                  <ConditionCard value={shown} childName={childName} dirty={dirty} saving={saving} error={saveError} onEdit={() => setEditing(true)} onSave={save} canRecommend={!!saved.data} recommending={recommending} onRecommend={recommend} planning={planning} onPlan={makePlan} />
                 )}
               </div>
             ),
           )}
           {lastAi === undefined && saved.data && child && (
-            <ConditionCard value={shown!} childName={childName} dirty={dirty} saving={saving} error={saveError} onEdit={() => setEditing(true)} onSave={save} />
+            <ConditionCard value={shown!} childName={childName} dirty={dirty} saving={saving} error={saveError} onEdit={() => setEditing(true)} onSave={save} canRecommend={!!saved.data} recommending={recommending} onRecommend={recommend} planning={planning} onPlan={makePlan} />
           )}
+
+          {recError && <p className="kds-info-line kds-info-line--error" role="alert"><Icon name="ic-line-warning" size={16} />{recError}</p>}
+          {recs && <RecommendTable items={recs} />}
+          {planError && <p className="kds-info-line kds-info-line--error" role="alert"><Icon name="ic-line-warning" size={16} />{planError}</p>}
+          {plan && (
+            <PlanDraft
+              plan={plan}
+              actions={{
+                busy: planBusy,
+                onRemove: (item) => editPlan(withoutProgram(plan, item.program_id)),
+                onSwap: openSwap,
+                onConfirm: () => setConfirming(true),
+              }}
+            />
+          )}
+          {noPlan && <NoPlan relaxations={noPlan} onEdit={() => setEditing(true)} />}
 
           {thinking && <div className="kds-chat__thinking" role="status">조건을 정리하는 중</div>}
           {!thinking && messages.length === 0 && (
@@ -182,6 +323,26 @@ function Chat() {
         </form>
       </div>
 
+      <SwapSheet
+        item={swapItem}
+        candidates={swapItem && (recs ?? swapRecs) ? swapCandidates(plan ?? { items: [] }, swapItem, (recs ?? swapRecs)!) : null}
+        loading={swapLoading}
+        onPick={pickSwap}
+        onClose={() => setSwapItem(null)}
+      />
+      <Popup
+        open={confirming}
+        onClose={() => setConfirming(false)}
+        title="이 일정으로 확정할까요?"
+        description="확정한 일정은 일정 탭에 저장돼요."
+        size="small"
+        actions={
+          <>
+            <button type="button" className="kds-button kds-button--secondary" onClick={() => setConfirming(false)}>취소</button>
+            <button type="button" className="kds-button" disabled={planBusy} onClick={confirm}>일정 확정</button>
+          </>
+        }
+      />
       {shown && child && (
         <ConditionSheet
           open={editing}
@@ -189,7 +350,7 @@ function Chat() {
           childId={child.id}
           childOptions={(children.data ?? []).map((c) => ({ id: c.id, label: childLabel(c) }))}
           subjects={subjectOptions(subjects.data, shown.subjects, BASE_SUBJECTS)}
-          onApply={(next, nextChildId) => { setCard(next); setChildId(nextChildId); setSaveError(null); setEditing(false) }}
+          onApply={(next, nextChildId) => { setCard(next); setChildId(nextChildId); setSaveError(null); clearRecs(); setEditing(false) }}
           onClose={() => setEditing(false)}
         />
       )}

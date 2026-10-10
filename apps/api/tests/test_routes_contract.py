@@ -31,22 +31,22 @@ ROUTES = [
     ("GET", "/api/children", "parent", True),
     ("POST", "/api/children", "parent", False),
     ("GET", "/api/children/{child_id}", "parent", True),
-    ("PUT", "/api/children/{child_id}", "parent", False),
+    ("PUT", "/api/children/{child_id}", "parent", True),
     ("POST", "/api/chat/messages", "parent", True),
     ("GET", "/api/children/{child_id}/conditions", "parent", True),
     ("PUT", "/api/children/{child_id}/conditions", "parent", True),
     ("GET", "/api/catalog/subjects", "any", False),
-    ("POST", "/api/recommendations", "parent", False),
-    ("POST", "/api/plans/draft", "parent", False),
-    ("GET", "/api/plans", "parent", False),
-    ("GET", "/api/plans/{plan_id}", "parent", False),
-    ("PUT", "/api/plans/{plan_id}", "parent", False),
-    ("POST", "/api/plans/{plan_id}/confirm", "parent", False),
+    ("POST", "/api/recommendations", "parent", True),
+    ("POST", "/api/plans/draft", "parent", True),
+    ("GET", "/api/plans", "parent", True),
+    ("GET", "/api/plans/{plan_id}", "parent", True),
+    ("PUT", "/api/plans/{plan_id}", "parent", True),
+    ("POST", "/api/plans/{plan_id}/confirm", "parent", True),
     ("GET", "/api/plans/{plan_id}/adjustment", "parent", False),
     ("POST", "/api/plans/{plan_id}/adjustment/accept", "parent", False),
     ("POST", "/api/plans/{plan_id}/adjustment/reject", "parent", False),
     ("GET", "/api/org/impact", "org", False),
-    ("GET", "/api/meta", None, False),
+    ("GET", "/api/meta", None, True),
     ("GET", "/api/health", None, True),
 ]
 
@@ -113,6 +113,20 @@ def test_unimplemented_routes_return_501(method, path, role, client, make_accoun
     response = client.request(method, url, json=BODIES.get((method, path)))
     assert response.status_code == 501, response.text
     assert response.json() == {"detail": "not_implemented"}
+
+
+@pytest.mark.parametrize(
+    ("method", "path", "codes"),
+    [
+        ("GET", "/api/plans", {"401", "403", "404"}),
+        ("PUT", "/api/plans/{plan_id}", {"401", "403", "404", "409", "422"}),
+        ("POST", "/api/plans/{plan_id}/confirm", {"401", "403", "404", "409"}),
+    ],
+)
+def test_plan_routes_publish_their_errors_and_no_501(method, path, codes) -> None:  # #8
+    responses = set(app.openapi()["paths"][path][method.lower()]["responses"])
+    assert "501" not in responses
+    assert codes <= responses
 
 
 def test_routers_never_raise_http_exceptions_directly() -> None:

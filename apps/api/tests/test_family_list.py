@@ -1,6 +1,7 @@
 """GET /api/children: the signed-in parent's own children only (the chat screen needs it, #5).
 
-Create and update stay 501 until #4; reading one child is checked in test_authz.py (#1).
+Create stays 501 until #4; reading one child is checked in test_authz.py (#1) and the update in
+test_family_update.py (#6).
 """
 
 from tests.conftest import login
