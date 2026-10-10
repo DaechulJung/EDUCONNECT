@@ -43,10 +43,10 @@ ROUTES = [
     ("GET", "/api/plans/{plan_id}", "parent", True),
     ("PUT", "/api/plans/{plan_id}", "parent", True),
     ("POST", "/api/plans/{plan_id}/confirm", "parent", True),
-    ("GET", "/api/plans/{plan_id}/adjustment", "parent", False),
-    ("POST", "/api/plans/{plan_id}/adjustment/accept", "parent", False),
-    ("POST", "/api/plans/{plan_id}/adjustment/reject", "parent", False),
-    ("GET", "/api/org/impact", "org", False),
+    ("GET", "/api/plans/{plan_id}/adjustment", "parent", True),
+    ("POST", "/api/plans/{plan_id}/adjustment/accept", "parent", True),
+    ("POST", "/api/plans/{plan_id}/adjustment/reject", "parent", True),
+    ("GET", "/api/org/impact", "org", True),
     ("GET", "/api/meta", None, True),
     ("GET", "/api/health", None, True),
 ]
@@ -122,9 +122,13 @@ def test_unimplemented_routes_return_501(method, path, role, client, make_accoun
         ("GET", "/api/plans", {"401", "403", "404"}),
         ("PUT", "/api/plans/{plan_id}", {"401", "403", "404", "409", "422"}),
         ("POST", "/api/plans/{plan_id}/confirm", {"401", "403", "404", "409"}),
+        ("GET", "/api/plans/{plan_id}/adjustment", {"401", "403", "404", "409", "422"}),
+        ("POST", "/api/plans/{plan_id}/adjustment/accept", {"401", "403", "404", "409", "422"}),
+        ("POST", "/api/plans/{plan_id}/adjustment/reject", {"401", "403", "404", "409"}),
+        ("GET", "/api/org/impact", {"401", "403"}),
     ],
 )
-def test_plan_routes_publish_their_errors_and_no_501(method, path, codes) -> None:  # #8
+def test_plan_routes_publish_their_errors_and_no_501(method, path, codes) -> None:  # #8, #9
     responses = set(app.openapi()["paths"][path][method.lower()]["responses"])
     assert "501" not in responses
     assert codes <= responses

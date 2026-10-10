@@ -18,7 +18,8 @@ export type PlanActions = {
 
 // 일정 초안 (experience): 7-column weekly grid from a 768px viewport (inside the 748px parent frame), per-day list
 // below, then the monthly cost summary. Without actions it is read-only (확정 계획 on the 일정 탭).
-export function PlanDraft({ plan, actions, label = '일정 초안' }: { plan: Plan; actions?: PlanActions; label?: string }) {
+// changed: program ids drawn bold (조정안 대안의 바뀐 칸, experience 83행).
+export function PlanDraft({ plan, actions, label = '일정 초안', changed = [] }: { plan: Plan; actions?: PlanActions; label?: string; changed?: string[] }) {
   const wide = useWideViewport()
   const unavailable = actions?.unavailable ?? []
   const columns = weekColumns(plan, unavailable)
@@ -37,7 +38,7 @@ export function PlanDraft({ plan, actions, label = '일정 초안' }: { plan: Pl
               <tr>
                 {columns.map((c) => (
                   <td key={c.day} style={{ ...GRID_CELL, verticalAlign: 'top' }}>
-                    <Entries entries={c.entries} day={c.label} actions={actions} single={single} />
+                    <Entries entries={c.entries} day={c.label} actions={actions} single={single} changed={changed} />
                   </td>
                 ))}
               </tr>
@@ -49,7 +50,7 @@ export function PlanDraft({ plan, actions, label = '일정 초안' }: { plan: Pl
           {columns.map((c) => (
             <section key={c.day} aria-label={`${c.label}요일`}>
               <h4 className="body-medium-bold" style={{ margin: 0 }}>{c.label}요일</h4>
-              <Entries entries={c.entries} day={c.label} actions={actions} single={single} />
+              <Entries entries={c.entries} day={c.label} actions={actions} single={single} changed={changed} />
             </section>
           ))}
         </div>
@@ -69,7 +70,7 @@ export function PlanDraft({ plan, actions, label = '일정 초안' }: { plan: Pl
 // padding, a class's time stays on one line and its 빼기·바꾸기 buttons wrap under each other when narrow.
 const GRID_CELL = { paddingInline: 'var(--space-4)' }
 
-function Entries({ entries, day, actions, single }: { entries: DayEntry[]; day: string; actions?: PlanActions; single: boolean }) {
+function Entries({ entries, day, actions, single, changed }: { entries: DayEntry[]; day: string; actions?: PlanActions; single: boolean; changed: string[] }) {
   if (entries.length === 0) return <p className="caption-medium-medium" style={{ margin: 0, color: 'var(--text-tertiary-01)' }}>일정 없음</p>
   return (
     <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
@@ -79,7 +80,7 @@ function Entries({ entries, day, actions, single }: { entries: DayEntry[]; day: 
             학교 ~{e.end}
           </li>
         ) : (
-          <li key={e.item.program_id} aria-label={`${day} 수업`} className="caption-medium-medium" style={{ border: '1px solid var(--border-secondary-01)', borderRadius: 'var(--radius-8)', padding: 'var(--space-8)', display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+          <li key={e.item.program_id} aria-label={`${day} 수업`} className="caption-medium-medium" style={{ border: '1px solid var(--border-secondary-01)', borderRadius: 'var(--radius-8)', padding: 'var(--space-8)', display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', ...(changed.includes(e.item.program_id) && { fontWeight: 'var(--font-weight-bold)' }) }}>
             <span className="body-small-bold">{e.item.subject}</span>
             <span>{e.item.institution_name}</span>
             <span style={{ color: 'var(--text-secondary-01)', whiteSpace: 'nowrap' }}>{e.item.start}~{e.item.end}</span>

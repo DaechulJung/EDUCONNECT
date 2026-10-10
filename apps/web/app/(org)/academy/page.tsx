@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState, type FormEvent } from 'react'
 import { Icon, Popup } from '@/components/kds/kds'
 import { useToast } from '@/components/kds/kds-hooks'
+import { ImpactSummary, impactKey } from '@/components/impact/ImpactSummary'
 import { createProgram, deleteProgram, listPrograms, updateProgram, type Program } from '@/lib/client'
 import {
   ACADEMY_TYPES, DAYS, EMPTY_FORM, GRADES, daysLabel, firstError, fromProgram, gradeLabel, serverErrors, toProgramIn, tuitionLabel,
@@ -20,6 +21,8 @@ export default function AcademyProgramsPage() {
   // null = register; a program = edit it in place (same id, so plans that use it keep pointing at it).
   const [editing, setEditing] = useState<Program | null>(null)
   const [removing, setRemoving] = useState<Program | null>(null)
+  // The program just saved: its save result line shows how many confirmed plans it affects (FLOW-02, #9).
+  const [saved, setSaved] = useState<string | null>(null)
 
   const programs = useQuery({
     queryKey: PROGRAMS_KEY,
@@ -59,14 +62,18 @@ export default function AcademyProgramsPage() {
           key={editing?.id ?? 'new'}
           program={editing}
           onCancel={() => setFormOpen(false)}
-          onSaved={() => {
+          onSaved={(id) => {
             setFormOpen(false)
             setEditing(null)
+            setSaved(id)
             toast('프로그램을 저장했어요')
+            void queryClient.invalidateQueries({ queryKey: impactKey(id) })
             return queryClient.invalidateQueries({ queryKey: PROGRAMS_KEY })
           }}
         />
       )}
+
+      {saved && <ImpactSummary programId={saved} />}
 
       <section aria-labelledby="program-list-title" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-16)' }}>
         <h2 id="program-list-title" className="title-medium-bold" style={{ margin: 0 }}>프로그램 목록</h2>
@@ -158,7 +165,7 @@ export default function AcademyProgramsPage() {
   )
 }
 
-function ProgramFormSection({ program, onCancel, onSaved }: { program: Program | null; onCancel: () => void; onSaved: () => unknown }) {
+function ProgramFormSection({ program, onCancel, onSaved }: { program: Program | null; onCancel: () => void; onSaved: (programId: string) => unknown }) {
   const [form, setForm] = useState<ProgramForm>(() => (program ? fromProgram(program) : EMPTY_FORM))
   const [errors, setErrors] = useState<FormErrors>({})
   const [saveError, setSaveError] = useState<string | null>(null)
@@ -203,7 +210,7 @@ function ProgramFormSection({ program, onCancel, onSaved }: { program: Program |
       setSaveError('저장하지 못했어요. 입력값을 확인하고 다시 저장해 주세요')
       return
     }
-    await onSaved()
+    await onSaved(data.id)
   }
 
   const field = (key: FormField) => ({

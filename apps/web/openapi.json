@@ -2019,6 +2019,16 @@
             },
             "description": "Not Found"
           },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
           "422": {
             "content": {
               "application/json": {
@@ -2036,16 +2046,6 @@
               }
             },
             "description": "Unprocessable Content"
-          },
-          "501": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorBody"
-                }
-              }
-            },
-            "description": "Not Implemented"
           }
         }
       }
@@ -2136,16 +2136,6 @@
               }
             },
             "description": "Unprocessable Content"
-          },
-          "501": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorBody"
-                }
-              }
-            },
-            "description": "Not Implemented"
           }
         }
       }
@@ -2209,7 +2199,7 @@
             },
             "description": "Not Found"
           },
-          "501": {
+          "409": {
             "content": {
               "application/json": {
                 "schema": {
@@ -2217,7 +2207,7 @@
                 }
               }
             },
-            "description": "Not Implemented"
+            "description": "Conflict"
           },
           "422": {
             "description": "Validation Error",
@@ -2303,16 +2293,6 @@
               }
             },
             "description": "Forbidden"
-          },
-          "501": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorBody"
-                }
-              }
-            },
-            "description": "Not Implemented"
           },
           "422": {
             "description": "Validation Error",

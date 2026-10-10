@@ -57,7 +57,7 @@ updated: 2026-10-10
 
 - **Binds (적용 대상):** REQ-02, REQ-03, REQ-08, REQ-09
 - **Prevents (막는 어긋남):** 기관 저장 코드가 계획을 직접 고치거나(두 쓰기 소유), 변경 이벤트를 놓쳐 영향 표시가 빠지는 것
-- **Rule (규칙):** 계획 확정 시 `plans`에 항목(AD-16 `items`), 요일별 하교 시각(`school_snapshot`), 확정 시점 예산 상한(`budget_cap`)을 함께 저장한다. 영향은 planner가 조회 시점에 계산한다: 현재 `programs`(삭제 포함)·현재 하교 시각·현재 자녀 기존 일정으로 스냅숏 항목을 다시 놓고, 상한은 스냅숏 `budget_cap`으로 엔진 검증을 다시 실행한다. 사유 코드는 `time_overlap`·`travel_short`·`over_budget`(초과 금액)·`content_changed`(시각·금액이 바뀌었으나 위반 없음, 또는 프로그램 삭제)이며, 위반 사유(`time_overlap`·`travel_short`·`over_budget`)가 하나라도 있으면 '영향 있음'이다. catalog는 `plans`를 읽거나 쓰지 않는다. 프로그램 삭제는 `programs.deleted_at`을 채우는 soft delete다. 조정안은 GET 때 엔진으로 결정형 계산하고, 수락 POST는 같은 계산을 다시 해 위반 0건일 때만 새 확정 행을 만들고 이전 행을 `superseded`로 바꾼 뒤 새 ID를 돌려준다. 거절은 아무것도 바꾸지 않는다. 기관 화면의 영향 수는 `GET /api/org/impact?program_id=` 또는 `?grade=`(없으면 기관 전체)가 `{"affected_plans": int, "items": [{"program_id" 또는 "grade", "affected_plans": int}]}`로 돌려주며 자녀·보호자·계획 ID를 넣지 않는다. 기관 저장 결과 줄은 방금 저장한 `program_id`(학교는 `grade`)로 조회한다. 결과 줄의 영향 수 컴포넌트(`components/impact/ImpactSummary.tsx`)는 planner 소유이며 기반 작업이 빈 컴포넌트를 만들고 catalog 화면이 배치만 한다.
+- **Rule (규칙):** 계획 확정 시 `plans`에 항목(AD-16 `items`), 요일별 하교 시각(`school_snapshot`), 확정 시점 예산 상한(`budget_cap`)을 함께 저장한다. 영향은 planner가 조회 시점에 계산한다: 현재 `programs`(삭제 포함)·현재 하교 시각·현재 자녀 기존 일정으로 스냅숏 항목을 다시 놓고, 상한은 스냅숏 `budget_cap`으로 엔진 검증을 다시 실행한다. 사유 코드는 `time_overlap`·`travel_short`·`over_budget`(초과 금액)·`content_changed`(시각·금액이 바뀌었으나 위반 없음, 또는 프로그램 삭제)이며, 사유가 하나라도 있으면 '영향 있음'이다(`content_changed`는 "영향 있음 · 내용 변경", PRD REQ-02·REQ-09). 확정 계획 응답의 `school`은 영향 판정과 같은 지금 하교 시각이다. catalog는 `plans`를 읽거나 쓰지 않는다. 프로그램 삭제는 `programs.deleted_at`을 채우는 soft delete다. 조정안은 GET 때 엔진으로 결정형 계산하고, 수락 POST는 같은 계산을 다시 해 위반 0건일 때만 새 확정 행을 만들고 이전 행을 `superseded`로 바꾼 뒤 새 ID를 돌려준다. 거절은 아무것도 바꾸지 않는다. 기관 화면의 영향 수는 `GET /api/org/impact?program_id=` 또는 `?grade=`(없으면 기관 전체)가 `{"affected_plans": int, "items": [{"program_id" 또는 "grade", "affected_plans": int}]}`로 돌려주며 자녀·보호자·계획 ID를 넣지 않는다. 세는 계획은 그 기관 변경이 원인인 것이다: 학원은 확정 뒤 바뀌거나 삭제된 자기 프로그램을 쓰고 영향이 있는 계획, 학교는 하교 시각이 스냅숏과 달라졌고 위반이 있는 계획이다. 기관 저장 결과 줄은 방금 저장한 `program_id`(학교는 `grade`)로 조회한다. 결과 줄의 영향 수 컴포넌트(`components/impact/ImpactSummary.tsx`)는 planner 소유이며 기반 작업이 빈 컴포넌트를 만들고 catalog 화면이 배치만 한다.
 
 ### AD-5 — LLM은 말하고 엔진이 판정한다
 
@@ -216,7 +216,7 @@ sequenceDiagram
 | 추천 | 학년·과목·유형·요일·정원·미공개 필터, 점수 정렬, 이유는 LLM 또는 템플릿 | `app/services/planner/recommend.py`, `app/services/planner/engine.py` |
 | 일정 생성 | 학교 하교 시각·기존 일정·이동 근사로 배치, 중복·이동·예산·밀도 판정 | `app/services/planner/engine.py`, `app/services/planner/travel.py` |
 | 확정 | 엔진 재검증 위반 0건일 때 스냅숏 저장, 같은 자녀의 이전 확정 계획은 superseded | `app/services/planner/plans.py` |
-| 영향 | 조회 시 스냅숏과 현재 기관 데이터 비교, 조정안은 엔진으로 재배치 | `app/services/planner/impact.py` |
+| 영향 | 조회 시 스냅숏과 현재 기관 데이터 비교, 조정안은 엔진으로 재배치 | `app/services/planner/impact.py`(판정), `app/services/planner/org_impact.py`(기관 영향 수) |
 
 ## API·데이터·권한 경계
 
@@ -231,7 +231,7 @@ sequenceDiagram
 | `GET /api/catalog/schools` | 자녀 등록 폼의 학교 선택지(시드 학교 `id`·`name`만, 좌표·담당자 없음) | 보호자 | 401, 403 | `app/api/catalog.py` |
 | `POST /api/recommendations` | 자녀 조건 기준 비교표 | 보호자(자기 자녀) | 401, 403, 404 | `app/api/planner.py` |
 | `POST /api/plans/draft`, `GET /api/plans`, `GET·PUT /api/plans/:id`, `POST /api/plans/:id/confirm` | 초안 생성·수정(빼기·바꾸기), 확정, 목록(영향 표시 포함) | 보호자(자기 계획) | 401, 403, 404, 409 `violations`, 422 `no_feasible_plan`, 422 `school_timetable_missing` | `app/api/planner.py` |
-| `GET /api/plans/:id/adjustment`, `POST /api/plans/:id/adjustment/accept`, `POST /api/plans/:id/adjustment/reject` | 영향 사유, 조정안, 수락·거절 | 보호자(자기 계획) | 401, 403, 404, 422 `no_feasible_plan` | `app/api/planner.py` |
+| `GET /api/plans/:id/adjustment`, `POST /api/plans/:id/adjustment/accept`, `POST /api/plans/:id/adjustment/reject` | 영향 사유, 조정안, 수락·거절 | 보호자(자기 계획) | 401, 403, 404, 409 `plan_not_confirmed`(확정 계획이 아님), 422 `no_feasible_plan` | `app/api/planner.py` |
 | `GET /api/org/impact?program_id=·?grade=` | 이 기관 변경으로 영향받는 확정 계획 수(전체·항목별, AD-4 모양). 자녀·보호자·계획 ID 없음 | 학원·학교 담당자(자기 기관) | 401, 403 | `app/api/planner.py` |
 | `GET /api/meta`, `GET /api/health` | 서비스 이름·부제, 모두의 AI 상태 `mock`, AI 공급자 표기 "Azure OpenAI(국내 리전)", 상태 점검 | 모두 | - | `app/api/meta.py`, `app/api/health.py` |
 | `/api/test/*` | 시드 초기화(시간표 일부 제외 옵션), 시계 이동, LLM 대역 모드·요청 기록 | `ENABLE_TEST_ROUTES=1`일 때만 존재 | 404(꺼져 있음) | `app/api/testing.py` |
