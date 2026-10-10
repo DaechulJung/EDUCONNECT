@@ -14,7 +14,12 @@ const PROVIDER = 'Azure OpenAI(국내 리전)'
 function syntheticHost(): string {
   const endpoint = process.env.AZURE_OPENAI_ENDPOINT ?? ''
   expect(endpoint !== '', 'AZURE_OPENAI_ENDPOINT (synthetic) is set before the app starts').toBe(true)
-  const host = new URL(endpoint).hostname
+  let host = ''
+  try {
+    host = new URL(endpoint).hostname
+  } catch {
+    // Node's URL error carries the raw input; swallow it so a failure never prints the value.
+  }
   expect(host.includes('synthetic'), 'AZURE_OPENAI_ENDPOINT is a synthetic host').toBe(true)
   return host
 }
