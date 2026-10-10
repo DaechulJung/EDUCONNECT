@@ -1,7 +1,7 @@
 import { expect } from 'e2e'
 import { beforeEach, test } from '@e2e-dev/web'
 import { resetSeed, signInParent } from './chat-support'
-import { makePlan, minutes, monthlyTotal, saveConditions, week, won } from './plan-support'
+import { makePlan, minutes, monthlyTotal, saveConditions, week, weekView, won } from './plan-support'
 
 // REQ-07 on the screen: TC-45 (AC-07.5) and TC-79 (AC-07.8). TC-41·43·44 are recorded from the pytest
 // rows (test_engine.py); the two screen checks below are support for their '화면' half, not TC results.
@@ -24,7 +24,7 @@ test('TC-45 목표·상한 100,000원으로 저장하고 일정을 만들면 해
   const relax = await screen.getByRole('list', '완화할 조건').getByRole('listitem').allTextContents()
   expect(relax.length).toBeGreaterThan(0)
   for (const r of relax) expect(['예산 올리기', '요일 늘리기', '과목 줄이기']).toContain(r.trim())
-  await expect(screen.getByRole('table', '주간 일정표')).not.toBeVisible()
+  await expect(weekView(screen)).not.toBeVisible()
 })
 
 test('TC-79 상한을 1,000,000원으로 고쳐 저장하고 일정을 만들면 일정이 보이고 월 학원비가 상한 이하다', async ({ app, screen }) => {

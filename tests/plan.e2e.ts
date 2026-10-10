@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs'
 import { expect, type App, type Screen } from 'e2e'
 import { beforeEach, test } from '@e2e-dev/web'
 import { resetSeed, signInParent } from './chat-support'
-import { makePlan, monthlyTotal, saveConditions, week, won } from './plan-support'
+import { makePlan, monthlyTotal, saveConditions, week, weekView, won } from './plan-support'
 
 // REQ-08 on the screen: TC-47 (AC-08.1), TC-48 (AC-08.2), TC-49 (AC-08.3). Every TC starts from the seed
 // and the AC-07.1 plan (기준 시나리오); the programs it holds are read from the screen, never pinned.
@@ -12,7 +12,7 @@ beforeEach(async ({ app, screen }) => {
   await app.open('/chat')
   await saveConditions(app, screen)
   await makePlan(screen)
-  await expect(screen.getByRole('table', '주간 일정표')).toBeVisible({ timeout: 15_000 })
+  await expect(weekView(screen)).toBeVisible({ timeout: 15_000 })
 })
 
 // 내역 line "새봄영어수학학원 영어450,000원 + 30,000원 = 480,000원" → institution and monthly (교습비 + 기타경비).
