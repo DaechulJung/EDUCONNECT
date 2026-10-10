@@ -34,9 +34,14 @@ class PlanNotFound(Exception):
 
 
 async def create_draft(db: AsyncSession, parent_id: str, child_id: str) -> Plan:
-    """저장된 조건으로 주간 일정을 만든다. 해가 없으면 422 `no_feasible_plan`(AD-13)."""
+    """저장된 조건으로 주간 일정을 만든다(AD-13).
+
+    해가 없으면 422 `no_feasible_plan`, 하교 시각이 없으면 422 `school_timetable_missing`.
+    """
     child = await inputs.owned_child(db, parent_id, child_id)
     ctx, cond, catalog = await _inputs(db, child)
+    if not ctx.dismissal:  # no grade timetable and no 직접 입력: ask for 하교 시각 (AC-04.5)
+        raise AppError(422, "school_timetable_missing")
     result = engine.generate(catalog, ctx, cond)
     if isinstance(result, engine.NoFeasiblePlan):
         raise AppError(422, "no_feasible_plan", {"relaxations": list(result.relaxations)})
