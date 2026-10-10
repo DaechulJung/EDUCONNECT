@@ -18,10 +18,10 @@ from app.schemas.catalog import (
     AfterSchoolProgram,
     Program,
     ProgramIn,
+    School,
     SchoolTimetable,
     TimetableUpdate,
 )
-from app.schemas.catalog import School
 from app.services.catalog import after_school, programs, schools, timetable
 
 Db = Annotated[AsyncSession, Depends(get_session)]
