@@ -3,6 +3,8 @@
 Every test starts from POST /api/test/reset. The recommendation check of AC-03.3 comes with #6.
 """
 
+import threading
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import text
@@ -134,3 +136,37 @@ def test_academy_staff_cannot_use_school_routes(seeded: TestClient) -> None:
     assert login(seeded, "academy-a").status_code == 200
     assert seeded.get("/api/school/after-school").status_code == 403
     assert seeded.post("/api/school/after-school", json=ROBOT).status_code == 403
+
+
+def test_create_waits_for_the_school_lock_then_sees_the_overlap(sync_db, seeded) -> None:  # PR #26 P2
+    """Session A holds the school row lock and inserts ROBOT; B's overlapping create must wait for
+    A's commit and then be refused, so two concurrent writes cannot both pass the overlap check."""
+    assert login(seeded, "school-elem").status_code == 200
+    school = seed_id("school-elem")
+    result: dict = {}
+
+    def create() -> None:
+        result["response"] = seeded.post("/api/school/after-school", json=OVERLAP)
+
+    with sync_db.connect() as conn:
+        tx = conn.begin()
+        conn.execute(text("SELECT id FROM institutions WHERE id = :id FOR UPDATE"), {"id": school})
+        worker = threading.Thread(target=create)
+        worker.start()
+        worker.join(0.3)
+        assert worker.is_alive(), "create did not wait for the school row lock"
+        conn.execute(
+            text(
+                "INSERT INTO programs (id, institution_id, type, subject, days, start_min, end_min,"
+                " monthly_tuition, monthly_other, instructor, grade_min, grade_max, capacity,"
+                " enrolled) VALUES (gen_random_uuid(), :school, 'after_school', '로봇', ARRAY[4],"
+                " 840, 900, 30000, 0, '시험 강사', 3, 6, 15, 5)"
+            ),
+            {"school": school},
+        )
+        tx.commit()
+    worker.join(10)
+
+    assert not worker.is_alive()
+    response = result["response"]
+    assert (response.status_code, response.json()["detail"]) == (422, "time_overlap")

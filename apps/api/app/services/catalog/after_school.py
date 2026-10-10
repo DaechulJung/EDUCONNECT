@@ -48,7 +48,11 @@ async def _reject_overlap(
     db: AsyncSession, school_id: uuid.UUID, body: AfterSchoolIn, exclude: uuid.UUID | None = None
 ) -> None:
     """AC-03.4: another live program of the same school sharing a grade and a weekday must not
-    overlap in time. Touching ends (15:00 end, 15:00 start) do not overlap."""
+    overlap in time. Touching ends (15:00 end, 15:00 start) do not overlap.
+
+    The school row is locked first, so writes of one school run one at a time until commit and two
+    concurrent overlapping writes cannot both pass this check (PR #26 P2)."""
+    await db.execute(select(Institution.id).where(Institution.id == school_id).with_for_update())
     start, end, days = hhmm_to_min(body.start), hhmm_to_min(body.end), set(dows_to_ints(body.days))
     query = _live(school_id).where(
         ProgramRow.grade_min <= body.grade_max,
