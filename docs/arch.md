@@ -228,7 +228,7 @@ sequenceDiagram
 | `GET·POST /api/children`, `GET·PUT /api/children/:id` | 자기 자녀(별칭·만 나이·학년·학교·관심사·교육 목표·기존 일정·하교 시각 직접 입력·동의 확인). 실명·연락처 없음 | 보호자(자기 자녀) | 401, 403, 404, 422 `consent_required` | `app/api/family.py` |
 | `POST /api/chat/messages`, `GET·PUT /api/children/:id/conditions` | 대화 1회 응답(조건 초안·출처 llm/fallback), 자녀별 조건 | 보호자(자기 자녀) | 401, 403, 404, 422 | `app/api/chat.py` |
 | `GET /api/catalog/subjects` | 삭제되지 않은 프로그램 과목 목록(AD-15) | 로그인 사용자 | 401 | `app/api/catalog.py` |
-| `GET /api/catalog/schools` | 자녀 등록 폼의 학교 선택지(시드 학교 `id`·`name`만, 좌표·담당자 없음) | 로그인 사용자 | 401 | `app/api/catalog.py` |
+| `GET /api/catalog/schools` | 자녀 등록 폼의 학교 선택지(시드 학교 `id`·`name`만, 좌표·담당자 없음) | 보호자 | 401, 403 | `app/api/catalog.py` |
 | `POST /api/recommendations` | 자녀 조건 기준 비교표 | 보호자(자기 자녀) | 401, 403, 404 | `app/api/planner.py` |
 | `POST /api/plans/draft`, `GET /api/plans`, `GET·PUT /api/plans/:id`, `POST /api/plans/:id/confirm` | 초안 생성·수정(빼기·바꾸기), 확정, 목록(영향 표시 포함) | 보호자(자기 계획) | 401, 403, 404, 409 `violations`, 422 `no_feasible_plan`, 422 `school_timetable_missing` | `app/api/planner.py` |
 | `GET /api/plans/:id/adjustment`, `POST /api/plans/:id/adjustment/accept`, `POST /api/plans/:id/adjustment/reject` | 영향 사유, 조정안, 수락·거절 | 보호자(자기 계획) | 401, 403, 404, 422 `no_feasible_plan` | `app/api/planner.py` |
