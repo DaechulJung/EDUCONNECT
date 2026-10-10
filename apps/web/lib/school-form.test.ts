@@ -1,9 +1,9 @@
 import { expect, test } from 'vitest'
 import {
-  EMPTY_AFTER_SCHOOL, dismissalDraft, firstAfterSchoolError, isOverlap, timetableGrades, toAfterSchoolIn,
+  EMPTY_AFTER_SCHOOL, dismissalDraft, firstAfterSchoolError, fromAfterSchool, isOverlap, timetableGrades, toAfterSchoolIn,
   toTimetableEntries, validateAfterSchool, validateDismissal, type AfterSchoolForm,
 } from './school-form'
-import type { TimetableEntry } from './client'
+import type { AfterSchoolProgram, TimetableEntry } from './client'
 
 const ENTRIES: TimetableEntry[] = [
   { grade: 6, dow: 'mon', dismissal: '14:40' },
@@ -53,4 +53,12 @@ test('AC-03.4 API 422 time_overlap만 겹침으로 본다', () => {
   expect(isOverlap({ detail: 'time_overlap', data: { program_id: 'x' } })).toBe(true)
   expect(isOverlap({ detail: [{ loc: ['body', 'end'], msg: 'x', type: 'value_error' }] })).toBe(false)
   expect(isOverlap(undefined)).toBe(false)
+})
+
+test('수정 폼은 저장된 방과후 값을 그대로 채우고 다시 같은 본문으로 바뀐다 (PR #26)', () => {
+  const saved = { ...toAfterSchoolIn(ROBOT), id: 'p1', type: 'after_school' } as unknown as AfterSchoolProgram
+  const form = fromAfterSchool(saved)
+  expect(form).toEqual({ ...ROBOT, monthly_tuition: '30000' })
+  expect(toAfterSchoolIn(form)).toEqual(toAfterSchoolIn(ROBOT))
+  expect(fromAfterSchool({ ...saved, monthly_tuition: null }).monthly_tuition).toBe('')
 })

@@ -5,12 +5,12 @@ import { useState, type FormEvent } from 'react'
 import { Icon, Popup, Tabs } from '@/components/kds/kds'
 import { useToast } from '@/components/kds/kds-hooks'
 import {
-  createAfterSchool, deleteAfterSchool, getTimetable, listAfterSchool, updateTimetable,
+  createAfterSchool, deleteAfterSchool, getTimetable, listAfterSchool, updateAfterSchool, updateTimetable,
   type AfterSchoolProgram, type TimetableEntry,
 } from '@/lib/client'
 import { DAYS, GRADES, daysLabel, gradeLabel, tuitionLabel, won } from '@/lib/program-form'
 import {
-  EMPTY_AFTER_SCHOOL, OVERLAP_MESSAGE, SCHOOL_DAYS, dismissalDraft, firstAfterSchoolError, isOverlap,
+  EMPTY_AFTER_SCHOOL, OVERLAP_MESSAGE, SCHOOL_DAYS, dismissalDraft, firstAfterSchoolError, fromAfterSchool, isOverlap,
   timetableGrades, toAfterSchoolIn, toTimetableEntries, validateAfterSchool, validateDismissal,
   type AfterSchoolErrors, type AfterSchoolField, type AfterSchoolForm, type DismissalDraft, type DismissalErrors,
   type Dow,
@@ -178,6 +178,8 @@ function AfterSchoolSection() {
   const queryClient = useQueryClient()
   const toast = useToast()
   const [formOpen, setFormOpen] = useState(false)
+  // null = add; a program = edit it in place (same id, so plans that use it keep pointing at it).
+  const [editing, setEditing] = useState<AfterSchoolProgram | null>(null)
   const [removing, setRemoving] = useState<AfterSchoolProgram | null>(null)
 
   const programs = useQuery({
@@ -206,15 +208,18 @@ function AfterSchoolSection() {
       <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 'var(--space-16)' }}>
         <h2 id="after-school-title" className="title-medium-bold" style={{ margin: 0 }}>방과후 프로그램</h2>
         {!formOpen && (
-          <button className="kds-button kds-button--tertiary" type="button" onClick={() => setFormOpen(true)}>방과후 프로그램 추가</button>
+          <button className="kds-button kds-button--tertiary" type="button" onClick={() => { setEditing(null); setFormOpen(true) }}>방과후 프로그램 추가</button>
         )}
       </div>
 
       {formOpen && (
         <AfterSchoolFormSection
-          onCancel={() => setFormOpen(false)}
+          key={editing?.id ?? 'new'}
+          program={editing}
+          onCancel={() => { setFormOpen(false); setEditing(null) }}
           onSaved={() => {
             setFormOpen(false)
+            setEditing(null)
             toast('방과후 프로그램을 저장했어요')
             return queryClient.invalidateQueries({ queryKey: AFTER_SCHOOL_KEY })
           }}
@@ -264,7 +269,11 @@ function AfterSchoolSection() {
                     <td>{program.instructor}</td>
                     <td>{gradeLabel(program.grade_min)}~{gradeLabel(program.grade_max)}</td>
                     <td className="is-num">{program.capacity}({program.enrolled})</td>
-                    <td>
+                    <td style={{ display: 'flex', gap: 'var(--space-8)' }}>
+                      <button className="kds-button kds-button--tertiary kds-button--small" type="button" onClick={() => { setEditing(program); setFormOpen(true) }}
+                        aria-label={`${program.subject} ${daysLabel(program.days)} ${program.start} 수정`}>
+                        수정
+                      </button>
                       <button className="kds-button kds-button--tertiary kds-button--small" type="button" onClick={() => setRemoving(program)}
                         aria-label={`${program.subject} ${daysLabel(program.days)} ${program.start} 삭제`}>
                         삭제
@@ -301,8 +310,8 @@ function AfterSchoolSection() {
   )
 }
 
-function AfterSchoolFormSection({ onCancel, onSaved }: { onCancel: () => void; onSaved: () => unknown }) {
-  const [form, setForm] = useState<AfterSchoolForm>(EMPTY_AFTER_SCHOOL)
+function AfterSchoolFormSection({ program, onCancel, onSaved }: { program: AfterSchoolProgram | null; onCancel: () => void; onSaved: () => unknown }) {
+  const [form, setForm] = useState<AfterSchoolForm>(program ? fromAfterSchool(program) : EMPTY_AFTER_SCHOOL)
   const [errors, setErrors] = useState<AfterSchoolErrors>({})
   const [saveError, setSaveError] = useState<string | null>(null)
   const [pending, setPending] = useState(false)
@@ -332,7 +341,10 @@ function AfterSchoolFormSection({ onCancel, onSaved }: { onCancel: () => void; o
       return
     }
     setPending(true)
-    const { data, error } = await createAfterSchool({ body: toAfterSchoolIn(form) })
+    const body = toAfterSchoolIn(form)
+    const { data, error } = program
+      ? await updateAfterSchool({ path: { program_id: program.id }, body })
+      : await createAfterSchool({ body })
     setPending(false)
     if (isOverlap(error)) {
       // AC-03.4: the API refused an overlapping time (422 time_overlap); nothing was saved.
@@ -358,7 +370,7 @@ function AfterSchoolFormSection({ onCancel, onSaved }: { onCancel: () => void; o
 
   return (
     <section aria-labelledby="after-school-form-title" style={{ maxWidth: 932, display: 'flex', flexDirection: 'column', gap: 'var(--space-24)' }}>
-      <h3 id="after-school-form-title" className="title-small-bold" style={{ margin: 0 }}>방과후 프로그램 추가</h3>
+      <h3 id="after-school-form-title" className="title-small-bold" style={{ margin: 0 }}>{program ? '방과후 프로그램 수정' : '방과후 프로그램 추가'}</h3>
       <form onSubmit={submit} noValidate style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-24)' }}>
         <div className={wrap('subject')}>
           <label className="kds-field__label" htmlFor="after-school-subject">과목</label>

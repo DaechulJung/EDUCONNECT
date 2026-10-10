@@ -199,3 +199,29 @@ test('TC-21 학교가 로봇 방과후(금 14:00~15:00)를 저장하면 로봇�
   expect(hit[0]['유형']).toBe('방과후')
   expect(hit[0]['학원명']).toBe('한빛초등학교')
 })
+
+test('#3 회귀 방과후 수정 저장한 프로그램을 수정하면 같은 행이 새 시간으로 바뀐다', async ({ app, screen }) => {
+  // PR #26 Codex P2: REQ-03 "입력·수정" — the list must offer an edit, not only delete-and-recreate.
+  await signInSchool(app, screen)
+  const table = screen.getByRole('table', '방과후 프로그램 목록')
+  await screen.getByRole('button', '방과후 프로그램 추가').tap()
+  await fillAfterSchool(screen, '14:00', '15:00')
+  await screen.getByRole('button', '방과후 프로그램 저장').tap()
+  const robot = table.getByRole('row').filter({ hasText: '로봇 강사' })
+  await expect(robot).toHaveCount(1, { timeout: 10_000 })
+  const rows = await table.getByRole('row').count()
+
+  await screen.getByRole('button', '로봇 금 14:00 수정').tap()
+  await expect(screen.getByLabel('과목')).toHaveValue('로봇')
+  await expect(screen.getByLabel('시작 시각')).toHaveValue('14:00')
+  await screen.getByLabel('시작 시각').fill('16:30')
+  await screen.getByLabel('종료 시각').fill('17:30')
+  await screen.getByRole('button', '방과후 프로그램 저장').tap()
+
+  await expect(robot).toContainText('16:30~17:30', { timeout: 10_000 })
+  await expect(robot).toHaveCount(1)
+  await expect(table.getByRole('row')).toHaveCount(rows)
+  await app.restart()
+  const reloaded = screen.getByRole('table', '방과후 프로그램 목록').getByRole('row').filter({ hasText: '로봇 강사' })
+  await expect(reloaded).toContainText('16:30~17:30', { timeout: 10_000 })
+})

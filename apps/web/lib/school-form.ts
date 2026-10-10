@@ -1,4 +1,4 @@
-import type { AfterSchoolIn, ErrorBody, TimetableEntry } from './client'
+import type { AfterSchoolIn, AfterSchoolProgram, ErrorBody, TimetableEntry } from './client'
 import { DAYS } from './program-form'
 
 // REQ-03 school screens: the dismissal timetable by grade and the after-school form.
@@ -130,6 +130,23 @@ export function toAfterSchoolIn(form: AfterSchoolForm): AfterSchoolIn {
     grade_max: Number(form.grade_max),
     capacity: wholeNumber(form.capacity) ?? 0,
     enrolled: wholeNumber(form.enrolled) ?? 0,
+  }
+}
+
+// Edit (REQ-03 "입력·수정", PR #26): the saved program as form strings, the inverse of toAfterSchoolIn.
+export function fromAfterSchool(program: AfterSchoolProgram): AfterSchoolForm {
+  return {
+    subject: program.subject,
+    days: [...program.days],
+    start: program.start,
+    end: program.end,
+    monthly_tuition: program.monthly_tuition == null ? '' : String(program.monthly_tuition),
+    monthly_other: String(program.monthly_other ?? 0),
+    instructor: program.instructor,
+    grade_min: String(program.grade_min),
+    grade_max: String(program.grade_max),
+    capacity: String(program.capacity),
+    enrolled: String(program.enrolled),
   }
 }
 
