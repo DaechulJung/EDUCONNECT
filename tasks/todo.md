@@ -96,3 +96,4 @@
 - [x] 문서: arch 233·237행, experience 85·169행, development.md #4 행·한계 1줄
 - [ ] AC-04.5 done → `Closes #4` PR → CI 3/3 → VERIFIER 승인 → 병합
 - dev1-10 | issue-10 | origin/main merge 완료(c308059); 다음: run-10d.sh(gen·check·E2E) → AC done·development.md #10 행 → PR Closes #10
+- dev1-10 | issue-10 | f7c21af check 256/E2E 47 통과, AC-10.1~10.7 done, development.md #10 행; 다음: push·PR Closes #10·VERIFIER 인계
