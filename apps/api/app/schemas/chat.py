@@ -6,6 +6,8 @@ from pydantic import BaseModel, Field, model_validator
 
 from app.core.vocab import Density, Dow, ProgramType
 
+WON_MAX = 2_147_483_647  # budgets are PostgreSQL integer columns (AD-6)
+
 
 class ChatMessageIn(BaseModel):
     child_id: str
@@ -14,8 +16,8 @@ class ChatMessageIn(BaseModel):
 
 class ConditionsIn(BaseModel):
     subjects: list[str] = Field(default_factory=list)
-    budget_target: int = Field(ge=0)
-    budget_cap: int = Field(ge=0)
+    budget_target: int = Field(ge=0, le=WON_MAX)
+    budget_cap: int = Field(ge=0, le=WON_MAX)
     types: list[ProgramType] = Field(default_factory=list, description="비어 있으면 모든 유형")
     days: list[Dow] = Field(default_factory=list, description="비어 있으면 모든 요일")
     density: Density = "normal"

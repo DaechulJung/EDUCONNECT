@@ -1,11 +1,15 @@
 """planner routes: recommendations, plans, adjustment, organization impact counts.
 
-501 until #6 (recommendations), #7·#8 (plans) and #9 (impact, adjustment) (AD-3).
+Recommendations are #6; the rest is 501 until #7·#8 (plans) and #9 (impact, adjustment) (AD-3).
 """
 
-from fastapi import APIRouter
+from typing import Annotated
 
-from app.core.authz import OrgStaff, Parent
+from fastapi import APIRouter, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.core.authz import OrgStaff, Parent, deny_not_found
+from app.core.db import get_session
 from app.core.errors import error_responses, not_implemented
 from app.schemas.catalog import OrgImpact
 from app.schemas.planner import (
@@ -16,14 +20,21 @@ from app.schemas.planner import (
     RecommendationList,
     RecommendationRequest,
 )
+from app.services.planner import recommend
 
 router = APIRouter(tags=["planner"])
 OWNED = error_responses(401, 403, 404, 501)
+Db = Annotated[AsyncSession, Depends(get_session)]
 
 
-@router.post("/recommendations", responses=OWNED)
-async def recommend_programs(body: RecommendationRequest, session: Parent) -> RecommendationList:
-    raise not_implemented()
+@router.post("/recommendations", responses=error_responses(401, 403, 404, 422))
+async def recommend_programs(
+    body: RecommendationRequest, session: Parent, db: Db
+) -> RecommendationList:
+    try:
+        return await recommend.recommend(db, session.account_id, body.child_id)
+    except recommend.NotOwned:
+        await deny_not_found(session, "/api/recommendations")
 
 
 @router.post("/plans/draft", responses=error_responses(401, 403, 404, 422, 501))

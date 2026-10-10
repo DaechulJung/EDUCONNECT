@@ -35,13 +35,26 @@ class MaskingFilter(logging.Filter):
         self.config = config
 
     def filter(self, record: logging.LogRecord) -> bool:
-        record.msg = mask(record.getMessage(), self.config)
-        record.args = None
+        if isinstance(record.args, tuple):
+            # Keep the tuple: uvicorn's access formatter unpacks it. Mask each argument
+            # instead; non-strings stay as they are unless their text holds a secret.
+            record.msg = mask(str(record.msg), self.config)
+            record.args = tuple(self._mask_arg(arg) for arg in record.args)
+        else:
+            record.msg = mask(record.getMessage(), self.config)
+            record.args = None
         if record.exc_info:
             text = logging.Formatter().formatException(record.exc_info)
             record.exc_text = mask(text, self.config)
             record.exc_info = None
         return True
+
+    def _mask_arg(self, arg: object) -> object:
+        text = str(arg)
+        masked = mask(text, self.config)
+        if isinstance(arg, str) or masked != text:
+            return masked
+        return arg
 
 
 def install(config: Settings = settings) -> MaskingFilter:

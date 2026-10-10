@@ -50,6 +50,9 @@ class Settings(BaseSettings):
             )
         if not self.redis_url:
             self.redis_url = f"redis://localhost:{self.redis_port}/0"
+        # The portal shows the v1 address without the last "/"; port.py requires ".../openai/v1/"
+        if self.azure_openai_base_url.endswith("/openai/v1"):
+            self.azure_openai_base_url += "/"
         return self
 
 

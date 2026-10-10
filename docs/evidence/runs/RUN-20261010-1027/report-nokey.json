@@ -1,0 +1,680 @@
+{
+  "schemaVersion": "report-1",
+  "run": {
+    "id": "01a1255b-bcbe-7f0d-91d9-b8d8c432a8f1",
+    "specVersion": "0.1",
+    "runner": {
+      "name": "e2e",
+      "version": "0.18.0"
+    },
+    "status": "passed",
+    "exitCode": 0,
+    "startedAt": "2026-10-10T10:28:51.722Z",
+    "finishedAt": "2026-10-10T10:28:55.611Z",
+    "project": {
+      "id": "app",
+      "configDigest": "4f142fbf44ed2cf5a400d40785226117c14967b4e83fbadb0df9cc2e8652c86b"
+    },
+    "environment": {
+      "ci": false,
+      "trustNoticeShown": false,
+      "os": "darwin 27.0.0",
+      "arch": "arm64",
+      "runtime": "node v24.18.0"
+    },
+    "vcs": {
+      "commit": "dd1434abe4d130b44dedb612e46d466c242dffc7",
+      "branch": "main",
+      "dirty": false
+    },
+    "targets": [
+      {
+        "id": "web",
+        "index": 0,
+        "platform": "web",
+        "baseOrigin": "http://localhost:13000",
+        "environment": "test",
+        "engine": {
+          "name": "web",
+          "version": "0.13.0",
+          "spiVersion": 1
+        },
+        "capabilities": [
+          "actions",
+          "artifacts",
+          "browser",
+          "keyboard",
+          "location",
+          "observation",
+          "pointer",
+          "state"
+        ],
+        "artifactCapabilities": [
+          "screenshot",
+          "trace",
+          "video"
+        ],
+        "stateCapability": true
+      }
+    ],
+    "serialGroups": [],
+    "results": [
+      {
+        "id": "b73ec27511a1228190f495c60d04049986e0fa78a54d2b70d63a1b1001905616",
+        "testId": "tests/auth.e2e.ts::TC-01%20%EC%8B%9C%EB%93%9C%20%EA%B3%84%EC%A0%95%203%EC%A2%85%EC%9D%B4%20%EA%B0%81%EC%9E%90%20%EC%B2%AB%20%ED%99%94%EB%A9%B4%EC%9C%BC%EB%A1%9C%20%EB%93%A4%EC%96%B4%EA%B0%84%EB%8B%A4",
+        "kind": "test",
+        "declarationIndex": 1,
+        "titlePath": [
+          "TC-01 시드 계정 3종이 각자 첫 화면으로 들어간다"
+        ],
+        "file": "tests/auth.e2e.ts",
+        "source": {
+          "file": "tests/auth.e2e.ts",
+          "line": 36,
+          "column": 1
+        },
+        "targetId": "web",
+        "platform": "web",
+        "agent": "default",
+        "repeat": 0,
+        "tags": [],
+        "selected": false,
+        "status": "skipped",
+        "skip": {
+          "cause": "filtered",
+          "reason": "file not selected by a positional argument"
+        },
+        "attempts": []
+      },
+      {
+        "id": "3c10bb2189b4473326de88903cc990d9490a840f6dabed34dde18ed4e3c13c2c",
+        "testId": "tests/auth.e2e.ts::TC-02%20%ED%8B%80%EB%A6%B0%20%EB%B9%84%EB%B0%80%EB%B2%88%ED%98%B8%EB%8A%94%20%EB%AC%B8%EA%B5%AC%EB%A5%BC%20%EB%B3%B4%EC%9D%B4%EA%B3%A0%20%EC%84%B8%EC%85%98%20%EC%BF%A0%ED%82%A4%EB%A5%BC%20%EC%A3%BC%EC%A7%80%20%EC%95%8A%EB%8A%94%EB%8B%A4",
+        "kind": "test",
+        "declarationIndex": 2,
+        "titlePath": [
+          "TC-02 틀린 비밀번호는 문구를 보이고 세션 쿠키를 주지 않는다"
+        ],
+        "file": "tests/auth.e2e.ts",
+        "source": {
+          "file": "tests/auth.e2e.ts",
+          "line": 49,
+          "column": 1
+        },
+        "targetId": "web",
+        "platform": "web",
+        "agent": "default",
+        "repeat": 0,
+        "tags": [],
+        "selected": false,
+        "status": "skipped",
+        "skip": {
+          "cause": "filtered",
+          "reason": "file not selected by a positional argument"
+        },
+        "attempts": []
+      },
+      {
+        "id": "c162ccd1a6b091e7731644422c2e225907c4cfa66f3c1714efdf1aa44c1aa844",
+        "testId": "tests/auth.e2e.ts::TC-10%20%EC%83%88%EB%A1%9C%20%EA%B3%A0%EC%B9%A8%ED%95%98%EA%B1%B0%EB%82%98%20%EB%8B%A4%EB%A5%B8%20%ED%83%AD%EC%97%90%20%EB%8B%A4%EB%85%80%EC%99%80%EB%8F%84%20%EB%A1%9C%EA%B7%B8%EC%9D%B8%20%ED%99%94%EB%A9%B4%EC%9D%B4%20%EB%8B%A4%EC%8B%9C%20%EB%82%98%EC%98%A4%EC%A7%80%20%EC%95%8A%EB%8A%94%EB%8B%A4",
+        "kind": "test",
+        "declarationIndex": 3,
+        "titlePath": [
+          "TC-10 새로 고침하거나 다른 탭에 다녀와도 로그인 화면이 다시 나오지 않는다"
+        ],
+        "file": "tests/auth.e2e.ts",
+        "source": {
+          "file": "tests/auth.e2e.ts",
+          "line": 65,
+          "column": 1
+        },
+        "targetId": "web",
+        "platform": "web",
+        "agent": "default",
+        "repeat": 0,
+        "tags": [],
+        "selected": false,
+        "status": "skipped",
+        "skip": {
+          "cause": "filtered",
+          "reason": "file not selected by a positional argument"
+        },
+        "attempts": []
+      },
+      {
+        "id": "44895d782bd98294addc06f391daede8118af2d639aa75226d5aaf2f1bd1b808",
+        "testId": "tests/chat-fallback.e2e.ts::TC-32%20%ED%82%A4%EA%B0%80%20%EC%97%86%EC%9C%BC%EB%A9%B4%20%EA%B7%9C%EC%B9%99%20%EC%B6%94%EC%B6%9C%EB%A1%9C%20%EA%B0%99%EC%9D%80%20%EC%A1%B0%EA%B1%B4%20%EC%B9%B4%EB%93%9C%EA%B0%80%20%EB%B3%B4%EC%9D%B4%EA%B3%A0%20%EC%9D%91%EB%8B%B5%EC%9D%B4%20%EC%9D%B4%EC%96%B4%EC%A7%84%EB%8B%A4",
+        "kind": "test",
+        "declarationIndex": 1,
+        "titlePath": [
+          "TC-32 키가 없으면 규칙 추출로 같은 조건 카드가 보이고 응답이 이어진다"
+        ],
+        "file": "tests/chat-fallback.e2e.ts",
+        "source": {
+          "file": "tests/chat-fallback.e2e.ts",
+          "line": 13,
+          "column": 1
+        },
+        "targetId": "web",
+        "platform": "web",
+        "agent": "default",
+        "repeat": 0,
+        "tags": [],
+        "selected": true,
+        "status": "passed",
+        "attempts": [
+          {
+            "id": "01a1255b-be93-7db6-bf94-2fe2fe560952",
+            "index": 0,
+            "status": "passed",
+            "startedAt": "2026-10-10T10:28:51.987Z",
+            "durationMs": 3596,
+            "artifacts": [
+              {
+                "id": "01a1255b-be93-7db6-bf94-2fe2fe560952:artifact:0",
+                "kind": "trace",
+                "mediaType": "application/zip",
+                "redaction": "not-required",
+                "producer": {
+                  "kind": "attempt"
+                },
+                "path": "web/tests_chat-fallback.e2e.ts__TC-32_20_ED_82_A4_EA_B0_80_20_EC_97_86_EC_9C_BC_EB_A9_B4_20_EA_B7_9C_EC_B9_99_20_EC-5a4fa91c/default/attempt-0/trace/trace.zip",
+                "size": 543578,
+                "sha256": "224c2f9de0b93e3af3caf656afc5fc85983881f8b3fb332c7a666d9c9bc49c1b"
+              }
+            ],
+            "secondaryErrors": [],
+            "cleanup": "complete",
+            "steps": [
+              {
+                "id": "01a1255b-be93-7db6-bf94-2fe2fe560952:0",
+                "index": 0,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/login",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:52.651Z",
+                "durationMs": 328,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 27,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a1255b-be93-7db6-bf94-2fe2fe560952:1",
+                "index": 1,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"아이디\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:52.981Z",
+                "durationMs": 66,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 28,
+                  "column": 34
+                }
+              },
+              {
+                "id": "01a1255b-be93-7db6-bf94-2fe2fe560952:2",
+                "index": 2,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"비밀번호\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:53.047Z",
+                "durationMs": 33,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 29,
+                  "column": 35
+                }
+              },
+              {
+                "id": "01a1255b-be93-7db6-bf94-2fe2fe560952:3",
+                "index": 3,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"button\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:53.080Z",
+                "durationMs": 47,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 30,
+                  "column": 43
+                }
+              },
+              {
+                "id": "01a1255b-be93-7db6-bf94-2fe2fe560952:4",
+                "index": 4,
+                "kind": "assertion",
+                "api": "expect.not.toBeVisible",
+                "label": "getByRole(\"heading\", name: \"로그인\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:53.127Z",
+                "durationMs": 1157,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 31,
+                  "column": 56
+                }
+              },
+              {
+                "id": "01a1255b-be93-7db6-bf94-2fe2fe560952:5",
+                "index": 5,
+                "kind": "app",
+                "api": "app.open",
+                "label": "/chat",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:54.285Z",
+                "durationMs": 27,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-fallback.e2e.ts",
+                  "line": 10,
+                  "column": 13
+                }
+              },
+              {
+                "id": "01a1255b-be93-7db6-bf94-2fe2fe560952:6",
+                "index": 6,
+                "kind": "locator",
+                "api": "locator.fill",
+                "label": "getByLabel(\"챗봇에 보낼 말\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:54.312Z",
+                "durationMs": 45,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 35,
+                  "column": 39
+                }
+              },
+              {
+                "id": "01a1255b-be93-7db6-bf94-2fe2fe560952:7",
+                "index": 7,
+                "kind": "locator",
+                "api": "locator.tap",
+                "label": "getByRole(\"button\", name: \"보내기\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:54.357Z",
+                "durationMs": 33,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 36,
+                  "column": 43
+                }
+              },
+              {
+                "id": "01a1255b-be93-7db6-bf94-2fe2fe560952:8",
+                "index": 8,
+                "kind": "assertion",
+                "api": "expect.toContainText",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"group\", name: \"대상 자녀\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:54.390Z",
+                "durationMs": 106,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 45,
+                  "column": 38
+                }
+              },
+              {
+                "id": "01a1255b-be93-7db6-bf94-2fe2fe560952:9",
+                "index": 9,
+                "kind": "assertion",
+                "api": "expect.toContainText",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"group\", name: \"선호 과목\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:54.496Z",
+                "durationMs": 2,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 46,
+                  "column": 38
+                }
+              },
+              {
+                "id": "01a1255b-be93-7db6-bf94-2fe2fe560952:10",
+                "index": 10,
+                "kind": "assertion",
+                "api": "expect.toContainText",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"group\", name: \"목표 월 예산\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:54.498Z",
+                "durationMs": 2,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 47,
+                  "column": 40
+                }
+              },
+              {
+                "id": "01a1255b-be93-7db6-bf94-2fe2fe560952:11",
+                "index": 11,
+                "kind": "assertion",
+                "api": "expect.toContainText",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"group\", name: \"예산 상한\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:54.500Z",
+                "durationMs": 5,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 48,
+                  "column": 38
+                }
+              },
+              {
+                "id": "01a1255b-be93-7db6-bf94-2fe2fe560952:12",
+                "index": 12,
+                "kind": "assertion",
+                "api": "expect.toContainText",
+                "label": "getByRole(\"article\", name: \"조건 카드\") >> getByRole(\"group\", name: \"밀도\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:54.505Z",
+                "durationMs": 2,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-support.ts",
+                  "line": 49,
+                  "column": 35
+                }
+              },
+              {
+                "id": "01a1255b-be93-7db6-bf94-2fe2fe560952:13",
+                "index": 13,
+                "kind": "assertion",
+                "api": "expect.not.toBeVisible",
+                "label": "getByText(\"답변을 만들지 못했어요. 다시 시도해 주세요.\")",
+                "status": "passed",
+                "startedAt": "2026-10-10T10:28:54.507Z",
+                "durationMs": 1042,
+                "events": [],
+                "artifacts": [],
+                "source": {
+                  "file": "tests/chat-fallback.e2e.ts",
+                  "line": 16,
+                  "column": 67
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "cc0475a82d66110f59c7ed5d4ffd5be4d05023d9b9204cafbf8db8f60a6c57d7",
+        "testId": "tests/chat-fallback.e2e.ts::TC-33%20%EB%8C%80%EC%97%AD%EC%9D%B4%20%EC%8A%A4%ED%82%A4%EB%A7%88%EC%97%90%20%EB%A7%9E%EC%A7%80%20%EC%95%8A%EB%8A%94%20JSON%EC%9D%84%20%EC%A3%BC%EB%A9%B4%20%EB%8C%80%EC%B2%B4%20%EA%B2%BD%EB%A1%9C%EB%A1%9C%20%EA%B0%99%EC%9D%80%20%EC%B9%B4%EB%93%9C%EA%B0%80%20%EB%B3%B4%EC%9D%B4%EA%B3%A0%20%EC%98%A4%EB%A5%98%20%EC%9B%90%EB%AC%B8%EC%9D%80%20%EC%97%86%EB%8B%A4",
+        "kind": "test",
+        "declarationIndex": 2,
+        "titlePath": [
+          "TC-33 대역이 스키마에 맞지 않는 JSON을 주면 대체 경로로 같은 카드가 보이고 오류 원문은 없다"
+        ],
+        "file": "tests/chat-fallback.e2e.ts",
+        "source": {
+          "file": "tests/chat-fallback.e2e.ts",
+          "line": 19,
+          "column": 1
+        },
+        "targetId": "web",
+        "platform": "web",
+        "agent": "default",
+        "repeat": 0,
+        "tags": [],
+        "selected": false,
+        "status": "skipped",
+        "skip": {
+          "cause": "filtered",
+          "reason": "title does not match --grep"
+        },
+        "attempts": []
+      },
+      {
+        "id": "f599c2d1ad4c4e729c0f1e9e47dc11bbc2ff1093d0678154f766d9d887048c7c",
+        "testId": "tests/chat.ai.e2e.ts::TC-34%20%EC%8B%A4%EC%A0%9C%20Azure%20OpenAI%20%EC%9D%91%EB%8B%B5%EC%9D%B4%20%EC%8A%A4%ED%82%A4%EB%A7%88%20%EA%B2%80%EC%A6%9D%EC%9D%84%20%ED%86%B5%EA%B3%BC%ED%95%98%EA%B3%A0%20%EC%A1%B0%EA%B1%B4%20%EC%B9%B4%EB%93%9C%EC%97%90%20%EC%98%81%EC%96%B4%C2%B7%EC%88%98%ED%95%99%2C%20%EB%AA%A9%ED%91%9C%201%2C000%2C000%EC%9B%90%EC%9D%B4%20%EB%B3%B4%EC%9D%B8%EB%8B%A4",
+        "kind": "test",
+        "declarationIndex": 1,
+        "titlePath": [
+          "TC-34 실제 Azure OpenAI 응답이 스키마 검증을 통과하고 조건 카드에 영어·수학, 목표 1,000,000원이 보인다"
+        ],
+        "file": "tests/chat.ai.e2e.ts",
+        "source": {
+          "file": "tests/chat.ai.e2e.ts",
+          "line": 32,
+          "column": 1
+        },
+        "targetId": "web",
+        "platform": "web",
+        "agent": "default",
+        "repeat": 0,
+        "tags": [
+          "ai"
+        ],
+        "selected": false,
+        "status": "skipped",
+        "skip": {
+          "cause": "filtered",
+          "reason": "file not selected by a positional argument"
+        },
+        "attempts": []
+      },
+      {
+        "id": "d6cf41a5d319578c440143339104f09707a2424405896102fa0d707c41f4091e",
+        "testId": "tests/chat.e2e.ts::TC-28%20%EC%A0%84%ED%9B%84%20%EB%AC%B8%EC%9E%A5%EC%9D%84%20%EB%B3%B4%EB%82%B4%EB%A9%B4%20%EC%A1%B0%EA%B1%B4%20%EC%B9%B4%EB%93%9C%EC%97%90%20%EB%AA%A9%ED%91%9C%201%2C000%2C000%EC%9B%90%C2%B7%EC%83%81%ED%95%9C%201%2C100%2C000%EC%9B%90%EC%9D%B4%20%EB%B3%B4%EC%9D%B8%EB%8B%A4",
+        "kind": "test",
+        "declarationIndex": 1,
+        "titlePath": [
+          "TC-28 전후 문장을 보내면 조건 카드에 목표 1,000,000원·상한 1,100,000원이 보인다"
+        ],
+        "file": "tests/chat.e2e.ts",
+        "source": {
+          "file": "tests/chat.e2e.ts",
+          "line": 13,
+          "column": 1
+        },
+        "targetId": "web",
+        "platform": "web",
+        "agent": "default",
+        "repeat": 0,
+        "tags": [],
+        "selected": false,
+        "status": "skipped",
+        "skip": {
+          "cause": "filtered",
+          "reason": "file not selected by a positional argument"
+        },
+        "attempts": []
+      },
+      {
+        "id": "a3e1c1b894cd2ba4dbbfac08a358f038ecc1a27bb61d7f52b50e558cbf4dcf4a",
+        "testId": "tests/chat.e2e.ts::TC-29%20%EC%95%88%EC%97%90%EC%84%9C%20%EB%AC%B8%EC%9E%A5%EC%9D%84%20%EB%B3%B4%EB%82%B4%EB%A9%B4%20%EB%AA%A9%ED%91%9C%EC%99%80%20%EC%83%81%ED%95%9C%EC%9D%B4%20%EB%AA%A8%EB%91%90%201%2C000%2C000%EC%9B%90%EC%9D%B4%EB%8B%A4",
+        "kind": "test",
+        "declarationIndex": 2,
+        "titlePath": [
+          "TC-29 안에서 문장을 보내면 목표와 상한이 모두 1,000,000원이다"
+        ],
+        "file": "tests/chat.e2e.ts",
+        "source": {
+          "file": "tests/chat.e2e.ts",
+          "line": 23,
+          "column": 1
+        },
+        "targetId": "web",
+        "platform": "web",
+        "agent": "default",
+        "repeat": 0,
+        "tags": [],
+        "selected": false,
+        "status": "skipped",
+        "skip": {
+          "cause": "filtered",
+          "reason": "file not selected by a positional argument"
+        },
+        "attempts": []
+      },
+      {
+        "id": "17292d701cfff2a8cad81d376d4eb6d44e0eb6c0eb8ebea82b66418f0ab238f2",
+        "testId": "tests/chat.e2e.ts::TC-30%20%EC%98%88%EC%82%B0%20%EC%83%81%ED%95%9C%EC%9D%84%201%2C000%2C000%EC%9B%90%EC%9C%BC%EB%A1%9C%20%EA%B3%A0%EC%B3%90%20%EC%A0%80%EC%9E%A5%ED%95%98%EB%A9%B4%20%EC%83%88%20%EB%8C%80%ED%99%94%EC%9D%98%20%EC%A1%B0%EA%B1%B4%20%EC%B9%B4%EB%93%9C%EC%97%90%201%2C000%2C000%EC%9B%90%EC%9D%B4%20%EB%82%A8%EB%8A%94%EB%8B%A4",
+        "kind": "test",
+        "declarationIndex": 3,
+        "titlePath": [
+          "TC-30 예산 상한을 1,000,000원으로 고쳐 저장하면 새 대화의 조건 카드에 1,000,000원이 남는다"
+        ],
+        "file": "tests/chat.e2e.ts",
+        "source": {
+          "file": "tests/chat.e2e.ts",
+          "line": 53,
+          "column": 1
+        },
+        "targetId": "web",
+        "platform": "web",
+        "agent": "default",
+        "repeat": 0,
+        "tags": [],
+        "selected": false,
+        "status": "skipped",
+        "skip": {
+          "cause": "filtered",
+          "reason": "file not selected by a positional argument"
+        },
+        "attempts": []
+      },
+      {
+        "id": "edecc792f647e6ce55b55cffe1ca910d20b7ee8b4ff06525d1d1ac16580f0f1b",
+        "testId": "tests/chat.e2e.ts::TC-31%20%EC%9C%A0%ED%98%95%20%EA%B5%90%EA%B3%BC%20%ED%95%99%EC%9B%90%C2%B7%EC%9A%94%EC%9D%BC%20%EC%9B%94%C2%B7%EC%88%98%C2%B7%EA%B8%88%EC%9C%BC%EB%A1%9C%20%EC%A0%80%EC%9E%A5%ED%95%98%EB%A9%B4%20%EC%83%88%20%EB%8C%80%ED%99%94%EC%9D%98%20%EC%A1%B0%EA%B1%B4%20%EC%B9%B4%EB%93%9C%EC%97%90%20%EA%B7%B8%20%EA%B0%92%EC%9D%B4%20%EB%82%A8%EB%8A%94%EB%8B%A4",
+        "kind": "test",
+        "declarationIndex": 4,
+        "titlePath": [
+          "TC-31 유형 교과 학원·요일 월·수·금으로 저장하면 새 대화의 조건 카드에 그 값이 남는다"
+        ],
+        "file": "tests/chat.e2e.ts",
+        "source": {
+          "file": "tests/chat.e2e.ts",
+          "line": 66,
+          "column": 1
+        },
+        "targetId": "web",
+        "platform": "web",
+        "agent": "default",
+        "repeat": 0,
+        "tags": [],
+        "selected": false,
+        "status": "skipped",
+        "skip": {
+          "cause": "filtered",
+          "reason": "file not selected by a positional argument"
+        },
+        "attempts": []
+      },
+      {
+        "id": "5a5a2209a6749a1cd03696393d5d5dd29f46339e8600ef890069605f1cb465f4",
+        "testId": "tests/smoke.e2e.ts::%EC%84%B8%EC%85%98%20%EC%97%86%EC%9D%B4%20%EC%B2%AB%20%ED%99%94%EB%A9%B4%EC%9D%84%20%EC%97%B4%EB%A9%B4%20%EB%A1%9C%EA%B7%B8%EC%9D%B8%20%ED%99%94%EB%A9%B4%EC%9D%B4%20%EB%B3%B4%EC%9D%B8%EB%8B%A4",
+        "kind": "test",
+        "declarationIndex": 0,
+        "titlePath": [
+          "세션 없이 첫 화면을 열면 로그인 화면이 보인다"
+        ],
+        "file": "tests/smoke.e2e.ts",
+        "source": {
+          "file": "tests/smoke.e2e.ts",
+          "line": 5,
+          "column": 1
+        },
+        "targetId": "web",
+        "platform": "web",
+        "agent": "default",
+        "repeat": 0,
+        "tags": [],
+        "selected": false,
+        "status": "skipped",
+        "skip": {
+          "cause": "filtered",
+          "reason": "file not selected by a positional argument"
+        },
+        "attempts": []
+      },
+      {
+        "id": "7925f91e0a22fbbc796beb05d58f0cc833d5bacb656e3d87b185891d3376109e",
+        "testId": "tests/smoke.e2e.ts::%EC%84%B8%EC%85%98%20%EC%97%86%EC%9D%B4%20%EB%B3%B4%ED%98%B8%EC%9E%90%C2%B7%EA%B8%B0%EA%B4%80%20%ED%99%94%EB%A9%B4%20%EC%A3%BC%EC%86%8C%EB%A1%9C%20%EA%B0%80%EB%A9%B4%20%EB%A1%9C%EA%B7%B8%EC%9D%B8%20%ED%99%94%EB%A9%B4%EC%9C%BC%EB%A1%9C%20%EB%8F%8C%EC%95%84%EA%B0%84%EB%8B%A4",
+        "kind": "test",
+        "declarationIndex": 1,
+        "titlePath": [
+          "세션 없이 보호자·기관 화면 주소로 가면 로그인 화면으로 돌아간다"
+        ],
+        "file": "tests/smoke.e2e.ts",
+        "source": {
+          "file": "tests/smoke.e2e.ts",
+          "line": 10,
+          "column": 1
+        },
+        "targetId": "web",
+        "platform": "web",
+        "agent": "default",
+        "repeat": 0,
+        "tags": [],
+        "selected": false,
+        "status": "skipped",
+        "skip": {
+          "cause": "filtered",
+          "reason": "file not selected by a positional argument"
+        },
+        "attempts": []
+      }
+    ],
+    "errors": [],
+    "summary": {
+      "discovered": 12,
+      "selected": 1,
+      "executed": 1,
+      "passed": 1,
+      "failed": 0,
+      "interrupted": 0,
+      "flaky": 0,
+      "skipped": 0
+    },
+    "limits": {
+      "maxAgentContextBytes": 16384,
+      "maxLedgerBytes": 8192,
+      "maxObservationBytes": 262144,
+      "maxEventsPerStep": 1000,
+      "maxModelTokensPerCall": 64000
+    },
+    "usage": {
+      "discoveredResults": 12,
+      "maxAgentContextBytes": 0,
+      "maxLedgerBytes": 0,
+      "maxObservationBytes": 0,
+      "artifactBytes": 543578,
+      "downloads": 0,
+      "events": 0,
+      "modelTokens": 0,
+      "maxModelCallsInStep": 0,
+      "maxActionStepsInStep": 0
+    }
+  }
+}

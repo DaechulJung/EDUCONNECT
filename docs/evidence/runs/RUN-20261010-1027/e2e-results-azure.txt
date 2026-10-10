@@ -1,0 +1,2 @@
+run passed exit 0 {'discovered': 12, 'selected': 1, 'executed': 1, 'passed': 1, 'failed': 0, 'interrupted': 0, 'flaky': 0, 'skipped': 0} commit dd1434abe4d130b44dedb612e46d466c242dffc7 dirty False
+passed tests/chat.ai.e2e.ts TC-34 실제 Azure OpenAI 응답이 스키마 검증을 통과하고 조건 카드에 영어·수학, 목표 1,000,000원이 보인다
