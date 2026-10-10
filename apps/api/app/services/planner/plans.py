@@ -11,6 +11,7 @@
 """
 
 import uuid
+from dataclasses import dataclass
 
 from sqlalchemy import case, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -168,6 +169,27 @@ async def assess(db: AsyncSession, row: PlanRow, cache: dict[uuid.UUID, tuple]) 
     return impact.assess(row.items, {p.id: p for p in catalog}, ctx, row.budget_cap)
 
 
+@dataclass(frozen=True)
+class Cause:
+    """확정 계획의 영향과 그 원인: 확정 뒤 바뀌거나 삭제된 프로그램, 달라진 하교 시각."""
+
+    found: impact.Impact
+    changed_programs: frozenset[str]
+    dismissal_changed: bool
+
+
+async def cause(db: AsyncSession, row: PlanRow, cache: dict[uuid.UUID, tuple]) -> Cause:
+    """기관 영향 수(experience 37행 "이 기관 변경으로 영향받는 계획 수")의 원인 판정."""
+    ctx, _, catalog = await _cached_inputs(db, row.child_id, cache)
+    current = {p.id: p for p in catalog}
+    snapshot = {int(d): m for d, m in row.school_snapshot.items()}
+    return Cause(
+        found=impact.assess(row.items, current, ctx, row.budget_cap),
+        changed_programs=impact.changed_programs(row.items, current),
+        dismissal_changed=snapshot != dict(ctx.dismissal),
+    )
+
+
 async def owned_plan(db: AsyncSession, parent_id: str, plan_id: str) -> PlanRow:
     try:
         plan_uuid = uuid.UUID(plan_id)
@@ -188,13 +210,16 @@ async def to_api(
     row: PlanRow,
     violations: list[engine.Violation],
     plan_impact: PlanImpact | None = None,
+    school: dict[int, int] | None = None,
 ) -> Plan:
+    """school은 학교 칸에 보일 요일별 하교 시각. 없으면 확정·초안 때의 스냅숏이다."""
+    shown = school if school is not None else {int(d): m for d, m in row.school_snapshot.items()}
     return Plan(
         id=str(row.id),
         child_id=str(row.child_id),
         status=row.status,
         items=await _items(db, row.items),
-        school={int_to_dow(int(d)): min_to_hhmm(m) for d, m in row.school_snapshot.items()},
+        school={int_to_dow(d): min_to_hhmm(m) for d, m in sorted(shown.items())},
         budget_cap=row.budget_cap,
         monthly_total=row.monthly_total,
         violations=_violations(violations),
@@ -278,11 +303,20 @@ async def _cached_inputs(db: AsyncSession, child_id: uuid.UUID, cache: dict[uuid
 
 
 async def _read(db: AsyncSession, row: PlanRow, cache: dict[uuid.UUID, tuple]) -> Plan:
-    """초안은 지금 데이터로 본 위반(확정 버튼 상태), 확정 계획은 영향을 함께 돌려준다."""
+    """초안은 지금 데이터로 본 위반(확정 버튼 상태), 확정 계획은 영향과 지금 하교 시각을 돌려준다.
+
+    영향은 지금 하교 시각으로 판정하므로 학교 칸도 같은 값이어야 무엇이 깨졌는지 한 화면에서
+    보인다(experience 78·181행, PR #29 Codex P2).
+    """
     if row.status == CONFIRMED:
         found = await assess(db, row, cache)
+        ctx, _, _ = await _cached_inputs(db, row.child_id, cache)
         return await to_api(
-            db, row, [], PlanImpact(affected=found.affected, reasons=_reasons(found))
+            db,
+            row,
+            [],
+            PlanImpact(affected=found.affected, reasons=_reasons(found)),
+            school=dict(ctx.dismissal),
         )
     return await to_api(db, row, await _current_violations(db, row, cache))
 

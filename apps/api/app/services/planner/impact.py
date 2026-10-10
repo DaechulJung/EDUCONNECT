@@ -1,7 +1,8 @@
 """확정 계획 영향 판정 (AD-4). DB·네트워크·시계에 접근하지 않는 순수 함수만 둔다.
 
 확정 스냅숏 항목을 현재 프로그램·현재 하교 시각으로 다시 놓고, 스냅숏 예산 상한으로 엔진 검증을
-다시 실행한다. 위반 사유(시간 중복·이동 부족·예산 초과)가 하나라도 있으면 '영향 있음'이다.
+다시 실행한다. 사유(시간 중복·이동 부족·예산 초과·내용 변경)가 하나라도 있으면 '영향 있음'이다
+(PRD REQ-02 "바꾸거나 지우면 REQ-09 영향 처리", REQ-09 "영향(…·내용 변경)을 기록", experience 82행).
 """
 
 from collections.abc import Mapping, Sequence
@@ -19,7 +20,11 @@ class Impact:
 
     @property
     def affected(self) -> bool:
-        return any(r.kind != CONTENT_CHANGED for r in self.reasons)
+        return bool(self.reasons)
+
+    @property
+    def violations(self) -> tuple[engine.Violation, ...]:
+        return tuple(r for r in self.reasons if r.kind != CONTENT_CHANGED)
 
 
 def assess(
@@ -42,6 +47,20 @@ def assess(
         or (not violations and _differs(i, current[i["program_id"]]))
     ]
     return Impact(tuple(violations) + tuple(changed))
+
+
+def changed_programs(
+    items: Sequence[Mapping], current: Mapping[str, engine.Program]
+) -> frozenset[str]:
+    """확정 뒤 바뀐(시각·요일·금액) 또는 삭제된 스냅숏 항목의 program_id.
+
+    기관 영향 수의 원인 판정에 쓴다.
+    """
+    return frozenset(
+        i["program_id"]
+        for i in items
+        if i["program_id"] not in current or _differs(i, current[i["program_id"]])
+    )
 
 
 def _differs(item: Mapping, program: engine.Program) -> bool:
