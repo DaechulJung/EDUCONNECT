@@ -1,6 +1,7 @@
 """planner routes: recommendations, plans, adjustment, organization impact counts.
 
-Recommendations are #6; the rest is 501 until #7·#8 (plans) and #9 (impact, adjustment) (AD-3).
+Recommendations are #6, draft create·read #7; the rest is 501 until #8 (plans) and #9 (impact,
+adjustment) (AD-3).
 """
 
 from typing import Annotated
@@ -20,7 +21,7 @@ from app.schemas.planner import (
     RecommendationList,
     RecommendationRequest,
 )
-from app.services.planner import recommend
+from app.services.planner import inputs, plans, recommend
 
 router = APIRouter(tags=["planner"])
 OWNED = error_responses(401, 403, 404, 501)
@@ -33,13 +34,16 @@ async def recommend_programs(
 ) -> RecommendationList:
     try:
         return await recommend.recommend(db, session.account_id, body.child_id)
-    except recommend.NotOwned:
+    except inputs.NotOwned:
         await deny_not_found(session, "/api/recommendations")
 
 
-@router.post("/plans/draft", responses=error_responses(401, 403, 404, 422, 501))
-async def create_plan_draft(body: PlanDraftRequest, session: Parent) -> Plan:
-    raise not_implemented()
+@router.post("/plans/draft", responses=error_responses(401, 403, 404, 422))
+async def create_plan_draft(body: PlanDraftRequest, session: Parent, db: Db) -> Plan:
+    try:
+        return await plans.create_draft(db, session.account_id, body.child_id)
+    except inputs.NotOwned:
+        await deny_not_found(session, "/api/plans/draft")
 
 
 @router.get("/plans", responses=error_responses(401, 403, 501))
@@ -47,9 +51,12 @@ async def list_plans(session: Parent, child_id: str | None = None) -> list[Plan]
     raise not_implemented()
 
 
-@router.get("/plans/{plan_id}", responses=OWNED)
-async def get_plan(plan_id: str, session: Parent) -> Plan:
-    raise not_implemented()
+@router.get("/plans/{plan_id}", responses=error_responses(401, 403, 404))
+async def get_plan(plan_id: str, session: Parent, db: Db) -> Plan:
+    try:
+        return await plans.get(db, session.account_id, plan_id)
+    except plans.PlanNotFound:
+        await deny_not_found(session, f"/api/plans/{plan_id}")
 
 
 @router.put("/plans/{plan_id}", responses=OWNED)
