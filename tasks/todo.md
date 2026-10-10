@@ -17,6 +17,7 @@
 - [x] 자기 자녀 목록 `GET /api/children` — `8d1b085`
 - [x] E2E TC-28·29·32·33 — `58f5f93`·`fac0be6`·`dd5b412`
 - [x] #11 시드 병합(`dfa3adc`), Azure 주소 끝 '/' 보정(#14 후속 `9a7350c`)
-- [ ] TC-34(AC-05.7, 실제 Azure, `ai` 태그) 실행
-- [ ] CHG-005 병합 후 TC-30·31을 새 대화 유지 확인으로 맞춤
-- [ ] `npm run check`, AC done 처리, lessons, PR
+- [x] TC-34(AC-05.7, 실제 Azure, `ai` 태그) 실행
+- [x] CHG-005 병합 후 TC-30·31을 새 대화 유지 확인으로 맞춤
+- [x] `npm run check`(api 153·web 8, `6c9d4df`), AC-05.1~05.7 done, lessons, PR
+- [x] 접근 로그 TypeError — 가림 필터가 uvicorn 인자 튜플을 지움(#14 후속 `a2636a5`)

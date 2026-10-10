@@ -26,3 +26,18 @@
 - 문제·원인: (1) #14 기본 compose 기동 실패(LLM_PROVIDER·ENABLE_TEST_ROUTES 빈 문자열)는 CI가 두 값을 지정해 가려져 있었다. (2) PR #16 승인을 BUZZ에만 남기고 PR 코멘트를 쓰지 않아, 병합 조건(`VERIFIER 승인` 코멘트)이 기록 없이 지나갔다. (3) 진행 보고에 "#1 TC 준비 완료"라고 먼저 쓰고 준비 문서를 나중에 채웠다.
 - 교훈: CI 설정과 README 기본 명령은 따로 재현해야 한다. 승인은 PR 코멘트가 기록이고 BUZZ 메시지는 알림이다. 완료 표현은 산출물이 생긴 뒤에만 쓴다.
 - 다음에 적용할 것: 검토마다 무환경 기동과 README 명령을 한 번씩 실행한다. 승인 시 `gh pr comment <PR>`에 `VERIFIER 승인`·head SHA·확인 항목·원자료 경로를 먼저 남기고 BUZZ에 알린다. 승인 전 Codex 지적별 처리 코멘트를 확인한다.
+
+## 2026-10-10 - #5 챗봇 조건 설정·확인·수정 [PLANNER]
+- 문제·원인
+  - AC-05.3·05.4가 #6 추천·#7 일정 생성을 써서 `Closes #5`로 닫을 수 없었다(선행 순환). AC를 쓸 때 뒤 Issue의 기능을 확인 단계에 넣었다.
+  - TC-34가 키가 있어도 `source=fallback`. 키 파일의 `AZURE_OPENAI_BASE_URL`이 끝 '/' 없이 `/openai/v1`이라 설정 검사가 막았다.
+  - api 접근 로그마다 `TypeError: cannot unpack`. 로그 가림 필터가 `record.args=None`으로 지워 uvicorn 접근 포맷터가 튜플을 풀지 못했다. 시험은 통과해서 로그를 보기 전까지 몰랐다.
+  - `npm run check`가 compose 프로젝트 이름 없이 `dev2`로 db·redis를 띄워 `edu-dev2`와 포트가 겹쳤다.
+- 교훈
+  - AC의 확인 단계는 그 Issue가 만드는 기능 안에서 끝나야 한다. 뒤 Issue 기능이 필요하면 그 Issue의 AC로 둔다(CHG-004·005).
+  - 외부 설정값은 사람이 포털에서 복사한 모양(끝 '/' 유무)을 그대로 받아들이게 정규화하고 시험한다.
+  - 공용 로깅 필터는 실제 포맷터(uvicorn AccessFormatter)로 형식화까지 시험한다.
+- 다음에 적용할 것
+  - PRD AC를 쓸 때 "이 문장을 이 Issue 코드만으로 확인할 수 있나"를 Issue 분배 전에 점검한다.
+  - E2E 뒤 api 로그의 Traceback 수를 확인한다.
+  - `npm run check`는 `COMPOSE_PROJECT_NAME=edu-dev2`로 실행한다.
