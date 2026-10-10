@@ -1297,22 +1297,20 @@
               }
             }
           },
-          "501": {
-            "description": "Not Implemented",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorBody"
-                }
-              }
-            }
-          },
           "422": {
-            "description": "Validation Error",
+            "description": "Unprocessable Content",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorBody"
+                    },
+                    {
+                      "$ref": "#/components/schemas/FieldErrors"
+                    }
+                  ],
+                  "title": "Response 422 Send Chat Message"
                 }
               }
             }
@@ -1387,25 +1385,23 @@
             },
             "description": "Not Found"
           },
-          "501": {
+          "422": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorBody"
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorBody"
+                    },
+                    {
+                      "$ref": "#/components/schemas/FieldErrors"
+                    }
+                  ],
+                  "title": "Response 422 Get Conditions"
                 }
               }
             },
-            "description": "Not Implemented"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
+            "description": "Unprocessable Content"
           }
         }
       },
@@ -1477,25 +1473,23 @@
             },
             "description": "Not Found"
           },
-          "501": {
+          "422": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorBody"
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorBody"
+                    },
+                    {
+                      "$ref": "#/components/schemas/FieldErrors"
+                    }
+                  ],
+                  "title": "Response 422 Save Conditions"
                 }
               }
             },
-            "description": "Not Implemented"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
+            "description": "Unprocessable Content"
           }
         }
       }
@@ -2919,11 +2913,13 @@
           },
           "budget_target": {
             "type": "integer",
+            "maximum": 2147483647.0,
             "minimum": 0.0,
             "title": "Budget Target"
           },
           "budget_cap": {
             "type": "integer",
+            "maximum": 2147483647.0,
             "minimum": 0.0,
             "title": "Budget Cap"
           },
@@ -2991,11 +2987,13 @@
           },
           "budget_target": {
             "type": "integer",
+            "maximum": 2147483647.0,
             "minimum": 0.0,
             "title": "Budget Target"
           },
           "budget_cap": {
             "type": "integer",
+            "maximum": 2147483647.0,
             "minimum": 0.0,
             "title": "Budget Cap"
           },
