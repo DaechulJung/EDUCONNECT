@@ -1598,10 +1598,6 @@ export type CreateChildErrors = {
      * Unprocessable Content
      */
     422: ErrorBody | FieldErrors;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
 };
 
 export type CreateChildError = CreateChildErrors[keyof CreateChildErrors];

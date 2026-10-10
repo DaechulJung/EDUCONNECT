@@ -1,6 +1,6 @@
 """family service: the parent's children (REQ-04). The list serves the chat screen (#5); reading
 one child checks ownership (REQ-01, #1); the update serves the interests that recommendations send
-to the model (#6, AC-06.4). Create and the children screen come with #4."""
+to the model (#6, AC-06.4); create and the children screen are #4."""
 
 import uuid
 
@@ -39,9 +39,24 @@ async def get_own(db: AsyncSession, session: SessionInfo, child_id: str) -> Chil
     return to_api(await _own_row(db, session, child_id))
 
 
+async def create_own(db: AsyncSession, session: SessionInfo, body: ChildIn) -> Child:
+    """Create a child for the session parent (#4). 422 consent_required under 14 without consent."""
+    row = ChildRow(parent_id=uuid.UUID(session.account_id))
+    await _assign(db, row, body)
+    db.add(row)
+    await db.commit()
+    return to_api(row)
+
+
 async def update_own(db: AsyncSession, session: SessionInfo, child_id: str, body: ChildIn) -> Child:
     """Replace the child's fields. 422 consent_required under 14 without the consent check."""
     row = await _own_row(db, session, child_id)
+    await _assign(db, row, body)
+    await db.commit()
+    return to_api(row)
+
+
+async def _assign(db: AsyncSession, row: ChildRow, body: ChildIn) -> None:
     if body.age < CONSENT_AGE and not body.consent_checked:
         raise AppError(422, "consent_required")
     row.school_id = await _school(db, body.school_id)
@@ -61,8 +76,6 @@ async def update_own(db: AsyncSession, session: SessionInfo, child_id: str, body
     ]
     row.manual_dismissal = dismissal_to_db(body.manual_dismissal)
     row.consent_checked = body.consent_checked
-    await db.commit()
-    return to_api(row)
 
 
 async def _own_row(db: AsyncSession, session: SessionInfo, child_id: str) -> ChildRow:

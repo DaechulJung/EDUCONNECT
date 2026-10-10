@@ -29,7 +29,7 @@ ROUTES = [
     ("PUT", "/api/school/after-school/{program_id}", "school", True),
     ("DELETE", "/api/school/after-school/{program_id}", "school", False),
     ("GET", "/api/children", "parent", True),
-    ("POST", "/api/children", "parent", False),
+    ("POST", "/api/children", "parent", True),
     ("GET", "/api/children/{child_id}", "parent", True),
     ("PUT", "/api/children/{child_id}", "parent", True),
     ("POST", "/api/chat/messages", "parent", True),
