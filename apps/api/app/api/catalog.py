@@ -12,7 +12,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.authz import AcademyStaff, AnyUser, Parent, SchoolStaff
 from app.core.db import get_session
-from app.core.errors import error_responses, not_implemented
+from app.core.errors import error_responses
 from app.schemas.catalog import (
     AfterSchoolIn,
     AfterSchoolProgram,
