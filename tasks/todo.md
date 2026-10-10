@@ -88,6 +88,13 @@
 - [x] TC-49 안쪽 확정 계획 이름(자녀 이름 전 '자녀') — VERIFIER 12:32Z
 - [x] 추천 이유 코드값(`tight`) → 라벨(`9769eb9`) — 정대철_테스트 12:38Z 지시 결함 2
 - [x] AC-06.1·AC-07.1 done(E2E 42/42 `9a082f9`), development.md·lessons, PR
+## #3 학교 정규·방과후 시간표 등록·관리 — BUILDER
+- 완료 조건: AC-03.1~03.4 done(TC-19~22), `npm run check`·`npx e2e run` 통과, `Closes #3` PR VERIFIER 승인. AC-03.2(일정)·03.3(추천)은 #6·#7 병합 뒤
+- [x] 방과후 목록·등록·삭제 API, 같은 학년·요일 겹침 422 `time_overlap`(AC-03.4) — `test_after_school.py`
+- [x] 학교 화면: 학년별 하교 시각·방과후 목록·등록 폼(겹침은 칸 옆 "시간이 겹칩니다")
+- [x] E2E TC-19·22 (`188df37`)
+- [x] main `de8e2e8`(#6·#7 포함) merge 뒤 TC-20·21 — school 4/4 (`4112287`)
+- [x] main `0c0f143` merge, gen:api 일치, `npm run check` api 224·web 36, E2E 38/38 → AC-03.1~03.4 done → `Closes #3` PR
 ## #4 자녀 정보 등록 — BUILDER (10:32 분배 조정으로 dev:2→dev:1)
 - 완료 조건: AC-04.1~04.5 done(TC-23~27), `npm run check`·`npx e2e run` 통과, `Closes #4` PR VERIFIER 승인. TC-24·27은 #7 병합 뒤
 - [x] `POST /api/children`(14세 미만 동의 확인, 실명·연락처 거부) — #6 PUT·`get_own` 공유

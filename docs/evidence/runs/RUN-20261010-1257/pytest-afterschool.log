@@ -1,0 +1,22 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- /Users/agentneo/Desktop/71_Hackerthon/01_Pre_Project/AIDX_PRE_TRAINING_2/.worktrees/verify/apps/api/.venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/agentneo/Desktop/71_Hackerthon/01_Pre_Project/AIDX_PRE_TRAINING_2/.worktrees/verify/apps/api
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 12 items
+
+tests/test_after_school.py::test_list_shows_own_school_programs_only PASSED [  8%]
+tests/test_after_school.py::test_create_uses_the_school_location PASSED  [ 16%]
+tests/test_after_school.py::test_tc22_overlap_on_same_grade_and_day_is_422_time_overlap PASSED [ 25%]
+tests/test_after_school.py::test_no_overlap_when_grade_day_or_time_differs[change0] PASSED [ 33%]
+tests/test_after_school.py::test_no_overlap_when_grade_day_or_time_differs[change1] PASSED [ 41%]
+tests/test_after_school.py::test_no_overlap_when_grade_day_or_time_differs[change2] PASSED [ 50%]
+tests/test_after_school.py::test_other_schools_programs_do_not_count_as_overlap PASSED [ 58%]
+tests/test_after_school.py::test_update_overlap_is_422_and_ignores_itself PASSED [ 66%]
+tests/test_after_school.py::test_delete_hides_the_program_and_keeps_the_row PASSED [ 75%]
+tests/test_after_school.py::test_other_schools_program_cannot_be_deleted PASSED [ 83%]
+tests/test_after_school.py::test_academy_staff_cannot_use_school_routes PASSED [ 91%]
+tests/test_after_school.py::test_create_waits_for_the_school_lock_then_sees_the_overlap PASSED [100%]
+
+============================== 12 passed in 5.78s ==============================

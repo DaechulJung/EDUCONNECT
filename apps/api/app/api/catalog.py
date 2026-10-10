@@ -1,8 +1,8 @@
 """catalog routes: academy programs, school timetable and after-school programs, subjects.
 
-Academy programs are complete (#1 ownership, #2 list/create/delete). The after-school update and
-the timetable read/update carry REQ-01 ownership (#1); the other school bodies are 501 until #3,
-subjects until #5 (AD-3).
+Academy programs (#1 ownership, #2 list/create/delete) and the school timetable and after-school
+programs (#1 ownership, #3 list/create/delete and the `time_overlap` check) are complete. Subjects
+are 501 until #5 (AD-3).
 """
 
 from typing import Annotated
@@ -27,7 +27,6 @@ from app.services.catalog import after_school, programs, schools, timetable
 Db = Annotated[AsyncSession, Depends(get_session)]
 
 router = APIRouter(tags=["catalog"])
-OWNED = error_responses(401, 403, 404, 501)
 
 
 @router.get("/academy/programs", responses=error_responses(401, 403))
@@ -70,18 +69,20 @@ async def update_timetable(body: TimetableUpdate, session: SchoolStaff, db: Db) 
     return await timetable.update_own(db, session, body)
 
 
-@router.get("/school/after-school", responses=error_responses(401, 403, 501))
-async def list_after_school(session: SchoolStaff) -> list[AfterSchoolProgram]:
-    raise not_implemented()
+@router.get("/school/after-school", responses=error_responses(401, 403))
+async def list_after_school(session: SchoolStaff, db: Db) -> list[AfterSchoolProgram]:
+    return await after_school.list_own(db, session)
 
 
 @router.post(
     "/school/after-school",
     status_code=status.HTTP_201_CREATED,
-    responses=error_responses(401, 403, 422, 501),
+    responses=error_responses(401, 403, 422),
 )
-async def create_after_school(body: AfterSchoolIn, session: SchoolStaff) -> AfterSchoolProgram:
-    raise not_implemented()
+async def create_after_school(
+    body: AfterSchoolIn, session: SchoolStaff, db: Db
+) -> AfterSchoolProgram:
+    return await after_school.create(db, session, body)
 
 
 @router.put("/school/after-school/{program_id}", responses=error_responses(401, 403, 404, 422))
@@ -92,10 +93,12 @@ async def update_after_school(
 
 
 @router.delete(
-    "/school/after-school/{program_id}", status_code=status.HTTP_204_NO_CONTENT, responses=OWNED
+    "/school/after-school/{program_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses=error_responses(401, 403, 404),
 )
-async def delete_after_school(program_id: str, session: SchoolStaff) -> None:
-    raise not_implemented()
+async def delete_after_school(program_id: str, session: SchoolStaff, db: Db) -> None:
+    await after_school.delete(db, session, program_id)
 
 
 @router.get("/catalog/subjects", responses=error_responses(401, 501))
