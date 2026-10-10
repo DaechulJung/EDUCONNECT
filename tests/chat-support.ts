@@ -28,6 +28,7 @@ export async function signInParent(app: App, screen: Screen) {
   await screen.getByLabel('아이디').fill('parent1')
   await screen.getByLabel('비밀번호').fill(password!)
   await screen.getByRole('button', '로그인').tap()
+  await expect(screen.getByRole('heading', '로그인')).not.toBeVisible({ timeout: 10_000 })
 }
 
 export async function send(screen: Screen, text: string) {
