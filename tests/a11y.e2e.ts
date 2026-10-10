@@ -61,7 +61,7 @@ test('TC-69 조건 카드·일정 초안·확정 계획이 있는 보호자 화�
   await saveConditions(app, screen)
   await expectNoViolations(browser, '챗봇 조건 카드')
   await makePlan(screen)
-  await expect(screen.getByRole('table', '주간 일정표')).toBeVisible({ timeout: 15_000 })
+  await expect(screen.getByLabel('주간 일정표')).toBeVisible({ timeout: 15_000 })
   await expectNoViolations(browser, '챗봇 일정 초안')
   await screen.getByRole('button', '일정 확정').tap()
   await screen.getByRole('dialog', '이 일정으로 확정할까요?').getByRole('button', '일정 확정').tap()
@@ -130,7 +130,7 @@ test('TC-70 키보드만으로 로그인→챗봇 조건 입력→조건 저장�
 
   await tabTo(browser, '일정 만들기')
   await browser.keyboard.press('Enter')
-  await expect(screen.getByRole('table', '주간 일정표')).toBeVisible({ timeout: 15_000 })
+  await expect(screen.getByLabel('주간 일정표')).toBeVisible({ timeout: 15_000 })
 
   await tabTo(browser, '일정 확정')
   await browser.keyboard.press('Enter')
