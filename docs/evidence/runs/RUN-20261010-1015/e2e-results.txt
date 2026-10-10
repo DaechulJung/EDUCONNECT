@@ -1,0 +1,6 @@
+run passed exit 0 {'discovered': 5, 'selected': 5, 'executed': 5, 'passed': 5, 'failed': 0, 'interrupted': 0, 'flaky': 0, 'skipped': 0} commit 678efadfa3ea2e6e5b57c1bc6f76bc693877ffe5 dirty False
+passed tests/auth.e2e.ts TC-01 시드 계정 3종이 각자 첫 화면으로 들어간다
+passed tests/auth.e2e.ts TC-02 틀린 비밀번호는 문구를 보이고 세션 쿠키를 주지 않는다
+passed tests/auth.e2e.ts TC-10 새로 고침하거나 다른 탭에 다녀와도 로그인 화면이 다시 나오지 않는다
+passed tests/smoke.e2e.ts 세션 없이 첫 화면을 열면 로그인 화면이 보인다
+passed tests/smoke.e2e.ts 세션 없이 보호자·기관 화면 주소로 가면 로그인 화면으로 돌아간다
