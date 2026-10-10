@@ -1,13 +1,12 @@
 """GET /api/children: the signed-in parent's own children only (the chat screen needs it, #5).
 
-Create, read one and update stay 501 until #4.
+Create and update stay 501 until #4; reading one child is checked in test_authz.py (#1).
 """
 
 from tests.conftest import login
-from tests.test_chat_api import make_child  # noqa: F401  (fixture)
 
 
-def test_lists_only_own_children(client, make_account, make_child) -> None:  # noqa: F811
+def test_lists_only_own_children(client, make_account, make_child) -> None:
     mine_login, mine, _ = make_account("parent")
     _, other, _ = make_account("parent")
     child_id = make_child(mine)

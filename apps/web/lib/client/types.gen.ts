@@ -1222,13 +1222,9 @@ export type UpdateProgramErrors = {
      */
     404: ErrorBody;
     /**
-     * Validation Error
+     * Unprocessable Content
      */
-    422: HttpValidationError;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
+    422: ErrorBody;
 };
 
 export type UpdateProgramError = UpdateProgramErrors[keyof UpdateProgramErrors];
@@ -1262,10 +1258,6 @@ export type GetTimetableErrors = {
      * Validation Error
      */
     422: HttpValidationError;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
 };
 
 export type GetTimetableError = GetTimetableErrors[keyof GetTimetableErrors];
@@ -1296,13 +1288,9 @@ export type UpdateTimetableErrors = {
      */
     403: ErrorBody;
     /**
-     * Validation Error
+     * Unprocessable Content
      */
-    422: HttpValidationError;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
+    422: ErrorBody;
 };
 
 export type UpdateTimetableError = UpdateTimetableErrors[keyof UpdateTimetableErrors];
@@ -1467,10 +1455,6 @@ export type UpdateAfterSchoolErrors = {
      * Unprocessable Content
      */
     422: ErrorBody;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
 };
 
 export type UpdateAfterSchoolError = UpdateAfterSchoolErrors[keyof UpdateAfterSchoolErrors];
@@ -1620,10 +1604,6 @@ export type GetChildErrors = {
      * Validation Error
      */
     422: HttpValidationError;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
 };
 
 export type GetChildError = GetChildErrors[keyof GetChildErrors];
