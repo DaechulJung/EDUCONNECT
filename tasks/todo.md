@@ -78,3 +78,10 @@
 - [x] `tests/branding.e2e.ts` TC-67·68 — 앱 기동 전 합성 `AZURE_OPENAI_ENDPOINT`, 없으면 TC-68 실패 확인. CI e2e env에 합성 값
 - [x] arch 분배 문장 3곳(별도 커밋, BUZZ 04c89f41)
 - [ ] AC-12.1·12.2 done, development.md, PR
+## #3 학교 정규·방과후 시간표 등록·관리 — BUILDER
+- 완료 조건: AC-03.1~03.4 done(TC-19~22), `npm run check`·`npx e2e run` 통과, `Closes #3` PR VERIFIER 승인. AC-03.2(일정)·03.3(추천)은 #6·#7 병합 뒤
+- [x] 방과후 목록·등록·삭제 API, 같은 학년·요일 겹침 422 `time_overlap`(AC-03.4) — `test_after_school.py`
+- [x] 학교 화면: 학년별 하교 시각·방과후 목록·등록 폼(겹침은 칸 옆 "시간이 겹칩니다")
+- [x] E2E TC-19·22 (`188df37`)
+- [x] main `de8e2e8`(#6·#7 포함) merge 뒤 TC-20·21 — school 4/4 (`4112287`)
+- [x] main `0c0f143` merge, gen:api 일치, `npm run check` api 224·web 36, E2E 38/38 → AC-03.1~03.4 done → `Closes #3` PR
