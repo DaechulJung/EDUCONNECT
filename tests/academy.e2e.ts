@@ -2,7 +2,7 @@ import { beforeEach, expect, test, type App, type Locator, type Screen } from 'e
 import { AROUND, TASK, api, send, signInParent } from './chat-support'
 
 // REQ-02 in the browser (FLOW-05): TC-13 (AC-02.1), TC-14 (AC-02.2), TC-16 (AC-02.4),
-// TC-17 (AC-02.5, list and comparison table; the schedule half needs plan generation, #7), TC-18 (AC-02.6).
+// TC-17 (AC-02.5: list, comparison table and schedule draft), TC-18 (AC-02.6).
 // The app must run with ENABLE_TEST_ROUTES=1, LLM_PROVIDER=fake and the seed password in SEED_PASSWORD.
 
 async function resetSeed(app: App) {
@@ -166,7 +166,7 @@ test('TC-16 학원이 피아노(예체능 학원)를 등록하면 피아노를 �
 // Seed (apps/api/app/seed/data/academies.json): b-elem-math-undisclosed has no monthly tuition.
 const UNDISCLOSED: Key = { 학원명: '다온수학학원', 과목: '수학', 요일: '화·목', 시간: '16:40~18:00' }
 
-test('TC-17 시드 미공개 프로그램이 학원 목록에 "미공개"로 보이고 AC-06.1 조건의 비교표에 없다', async ({ app, screen }) => {
+test('TC-17 시드 미공개 프로그램이 학원 목록에 "미공개"로 보이고 AC-06.1 조건의 비교표와 일정에 없다', async ({ app, screen }) => {
   await signInAcademy(app, screen, 'academy-b') // the seed undisclosed program belongs to academy B
   const table = screen.getByRole('table', '학원 프로그램 목록')
   const undisclosed = table.getByRole('row').filter({ hasText: '미공개' })
@@ -177,6 +177,18 @@ test('TC-17 시드 미공개 프로그램이 학원 목록에 "미공개"로 보
   expect(body.length).toBeGreaterThan(0)
   expect(hits(body, UNDISCLOSED)).toEqual([])
   for (const r of body) expect(r['월 교습비']).not.toContain('미공개')
+
+  // Schedule half (#7): the draft from the same saved conditions has classes, none of them the undisclosed one.
+  await screen.getByRole('button', '일정 만들기').tap()
+  const week = screen.getByRole('table', '주간 일정표')
+  await expect(week).toBeVisible({ timeout: 15_000 })
+  const classes: string[] = []
+  for (const day of UNDISCLOSED.요일.split('·').concat(['월', '수', '금', '토', '일'])) {
+    classes.push(...(await week.getByRole('listitem', `${day} 수업`).allTextContents()).map((t) => `${day} ${t}`))
+  }
+  expect(classes.length, 'draft has classes').toBeGreaterThan(0)
+  const undisclosedIn = classes.filter((c) => c.includes(UNDISCLOSED.학원명) && c.includes(UNDISCLOSED.시간))
+  expect(undisclosedIn, JSON.stringify(classes)).toEqual([])
 })
 
 // Seed b-elem-math (초3~초6, 월·수, disclosed) is in the AC-06.1 table until academy B deletes it.
