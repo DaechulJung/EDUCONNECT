@@ -4,7 +4,7 @@ import { Icon } from '@/components/kds/kds'
 import type { Plan, PlanItem } from '@/lib/client'
 import { formatWon } from '@/lib/conditions'
 import { NO_PLAN, canConfirm, confirmNotice, itemMonthly, overBudget, relaxationLabels, weekColumns, type DayEntry } from '@/lib/plan'
-import { useContainerWide } from '@/lib/use-container-wide'
+import { useWideViewport } from '@/lib/use-wide-viewport'
 
 // Draft edits (#8): '빼기'·'바꾸기' change the draft in place, '일정 확정' asks first (experience 112행).
 export type PlanActions = {
@@ -16,28 +16,27 @@ export type PlanActions = {
   unavailable?: string[]
 }
 
-// 일정 초안 (experience): weekly table when its frame is 768px or wider, per-day list below, then the monthly cost
-// summary. The frame's width decides, not the viewport's (the parent phone frame is 480px on any screen).
-// Without actions it is read-only (확정 계획 on the 일정 탭).
+// 일정 초안 (experience): 7-column weekly grid from a 768px viewport (inside the 748px parent frame), per-day list
+// below, then the monthly cost summary. Without actions it is read-only (확정 계획 on the 일정 탭).
 export function PlanDraft({ plan, actions, label = '일정 초안' }: { plan: Plan; actions?: PlanActions; label?: string }) {
-  const [frame, wide] = useContainerWide<HTMLElement>()
+  const wide = useWideViewport()
   const unavailable = actions?.unavailable ?? []
   const columns = weekColumns(plan, unavailable)
   const confirmable = canConfirm(plan, unavailable)
   const notice = confirmNotice(plan, unavailable)
   const single = plan.items.length <= 1
   return (
-    <section ref={frame} aria-label={label} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-16)', minWidth: 0 }}>
+    <section aria-label={label} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-16)', minWidth: 0 }}>
       {wide ? (
         <div className="kds-table-wrap">
           <table className="kds-table" aria-label="주간 일정표">
             <thead>
-              <tr>{columns.map((c) => <th key={c.day} scope="col">{c.label}</th>)}</tr>
+              <tr>{columns.map((c) => <th key={c.day} scope="col" style={GRID_CELL}>{c.label}</th>)}</tr>
             </thead>
             <tbody>
               <tr>
                 {columns.map((c) => (
-                  <td key={c.day} style={{ verticalAlign: 'top' }}>
+                  <td key={c.day} style={{ ...GRID_CELL, verticalAlign: 'top' }}>
                     <Entries entries={c.entries} day={c.label} actions={actions} single={single} />
                   </td>
                 ))}
@@ -66,6 +65,10 @@ export function PlanDraft({ plan, actions, label = '일정 초안' }: { plan: Pl
   )
 }
 
+// Seven day columns share the 748px frame (708px of grid, about 100px each): the grid cells keep a small side
+// padding, a class's time stays on one line and its 빼기·바꾸기 buttons wrap under each other when narrow.
+const GRID_CELL = { paddingInline: 'var(--space-4)' }
+
 function Entries({ entries, day, actions, single }: { entries: DayEntry[]; day: string; actions?: PlanActions; single: boolean }) {
   if (entries.length === 0) return <p className="caption-medium-medium" style={{ margin: 0, color: 'var(--text-tertiary-01)' }}>일정 없음</p>
   return (
@@ -79,12 +82,12 @@ function Entries({ entries, day, actions, single }: { entries: DayEntry[]; day: 
           <li key={e.item.program_id} aria-label={`${day} 수업`} className="caption-medium-medium" style={{ border: '1px solid var(--border-secondary-01)', borderRadius: 'var(--radius-8)', padding: 'var(--space-8)', display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
             <span className="body-small-bold">{e.item.subject}</span>
             <span>{e.item.institution_name}</span>
-            <span style={{ color: 'var(--text-secondary-01)' }}>{e.item.start}~{e.item.end}</span>
+            <span style={{ color: 'var(--text-secondary-01)', whiteSpace: 'nowrap' }}>{e.item.start}~{e.item.end}</span>
             {e.violations.map((v) => (
               <span key={v} className="kds-tag kds-tag--critical"><Icon name="ic-line-warning" size={16} />{v}</span>
             ))}
             {actions && (
-              <span style={{ display: 'flex', gap: 'var(--space-4)' }}>
+              <span style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-4)' }}>
                 <button type="button" className="kds-button kds-button--tertiary kds-button--xsmall" aria-label={`${e.item.institution_name} ${e.item.subject} 빼기`} disabled={actions.busy || single} onClick={() => actions.onRemove(e.item)}>빼기</button>
                 <button type="button" className="kds-button kds-button--tertiary kds-button--xsmall" aria-label={`${e.item.institution_name} ${e.item.subject} 바꾸기`} disabled={actions.busy} onClick={() => actions.onSwap(e.item)}>바꾸기</button>
               </span>

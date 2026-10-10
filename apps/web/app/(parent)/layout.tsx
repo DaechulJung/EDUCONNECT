@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { Icon } from '@/components/kds/kds'
 import { getMeta } from '@/lib/client'
 import { useLogout, useRoleGuard } from '@/lib/use-session'
+import { PARENT_FRAME_MAX, useWideViewport } from '@/lib/use-wide-viewport'
 
 const TABS = [
   { href: '/chat', label: '챗봇', line: 'ic-line-new_chat', fill: 'ic-line-new_chat' },
@@ -13,11 +14,13 @@ const TABS = [
   { href: '/children', label: '자녀', line: 'ic-line-my', fill: 'ic-fill-my' },
 ] as const
 
-// Parent frame (final form, arch AD-3): header with the /api/meta slot, bottom tabs, logout.
+// Parent frame (final form, arch AD-3): header with the /api/meta slot, bottom tabs, logout. 480px phone frame below a
+// 768px viewport, at most 748px and centred from 768px (experience Responsive), bottom tabs on every width.
 export default function ParentLayout({ children }: LayoutProps<'/'>) {
   const me = useRoleGuard(['parent'])
   const pathname = usePathname()
   const onLogout = useLogout()
+  const wide = useWideViewport()
   const meta = useQuery({
     queryKey: ['meta'],
     queryFn: async () => (await getMeta()).data ?? null,
@@ -28,7 +31,7 @@ export default function ParentLayout({ children }: LayoutProps<'/'>) {
 
   return (
     <div data-mode="agent" style={{ minHeight: '100dvh', background: 'var(--background-default)' }}>
-      <div style={{ maxWidth: 480, minHeight: '100dvh', marginInline: 'auto', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ maxWidth: wide ? PARENT_FRAME_MAX.wide : PARENT_FRAME_MAX.narrow, minHeight: '100dvh', marginInline: 'auto', display: 'flex', flexDirection: 'column' }}>
         <header className="kds-topnav" style={{ height: 'auto', minHeight: 52, paddingBlock: 'var(--space-8)' }}>
           <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
             <h1 className="kds-topnav__title" style={{ margin: 0 }}>
