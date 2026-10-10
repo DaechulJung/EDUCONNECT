@@ -25,5 +25,16 @@ class LlmRequest(BaseModel):
     messages: list[dict[str, str]]
 
 
+class TimetableOmit(BaseModel):
+    school: str = Field(min_length=1)  # seed school key, e.g. "school-elem"
+    grade: int = Field(ge=1, le=9)
+
+
+class ResetRequest(BaseModel):
+    """Optional reset body: seed rows to leave out (TC-27 needs a grade with no timetable)."""
+
+    omit_timetable: list[TimetableOmit] = []
+
+
 class ResetResult(BaseModel):
     reset: bool
