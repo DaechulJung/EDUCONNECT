@@ -18,3 +18,7 @@ apps/web/public/kds/brand/aidx/*.png
 .e2e/
 # 리서치 원문 사본(저작권·공개 저장소 업로드 금지)
 reports/
+.kode-harness-lite/cache/
+.kode-harness-lite/registrations.json
+.kode-harness-lite/**/*.lock
+.kode-harness-lite/**/*.tmp

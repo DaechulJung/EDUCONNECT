@@ -1,0 +1,119 @@
+{
+  "version": 2,
+  "experience": "bmad-ux",
+  "developers": 2,
+  "documents": [
+    {
+      "role": "brief",
+      "path": "docs/project-brief.md",
+      "skill": "bmad-product-brief",
+      "template": "_bmad/custom/templates/project-brief_template.md",
+      "templateKey": "brief_template",
+      "documentKey": "brief_file",
+      "fingerprint": "b1ee5946908c3ca4be5fd877b1e489f075681fac5d2b1ee93510d5910ace3d73"
+    },
+    {
+      "role": "prd",
+      "path": "docs/prd.md",
+      "skill": "bmad-prd",
+      "template": "_bmad/custom/templates/prd_template.md",
+      "templateKey": "prd_template",
+      "documentKey": "prd_file",
+      "fingerprint": "228849d7237c5971aff4bfaa2ea124ad53894f6b0352c9bd9f25ef4bfab2caa1"
+    },
+    {
+      "role": "experience",
+      "path": "docs/experience.md",
+      "skill": "bmad-ux",
+      "template": "_bmad/custom/templates/experience_template.md",
+      "templateKey": "experience_md_examples",
+      "documentKey": "experience_file",
+      "fingerprint": "5ad8ef670f3e59cbc886b56efa11473b0249c86aa8aeb53443b6d2fc585f8a38"
+    },
+    {
+      "role": "arch",
+      "path": "docs/arch.md",
+      "skill": "bmad-architecture",
+      "template": "_bmad/custom/templates/arch_template.md",
+      "templateKey": "spine_template",
+      "documentKey": "spine_file",
+      "fingerprint": "5b4b57a925f1975e557770936940eaf40e69c806771b478b4da2f6bf9273beeb"
+    },
+    {
+      "role": "test",
+      "path": "docs/e2e-test.md",
+      "skill": "e2e-doc",
+      "template": "_bmad/custom/templates/e2e-test_template.md",
+      "fingerprint": "9a74ddef72bc9c8cf3e83bb9560e5b2a6ebf67f1092d1b93ad7b117406c4f3ce"
+    }
+  ],
+  "identifiers": [
+    {
+      "kind": "REQ",
+      "pattern": "REQ-\\d{2}",
+      "example": "REQ-01",
+      "definedIn": "docs/prd.md",
+      "label": "요구"
+    },
+    {
+      "kind": "AC",
+      "pattern": "AC-\\d{2}\\.\\d{1,2}",
+      "example": "AC-01.1",
+      "definedIn": "docs/prd.md",
+      "label": "확인 조건",
+      "issueConditions": true
+    },
+    {
+      "kind": "FLOW",
+      "pattern": "FLOW-\\d{2}",
+      "example": "FLOW-01",
+      "definedIn": "docs/experience.md",
+      "label": "흐름"
+    },
+    {
+      "kind": "TC",
+      "pattern": "TC-\\d{2,3}",
+      "example": "TC-01",
+      "definedIn": "docs/e2e-test.md",
+      "label": "시험",
+      "statusColumn": "판정"
+    }
+  ],
+  "requiredLinks": [
+    {
+      "from": "REQ",
+      "to": "AC",
+      "bidirectional": false,
+      "storage": "doc",
+      "column": "확인 조건"
+    },
+    {
+      "from": "REQ",
+      "to": "FLOW",
+      "bidirectional": true,
+      "storage": "doc",
+      "column": "흐름",
+      "reverseColumn": "요구"
+    },
+    {
+      "from": "REQ",
+      "to": "Issue",
+      "bidirectional": false,
+      "storage": "issue"
+    },
+    {
+      "from": "AC",
+      "to": "TC",
+      "bidirectional": false,
+      "storage": "doc",
+      "column": "시험"
+    },
+    {
+      "from": "FLOW",
+      "to": "TC",
+      "bidirectional": false,
+      "storage": "doc",
+      "column": "시험"
+    }
+  ]
+}
