@@ -1,0 +1,11 @@
+{ "request": "보안 보완 2건(CHG-002): SEC-06 로컬 HTTP 예외 대신 게시 포트 127.0.0.1 전용(AC-10.7), SEC-10 감사 기록 최소 범위 적용(AC-01.13)",
+  "changed": {
+    "docs/prd.md": "AC-01.13·AC-10.7 추가, REQ-01·REQ-10 확인 조건 목록·품질 요구, 8절 SEC-06·SEC-10·SEC-11·SEC-12 이유, 9절 3 해소, 변경 이력 갱신. Issue #1·#10 본문은 register로 갱신",
+    "docs/intent.md": "12장 SEC-06(예외→적용, loopback 바인딩)·SEC-10(위임→적용 최소 범위)·SEC-12(예외 승인자 Daechul Jung) 판정을 새 결정으로 갱신"
+  },
+  "unchanged": {
+    "docs/project-brief.md": "범위·사용자·해결 방향·성공 기준 변화 없음",
+    "docs/experience.md": "화면 흐름·상태 변화 없음(감사 기록·포트 바인딩은 화면에 드러나지 않음)",
+    "docs/arch.md": "아직 양식 상태. 이어지는 bmad-architecture 작성에서 loopback 바인딩 불변식·감사 기록 저장 위치를 반영",
+    "docs/e2e-test.md": "VERIFIER가 CHG-002 push 뒤 e2e-doc 갱신 모드로 AC-01.13·AC-10.7 TC 추가(같은 파일 동시 수정 회피)"
+  } }
