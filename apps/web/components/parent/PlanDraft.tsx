@@ -79,8 +79,8 @@ function Entries({ entries, day, actions, single }: { entries: DayEntry[]; day: 
             ))}
             {actions && (
               <span style={{ display: 'flex', gap: 'var(--space-4)' }}>
-                <button type="button" className="kds-button kds-button--tertiary kds-button--small" aria-label={`${e.item.institution_name} ${e.item.subject} 빼기`} disabled={actions.busy || single} onClick={() => actions.onRemove(e.item)}>빼기</button>
-                <button type="button" className="kds-button kds-button--tertiary kds-button--small" aria-label={`${e.item.institution_name} ${e.item.subject} 바꾸기`} disabled={actions.busy} onClick={() => actions.onSwap(e.item)}>바꾸기</button>
+                <button type="button" className="kds-button kds-button--tertiary kds-button--xsmall" aria-label={`${e.item.institution_name} ${e.item.subject} 빼기`} disabled={actions.busy || single} onClick={() => actions.onRemove(e.item)}>빼기</button>
+                <button type="button" className="kds-button kds-button--tertiary kds-button--xsmall" aria-label={`${e.item.institution_name} ${e.item.subject} 바꾸기`} disabled={actions.busy} onClick={() => actions.onSwap(e.item)}>바꾸기</button>
               </span>
             )}
           </li>
