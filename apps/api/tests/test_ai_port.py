@@ -166,6 +166,25 @@ def test_masking_filter_hides_key_and_addresses() -> None:
     assert mask("nothing secret", config) == "nothing secret"
 
 
+def test_masking_filter_keeps_uvicorn_access_args() -> None:
+    """uvicorn's access formatter unpacks record.args, so the filter must keep the 5-tuple."""
+    from uvicorn.logging import AccessFormatter
+
+    config = azure_settings()
+    args = ("127.0.0.1:5000", "GET", f"/api/health?u={FAKE_BASE}", "1.1", 200)
+    record = logging.LogRecord(
+        "uvicorn.access", logging.INFO, __file__, 1, '%s - "%s %s HTTP/%s" %d', args, None
+    )
+    MaskingFilter(config).filter(record)
+    access_format = '%(client_addr)s "%(request_line)s" %(status_code)s'
+    formatter = AccessFormatter(access_format, use_colors=False)
+    rendered = formatter.format(record)
+    assert rendered.startswith('127.0.0.1:5000 "GET /api/health?u=')
+    assert rendered.endswith('HTTP/1.1" 200 OK')
+    assert FAKE_BASE not in rendered and "unit-test-resource.example.test" not in rendered
+    assert MASK in rendered
+
+
 def test_openai_sdk_is_pinned() -> None:
     root = Path(__file__).resolve().parents[1]
     pyproject = tomllib.loads((root / "pyproject.toml").read_text())
