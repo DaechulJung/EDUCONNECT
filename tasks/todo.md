@@ -80,11 +80,13 @@
 - [ ] AC-12.1·12.2 done, development.md, PR
 ## 보호자 폭 결함(표 모양·상단 제목·E2E 폭) — PLANNER 하위 레인 (#6 AC-06.1, #7 AC-07.1 다시 열기)
 완료 조건: 표 모양을 들어 있는 틀의 실제 폭으로 고르고(보호자 폰 틀 안에서는 항상 카드·요일 목록), 390px 상단 제목이 잘리지 않으며, 보호자 E2E는 390×844·기관 E2E는 1280 폭으로 돈다. 재현 E2E RED → GREEN, `npm run check`·전체 E2E(`--exclude-tag ai`) 통과, `Closes #6`·`Closes #7` PR.
-- [ ] #6 AC-06.1·#7 AC-07.1 다시 열기(kode CLI)
-- [ ] 폭 설정(보호자 390×844, 기관 1280×720)과 재현 E2E(1440 넘침·390 제목) 작성, 수정 전 코드로 RED 확인(`.scratch/red/`)
-- [ ] 틀 폭 측정 훅(ResizeObserver)으로 RecommendTable·PlanDraft 모양 결정, 상단 제목 수정 → GREEN
-- [ ] 영향받은 보호자 E2E 선택자(비교표 카드·요일 목록) 수정
-- [ ] gen:api 차이 0, `npm run check`, 전체 E2E, links, 390/1024/1440 측정
+- [x] #6 AC-06.1·#7 AC-07.1 다시 열기(kode CLI)
+- [x] 폭 설정(보호자 390×844, 기관 1280×720)과 재현 E2E(1440 넘침·390 제목) 작성, 수정 전 코드로 RED 확인(`.scratch/red/`)
+- [x] 틀 폭 측정 훅(ResizeObserver)으로 RecommendTable·PlanDraft 모양 결정, 상단 제목 수정 → GREEN
+- [x] 영향받은 보호자 E2E 선택자(비교표 카드·요일 목록) 수정
+- [x] gen:api 차이 0, `npm run check`, 전체 E2E(390·1440은 parent-width E2E로 측정)
+- [x] TC-49 안쪽 확정 계획 이름(자녀 이름 전 '자녀') — VERIFIER 12:32Z
+- [x] 추천 이유 코드값(`tight`) → 라벨(`9769eb9`) — 정대철_테스트 12:38Z 지시 결함 2
 - [ ] AC 다시 done, development.md·lessons, PR
 ## #4 자녀 정보 등록 — BUILDER (10:32 분배 조정으로 dev:2→dev:1)
 - 완료 조건: AC-04.1~04.5 done(TC-23~27), `npm run check`·`npx e2e run` 통과, `Closes #4` PR VERIFIER 승인. TC-24·27은 #7 병합 뒤

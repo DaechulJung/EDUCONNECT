@@ -29,7 +29,7 @@ export default function ParentLayout({ children }: LayoutProps<'/'>) {
   return (
     <div data-mode="agent" style={{ minHeight: '100dvh', background: 'var(--background-default)' }}>
       <div style={{ maxWidth: 480, minHeight: '100dvh', marginInline: 'auto', display: 'flex', flexDirection: 'column' }}>
-        <header className="kds-topnav">
+        <header className="kds-topnav" style={{ height: 'auto', minHeight: 52, paddingBlock: 'var(--space-8)' }}>
           <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
             <h1 className="kds-topnav__title" style={{ margin: 0 }}>
               {meta.data ? `${meta.data.service_name} · ${meta.data.subtitle}` : 'EDUCONNECT'}

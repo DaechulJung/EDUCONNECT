@@ -1,13 +1,14 @@
 'use client'
 
-import { useSyncExternalStore } from 'react'
 import { Icon } from '@/components/kds/kds'
 import type { Recommendation } from '@/lib/client'
 import { FALLBACK_NOTE, recommendationCells, usesFallback } from '@/lib/recommend'
+import { useContainerWide } from '@/lib/use-container-wide'
 
-// 추천 비교표 (experience): kds-table from 768px, a card list below. Rows keep the server's order.
+// 추천 비교표 (experience): kds-table when its frame is 768px or wider, a card list below. The frame's width
+// decides, not the viewport's (the parent phone frame is 480px on any screen). Rows keep the server's order.
 export function RecommendTable({ items }: { items: Recommendation[] }) {
-  const wide = useWide()
+  const [frame, wide] = useContainerWide<HTMLElement>()
   const fallback = usesFallback(items)
   if (items.length === 0) {
     return (
@@ -21,7 +22,7 @@ export function RecommendTable({ items }: { items: Recommendation[] }) {
   if (wide) {
     const header = recommendationCells(items[0]).map((c) => c.label)
     return (
-      <div className="kds-table-wrap">
+      <div ref={frame} className="kds-table-wrap">
         <table className="kds-table" aria-label="추천 비교표">
           <thead>
             <tr>{header.map((h) => <th key={h} scope="col" className={h.startsWith('월') ? 'is-num' : undefined}>{h}</th>)}</tr>
@@ -43,7 +44,7 @@ export function RecommendTable({ items }: { items: Recommendation[] }) {
     )
   }
   return (
-    <ul aria-label="추천 비교표" style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
+    <ul ref={frame} aria-label="추천 비교표" style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
       {items.map((r) => (
         <li key={r.program_id} className="kds-card" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
           {recommendationCells(r).map((c) => (
@@ -55,19 +56,5 @@ export function RecommendTable({ items }: { items: Recommendation[] }) {
         </li>
       ))}
     </ul>
-  )
-}
-
-const WIDE = '(min-width: 768px)'
-
-function useWide(): boolean {
-  return useSyncExternalStore(
-    (onChange) => {
-      const query = window.matchMedia(WIDE)
-      query.addEventListener('change', onChange)
-      return () => query.removeEventListener('change', onChange)
-    },
-    () => window.matchMedia(WIDE).matches,
-    () => false,
   )
 }

@@ -1,10 +1,10 @@
 'use client'
 
-import { useSyncExternalStore } from 'react'
 import { Icon } from '@/components/kds/kds'
 import type { Plan, PlanItem } from '@/lib/client'
 import { formatWon } from '@/lib/conditions'
 import { NO_PLAN, canConfirm, confirmNotice, itemMonthly, overBudget, relaxationLabels, weekColumns, type DayEntry } from '@/lib/plan'
+import { useContainerWide } from '@/lib/use-container-wide'
 
 // Draft edits (#8): '빼기'·'바꾸기' change the draft in place, '일정 확정' asks first (experience 112행).
 export type PlanActions = {
@@ -16,17 +16,18 @@ export type PlanActions = {
   unavailable?: string[]
 }
 
-// 일정 초안 (experience): weekly table from 768px, per-day list below, then the monthly cost summary.
+// 일정 초안 (experience): weekly table when its frame is 768px or wider, per-day list below, then the monthly cost
+// summary. The frame's width decides, not the viewport's (the parent phone frame is 480px on any screen).
 // Without actions it is read-only (확정 계획 on the 일정 탭).
 export function PlanDraft({ plan, actions, label = '일정 초안' }: { plan: Plan; actions?: PlanActions; label?: string }) {
-  const wide = useWide()
+  const [frame, wide] = useContainerWide<HTMLElement>()
   const unavailable = actions?.unavailable ?? []
   const columns = weekColumns(plan, unavailable)
   const confirmable = canConfirm(plan, unavailable)
   const notice = confirmNotice(plan, unavailable)
   const single = plan.items.length <= 1
   return (
-    <section aria-label={label} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-16)' }}>
+    <section ref={frame} aria-label={label} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-16)', minWidth: 0 }}>
       {wide ? (
         <div className="kds-table-wrap">
           <table className="kds-table" aria-label="주간 일정표">
@@ -134,19 +135,5 @@ export function NoPlan({ relaxations, onEdit }: { relaxations: string[]; onEdit:
       </ul>
       <button type="button" className="kds-button kds-button--secondary kds-button--small" onClick={onEdit}>조건 고치기</button>
     </div>
-  )
-}
-
-const WIDE = '(min-width: 768px)'
-
-function useWide(): boolean {
-  return useSyncExternalStore(
-    (onChange) => {
-      const query = window.matchMedia(WIDE)
-      query.addEventListener('change', onChange)
-      return () => query.removeEventListener('change', onChange)
-    },
-    () => window.matchMedia(WIDE).matches,
-    () => false,
   )
 }
