@@ -103,3 +103,4 @@
 - [x] development.md #5 행·lessons 교훈(#5 subjects·#3 방과후 수정)
 - [x] E2E `send()`가 자녀 로드를 기다리게 함(TC-16 경합)
 - [ ] 전체 `npm run check`·E2E(ai 제외) 통과 → PR → VERIFIER
+- dev1-4 | fix-subjects | 02309bf revert + origin/main(02b2096) merge 완료(9e7ebcf); 다음: run-m2.sh(gen·check·E2E) → PR 본문 수정
