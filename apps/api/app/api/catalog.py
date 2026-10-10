@@ -10,7 +10,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.authz import AcademyStaff, AnyUser, SchoolStaff
+from app.core.authz import AcademyStaff, AnyUser, Parent, SchoolStaff
 from app.core.db import get_session
 from app.core.errors import error_responses, not_implemented
 from app.schemas.catalog import (
@@ -18,10 +18,11 @@ from app.schemas.catalog import (
     AfterSchoolProgram,
     Program,
     ProgramIn,
+    School,
     SchoolTimetable,
     TimetableUpdate,
 )
-from app.services.catalog import after_school, programs, timetable
+from app.services.catalog import after_school, programs, schools, timetable
 
 Db = Annotated[AsyncSession, Depends(get_session)]
 
@@ -100,3 +101,8 @@ async def delete_after_school(program_id: str, session: SchoolStaff) -> None:
 @router.get("/catalog/subjects", responses=error_responses(401, 501))
 async def list_subjects(session: AnyUser) -> list[str]:
     raise not_implemented()
+
+
+@router.get("/catalog/schools", responses=error_responses(401, 403))
+async def list_schools(session: Parent, db: Db) -> list[School]:
+    return await schools.list_all(db)
