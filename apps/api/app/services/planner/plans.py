@@ -54,8 +54,9 @@ async def update_draft(
 ) -> Plan:
     """빼기·바꾸기: 초안이 가질 프로그램 ID 전체로 바꾸고 다시 검증한다. 위반이 있어도 저장한다."""
     row = await owned_plan(db, parent_id, plan_id)
+    # confirm()과 같은 자녀 행 잠금: 확정과 겹치면 그 commit 뒤의 상태로 다시 판단한다.
+    child = await _lock_child(db, row)
     _require_draft(row)
-    child = await db.get(Child, row.child_id)
     ctx, cond, catalog = await _inputs(db, child)
     chosen = _choose(catalog, ctx, program_ids)
     violations = engine.validate(chosen, ctx, cond.budget_cap)
@@ -68,9 +69,7 @@ async def update_draft(
 async def confirm(db: AsyncSession, parent_id: str, plan_id: str) -> Plan:
     """엔진 재검증 위반 0건일 때만 확정한다(AD-5). 같은 자녀의 이전 확정 계획은 superseded."""
     row = await owned_plan(db, parent_id, plan_id)
-    # 같은 자녀의 확정이 겹치지 않게 자녀 행을 잠그고 계획 상태를 다시 읽는다.
-    child = await db.scalar(select(Child).where(Child.id == row.child_id).with_for_update())
-    await db.refresh(row)
+    child = await _lock_child(db, row)
     _require_draft(row)
     ctx, cond, catalog = await _inputs(db, child)
     chosen = _choose(catalog, ctx, [i["program_id"] for i in row.items])
@@ -179,6 +178,13 @@ async def _inputs(
     )
     cond = await inputs.conditions(db, child.id)
     return ctx, cond, await inputs.programs(db, child.school_id, school)
+
+
+async def _lock_child(db: AsyncSession, row: PlanRow) -> Child:
+    """같은 자녀의 수정·확정이 겹치지 않게 자녀 행을 잠그고 계획 상태를 다시 읽는다."""
+    child = await db.scalar(select(Child).where(Child.id == row.child_id).with_for_update())
+    await db.refresh(row)
+    return child
 
 
 def _require_draft(row: PlanRow) -> None:

@@ -1124,10 +1124,6 @@ export type ListProgramsErrors = {
      * Validation Error
      */
     422: HttpValidationError;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
 };
 
 export type ListProgramsError = ListProgramsErrors[keyof ListProgramsErrors];
@@ -1160,13 +1156,11 @@ export type CreateProgramErrors = {
      */
     403: ErrorBody;
     /**
-     * Validation Error
+     * Response 422 Create Program
+     *
+     * Unprocessable Content
      */
-    422: HttpValidationError;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
+    422: ErrorBody | FieldErrors;
 };
 
 export type CreateProgramError = CreateProgramErrors[keyof CreateProgramErrors];
@@ -1209,10 +1203,6 @@ export type DeleteProgramErrors = {
      * Validation Error
      */
     422: HttpValidationError;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
 };
 
 export type DeleteProgramError = DeleteProgramErrors[keyof DeleteProgramErrors];

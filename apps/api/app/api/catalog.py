@@ -1,8 +1,8 @@
 """catalog routes: academy programs, school timetable and after-school programs, subjects.
 
-The owned updates (academy program, after-school program, timetable) and the timetable read are
-implemented with REQ-01 ownership (#1). The other bodies are 501 until #2 (academy), #3 (school)
-and #5 (subjects) implement them (AD-3).
+Academy programs are complete (#1 ownership, #2 list/create/delete). The after-school update and
+the timetable read/update carry REQ-01 ownership (#1); the other school bodies are 501 until #3,
+subjects until #5 (AD-3).
 """
 
 from typing import Annotated
@@ -29,18 +29,18 @@ router = APIRouter(tags=["catalog"])
 OWNED = error_responses(401, 403, 404, 501)
 
 
-@router.get("/academy/programs", responses=error_responses(401, 403, 501))
-async def list_programs(session: AcademyStaff) -> list[Program]:
-    raise not_implemented()
+@router.get("/academy/programs", responses=error_responses(401, 403))
+async def list_programs(session: AcademyStaff, db: Db) -> list[Program]:
+    return await programs.list_own(db, session)
 
 
 @router.post(
     "/academy/programs",
     status_code=status.HTTP_201_CREATED,
-    responses=error_responses(401, 403, 501),
+    responses=error_responses(401, 403, 422),
 )
-async def create_program(body: ProgramIn, session: AcademyStaff) -> Program:
-    raise not_implemented()
+async def create_program(body: ProgramIn, session: AcademyStaff, db: Db) -> Program:
+    return await programs.create_program(db, session, body)
 
 
 @router.put("/academy/programs/{program_id}", responses=error_responses(401, 403, 404, 422))
@@ -51,10 +51,12 @@ async def update_program(
 
 
 @router.delete(
-    "/academy/programs/{program_id}", status_code=status.HTTP_204_NO_CONTENT, responses=OWNED
+    "/academy/programs/{program_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses=error_responses(401, 403, 404),
 )
-async def delete_program(program_id: str, session: AcademyStaff) -> None:
-    raise not_implemented()
+async def delete_program(program_id: str, session: AcademyStaff, db: Db) -> None:
+    await programs.delete_program(db, session, program_id)
 
 
 @router.get("/school/timetable", responses=error_responses(401, 403))
