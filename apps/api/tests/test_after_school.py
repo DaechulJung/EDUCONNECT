@@ -138,7 +138,7 @@ def test_academy_staff_cannot_use_school_routes(seeded: TestClient) -> None:
     assert seeded.post("/api/school/after-school", json=ROBOT).status_code == 403
 
 
-def test_create_waits_for_the_school_lock_then_sees_the_overlap(sync_db, seeded) -> None:  # PR #26 P2
+def test_create_waits_for_the_school_lock_then_sees_the_overlap(sync_db, seeded) -> None:
     """Session A holds the school row lock and inserts ROBOT; B's overlapping create must wait for
     A's commit and then be refused, so two concurrent writes cannot both pass the overlap check."""
     assert login(seeded, "school-elem").status_code == 200
