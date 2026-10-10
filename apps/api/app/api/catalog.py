@@ -2,7 +2,7 @@
 
 Academy programs (#1 ownership, #2 list/create/delete) and the school timetable and after-school
 programs (#1 ownership, #3 list/create/delete and the `time_overlap` check) are complete. Subjects
-are 501 until #5 (AD-3).
+(AD-15) were left 501 after #5 closed and are filled in by the preview fix (Refs #5).
 """
 
 from typing import Annotated
@@ -12,7 +12,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.authz import AcademyStaff, AnyUser, Parent, SchoolStaff
 from app.core.db import get_session
-from app.core.errors import error_responses, not_implemented
+from app.core.errors import error_responses
 from app.schemas.catalog import (
     AfterSchoolIn,
     AfterSchoolProgram,
@@ -22,7 +22,7 @@ from app.schemas.catalog import (
     SchoolTimetable,
     TimetableUpdate,
 )
-from app.services.catalog import after_school, programs, schools, timetable
+from app.services.catalog import after_school, programs, schools, subjects, timetable
 
 Db = Annotated[AsyncSession, Depends(get_session)]
 
@@ -101,9 +101,9 @@ async def delete_after_school(program_id: str, session: SchoolStaff, db: Db) -> 
     await after_school.delete(db, session, program_id)
 
 
-@router.get("/catalog/subjects", responses=error_responses(401, 501))
-async def list_subjects(session: AnyUser) -> list[str]:
-    raise not_implemented()
+@router.get("/catalog/subjects", responses=error_responses(401))
+async def list_subjects(session: AnyUser, db: Db) -> list[str]:
+    return await subjects.list_all(db)
 
 
 @router.get("/catalog/schools", responses=error_responses(401, 403))
