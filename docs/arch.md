@@ -24,14 +24,14 @@ updated: 2026-10-10
 | catalog | 학원 프로그램, 학교 하교 시각·방과후 프로그램, 과목 목록 | `institutions`, `programs`, `school_timetables` | `api/catalog.py`, `models/catalog.py`, `schemas/catalog.py`, `services/catalog/` | `app/(org)/academy/`, `app/(org)/school/`, `components/org/` | dev:1 |
 | ai | Azure OpenAI 호출·대역·https 검사·마스킹 | - | `ai/*.py` | - | 기반 + dev:1(#10 검증) |
 | seed | 목업 데이터 적재·초기화, 시험 라우트 | (모든 테이블 적재 예외 — AD-2) | `seed/`, `api/testing.py` | - | dev:1 |
-| family | 자녀 프로필 | `children` | `api/family.py`, `models/family.py`, `schemas/family.py`, `services/family/` | `app/(parent)/children/` | dev:2 |
+| family | 자녀 프로필 | `children` | `api/family.py`, `models/family.py`, `schemas/family.py`, `services/family/` | `app/(parent)/children/` | dev:1 (PUT은 #6에서 선행) |
 | chat | 챗봇 대화, 조건 추출(LLM·규칙), 조건 저장 | `child_conditions` | `api/chat.py`, `models/chat.py`, `schemas/chat.py`, `services/chat/` | `app/(parent)/chat/`, `components/parent/` | dev:2 |
-| planner | 추천·비교, 일정 엔진, 계획 초안·확정, 영향·조정, 서비스 메타 | `plans` | `api/planner.py`, `api/meta.py`, `models/planner.py`, `schemas/planner.py`, `services/planner/` | `app/(parent)/schedule/`, `app/(org)/impact/`, `components/impact/` | dev:2 |
+| planner | 추천·비교, 일정 엔진, 계획 초안·확정, 영향·조정, 서비스 메타 | `plans` | `api/planner.py`, `api/meta.py`, `models/planner.py`, `schemas/planner.py`, `services/planner/` | `app/(parent)/schedule/`, `app/(org)/impact/`, `components/impact/` | dev:2 (서비스 메타(#12)는 dev:1) |
 
 작업 흐름 2개(기반 작업은 dev:1이 먼저 끝낸다):
 
-- **dev:1 (AILIEN_BUILDER) — 기반과 기관 웹:** 기반 작업 → REQ-11 시드(#11) → REQ-01 인증 강화(#1) → REQ-02 학원 프로그램(#2) → REQ-03 학교 시간표(#3) → REQ-13 접근성(#13) → REQ-10 비밀값 보호 검증(#10). 기반 외 선행: #2는 #6 뒤(AC-02.4·02.5·02.6이 보호자 추천 결과를 본다), #3은 #6·#7 뒤(AC-03.2 일정·AC-03.3 추천), #13은 #2·#3·#4·#5·#8 뒤(모든 화면 axe 검사), #10은 #5·#6·#8 뒤(AC-10.1·AC-10.4가 FLOW-01 실행 결과를 검사). #2·#3의 화면·API는 선행이 끝나기 전에 만들고, 선행에 걸린 확인 조건만 뒤에 시험한다.
-- **dev:2 (AILIEN_PLANNER) — 보호자 챗봇·추천·일정:** REQ-05 챗봇 조건(#5) → REQ-06 추천(#6) → REQ-07 일정(#7) → REQ-08 선택·확정(#8) → REQ-04 자녀(#4) → REQ-12 모두의 AI 표현(#12) → REQ-09 영향·조정(#9). 기반 외 선행: #5는 #11 뒤(시드 보호자·자녀), #6·#7은 #5·#11 뒤(저장된 조건·기준 시나리오 데이터), #8은 #7 뒤, #4는 #7 뒤(AC-04.2·04.5가 일정 생성 결과를 본다), #9는 #2·#3·#8 뒤(기관 수정 화면과 확정 계획이 필요). #11을 기다리는 동안 정적 화면·엔진 순수 함수 단위 시험부터 한다.
+- **dev:1 (AILIEN_BUILDER) — 기반과 기관 웹:** 기반 작업 → REQ-11 시드(#11) → REQ-01 인증 강화(#1) → REQ-02 학원 프로그램(#2) → REQ-03 학교 시간표(#3) → REQ-12 모두의 AI 표현(#12) → REQ-04 자녀(#4) → REQ-13 접근성(#13) → REQ-10 비밀값 보호 검증(#10). 기반 외 선행: #2는 #6 뒤(AC-02.4·02.5·02.6이 보호자 추천 결과를 본다), #3은 #6·#7 뒤(AC-03.2 일정·AC-03.3 추천), #4는 #7 뒤(AC-04.2·04.5가 일정 생성 결과를 본다)이고 자녀 PUT은 #6이 먼저 넣는다, #13은 #2·#3·#4·#5·#8 뒤(모든 화면 axe 검사), #10은 #5·#6·#8 뒤(AC-10.1·AC-10.4가 FLOW-01 실행 결과를 검사). #2·#3의 화면·API는 선행이 끝나기 전에 만들고, 선행에 걸린 확인 조건만 뒤에 시험한다.
+- **dev:2 (AILIEN_PLANNER) — 보호자 챗봇·추천·일정:** REQ-05 챗봇 조건(#5) → REQ-06 추천(#6) → REQ-07 일정(#7) → REQ-08 선택·확정(#8) → REQ-09 영향·조정(#9). 기반 외 선행: #5는 #11 뒤(시드 보호자·자녀), #6·#7은 #5·#11 뒤(저장된 조건·기준 시나리오 데이터), #8은 #7 뒤, #9는 #2·#3·#8 뒤(기관 수정 화면과 확정 계획이 필요). #11을 기다리는 동안 정적 화면·엔진 순수 함수 단위 시험부터 한다.
 
 ## Invariants & Rules (불변 규칙)
 
