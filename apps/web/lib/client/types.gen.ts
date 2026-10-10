@@ -1348,10 +1348,6 @@ export type ListAfterSchoolErrors = {
      * Validation Error
      */
     422: HttpValidationError;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
 };
 
 export type ListAfterSchoolError = ListAfterSchoolErrors[keyof ListAfterSchoolErrors];
@@ -1389,10 +1385,6 @@ export type CreateAfterSchoolErrors = {
      * Unprocessable Content
      */
     422: ErrorBody | FieldErrors;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
 };
 
 export type CreateAfterSchoolError = CreateAfterSchoolErrors[keyof CreateAfterSchoolErrors];
@@ -1435,10 +1427,6 @@ export type DeleteAfterSchoolErrors = {
      * Validation Error
      */
     422: HttpValidationError;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
 };
 
 export type DeleteAfterSchoolError = DeleteAfterSchoolErrors[keyof DeleteAfterSchoolErrors];
