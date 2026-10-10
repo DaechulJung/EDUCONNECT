@@ -6,8 +6,9 @@ import { Icon } from '@/components/kds/kds'
 import { PlanDraft } from '@/components/parent/PlanDraft'
 import { listChildren, listPlans } from '@/lib/client'
 import { childLabel, formatWon } from '@/lib/conditions'
+import { impactLabel } from '@/lib/impact'
 
-// 일정 탭 (experience): confirmed plans per child shown in full, drafts as rows. Impact tags arrive with #9.
+// 일정 탭 (experience): confirmed plans per child shown in full with their impact (#9), drafts as rows.
 export default function Page() {
   const plans = useQuery({
     queryKey: ['plans'],
@@ -52,14 +53,23 @@ export default function Page() {
         </div>
       )}
 
-      {confirmed.map((p) => (
-        <section key={p.id} aria-label="확정 계획" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
-          <h3 className="body-large-bold" style={{ margin: 0, display: 'flex', gap: 'var(--space-8)', alignItems: 'center' }}>
-            {name(p.child_id)} <span className="kds-tag kds-tag--positive">확정 계획</span>
-          </h3>
-          <PlanDraft plan={p} label={`${name(p.child_id)} 확정 계획`} />
-        </section>
-      ))}
+      {confirmed.map((p) => {
+        const impact = impactLabel(p.impact)
+        return (
+          <section key={p.id} aria-label="확정 계획" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
+            <h3 className="body-large-bold" style={{ margin: 0, display: 'flex', gap: 'var(--space-8)', alignItems: 'center', flexWrap: 'wrap' }}>
+              {name(p.child_id)} <span className="kds-tag kds-tag--positive">확정 계획</span>
+            </h3>
+            {impact && (
+              <div aria-live="polite" style={{ display: 'flex', gap: 'var(--space-8)', alignItems: 'center', flexWrap: 'wrap' }}>
+                <span className="kds-tag kds-tag--warning" aria-label="영향 표시"><Icon name="ic-line-warning" size={16} />{impact}</span>
+                <Link className="kds-button kds-button--secondary kds-button--small" href={`/schedule/${p.id}/adjustment`}>조정안 보기</Link>
+              </div>
+            )}
+            <PlanDraft plan={p} label={`${name(p.child_id)} 확정 계획`} />
+          </section>
+        )
+      })}
 
       {drafts.length > 0 && (
         <section aria-label="일정 초안 목록" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
