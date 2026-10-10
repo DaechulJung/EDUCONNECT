@@ -1,17 +1,25 @@
-"""family routes: the parent's own children. Bodies are 501 until #4 implements them (AD-3)."""
+"""family routes: the parent's own children. The list serves the chat screen (#5); the other
+bodies are 501 until #4 implements them (AD-3)."""
 
-from fastapi import APIRouter, status
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, status
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.authz import Parent
+from app.core.db import get_session
 from app.core.errors import error_responses, not_implemented
 from app.schemas.family import Child, ChildIn
+from app.services.family import children
 
 router = APIRouter(tags=["family"])
 
 
-@router.get("/children", responses=error_responses(401, 403, 501))
-async def list_children(session: Parent) -> list[Child]:
-    raise not_implemented()
+@router.get("/children", responses=error_responses(401, 403))
+async def list_children(
+    session: Parent, db: Annotated[AsyncSession, Depends(get_session)]
+) -> list[Child]:
+    return await children.list_own(db, session.account_id)
 
 
 @router.post(
