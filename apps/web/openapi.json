@@ -1680,7 +1680,7 @@
             },
             "description": "Forbidden"
           },
-          "501": {
+          "404": {
             "content": {
               "application/json": {
                 "schema": {
@@ -1688,7 +1688,7 @@
                 }
               }
             },
-            "description": "Not Implemented"
+            "description": "Not Found"
           },
           "422": {
             "description": "Validation Error",
@@ -1842,7 +1842,7 @@
             },
             "description": "Not Found"
           },
-          "501": {
+          "409": {
             "content": {
               "application/json": {
                 "schema": {
@@ -1850,17 +1850,25 @@
                 }
               }
             },
-            "description": "Not Implemented"
+            "description": "Conflict"
           },
           "422": {
-            "description": "Validation Error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ErrorBody"
+                    },
+                    {
+                      "$ref": "#/components/schemas/FieldErrors"
+                    }
+                  ],
+                  "title": "Response 422 Update Plan"
                 }
               }
-            }
+            },
+            "description": "Unprocessable Content"
           }
         }
       }
@@ -1933,16 +1941,6 @@
               }
             },
             "description": "Conflict"
-          },
-          "501": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorBody"
-                }
-              }
-            },
-            "description": "Not Implemented"
           },
           "422": {
             "description": "Validation Error",
