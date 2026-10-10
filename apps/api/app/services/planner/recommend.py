@@ -42,8 +42,8 @@ SCHEMA: dict[str, Any] = {
     },
 }
 
-SYSTEM_PROMPT = """너는 보호자에게 학원 후보를 추천하는 이유를 한 문장(60자 이내)씩 쓴다. JSON만 답한다.
-후보마다 program_id와 reason을 준다. 순서·후보를 바꾸거나 빼지 않는다.
+SYSTEM_PROMPT = """너는 보호자에게 학원 후보를 추천하는 이유를 한 문장(60자 이내)씩 쓴다.
+JSON만 답한다. 후보마다 program_id와 reason을 준다. 순서·후보를 바꾸거나 빼지 않는다.
 자녀의 관심사와 조건(과목·예산·요일·밀도), 후보의 과목·요일·이동 근사를 근거로 쓴다.
 자녀: {child}
 조건: {conditions}"""
@@ -146,7 +146,10 @@ def conditions_text(cond: engine.Conditions) -> str:
     subjects = "·".join(cond.subjects) or "정하지 않음"
     cap = "없음" if cond.budget_cap >= engine.UNLIMITED_BUDGET else f"{cond.budget_cap}원"
     days = "·".join(ints_to_dows(list(cond.days)))
-    return f"과목 {subjects}, 목표 월 예산 {cond.budget_target}원, 상한 {cap}, 요일 {days}, 밀도 {cond.density}"
+    return (
+        f"과목 {subjects}, 목표 월 예산 {cond.budget_target}원, 상한 {cap}, "
+        f"요일 {days}, 밀도 {cond.density}"
+    )
 
 
 def build_messages(
@@ -176,7 +179,9 @@ async def _reasons(
     if not rows:
         return template, "template"
     try:
-        value = await complete_json(TASK, SCHEMA, build_messages(child, cond, rows), provider=provider)
+        value = await complete_json(
+            TASK, SCHEMA, build_messages(child, cond, rows), provider=provider
+        )
         found = {
             item["program_id"]: item["reason"].strip()
             for item in _Reasons.model_validate(value).reasons

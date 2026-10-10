@@ -20,7 +20,6 @@ from app.schemas.planner import (
     RecommendationList,
     RecommendationRequest,
 )
-
 from app.services.planner import recommend
 
 router = APIRouter(tags=["planner"])
