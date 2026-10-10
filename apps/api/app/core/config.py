@@ -5,15 +5,19 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    """Read from environment variables or apps/api/.env (server only, AD-10).
+    """Read from environment variables, the root .env, then apps/api/.env (server only, AD-10).
 
     Without DATABASE_URL/REDIS_URL the addresses are built from the same DB_PORT, REDIS_PORT and
     POSTGRES_* variables compose.yml publishes with, so moving the ports moves the app too.
     Azure OpenAI values are never logged, returned or sent to the web app.
     """
 
-    # compose.yml passes unset variables as "" (`${NAME:-}`); treat them as unset (#14 follow-up)
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore", env_ignore_empty=True)
+    # compose.yml passes unset variables as "" (`${NAME:-}`); treat them as unset (#14 follow-up).
+    # Paths are relative to apps/api (`uv run --directory apps/api`), so the root .env that compose
+    # reads also serves `npm run seed`; apps/api/.env wins when both set a name (PR #16 review).
+    model_config = SettingsConfigDict(
+        env_file=("../../.env", ".env"), extra="ignore", env_ignore_empty=True
+    )
 
     db_port: int = 15432
     redis_port: int = 16379

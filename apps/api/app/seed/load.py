@@ -194,11 +194,16 @@ def rows(password: str) -> list[Any]:
     return out
 
 
-async def load(db: AsyncSession, password: str | None = None) -> None:
-    """Insert the seed into an empty database (call `clear` first, or use `reset`)."""
+def _password(password: str | None) -> str:
     password = settings.seed_password if password is None else password
     if not password:
-        raise SeedPasswordMissing("SEED_PASSWORD is empty: set it in .env before seeding")
+        raise SeedPasswordMissing("SEED_PASSWORD is empty: set it in the root .env before seeding")
+    return password
+
+
+async def load(db: AsyncSession, password: str | None = None) -> None:
+    """Insert the seed into an empty database (call `clear` first, or use `reset`)."""
+    password = _password(password)
     await assert_own_database(db)
     if (await db.execute(select(func.count()).select_from(Institution))).scalar_one():
         raise AlreadySeeded("database already has institutions: use `npm run seed -- --reset`")
@@ -208,6 +213,7 @@ async def load(db: AsyncSession, password: str | None = None) -> None:
 
 
 async def reset(db: AsyncSession, password: str | None = None) -> None:
+    password = _password(password)  # before clear: Redis deletes are not rolled back
     await clear(db)
     await load(db, password)
     await db.commit()

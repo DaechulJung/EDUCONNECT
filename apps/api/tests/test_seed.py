@@ -185,12 +185,13 @@ def test_ac_11_4_reset_command_removes_test_data(sync_db) -> None:
     assert counts(sync_db) == seed
 
 
-def test_seed_command_refuses_a_seeded_database_and_an_empty_password() -> None:
+def test_seed_command_refuses_a_seeded_database_and_an_empty_password(tmp_path: Path) -> None:
     def run(password: str) -> subprocess.CompletedProcess[str]:
+        # Outside apps/api, so a developer's .env cannot fill the empty SEED_PASSWORD back in
         return subprocess.run(
             [sys.executable, "-m", "app.seed"],
-            cwd=API_DIR,
-            env=os.environ | {"SEED_PASSWORD": password},
+            cwd=tmp_path,
+            env=os.environ | {"SEED_PASSWORD": password, "PYTHONPATH": str(API_DIR)},
             capture_output=True,
             text=True,
         )
@@ -199,3 +200,15 @@ def test_seed_command_refuses_a_seeded_database_and_an_empty_password() -> None:
     assert seeded_db.returncode == 1 and "--reset" in seeded_db.stderr
     no_password = run("")
     assert no_password.returncode == 1 and "SEED_PASSWORD" in no_password.stderr
+
+
+def test_reset_without_password_keeps_sessions(
+    seeded: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # The password is checked before clearing: Redis deletes would survive the DB rollback
+    assert login(seeded, "parent1").status_code == 200
+    monkeypatch.setattr(load.settings, "seed_password", "")
+    with pytest.raises(load.SeedPasswordMissing):
+        seeded.post("/api/test/reset")
+    monkeypatch.undo()
+    assert seeded.get("/api/auth/me").status_code == 200
