@@ -1,7 +1,7 @@
 ## 레인 상태 (PLANNER, 세션이 끊기면 여기서 이어받는다)
-- dev2-ui · `fix-parent-width` · PR #27 (가) push, `1b50d4b`에서 check·E2E 48/48 → VERIFIER 검토 대기. 다음: 보류·승인 보고에 대응
-- dev2-ui · `fix-chat-loading` · `03be12b` wip(회귀 E2E 초안, RED 미확인) → 지금 진행: main merge → RED → 수정(12:48Z 지시 0685a4bf)
-- dev2-9 · `issue-9` · PR #29 head `de31198` VERIFIER 시험 중 → 다음: 리뷰 보고가 오면 대응
+- dev2-ui · `fix-parent-width` · PR #27 VERIFIER 승인 → 병합 `898ea4e`(13:3xZ). 남은 일 없음(병합 후 검증·TC-40은 VERIFIER)
+- dev2-ui · `fix-chat-loading` · RED·수정·GREEN 끝, main `898ea4e` merge → 최종 check·E2E → PR → VERIFIER
+- dev2-9 · `issue-9` · PR #29 VERIFIER 보류(결함 5건, issuecomment-6098000258) → 다음: `fix-chat-loading` PR 뒤 처리(지적마다 RED 먼저)
 
 ## #6 프로그램 추천·비교 — PLANNER (dev:2)
 완료 조건: AC-06.1~06.7을 시험 자료와 함께 done 처리하고 `npm run check`·E2E 통과 뒤 `Closes #6` PR. AC-06.4 전제로 #4의 `PUT /api/children/{id}`만 먼저 구현(10:13 결정, AC-04.x는 #4).
@@ -116,3 +116,10 @@
 - [ ] AC-04.5 done → `Closes #4` PR → CI 3/3 → VERIFIER 승인 → 병합
 - dev1-10 | issue-10 | origin/main merge 완료(c308059); 다음: run-10d.sh(gen·check·E2E) → AC done·development.md #10 행 → PR Closes #10
 - dev1-10 | issue-10 | f7c21af check 256/E2E 47 통과, AC-10.1~10.7 done, development.md #10 행; 다음: push·PR Closes #10·VERIFIER 인계
+
+## 챗봇 자녀 목록 불러오는 중 결함(`fix-chat-loading`, Refs #5) — PLANNER dev2-ui
+완료 조건: 목록을 받기 전에는 보내기 비활성 + "처리하고 있어요", "먼저 자녀를 등록해 주세요"는 0명일 때만, 오류는 오류 문구. 재현 E2E RED → GREEN, `npm run check`·전체 E2E 통과, development #5 행 1줄, PR → VERIFIER (12:48Z 지시 0685a4bf)
+- [x] 회귀 E2E `#5 회귀 자녀 목록 불러오는 중`(`03be12b` 초안) — `9589179` 코드에서 RED(97행 안내 문구 보임)
+- [x] `childGate`(불러오는 중·오류·0명·자녀 있음) + 보내기·추천 질문 비활성, 오류는 experience 100행 문구 — `55fd75a`, GREEN 5/5 ×2
+- [x] development #5 행·lessons(`403ba02`, check api 240·web 45·E2E 46/46)
+- [ ] main `898ea4e` merge 뒤 check·전체 E2E, PR, VERIFIER
