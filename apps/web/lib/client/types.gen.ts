@@ -903,6 +903,22 @@ export type RecommendationRequest = {
 };
 
 /**
+ * School
+ *
+ * A school choice for the children form (#4): id and name only.
+ */
+export type School = {
+    /**
+     * Id
+     */
+    id: string;
+    /**
+     * Name
+     */
+    name: string;
+};
+
+/**
  * SchoolTimetable
  */
 export type SchoolTimetable = {
@@ -1540,6 +1556,37 @@ export type ListSubjectsResponses = {
 };
 
 export type ListSubjectsResponse = ListSubjectsResponses[keyof ListSubjectsResponses];
+
+export type ListSchoolsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/catalog/schools';
+};
+
+export type ListSchoolsErrors = {
+    /**
+     * Unauthorized
+     */
+    401: ErrorBody;
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type ListSchoolsError = ListSchoolsErrors[keyof ListSchoolsErrors];
+
+export type ListSchoolsResponses = {
+    /**
+     * Response List Schools
+     *
+     * Successful Response
+     */
+    200: Array<School>;
+};
+
+export type ListSchoolsResponse = ListSchoolsResponses[keyof ListSchoolsResponses];
 
 export type ListChildrenData = {
     body?: never;

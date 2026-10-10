@@ -36,6 +36,7 @@ ROUTES = [
     ("GET", "/api/children/{child_id}/conditions", "parent", True),
     ("PUT", "/api/children/{child_id}/conditions", "parent", True),
     ("GET", "/api/catalog/subjects", "any", False),
+    ("GET", "/api/catalog/schools", "any", True),
     ("POST", "/api/recommendations", "parent", True),
     ("POST", "/api/plans/draft", "parent", False),
     ("GET", "/api/plans", "parent", False),

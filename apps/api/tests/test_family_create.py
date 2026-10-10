@@ -57,7 +57,9 @@ def test_under_14_without_consent_is_422(client, make_account, sync_db) -> None:
     assert response.status_code == 422
     assert response.json()["detail"] == "consent_required"
     assert children_of(sync_db, parent_id) == []
-    over = client.post("/api/children", json={**BODY, "age": 14, "grade": 7, "consent_checked": False})
+    over = client.post(
+        "/api/children", json={**BODY, "age": 14, "grade": 7, "consent_checked": False}
+    )
     assert over.status_code == 201
 
 
