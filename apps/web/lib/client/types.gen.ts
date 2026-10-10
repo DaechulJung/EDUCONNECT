@@ -1539,10 +1539,6 @@ export type ListChildrenErrors = {
      * Validation Error
      */
     422: HttpValidationError;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
 };
 
 export type ListChildrenError = ListChildrenErrors[keyof ListChildrenErrors];

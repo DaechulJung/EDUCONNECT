@@ -28,7 +28,7 @@ ROUTES = [
     ("POST", "/api/school/after-school", "school", False),
     ("PUT", "/api/school/after-school/{program_id}", "school", False),
     ("DELETE", "/api/school/after-school/{program_id}", "school", False),
-    ("GET", "/api/children", "parent", False),
+    ("GET", "/api/children", "parent", True),
     ("POST", "/api/children", "parent", False),
     ("GET", "/api/children/{child_id}", "parent", False),
     ("PUT", "/api/children/{child_id}", "parent", False),
