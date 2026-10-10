@@ -1,3 +1,8 @@
+## 레인 상태 (PLANNER, 세션이 끊기면 여기서 이어받는다)
+- dev2-ui · `fix-parent-width` · PR #27 (가) 커밋·main 병합 완료 → 다음: 최종 head check·E2E → push·P2 답글·VERIFIER 멘션
+- dev2-ui · `fix-chat-loading` · `03be12b` wip(회귀 E2E 초안, RED 미확인) → PR #27 다음에 시작(12:48Z 지시 0685a4bf)
+- dev2-9 · `issue-9` · PR #29 head `de31198` VERIFIER 시험 중 → 다음: 리뷰 보고가 오면 대응
+
 ## #6 프로그램 추천·비교 — PLANNER (dev:2)
 완료 조건: AC-06.1~06.7을 시험 자료와 함께 done 처리하고 `npm run check`·E2E 통과 뒤 `Closes #6` PR. AC-06.4 전제로 #4의 `PUT /api/children/{id}`만 먼저 구현(10:13 결정, AC-04.x는 #4).
 - [x] 추천 API `POST /api/recommendations`(엔진 후보 필터·정렬 위) — `0ad1b81`
@@ -95,6 +100,10 @@
 - [x] E2E TC-19·22 (`188df37`)
 - [x] main `de8e2e8`(#6·#7 포함) merge 뒤 TC-20·21 — school 4/4 (`4112287`)
 - [x] main `0c0f143` merge, gen:api 일치, `npm run check` api 224·web 36, E2E 38/38 → AC-03.1~03.4 done → `Closes #3` PR
+- [ ] PR #27 Codex P2 (가)(13:04Z 결정 78b98fbf): 768 이상 틀 748 가운데, 표 판정 뷰포트 768, experience 132행 "(최대 748px)"
+  - [x] 768×1024·1440×900 회귀 E2E(표·7열 격자, 넘침 0, 시각·금액 한 줄) `77959fd`에서 RED(카드·요일 목록, 틀 480)
+  - [x] 틀·판정 수정(`aa54544`)·experience 132행(`7607d1e`)·main `02b2096` 병합 → GREEN
+  - [ ] 최종 head check·전체 E2E, push, Codex P2 답글(r4237682509), VERIFIER
 ## #4 자녀 정보 등록 — BUILDER (10:32 분배 조정으로 dev:2→dev:1)
 - 완료 조건: AC-04.1~04.5 done(TC-23~27), `npm run check`·`npx e2e run` 통과, `Closes #4` PR VERIFIER 승인. TC-24·27은 #7 병합 뒤
 - [x] `POST /api/children`(14세 미만 동의 확인, 실명·연락처 거부) — #6 PUT·`get_own` 공유
