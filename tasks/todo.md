@@ -17,9 +17,9 @@
 - [x] engine.py 일정 생성(결정형 탐색, 촘촘 공백 ≤30, 완화 조건) — `8ed4441`
 - [x] engine.py 추천 정렬(점수, 학원명, 시작 시각, ID) — `8ed4441`
 - [x] 단위 시험 TC-41·42·43·44·46 고정 입력 초안(14개) — `8ed4441`
-- [ ] 고정 입력을 #11 시드(`apps/api/app/seed/data/`)로 교체
-- [ ] AC-07.7 재생성 시험 TC-78(CHG-004), AC-07.8 E2E TC-79(CHG-005)
-- [ ] 일정 API·화면, AC done 처리, PR
+- [x] 고정 입력을 #11 시드(`apps/api/app/seed/data/`)로 교체 — `41d4254`
+- [x] AC-07.7 재생성 시험 TC-78(CHG-004) `41d4254`, AC-07.8 E2E TC-79(CHG-005) `f1863b9`
+- [x] 일정 API(`c2a0394`)·화면(`f1863b9`), `npm run check` api 197·web 16, E2E 22/22, AC-07.1~07.8 done, PR
 
 ## #5 챗봇 대화로 조건 설정과 화면 확인·수정 — PLANNER (dev:2)
 완료 조건: AC-05.1~05.7을 시험 자료와 함께 done 처리하고 `npm run check` 통과 뒤 `Closes #5` PR. AC-05.3·05.4는 CHG-005 문장(새 대화에 값 유지)대로 시험.
@@ -57,3 +57,10 @@
 - [x] PR #17 이월 3건: lessons #14 `[BUILDER]`, TC-07 근거에 session.test.ts, TC-76 가짜 Azure 값을 앱 생성 전에 주입
 - [ ] TC-17 일정 확인: 로컬 시험 브랜치(issue-2 + origin/issue-7, push 안 함)에서 먼저 작성·실행
 - [ ] #7 병합 → origin/main merge → TC-17 전체 재실행 → AC-02.5 done → `Closes #2` PR (#2 blocked-by #7 등록)
+## #12 모두의 AI 교육 에이전트 표현과 연동 경계 — BUILDER (10:32 분배 조정으로 dev:2→dev:1)
+- 완료 조건: AC-12.1·12.2 done(TC-67·68), `npm run check`·`npx e2e run` 통과, `Closes #12` PR VERIFIER 승인
+- [x] 라벨 #12·#4 dev:2→dev:1
+- [x] `GET /api/meta` 고정 문구(AD-14 모의 경계), `test_meta`(앱 생성 전 합성 Azure 값, 호스트 0건), 501 목록에서 제외, `gen:api`
+- [x] `tests/branding.e2e.ts` TC-67·68 — 앱 기동 전 합성 `AZURE_OPENAI_ENDPOINT`, 없으면 TC-68 실패 확인. CI e2e env에 합성 값
+- [x] arch 분배 문장 3곳(별도 커밋, BUZZ 04c89f41)
+- [ ] AC-12.1·12.2 done, development.md, PR

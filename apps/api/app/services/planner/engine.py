@@ -221,6 +221,11 @@ def day_gaps(programs: Sequence[Program], ctx: Context) -> dict[int, list[int]]:
     return gaps
 
 
+def _covers_subjects(programs: Sequence[Program], cond: Conditions) -> bool:
+    """요청한 과목이 모두 한 번 이상 들어 있어야 해다. 주 횟수는 목표(`_objective`)로 본다."""
+    return {p.subject for p in programs} >= set(cond.subjects)
+
+
 def _dense_enough(programs: Sequence[Program], ctx: Context, cond: Conditions) -> bool:
     if cond.density != "tight":
         return True
@@ -245,6 +250,8 @@ def _search(candidates: Sequence[Program], ctx: Context, cond: Conditions) -> Pl
     for size in range(1, min(MAX_PLAN_PROGRAMS, len(candidates)) + 1):
         for combo in combinations(candidates, size):
             if monthly_total(combo) > cond.budget_cap:
+                continue
+            if not _covers_subjects(combo, cond):
                 continue
             if validate(combo, ctx, cond.budget_cap):
                 continue

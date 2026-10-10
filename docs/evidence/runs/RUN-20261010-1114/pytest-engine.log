@@ -1,0 +1,33 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- /Users/agentneo/Desktop/Sync/DS_Projects/30_Projects/PRJ-017_KT_Hackerthon2026/AIDX_PRE_TRAINING_2/.worktrees/verify/apps/api/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/agentneo/Desktop/Sync/DS_Projects/30_Projects/PRJ-017_KT_Hackerthon2026/AIDX_PRE_TRAINING_2/.worktrees/verify/apps/api
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 23 items
+
+tests/test_engine.py::test_travel_formula PASSED                         [  4%]
+tests/test_engine.py::test_eligible_excludes_grade_full_and_undisclosed PASSED [  8%]
+tests/test_engine.py::test_eligible_filters_type_and_days PASSED         [ 13%]
+tests/test_engine.py::test_tc41_no_overlap_in_generated_plan PASSED      [ 17%]
+tests/test_engine.py::test_tc42_no_travel_shortage PASSED                [ 21%]
+tests/test_engine.py::test_tc43_total_is_sum_of_costs_and_under_cap PASSED [ 26%]
+tests/test_engine.py::test_tc44_success_criterion_3 PASSED               [ 30%]
+tests/test_engine.py::test_tc46_same_input_same_plan PASSED              [ 34%]
+tests/test_engine.py::test_items_have_ad16_shape PASSED                  [ 39%]
+tests/test_engine.py::test_no_feasible_plan_names_budget_relaxation PASSED [ 43%]
+tests/test_engine.py::test_plan_without_a_requested_subject_is_not_feasible PASSED [ 47%]
+tests/test_engine.py::test_validate_school_overlap_travel_shortage_and_budget PASSED [ 52%]
+tests/test_engine.py::test_existing_event_overlap_without_location PASSED [ 56%]
+tests/test_engine.py::test_no_dismissal_day_skips_first_class_rules PASSED [ 60%]
+tests/test_engine.py::test_recommend_order_is_deterministic[order0] PASSED [ 65%]
+tests/test_engine.py::test_recommend_order_is_deterministic[order1] PASSED [ 69%]
+tests/test_engine.py::test_tc41_seed_week_has_school_and_classes_without_overlap PASSED [ 73%]
+tests/test_engine.py::test_tc42_seed_no_travel_shortage PASSED           [ 78%]
+tests/test_engine.py::test_tc43_seed_total_is_sum_of_costs_and_under_cap PASSED [ 82%]
+tests/test_engine.py::test_tc44_seed_success_criterion_3 PASSED          [ 86%]
+tests/test_engine.py::test_tc46_seed_same_conditions_same_plan PASSED    [ 91%]
+tests/test_engine.py::test_tc78_moving_a_chosen_program_changes_the_plan PASSED [ 95%]
+tests/test_engine.py::test_seed_no_feasible_plan_names_relaxations PASSED [100%]
+
+============================== 23 passed in 2.58s ==============================

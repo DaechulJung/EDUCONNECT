@@ -1,0 +1,21 @@
+run passed exit 0 commit 4f2b30be3378645f36ac4512c3d97fae43532e40 dirty False {'discovered': 21, 'selected': 20, 'executed': 20, 'passed': 20, 'failed': 0, 'interrupted': 0, 'flaky': 0, 'skipped': 0}
+passed tests/auth.e2e.ts TC-01 시드 계정 3종이 각자 첫 화면으로 들어간다
+passed tests/auth.e2e.ts TC-02 틀린 비밀번호는 문구를 보이고 세션 쿠키를 주지 않는다
+passed tests/auth.e2e.ts TC-10 새로 고침하거나 다른 탭에 다녀와도 로그인 화면이 다시 나오지 않는다
+passed tests/branding.e2e.ts TC-67 시드 보호자 화면 머리에 "EDUCONNECT · 모두의 AI 교육 에이전트"와 연동 상태 "모의"가 보인다
+passed tests/branding.e2e.ts TC-68 챗봇 화면의 AI 공급자 표기가 "Azure OpenAI(국내 리전)"이고 화면과 /api/meta에 엔드포인트 호스트가 0건이다
+passed tests/chat-fallback.e2e.ts TC-32 키가 없으면 규칙 추출로 같은 조건 카드가 보이고 응답이 이어진다
+passed tests/chat-fallback.e2e.ts TC-33 대역이 스키마에 맞지 않는 JSON을 주면 대체 경로로 같은 카드가 보이고 오류 원문은 없다
+passed tests/chat.e2e.ts TC-28 전후 문장을 보내면 조건 카드에 목표 1,000,000원·상한 1,100,000원이 보인다
+passed tests/chat.e2e.ts TC-29 안에서 문장을 보내면 목표와 상한이 모두 1,000,000원이다
+passed tests/chat.e2e.ts TC-30 예산 상한을 1,000,000원으로 고쳐 저장하면 새 대화의 조건 카드에 1,000,000원이 남는다
+passed tests/chat.e2e.ts TC-31 유형 교과 학원·요일 월·수·금으로 저장하면 새 대화의 조건 카드에 그 값이 남는다
+passed tests/recommend.e2e.ts TC-35 기준 시나리오 조건으로 추천하면 9개 열이 보이고 모든 행 과목이 영어 또는 수학이다
+passed tests/recommend.e2e.ts TC-36 비교표의 모든 이동 값 옆에 근사가 보인다
+passed tests/recommend.e2e.ts TC-37 중1 전용 수학과 마감 영어는 비교표에 없다
+passed tests/recommend.e2e.ts TC-38 관심사를 과학으로 저장하고 추천하면 대역 요청의 관심사가 과학이고 추천 이유가 채워진다
+passed tests/recommend.e2e.ts TC-39 대역이 오류를 내면 템플릿 설명이 보이고 행 수는 같다
+passed tests/recommend.e2e.ts TC-80 유형 교과 학원·요일 월·수·금으로 저장하고 추천하면 1행 이상, 모든 행이 그 조건 안이다
+passed tests/recommend.e2e.ts 추천을 본 뒤 새 대화로 조건 카드가 바뀌면 이전 비교표가 사라진다
+passed tests/smoke.e2e.ts 세션 없이 첫 화면을 열면 로그인 화면이 보인다
+passed tests/smoke.e2e.ts 세션 없이 보호자·기관 화면 주소로 가면 로그인 화면으로 돌아간다

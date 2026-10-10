@@ -1885,10 +1885,6 @@ export type CreatePlanDraftErrors = {
      * Unprocessable Content
      */
     422: ErrorBody | FieldErrors;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
 };
 
 export type CreatePlanDraftError = CreatePlanDraftErrors[keyof CreatePlanDraftErrors];
@@ -1975,10 +1971,6 @@ export type GetPlanErrors = {
      * Validation Error
      */
     422: HttpValidationError;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
 };
 
 export type GetPlanError = GetPlanErrors[keyof GetPlanErrors];
@@ -2286,15 +2278,6 @@ export type GetMetaData = {
     query?: never;
     url: '/api/meta';
 };
-
-export type GetMetaErrors = {
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
-};
-
-export type GetMetaError = GetMetaErrors[keyof GetMetaErrors];
 
 export type GetMetaResponses = {
     /**

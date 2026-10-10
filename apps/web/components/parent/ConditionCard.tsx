@@ -4,8 +4,8 @@ import type { Conditions } from '@/lib/client'
 import { conditionRows } from '@/lib/conditions'
 
 // Condition card under the chat answer (experience 조건 카드): 8 name·value rows, edit and save.
-// '추천 보기' uses the saved conditions, so it waits while the card has unsaved edits.
-export function ConditionCard({ value, childName, dirty, saving, error, onEdit, onSave, canRecommend, recommending, onRecommend }: {
+// '추천 보기' and '일정 만들기' use the saved conditions, so they wait while the card has unsaved edits.
+export function ConditionCard({ value, childName, dirty, saving, error, onEdit, onSave, canRecommend, recommending, onRecommend, planning, onPlan }: {
   value: Conditions
   childName: string
   dirty: boolean
@@ -16,6 +16,8 @@ export function ConditionCard({ value, childName, dirty, saving, error, onEdit, 
   canRecommend: boolean
   recommending: boolean
   onRecommend: () => void
+  planning: boolean
+  onPlan: () => void
 }) {
   return (
     <article className="kds-card" aria-label="조건 카드" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
@@ -34,9 +36,14 @@ export function ConditionCard({ value, childName, dirty, saving, error, onEdit, 
           {saving ? '처리하고 있어요' : '조건 저장'}
         </button>
       </div>
-      <button type="button" className="kds-button kds-button--tertiary" disabled={dirty || !canRecommend || recommending} onClick={onRecommend}>
-        {recommending ? '추천을 찾고 있어요' : '추천 보기'}
-      </button>
+      <div style={{ display: 'flex', gap: 'var(--space-8)' }}>
+        <button type="button" className="kds-button kds-button--tertiary" style={{ flex: 1 }} disabled={dirty || !canRecommend || recommending} onClick={onRecommend}>
+          {recommending ? '추천을 찾고 있어요' : '추천 보기'}
+        </button>
+        <button type="button" className="kds-button kds-button--tertiary" style={{ flex: 1 }} disabled={dirty || !canRecommend || planning} onClick={onPlan}>
+          {planning ? '일정을 만들고 있어요' : '일정 만들기'}
+        </button>
+      </div>
     </article>
   )
 }
