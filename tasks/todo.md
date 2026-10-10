@@ -117,6 +117,14 @@
 - dev1-10 | issue-10 | origin/main merge 완료(c308059); 다음: run-10d.sh(gen·check·E2E) → AC done·development.md #10 행 → PR Closes #10
 - dev1-10 | issue-10 | f7c21af check 256/E2E 47 통과, AC-10.1~10.7 done, development.md #10 행; 다음: push·PR Closes #10·VERIFIER 인계
 
+## preview 결함 1 subjects 501 (Refs #5) — BUILDER (dev:1)
+완료 조건: AD-15 `GET /api/catalog/subjects` 구현(로그인 사용자 200, 삭제 안 된 프로그램 과목 중복 없이 이름순), 501 제거·계약 시험 갱신·gen:api, RED 확인한 pytest 3종·E2E `#5 회귀 새 과목 칩` 통과 뒤 PR.
+- [x] RED: main `9f481e4` 코드에서 pytest 4 failed(not_implemented), E2E 칩 없음
+- [x] 구현 `services/catalog/subjects.py`, `catalog.py` 501 제거, `test_routes_contract.py` done, gen:api
+- [x] development.md #5 행·lessons 교훈(#5 subjects·#3 방과후 수정)
+- [x] E2E `send()`가 자녀 로드를 기다리게 함(TC-16 경합)
+- [ ] 전체 `npm run check`·E2E(ai 제외) 통과 → PR → VERIFIER
+- dev1-4 | fix-subjects | 02309bf revert + origin/main(02b2096) merge 완료(9e7ebcf); 다음: run-m2.sh(gen·check·E2E) → PR 본문 수정
 ## 챗봇 자녀 목록 불러오는 중 결함(`fix-chat-loading`, Refs #5) — PLANNER dev2-ui
 완료 조건: 목록을 받기 전에는 보내기 비활성 + "처리하고 있어요", "먼저 자녀를 등록해 주세요"는 0명일 때만, 오류는 오류 문구. 재현 E2E RED → GREEN, `npm run check`·전체 E2E 통과, development #5 행 1줄, PR → VERIFIER (12:48Z 지시 0685a4bf)
 - [x] 회귀 E2E `#5 회귀 자녀 목록 불러오는 중`(`03be12b` 초안) — `9589179` 코드에서 RED(97행 안내 문구 보임)

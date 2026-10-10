@@ -1,0 +1,27 @@
+
+ RUN  e2e v0.18.0 /Users/agentneo/Desktop/71_Hackerthon/01_Pre_Project/AIDX_PRE_TRAINING_2/.worktrees/verify
+      run 01a1261b-97c6-7987-9e46-7da70787b055 · targets: web
+
+ ✓ |web| tests/academy.e2e.ts (5 tests) 20.70s
+ ✓ |web| tests/auth.e2e.ts (3 tests) 10.65s
+ ✓ |web| tests/branding.e2e.ts (2 tests) 3.91s
+ ✓ |web| tests/chat-fallback.e2e.ts (2 tests) 9.35s
+ ✓ |web| tests/chat.e2e.ts (5 tests) 16.31s
+ ✓ |web| tests/children.e2e.ts (6 tests) 28.00s
+stdout | |web| tests/parent-width.e2e.ts > 보호자 화면을 태블릿 폭(768×1024)으로 열면 748px 틀 안에 추천 비교표·주간 7열 격자가 넘치지 않고 시각·금액이 한 줄로 보인다
+parent-width 768×1024 {"추천 비교표":{"shape":"table","frame":748,"page":{"client":768,"scroll":768},"box":{"client":708,"scroll":708},"columns":9,"broken":[]},"일정 초안":{"shape":"table","frame":748,"page":{"client":768,"scroll":768},"box":{"client":708,"scroll":708},"columns":7,"broken":[]},"확정 계획":{"shape":"table","frame":748,"page":{"client":768,"scroll":768},"box":{"client":708,"scroll":708},"columns":7,"broken":[]}}
+stdout | |web| tests/parent-width.e2e.ts > 보호자 화면을 PC 폭(1440×900)으로 열면 가운데 748px 틀 안에 추천 비교표·주간 7열 격자가 넘치지 않고 시각·금액이 한 줄로 보인다
+parent-width 1440×900 {"추천 비교표":{"shape":"table","frame":748,"page":{"client":1440,"scroll":1440},"box":{"client":700,"scroll":700},"columns":9,"broken":[]},"일정 초안":{"shape":"table","frame":748,"page":{"client":1440,"scroll":1440},"box":{"client":700,"scroll":700},"columns":7,"broken":[]},"확정 계획":{"shape":"table","frame":748,"page":{"client":1440,"scroll":1440},"box":{"client":700,"scroll":700},"columns":7,"broken":[]}}
+ ✓ |web| tests/parent-width.e2e.ts (3 tests) 8.12s
+ ✓ |web| tests/plan.e2e.ts (5 tests) 16.31s
+ ✓ |web| tests/recommend.e2e.ts (7 tests) 18.97s
+ ✓ |web| tests/schedule.e2e.ts (4 tests) 12.43s
+ ✓ |web| tests/school.e2e.ts (5 tests) 12.85s
+ ✓ |web| tests/smoke.e2e.ts (2 tests) 775ms
+
+ Test Files  12 passed (12)
+      Tests  49 passed (49)
+   Start at  22:58:25
+   Duration  158.97s (2m 39s)
+     Report  .e2e/report.json
+
