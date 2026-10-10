@@ -38,7 +38,7 @@ async def conditions(db: AsyncSession, child_id: uuid.UUID) -> engine.Conditions
         budget_target=row.budget_target,
         budget_cap=row.budget_cap,
         types=tuple(row.types),
-        days=tuple(row.days) if row.days else engine.ALL_DAYS,
+        days=tuple(row.days) if row.days else engine.WEEKDAYS,
         density=row.density,
     )
 

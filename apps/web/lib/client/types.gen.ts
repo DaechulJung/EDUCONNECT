@@ -302,7 +302,7 @@ export type Conditions = {
     /**
      * Days
      *
-     * 비어 있으면 모든 요일
+     * 비어 있으면 월~금(기본값)
      */
     days?: Array<'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun'>;
     /**
@@ -340,7 +340,7 @@ export type ConditionsIn = {
     /**
      * Days
      *
-     * 비어 있으면 모든 요일
+     * 비어 있으면 월~금(기본값)
      */
     days?: Array<'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun'>;
     /**
