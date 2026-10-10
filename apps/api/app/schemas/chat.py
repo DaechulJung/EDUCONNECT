@@ -19,7 +19,7 @@ class ConditionsIn(BaseModel):
     budget_target: int = Field(ge=0, le=WON_MAX)
     budget_cap: int = Field(ge=0, le=WON_MAX)
     types: list[ProgramType] = Field(default_factory=list, description="비어 있으면 모든 유형")
-    days: list[Dow] = Field(default_factory=list, description="비어 있으면 모든 요일")
+    days: list[Dow] = Field(default_factory=list, description="비어 있으면 월~금(기본값)")
     density: Density = "normal"
 
     @model_validator(mode="after")

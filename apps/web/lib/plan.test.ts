@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 import type { Plan, PlanItem } from './client'
-import { BLOCKED, OVER_BUDGET, UNAVAILABLE, UNAVAILABLE_TAG, canConfirm, confirmFailure, confirmNotice, itemMonthly, overBudget, relaxationLabels, swapCandidates, swapProgram, weekColumns, withoutProgram } from './plan'
+import { BLOCKED, OVER_BUDGET, UNAVAILABLE, UNAVAILABLE_TAG, canConfirm, confirmFailure, confirmNotice, itemBreakdown, itemMonthly, overBudget, planAnswer, relaxationLabels, swapCandidates, swapProgram, weekColumns, withoutProgram } from './plan'
 
 const item = (over: Partial<PlanItem>): PlanItem => ({
   program_id: 'p1',
@@ -114,3 +114,16 @@ test('확정 버튼 아래 안내는 위반 종류를 따른다', () => {
   expect(confirmNotice(plan(), ['p1'])).toBe(UNAVAILABLE)
   expect(confirmNotice(plan({ status: 'confirmed' }))).toBeNull()
 })
+
+// #7 회귀 07-4 (prd 68행, experience 49행): 합계 옆 내역은 '교습비'와 '기타경비'를 나눠 이름을 붙인다.
+test('프로그램별 내역은 교습비 · 기타경비 이름과 합을 보인다', () => {
+  expect(itemBreakdown({ monthly_tuition: 200_000, monthly_other: 20_000 })).toBe('교습비 200,000원 + 기타경비 20,000원 = 220,000원')
+})
+
+// #7 회귀 07-5 (experience 63행): 일정을 만든 뒤 결과를 먼저 쓰는 챗봇 답변.
+test('일정 답변은 과목별 곳 수와 월 학원비를 먼저, 이동 시간 이유를 뒤에 쓴다', () => {
+  const item = (subject: string, program_id: string) => ({ program_id, subject }) as PlanItem
+  const plan = { items: [item('영어', 'e1'), item('수학', 'm1'), item('영어', 'e2'), item('수학', 'm2')], monthly_total: 1_020_000 } as Plan
+  expect(planAnswer(plan)).toBe('영어 2곳·수학 2곳으로 월 1,020,000원 일정을 만들었어요. 학교 하교 뒤 이동 시간을 넣었어요.')
+})
+

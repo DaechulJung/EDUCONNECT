@@ -51,6 +51,19 @@ export function weekColumns(plan: Plan, unavailable: readonly string[] = []): { 
   })
 }
 
+// 합계 옆 내역 (prd 68행, experience 49행): '교습비'와 '기타경비'를 나눠 이름을 붙인다.
+export function itemBreakdown(i: Pick<PlanItem, 'monthly_tuition' | 'monthly_other'>): string {
+  return `교습비 ${formatWon(i.monthly_tuition)} + 기타경비 ${formatWon(i.monthly_other)} = ${formatWon(itemMonthly(i))}`
+}
+
+// 일정을 만든 뒤의 챗봇 답변 (experience 63행): 결과(과목별 곳 수·월 학원비)를 먼저, 이유를 뒤에.
+export function planAnswer(plan: Pick<Plan, 'items' | 'monthly_total'>): string {
+  const counts = new Map<string, number>()
+  for (const i of plan.items) counts.set(i.subject, (counts.get(i.subject) ?? 0) + 1)
+  const parts = [...counts].map(([subject, n]) => `${subject} ${n}곳`).join('·')
+  return `${parts}으로 월 ${formatWon(plan.monthly_total)} 일정을 만들었어요. 학교 하교 뒤 이동 시간을 넣었어요.`
+}
+
 export function itemMonthly(i: Pick<PlanItem, 'monthly_tuition' | 'monthly_other'>): number {
   return i.monthly_tuition + i.monthly_other
 }

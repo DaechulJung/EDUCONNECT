@@ -3,7 +3,7 @@
 import { Icon } from '@/components/kds/kds'
 import type { Plan, PlanItem } from '@/lib/client'
 import { formatWon } from '@/lib/conditions'
-import { NO_PLAN, canConfirm, confirmNotice, itemMonthly, overBudget, relaxationLabels, weekColumns, type DayEntry } from '@/lib/plan'
+import { NO_PLAN, canConfirm, confirmNotice, itemBreakdown, overBudget, relaxationLabels, weekColumns, type DayEntry } from '@/lib/plan'
 import { useWideViewport } from '@/lib/use-wide-viewport'
 
 // Draft edits (#8): '빼기'·'바꾸기' change the draft in place, '일정 확정' asks first (experience 112행).
@@ -118,7 +118,7 @@ function Summary({ plan }: { plan: Plan }) {
           {plan.items.map((i) => (
             <li key={i.program_id} className="kds-kv caption-medium-medium" aria-label={`${i.institution_name} ${i.subject}`}>
               <span className="kds-kv__label">{i.institution_name} {i.subject}</span>
-              <span className="kds-kv__value">{formatWon(i.monthly_tuition)} + {formatWon(i.monthly_other)} = {formatWon(itemMonthly(i))}</span>
+              <span className="kds-kv__value">{itemBreakdown(i)}</span>
             </li>
           ))}
         </ul>

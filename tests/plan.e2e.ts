@@ -15,12 +15,12 @@ beforeEach(async ({ app, screen }) => {
   await expect(weekView(screen)).toBeVisible({ timeout: 15_000 })
 })
 
-// 내역 line "새봄영어수학학원 영어450,000원 + 30,000원 = 480,000원" → institution and monthly (교습비 + 기타경비).
+// 내역 line "새봄영어수학학원 영어교습비 450,000원 + 기타경비 30,000원 = 480,000원" → institution and monthly.
 async function englishLine(screen: Screen): Promise<{ institution: string; monthly: number }> {
   await screen.getByText('프로그램별 내역').tap()
   const lines = await screen.getByRole('list', '월 학원비 내역').getByRole('listitem').allTextContents()
   for (const line of lines) {
-    const m = line.trim().match(/^(.+) 영어\s*([\d,]+)원 \+ ([\d,]+)원 = ([\d,]+)원$/)
+    const m = line.trim().match(/^(.+) 영어\s*교습비 ([\d,]+)원 \+ 기타경비 ([\d,]+)원 = ([\d,]+)원$/)
     if (m) {
       expect(won(m[2]) + won(m[3])).toBe(won(m[4]))
       return { institution: m[1], monthly: won(m[4]) }

@@ -1,5 +1,5 @@
 import { beforeEach, expect, test, type App, type Locator, type Screen } from 'e2e'
-import { api, send, signInParent, TASK } from './chat-support'
+import { api, pickDays, send, signInParent, TASK } from './chat-support'
 import { AROUND_REPLY, makePlan, minutes, saveConditions, week } from './plan-support'
 
 // REQ-03 in the browser (FLOW-03): TC-19 (AC-03.1), TC-20 (AC-03.2), TC-21 (AC-03.3), TC-22 (AC-03.4).
@@ -136,8 +136,7 @@ test('TC-20 초5 수요일 하교 13:40을 저장한 뒤 그 학교 초5 자녀�
   // and 영어 on 월·수 is full in the seed, so 영어·수학 on 월·수·금 has no feasible plan.
   await saveConditions(app, screen, async (sheet) => {
     await sheet.getByRole('group', '선호 과목').getByRole('button', '영어').tap()
-    const days = sheet.getByRole('group', '가능 요일')
-    for (const day of ['월', '수', '금']) await days.getByRole('button', day).tap()
+    await pickDays(sheet, ['월', '수', '금'])
     await sheet.getByRole('radio', '보통').tap()
   })
   await makePlan(screen)

@@ -10,6 +10,8 @@ from itertools import combinations
 from app.services.planner.travel import Point, travel_minutes
 
 ALL_DAYS = (0, 1, 2, 3, 4, 5, 6)
+# 가능 요일을 비워 두면 월~금(experience 157행 기본값).
+WEEKDAYS = (0, 1, 2, 3, 4)
 TIGHT_GAP_MAX_MIN = 30
 MIN_WEEKLY_PER_SUBJECT = 2
 MAX_PLAN_PROGRAMS = 8
@@ -75,7 +77,7 @@ class Conditions:
     budget_target: int
     budget_cap: int
     types: tuple[str, ...] = ()
-    days: tuple[int, ...] = (0, 1, 2, 3, 4)
+    days: tuple[int, ...] = WEEKDAYS
     density: str = "normal"
 
 

@@ -13,7 +13,7 @@ import { NoPlan, PlanDraft } from '@/components/parent/PlanDraft'
 import { RecommendTable } from '@/components/parent/RecommendTable'
 import { SwapSheet } from '@/components/parent/SwapSheet'
 import { confirmPlan, createPlanDraft, getConditions, listChildren, listSubjects, recommendPrograms, saveConditions, sendChatMessage, updateChild, updatePlan, type Conditions, type Plan, type PlanItem, type Recommendation } from '@/lib/client'
-import { confirmFailure, swapCandidates, type ErrorBody, swapProgram, withoutProgram } from '@/lib/plan'
+import { confirmFailure, planAnswer, swapCandidates, type ErrorBody, swapProgram, withoutProgram } from '@/lib/plan'
 import { BASE_SUBJECTS, childGate, childLabel, pickChild, sameConditions, subjectOptions } from '@/lib/conditions'
 import { isTimetableMissing, saveDismissalAndReplan, type Dismissal } from '@/lib/dismissal'
 
@@ -57,6 +57,9 @@ function Chat() {
   const [swapItem, setSwapItem] = useState<PlanItem | null>(null)
   const [swapLoading, setSwapLoading] = useState(false)
   const [swapRecs, setSwapRecs] = useState<Recommendation[] | null>(null)
+  const [swapFailed, setSwapFailed] = useState(false)
+  // The answer written when the plan was made (experience 63행); edits to the draft do not rewrite it.
+  const [planNote, setPlanNote] = useState<string | null>(null)
   const [confirming, setConfirming] = useState(false)
   const nextId = useRef(1)
   // Bumped whenever the child or the card changes; a recommendation or plan answer for an older value is dropped.
@@ -73,7 +76,7 @@ function Chat() {
     },
   })
   const child = pickChild(children.data, childId)
-  const gate = childGate({ status: children.status, fetching: children.isFetching }, !!child)
+  const gate = childGate({ status: children.status, fetching: children.isFetching, loaded: children.data !== undefined }, !!child)
   // A message can go once the list has answered: to the child, or the "먼저 자녀를 등록해 주세요" answer.
   const canSend = gate === 'ready' || gate === 'none'
   const saved = useQuery({
@@ -102,6 +105,7 @@ function Chat() {
     setRecommending(false)
     planContext.current++
     setPlan(null)
+    setPlanNote(null)
     setNoPlan(null)
     setNeedDismissal(false)
     setDismissalError(null)
@@ -111,6 +115,7 @@ function Chat() {
     setUnavailable([])
     setSwapItem(null)
     setSwapRecs(null)
+    setSwapFailed(false)
     setSwapLoading(false)
     setConfirming(false)
   }
@@ -181,6 +186,7 @@ function Chat() {
     setPlanning(true)
     setPlanError(null)
     setPlan(null)
+    setPlanNote(null)
     setNoPlan(null)
     setNeedDismissal(false)
     setUnavailable([])
@@ -189,6 +195,7 @@ function Chat() {
     setPlanning(false)
     if (data) {
       setPlan(data)
+      setPlanNote(planAnswer(data))
       return
     }
     const body = error as { detail?: string; data?: { relaxations?: string[] } } | undefined
@@ -244,13 +251,21 @@ function Chat() {
   // '바꾸기' candidates come from the recommendation list; fetch it once (without opening the 비교표) if needed.
   async function openSwap(item: PlanItem) {
     setSwapItem(item)
-    if (recs || swapRecs || !child) return
+    if (recs || swapRecs) return
+    await loadSwapCandidates()
+  }
+
+  // A failed request is an error with '다시 시도' (experience 100행), not "no candidates".
+  async function loadSwapCandidates() {
+    if (!child) return
     const context = planContext.current
     setSwapLoading(true)
+    setSwapFailed(false)
     const { data } = await recommendPrograms({ body: { child_id: child.id } })
     if (context !== planContext.current) return
     setSwapLoading(false)
-    setSwapRecs(data?.items ?? [])
+    if (data) setSwapRecs(data.items)
+    else setSwapFailed(true)
   }
 
   async function pickSwap(programId: string) {
@@ -337,6 +352,8 @@ function Chat() {
           {recError && <p className="kds-info-line kds-info-line--error" role="alert"><Icon name="ic-line-warning" size={16} />{recError}</p>}
           {recs && <RecommendTable items={recs} />}
           {planError && <p className="kds-info-line kds-info-line--error" role="alert"><Icon name="ic-line-warning" size={16} />{planError}</p>}
+          {planning && <div className="kds-chat__thinking" role="status">학교 시간표와 학원을 맞춰 보는 중</div>}
+          {plan && planNote && <div className="kds-chat__answer">{planNote}</div>}
           {plan && (
             <PlanDraft
               plan={plan}
@@ -383,6 +400,8 @@ function Chat() {
         item={swapItem}
         candidates={swapItem && (recs ?? swapRecs) ? swapCandidates(plan ?? { items: [] }, swapItem, (recs ?? swapRecs)!) : null}
         loading={swapLoading}
+        failed={swapFailed}
+        onRetry={loadSwapCandidates}
         onPick={pickSwap}
         onClose={() => setSwapItem(null)}
       />

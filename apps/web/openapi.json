@@ -2891,7 +2891,7 @@
             },
             "type": "array",
             "title": "Days",
-            "description": "비어 있으면 모든 요일"
+            "description": "비어 있으면 월~금(기본값)"
           },
           "density": {
             "type": "string",
@@ -2965,7 +2965,7 @@
             },
             "type": "array",
             "title": "Days",
-            "description": "비어 있으면 모든 요일"
+            "description": "비어 있으면 월~금(기본값)"
           },
           "density": {
             "type": "string",

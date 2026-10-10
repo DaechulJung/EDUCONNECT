@@ -1,7 +1,7 @@
 ## 레인 상태 (PLANNER, 세션이 끊기면 여기서 이어받는다)
 - dev2-ui · `fix-parent-width` · PR #27 VERIFIER 승인 → 병합 `898ea4e`(13:3xZ). 남은 일 없음(병합 후 검증·TC-40은 VERIFIER)
-- dev2-ui · `fix-chat-loading` · RED·수정·GREEN 끝, main `898ea4e` merge → 최종 check·E2E → PR → VERIFIER
-- dev2-9 · `issue-9` · PR #29 VERIFIER 보류(결함 5건, issuecomment-6098000258) → 다음: `fix-chat-loading` PR 뒤 처리(지적마다 RED 먼저)
+- dev2-ui · `fix-chat-loading` · PR #31 VERIFIER 승인 → 병합 `aec2f3f`. 남은 일 없음([관찰] 성공 뒤 재조회 실패 시 보내기 막힘 — 후속 판단 대기)
+- dev2-9 · `issue-9` · PR #29 결함 5건 RED→GREEN, main `aec2f3f` merge → 다음: 최종 check·E2E → push·답글 4곳·VERIFIER
 
 ## #6 프로그램 추천·비교 — PLANNER (dev:2)
 완료 조건: AC-06.1~06.7을 시험 자료와 함께 done 처리하고 `npm run check`·E2E 통과 뒤 `Closes #6` PR. AC-06.4 전제로 #4의 `PUT /api/children/{id}`만 먼저 구현(10:13 결정, AC-04.x는 #4).
@@ -129,3 +129,11 @@
 - [x] `childGate`(불러오는 중·오류·0명·자녀 있음) + 보내기·추천 질문 비활성, 오류는 experience 100행 문구 — `55fd75a`, GREEN 5/5 ×2
 - [x] development #5 행·lessons(`403ba02`, check api 240·web 45·E2E 46/46)
 - [ ] main `898ea4e` merge 뒤 check·전체 E2E, PR, VERIFIER
+
+## 문서·코드 대조 1군(PR C `fix-plan-ux`, PR D `fix-plan-travel`) — PLANNER dev2-ui (13:56Z 지시 2a5bc50c)
+레인: dev2-ui · `fix-plan-ux` → PR C 뒤 같은 레인에서 `fix-plan-travel`(07-1)
+- [x] PR C 회귀 시험 main `aec2f3f`에서 RED(pytest 1·vitest 4·E2E 4) — `7eab245`
+- [x] 05-2 빈 요일 월~금(api `1cc0d7e`), 05-6·07-4·07-5·08-3·childGate(web `b9128fa`) — plan-ux E2E 4/4
+- [ ] PR C: check·전체 E2E, PR, VERIFIER
+- [ ] PR D 07-1: 계획 항목 이동 값 API·gen:api·주간 일정표 "이동 N분(근사)", 회귀 RED 먼저
+
