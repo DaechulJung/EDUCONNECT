@@ -1,0 +1,26 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- /Users/agentneo/Desktop/Sync/DS_Projects/30_Projects/PRJ-017_KT_Hackerthon2026/AIDX_PRE_TRAINING_2/EDUCONNECT/apps/api/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/agentneo/Desktop/Sync/DS_Projects/30_Projects/PRJ-017_KT_Hackerthon2026/AIDX_PRE_TRAINING_2/EDUCONNECT/apps/api
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 16 items
+
+tests/test_auth.py::test_tc06_seed_password_is_stored_as_scrypt PASSED   [  6%]
+tests/test_auth.py::test_tc07_five_failures_lock_the_account PASSED      [ 12%]
+tests/test_auth.py::test_tc08_lock_ends_after_fifteen_minutes PASSED     [ 18%]
+tests/test_auth.py::test_tc09_old_cookie_is_401_after_logout PASSED      [ 25%]
+tests/test_auth.py::test_tc11_session_cookie_attributes PASSED           [ 31%]
+tests/test_auth.py::test_tc12_no_cookie_is_401_and_changes_nothing PASSED [ 37%]
+tests/test_authz.py::test_tc03_academy_a_cannot_touch_academy_b PASSED   [ 43%]
+tests/test_authz.py::test_tc03_malformed_or_after_school_id_is_also_404 PASSED [ 50%]
+tests/test_authz.py::test_tc04_parent1_cannot_read_parent2_child PASSED  [ 56%]
+tests/test_authz.py::test_tc05_school_staff_and_parent_boundaries PASSED [ 62%]
+tests/test_authz.py::test_school_staff_updates_own_after_school_program PASSED [ 68%]
+tests/test_authz.py::test_timetable_read_is_own_school_only PASSED       [ 75%]
+tests/test_authz.py::test_blank_text_on_owned_update_is_422_and_row_unchanged[subject] PASSED [ 81%]
+tests/test_authz.py::test_blank_text_on_owned_update_is_422_and_row_unchanged[instructor] PASSED [ 87%]
+tests/test_authz.py::test_422_schema_allows_field_errors_and_business_codes PASSED [ 93%]
+tests/test_audit.py::test_tc76_audit_rows_without_secrets PASSED         [100%]
+
+============================== 16 passed in 5.90s ==============================
