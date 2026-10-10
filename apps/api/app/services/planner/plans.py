@@ -217,7 +217,9 @@ def _snapshot(
 async def _current_violations(
     db: AsyncSession, row: PlanRow, cache: dict[uuid.UUID, tuple]
 ) -> list[engine.Violation]:
-    """초안이면 확정 때와 같은 검증을 지금 데이터로 돌린다(화면의 확정 버튼 상태). 그 외는 빈 목록."""
+    """초안이면 확정 때와 같은 검증을 지금 데이터로 돌린다(화면의 확정 버튼 상태).
+
+    그 외 상태는 빈 목록이다."""
     if row.status != DRAFT:
         return []
     if row.child_id not in cache:

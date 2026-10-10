@@ -99,7 +99,8 @@ def test_removing_an_english_program_drops_it_and_its_monthly_cost(parent) -> No
     assert updated["status"] == "draft"
     cost = english["monthly_tuition"] + english["monthly_other"]
     assert updated["monthly_total"] == plan["monthly_total"] - cost
-    assert parent.get(f"/api/plans/{plan['id']}").json()["monthly_total"] == updated["monthly_total"]
+    reloaded = parent.get(f"/api/plans/{plan['id']}").json()
+    assert reloaded["monthly_total"] == updated["monthly_total"]
 
 
 def test_swapping_in_a_school_time_program_is_saved_with_time_overlap(  # AC-08.2
@@ -175,16 +176,15 @@ def test_second_confirm_supersedes_the_first(parent, sync_db) -> None:  # arch í
 def test_confirmed_plan_cannot_be_edited_or_confirmed_again(parent, sync_db) -> None:
     plan = draft(parent)
     assert parent.post(f"/api/plans/{plan['id']}/confirm").status_code == 200
+    before = stored(sync_db, plan["id"])
 
     edit = parent.put(f"/api/plans/{plan['id']}", json={"program_ids": ids(plan)[:1]})
     again = parent.post(f"/api/plans/{plan['id']}/confirm")
 
     assert (edit.status_code, edit.json()["detail"]) == (409, "plan_not_draft")
     assert (again.status_code, again.json()["detail"]) == (409, "plan_not_draft")
-    assert stored(sync_db, plan["id"])["items"] == [
-        {k: v for k, v in item.items()} for item in stored(sync_db, plan["id"])["items"]
-    ]
-    assert [i["program_id"] for i in stored(sync_db, plan["id"])["items"]] == ids(plan)
+    assert stored(sync_db, plan["id"]) == before
+    assert [i["program_id"] for i in before["items"]] == ids(plan)
 
 
 @pytest.mark.parametrize(

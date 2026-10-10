@@ -46,7 +46,7 @@ async def create_plan_draft(body: PlanDraftRequest, session: Parent, db: Db) -> 
         await deny_not_found(session, "/api/plans/draft")
 
 
-@router.get("/plans", responses=error_responses(401, 403, 501))
+@router.get("/plans", responses=error_responses(401, 403, 404))
 async def list_plans(session: Parent, db: Db, child_id: str | None = None) -> list[Plan]:
     try:
         return await plans.list_plans(db, session.account_id, child_id)
@@ -62,7 +62,7 @@ async def get_plan(plan_id: str, session: Parent, db: Db) -> Plan:
         await deny_not_found(session, f"/api/plans/{plan_id}")
 
 
-@router.put("/plans/{plan_id}", responses=OWNED)
+@router.put("/plans/{plan_id}", responses=error_responses(401, 403, 404, 409, 422))
 async def update_plan(plan_id: str, body: PlanUpdate, session: Parent, db: Db) -> Plan:
     try:
         return await plans.update_draft(db, session.account_id, plan_id, body.program_ids)
@@ -70,7 +70,7 @@ async def update_plan(plan_id: str, body: PlanUpdate, session: Parent, db: Db) -
         await deny_not_found(session, f"/api/plans/{plan_id}")
 
 
-@router.post("/plans/{plan_id}/confirm", responses=error_responses(401, 403, 404, 409, 501))
+@router.post("/plans/{plan_id}/confirm", responses=error_responses(401, 403, 404, 409))
 async def confirm_plan(plan_id: str, session: Parent, db: Db) -> Plan:
     try:
         return await plans.confirm(db, session.account_id, plan_id)
