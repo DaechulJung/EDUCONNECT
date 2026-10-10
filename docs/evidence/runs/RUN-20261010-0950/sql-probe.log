@@ -1,0 +1,28 @@
+# SHA 78c32bd13be855ab2f7d9b3756e7084303f4d66d 2026-10-10T09:52:31Z
+## npm run seed -- --reset
+seed: loaded after reset
+## institutions
+academy|-|5
+school|elementary|1
+school|middle|1
+## timetable rows
+45
+## after-school per school
+elementary|2
+middle|1
+## programs
+17
+## academy subjects
+논술,미술,수학,영어,코딩,피아노
+## exception rows (null/full)
+수학|t|f
+영어|f|t
+## children
+5|elementary|parent1
+7|middle|parent2
+## add test data, reset, recount
+INSERT 0 1
+INSERT 0 1
+before|18|1
+seed: loaded after reset
+after programs|plans|institutions|accounts|children|17|0|7|9|2

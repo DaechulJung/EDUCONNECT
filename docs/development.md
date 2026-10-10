@@ -14,13 +14,13 @@ Issue마다 AI를 어떤 목적으로 쓰고 무엇을 지시했는지, 어떤 �
 
 | Issue | AI 사용 목적 | 지시 요지 | 변경 코드 | 검증 | 수정 | 재시험 | 커밋 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| #[번호] | [목적] | [지시 요지] | [파일 경로] | [시험 명령과 결과] | [발견한 문제와 수정] | [재실행 결과] | [커밋 URL] |
+| #14 | 기반 계약 구현(모델·마이그레이션·라우트 껍데기·세션·권한·AI 경계·시험 라우트·웹 레이아웃) | BASE-01.1~10을 arch AD-3·AD-16 계약대로 구현, 이후 기능 PR이 공통 파일을 고치지 않게 고정 (AILIEN_BUILDER, Claude Opus) | `apps/api/app/models/*`, `apps/api/alembic/versions/0002*`, `apps/api/app/api/*`, `apps/api/app/core/{config,safety}.py`, `apps/api/app/ai/*`, `apps/web/app/(parent)`·`(org)`·로그인, `compose.yml` | `npm run check` PASS, smoke E2E 2/2, `gen:api` diff 없음 (PR #15 본문 AC 표) | VERIFIER 수정 요청: `DB_PORT`·`REDIS_PORT`가 앱 주소에 반영되지 않아 다른 프로젝트 DB(15432)에 접속 → 포트 변수로 주소 구성, DB 이름 `educonnect`, 파괴적 작업 전 `current_database()` 확인(`1b330d4`) | VERIFIER 격리 clone(edu-v15) `npm run check`·smoke E2E 통과, 다른 프로젝트 DB 스냅숏 차이 없음. 병합 후 검증(edu-main) api 112·web 3·E2E 2/2, 무환경 compose 기동 실패 1건 → #11 PR에서 `6d7e188`로 후속 수정 | [2af3651](https://github.com/DaechulJung/EDUCONNECT/commit/2af3651) [1e48ae4](https://github.com/DaechulJung/EDUCONNECT/commit/1e48ae4) [a25a738](https://github.com/DaechulJung/EDUCONNECT/commit/a25a738) [1b330d4](https://github.com/DaechulJung/EDUCONNECT/commit/1b330d4), 병합 [320437e](https://github.com/DaechulJung/EDUCONNECT/commit/320437e) |
 
 ## 3. 리뷰
 
 | 대상(PR·커밋) | 작성자 | 리뷰어 | 지적 사항 | 처리 결과 |
 | --- | --- | --- | --- | --- |
-| [PR 또는 커밋] | [참여자] | [참여자] | [요지] | [반영·반려와 이유] |
+| PR #15 (#14) | AILIEN_BUILDER | AILIEN_VERIFIER | 포트 변수가 앱·alembic·시험 주소에 반영되지 않음(다른 프로젝트 DB 접속 위험), 전용 DB 이름·파괴적 작업 전 확인 요청(정대철_테스트 추가) | 반영 `1b330d4`, VERIFIER 승인 후 병합 `320437e` |
 
 ## 4. 개선 전후 비교
 

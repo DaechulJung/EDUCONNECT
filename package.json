@@ -7,6 +7,7 @@
     "down": "docker compose down",
     "infra": "docker compose up --wait db redis",
     "migrate": "uv run --directory apps/api alembic upgrade head",
+    "seed": "uv run --directory apps/api python -m app.seed",
     "dev:api": "uv run --directory apps/api uvicorn app.main:app --reload",
     "dev:web": "npm run dev -w web",
     "lint": "npm run lint -w web && uv run --directory apps/api ruff check && uv run --directory apps/api ruff format --check",
