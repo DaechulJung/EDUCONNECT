@@ -4,6 +4,7 @@ Every test starts from POST /api/test/reset, signs in as the seed parent of 하�
 기준 시나리오 conditions and creates a draft. Totals and program ids are read from responses.
 """
 
+import threading
 import uuid
 
 import pytest
@@ -185,6 +186,37 @@ def test_confirmed_plan_cannot_be_edited_or_confirmed_again(parent, sync_db) -> 
     assert (again.status_code, again.json()["detail"]) == (409, "plan_not_draft")
     assert stored(sync_db, plan["id"]) == before
     assert [i["program_id"] for i in before["items"]] == ids(plan)
+
+
+def test_edit_waits_for_a_confirm_holding_the_child_lock(parent, sync_db) -> None:  # PR #23 P1
+    """Session A (a confirm) holds the child row lock; B's edit must wait, then see `confirmed`."""
+    plan = draft(parent)
+    before = stored(sync_db, plan["id"])
+    result: dict = {}
+
+    def edit() -> None:
+        result["response"] = parent.put(
+            f"/api/plans/{plan['id']}", json={"program_ids": ids(plan)[:1]}
+        )
+
+    with sync_db.connect() as conn:
+        tx = conn.begin()
+        conn.execute(text("SELECT id FROM children WHERE id = :id FOR UPDATE"), {"id": CHILD})
+        worker = threading.Thread(target=edit)
+        worker.start()
+        worker.join(0.3)
+        assert worker.is_alive(), "update_draft did not wait for the child row lock"
+        conn.execute(
+            text("UPDATE plans SET status = 'confirmed' WHERE id = :id"), {"id": plan["id"]}
+        )
+        tx.commit()
+    worker.join(10)
+
+    assert not worker.is_alive()
+    response = result["response"]
+    assert (response.status_code, response.json()["detail"]) == (409, "plan_not_draft")
+    after = stored(sync_db, plan["id"])
+    assert after["status"] == "confirmed" and after["items"] == before["items"]
 
 
 @pytest.mark.parametrize(
