@@ -95,3 +95,9 @@
 - [x] main `de8e2e8` merge(evidence.json 합집합) 뒤 check api 230·web 33, E2E children 5/5
 - [x] 문서: arch 233·237행, experience 85·169행, development.md #4 행·한계 1줄
 - [ ] AC-04.5 done → `Closes #4` PR → CI 3/3 → VERIFIER 승인 → 병합
+
+## 챗봇 자녀 목록 불러오는 중 결함(`fix-chat-loading`, Refs #5) — PLANNER dev2-ui
+완료 조건: 목록을 받기 전에는 보내기 비활성 + "처리하고 있어요", "먼저 자녀를 등록해 주세요"는 0명일 때만, 오류는 오류 문구. 재현 E2E RED → GREEN, `npm run check`·전체 E2E 통과, development #5 행 1줄, PR → VERIFIER (12:48Z 지시 0685a4bf)
+- [x] 회귀 E2E `#5 회귀 자녀 목록 불러오는 중`(`03be12b` 초안) — `9589179` 코드에서 RED(97행 안내 문구 보임)
+- [x] `childGate`(불러오는 중·오류·0명·자녀 있음) + 보내기·추천 질문 비활성, 오류는 experience 100행 문구 — `55fd75a`, GREEN 5/5 ×2
+- [ ] development #5 행·lessons, check·전체 E2E, PR, VERIFIER
