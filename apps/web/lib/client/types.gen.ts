@@ -1528,10 +1528,6 @@ export type ListSubjectsErrors = {
      * Validation Error
      */
     422: HttpValidationError;
-    /**
-     * Not Implemented
-     */
-    501: ErrorBody;
 };
 
 export type ListSubjectsError = ListSubjectsErrors[keyof ListSubjectsErrors];
